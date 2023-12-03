@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const NODE_ENV = process.env.NODE_ENV;
+const NODE_ENV = "production";
 
 const instance = axios.create({
   baseURL:
