@@ -1,6 +1,6 @@
 {
   "name": "fe",
-  "homepage": "https://TrinhChung.github.io/SmartRent",
+  "homepage": ".",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
