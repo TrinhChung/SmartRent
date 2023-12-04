@@ -13,6 +13,9 @@ jobs:
     strategy:
       matrix:
         node-version: [18.x]
+    env:
+      REACT_APP_GOOGLE_MAP_KEY: ${{ vars.REACT_APP_GOOGLE_MAP_KEY }}
+      REACT_APP_MAP_ID: ${{ vars.REACT_APP_MAP_ID }}
 
     steps:
       - uses: actions/checkout@v3
