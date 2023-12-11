@@ -21,12 +21,12 @@ const Home = () => {
   return (
     <Col span={24} style={{ paddingTop: 20, paddingLeft: 40 }}>
       {isLoaded ? <Row>
-        <Col span={6}>
+        <Col xs={24} xxl={6} style={{paddingBottom: 16}}>
           <Row>
             <PlacesAutocomplete setPosition={setPosition} />
           </Row>
         </Col>
-        <Col span={18}>
+        <Col xs={24} xxl={18}>
           <Row style={{justifyContent: 'end'}}>
             <GoogleMap
               center={position}
