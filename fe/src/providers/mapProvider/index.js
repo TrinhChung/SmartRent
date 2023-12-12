@@ -6,7 +6,7 @@ export const MapContext = createContext();
 
 const MapProvider = ({ children }) => {
   const { isLoaded } = useJsApiLoader({
-    id: process.env.REACT_APP_MAP_ID,
+    mapIds: process.env.REACT_APP_MAP_ID,
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAP_KEY,
     libraries: ["drawing", "places"],
   });

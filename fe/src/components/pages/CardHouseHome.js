@@ -20,10 +20,10 @@ const CardHouseHome = ({ house = { name: "name", address: "address" } }) => {
             {house?.name}
           </Row>
           <Row style={{ alignItems: "center" }}>
-            <Col className="text-shadow" span={20}>
+            <Col className="text-shadow" xs={24} xl={20}>
               {house?.address}
             </Col>
-            <Col span={4}>
+            <Col xs={24} xl={4}>
               <ExportOutlined style={{}} className="open-link-house" />
             </Col>
           </Row>
