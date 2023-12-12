@@ -12,15 +12,7 @@ const HomeLayout = ({ children, menu }) => {
   return (
     <Layout className="main-layout">
       <Navbar data={menu} />
-      <Content
-        className="container-content"
-        style={{
-          minHeight: "calc(100vh - 64px)",
-          backgroundColor: "var(--color-main)",
-        }}
-      >
-        {children}
-      </Content>
+      <Content className="container-content">{children}</Content>
       <FooterComponent />
     </Layout>
   );
