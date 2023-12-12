@@ -1,18 +1,15 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Col, Image, Input, Row } from "antd";
 import PlacesAutocomplete from "../../../components/maps/PlacesAutocomplete";
-import { useJsApiLoader, GoogleMap, MarkerF } from "@react-google-maps/api";
+import { GoogleMap, MarkerF } from "@react-google-maps/api";
 import ImageBannerHome from "../../../public/images/home-banner.jpg";
 import "./Home.scss";
+import { MapContext } from "../../../providers/mapProvider";
+import Suggest from "./Suggest";
+import ImageHouse from "../../../public/images/house1.jpg";
 
 const Home = () => {
-  const { isLoaded } = useJsApiLoader({
-    id: process.env.REACT_APP_MAP_ID,
-    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAP_KEY,
-    libraries: ["places"],
-  });
-
-  console.log(isLoaded);
+  const { isLoaded } = useContext(MapContext);
   const [position, setPosition] = useState({
     lat: 21.0469701,
     lng: 105.8021347,
@@ -23,9 +20,42 @@ const Home = () => {
     width: "100%",
   };
 
+  const listSuggest = [
+    {
+      image: ImageHouse,
+      name: "Sunny Village Berawa - Villa",
+      address: "Complex modern villas in Texas",
+    },
+    {
+      image: ImageHouse,
+      name: "Sunny Village Berawa - Villa",
+      address: "Complex modern villas in Texas",
+    },
+    {
+      image: ImageHouse,
+      name: "Sunny Village Berawa - Villa",
+      address: "Complex modern villas in Texas",
+    },
+    {
+      image: ImageHouse,
+      name: "Sunny Village Berawa - Villa",
+      address: "Complex modern villas in Texas",
+    },
+    {
+      image: ImageHouse,
+      name: "Sunny Village Berawa - Villa",
+      address: "Complex modern villas in Texas",
+    },
+    {
+      image: ImageHouse,
+      name: "Sunny Village Berawa - Villa",
+      address: "Complex modern villas in Texas",
+    },
+  ];
+
   return (
     <Col span={24} className="home-container">
-      <Row style={{ paddingTop: 103, paddingBottom: 62 }}>
+      <Row className="box-banner" style={{}}>
         <Col xxl={8} xs={8}>
           <Row>
             <Col
@@ -74,10 +104,10 @@ const Home = () => {
               fontSize: 32,
             }}
           >
-            let’s find a home that’s perfect for you
+            let's find a home that's perfect for you
           </Row>
           <Row>
-            <Col style={{ paddingLeft: 10, paddingRight: 10 }} xs={24} xxl={6}>
+            <Col style={{ paddingLeft: 10, paddingRight: 10 }} xs={24} xl={6}>
               <Row gutter={[4, 4]}>
                 <Col xxl={12} xs={24}>
                   <Input placeholder="Giá phòng" />
@@ -100,7 +130,7 @@ const Home = () => {
                 </Col>
               </Row>
             </Col>
-            <Col xs={24} xxl={18}>
+            <Col xs={24} xl={18}>
               <Row style={{ justifyContent: "end" }}>
                 <GoogleMap
                   center={position}
@@ -116,6 +146,8 @@ const Home = () => {
       ) : (
         <Row>...Loading</Row>
       )}
+
+      <Suggest houses={listSuggest} />
     </Col>
   );
 };

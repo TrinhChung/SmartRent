@@ -64,7 +64,7 @@ const Navbar = ({ data }) => {
           <Row style={{ alignItems: "center", justifyContent: "center" }}>
             <Col>
               <Row className="big-name">Smart</Row>
-              <Row>Rent</Row>
+              <Row>Rental</Row>
             </Col>
           </Row>
         </Col>

@@ -1,0 +1,27 @@
+.card-house_home {
+  position: relative;
+
+  .image-card_house_home {
+    border-radius: 16px;
+    width: calc((100vw - 2 * var(--margin-side)) / 4 - 15px);
+    height: calc(((100vw - 2 * var(--margin-side)) / 4 - 15px) * 2 / 3);
+  }
+
+  .house-info_card {
+    position: absolute;
+    bottom: 20px;
+    left: 40px;
+    color: var(--color-text-light);
+  }
+
+  .open-link-house {
+    font-size: 30px;
+    color: var(--color-text-light);
+    cursor: pointer;
+    text-shadow: 1px 1px 2px black;
+  }
+
+  .open-link-house:hover {
+    color: rgb(85, 184, 250) !important;
+  }
+}

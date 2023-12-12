@@ -58,14 +58,13 @@ const PlacesAutocomplete = ({ setPosition = () => {} }) => {
             disabled={!ready}
             allowClear={true}
             onChange={(e) => {
-              setValue(e.target.value);
+              setValue(e?.target?.value);
             }}
           />
         </Popover>
       </Row>
       {value && (
         <>
-          {" "}
           <Row style={{ paddingTop: 10, fontWeight: "bold" }}>
             Thông tin chi tiết
           </Row>
