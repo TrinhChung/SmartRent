@@ -3,9 +3,49 @@
   padding: 0;
   margin: 0;
   position: sticky;
+  padding-top: var(--height-navbar-pt);
   top: 0;
   width: 100%;
-  height: var(--height-navbar);
+  height: calc((--height-navbar)+var(--height-navbar-pt));
   z-index: 1;
-  color: white;
+  color: var(--color-text);
+  font-weight: lighter !important;
+
+  .wrap-border {
+    margin: 0 var(--margin-side);
+    border-bottom: 1px solid var(--color-text);
+
+    .box-logo {
+      line-height: normal !important;
+      display: flex;
+
+      .big-name {
+        font-size: 32px;
+        font-weight: bold;
+        text-transform: uppercase;
+      }
+    }
+
+    .box-menu-navbar {
+      height: var(--height-navbar);
+      padding-left: 20px;
+      display: flex;
+      flex-direction: row;
+
+      .menu-navbar {
+        width: 100%;
+        display: flex;
+        justify-content: start;
+        height: 20px;
+        line-height: 18.2px !important;
+        font-size: 16px;
+        margin-top: 19px;
+        background-color: var(--color-main);
+
+        .ant-menu-title-content div {
+          font-weight: lighter !important;
+        }
+      }
+    }
+  }
 }

@@ -29,6 +29,7 @@ const Guest = () => {
   return (
     <Routes>
       <Route path="/" element={wrapLayout(<Home />)} />
+      <Route path="/*" element={wrapLayout(<div>Chua dinh nghia</div>)} />
     </Routes>
   );
 };
