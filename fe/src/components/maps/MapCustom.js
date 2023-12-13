@@ -5,6 +5,12 @@ import { useState } from "react";
 const MapCustom = ({ position = {}, setPosition = () => {} }) => {
   const [map, setMap] = useState(null);
 
+  const dragMarker = useCallback((marker) => {
+    const lat = marker?.latLng?.lat();
+    const lng = marker?.latLng?.lng();
+    setPosition({ lat: lat, lng: lng });
+  }, []);
+
   const containerStyle = {
     height: "50vh",
     width: "100%",
@@ -88,8 +94,17 @@ const MapCustom = ({ position = {}, setPosition = () => {} }) => {
       zoom={15}
       onLoad={onLoad}
       onUnmount={onUnmount}
+      // onMouseDown={dragMarker}
+      onRightClick={dragMarker}
     >
-      {position && <MarkerF position={position} />}
+      {position && (
+        <MarkerF
+          draggable={true}
+          animation={window.google.maps.Animation.DROP}
+          position={position}
+          onDragEnd={dragMarker}
+        />
+      )}
     </GoogleMap>
   );
 };
