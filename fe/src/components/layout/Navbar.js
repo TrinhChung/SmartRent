@@ -1,11 +1,6 @@
-import { useState, useEffect, useContext, memo, useRef } from "react";
-import { Layout, Row, Col, Dropdown, Modal, Input } from "antd";
-import {
-  BellFilled,
-  UserOutlined,
-  SearchOutlined,
-  LogoutOutlined,
-} from "@ant-design/icons";
+import { useState, useEffect, useContext, memo } from "react";
+import { Layout, Row, Col, Dropdown, Modal } from "antd";
+import { BellFilled, UserOutlined, LogoutOutlined } from "@ant-design/icons";
 import { Menu } from "antd";
 import { useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../providers/authProvider";
@@ -18,20 +13,10 @@ const Navbar = ({ data }) => {
   const [current, setCurrent] = useState("home");
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const wrapperDropdown = useRef(null);
-  const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
-  const [key, setKey] = useState(
-    searchParams.get("search") ? searchParams.get("search") : ""
-  );
 
   const onClick = (e) => {
     setCurrent(e.key);
   };
-
-  const handleSearch = () => {};
-
-  const handleChangeInputSearch = async (e) => {};
 
   useEffect(() => {
     if (pathname) {
@@ -74,130 +59,81 @@ const Navbar = ({ data }) => {
 
   return (
     <Header className="box-shadow-bottom navbar-home">
-      <Row>
-        <Col
-          span={12}
-          style={{
-            height: 60,
-            paddingLeft: 20,
-            display: "flex",
-            flexDirection: "row",
-          }}
-        >
-          <Menu
-            style={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "start",
-              height: 55,
-              backgroundColor: "var(--color-main)",
-              color: "white",
-            }}
-            onClick={(e) => {
-              onClick(e);
-            }}
-            selectedKeys={[current]}
-            mode="horizontal"
-            items={data}
-          />
-        </Col>
-
-        <Col
-          span={7}
-          style={{
-            fontSize: 50,
-            fontWeight: "bold",
-            paddingLeft: 55,
-          }}
-        >
-          <Row
-            style={{
-              display: "flex",
-              alignItems: "center",
-              position: "relative",
-            }}
-            ref={wrapperDropdown}
-          >
-            <Col span={20}>
-              <Input
-                placeholder="Tìm truyện"
-                className="input-custom"
-                defaultValue={key}
-                size="large"
-                onChange={handleChangeInputSearch}
-                allowClear={true}
-                onFocus={() => {}}
-              />
-            </Col>
-
-            <Col span={4} style={{ alignItems: "center" }}>
-              <Row
-                style={{
-                  background: "white",
-                  height: 38,
-                  justifyContent: "center",
-                }}
-              >
-                <SearchOutlined
-                  style={{ cursor: "pointer", color: "var(--color-main)" }}
-                  onClick={() => {
-                    handleSearch();
-                  }}
-                />
-              </Row>
+      <Row className="wrap-border">
+        <Col xxl={8} xs={4} className="box-logo">
+          <Row style={{ alignItems: "center", justifyContent: "center" }}>
+            <Col>
+              <Row className="big-name">Smart</Row>
+              <Row>Rental</Row>
             </Col>
           </Row>
         </Col>
-        <Col span={5} style={{ paddingRight: 29 }}>
-          {authUser ? (
-            <Row
-              style={{
-                justifyContent: "flex-end",
-                fontSize: "20px!important",
-                gap: 10,
-              }}
-            >
-              <Col>
-                <BellFilled
-                  style={{ fontSize: "20px" }}
-                  className="color-icon"
-                />
-              </Col>
-              <Col>|</Col>
-              <Dropdown menu={menuProps} trigger={["click"]}>
-                <Row style={{ gap: 5, cursor: "pointer" }}>
-                  <Col>
-                    <UserOutlined style={{ fontSize: "20px" }} />
-                  </Col>
-                  <Col>
-                    <div>{authUser?.username}</div>
-                  </Col>
-                </Row>
-              </Dropdown>
-            </Row>
-          ) : (
-            <Row
-              style={{
-                justifyContent: "flex-end",
-                fontSize: "20px!important",
-                gap: 10,
-              }}
-            >
-              <Row
-                style={{ gap: 5, cursor: "pointer" }}
-                onClick={() => {
-                  navigate("/auth/login");
+
+        <Col xxl={16} xs={20}>
+          <Row>
+            <Col xxl={16} xs={18} className="box-menu-navbar">
+              <Menu
+                className="menu-navbar"
+                onClick={(e) => {
+                  onClick(e);
                 }}
-              >
-                <Col>
-                  <LogoutOutlined style={{ fontSize: "20px" }} />
-                </Col>
-                <Col>
-                  <div>Đăng nhập</div>
-                </Col>
-              </Row>
-            </Row>
-          )}
+                selectedKeys={[current]}
+                mode="horizontal"
+                items={data}
+              />
+            </Col>
+            <Col xxl={8} xs={6} style={{ paddingRight: 29 }}>
+              {authUser ? (
+                <Row
+                  style={{
+                    justifyContent: "flex-end",
+                    fontSize: "20px!important",
+                    gap: 10,
+                  }}
+                >
+                  <Col>
+                    <BellFilled
+                      style={{ fontSize: "20px" }}
+                      className="color-icon"
+                    />
+                  </Col>
+                  <Col>|</Col>
+                  <Dropdown menu={menuProps} trigger={["click"]}>
+                    <Row style={{ gap: 5, cursor: "pointer" }}>
+                      <Col>
+                        <UserOutlined style={{ fontSize: "20px" }} />
+                      </Col>
+                      <Col>
+                        <div>{authUser?.username}</div>
+                      </Col>
+                    </Row>
+                  </Dropdown>
+                </Row>
+              ) : (
+                <Row
+                  style={{
+                    justifyContent: "flex-end",
+                    fontSize: "20px!important",
+                    gap: 10,
+                  }}
+                >
+                  <Row
+                    style={{ gap: 5, cursor: "pointer" }}
+                    onClick={() => {
+                      navigate("/auth/login");
+                    }}
+                  >
+                    <Col>
+                      <LogoutOutlined style={{ fontSize: "20px" }} />
+                    </Col>
+                    <Col>
+                      <div>Đăng nhập</div>
+                    </Col>
+                  </Row>
+                </Row>
+              )}
+            </Col>
+          </Row>
         </Col>
       </Row>
       <Modal
@@ -209,7 +145,7 @@ const Navbar = ({ data }) => {
         }}
         onCancel={() => setIsOpenModal(false)}
       >
-        <p>'Bạn có muốn đăng xuất không?'</p>
+        <p>Bạn có muốn đăng xuất không?</p>
       </Modal>
     </Header>
   );

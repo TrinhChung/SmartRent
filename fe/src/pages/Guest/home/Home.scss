@@ -1,0 +1,31 @@
+.home-container {
+  font-family: Inter;
+
+  .box-banner {
+    padding-top: 103px;
+    padding-bottom: 62px;
+
+    .text-banner-title {
+      font-size: 60px;
+      line-height: 62px;
+    }
+
+    .text-banner-description {
+      font-size: 18px;
+      color: var(--color-bold);
+      line-height: 28px;
+      font-style: normal;
+    }
+
+    .button-banner {
+      text-transform: uppercase;
+      font-size: 18px;
+      line-height: 22px;
+      height: 66px;
+    }
+  }
+
+  .box-search {
+    margin-bottom: 80px;
+  }
+}
