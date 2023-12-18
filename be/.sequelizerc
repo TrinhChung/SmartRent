@@ -1,0 +1,38 @@
+const path = require("path");
+require("dotenv").config();
+
+module.exports = {
+  config: {
+    development: {
+      username: "root",
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
+      host: process.env.HOST,
+      port: process.env.DB_PORT,
+      dialect: "mysql",
+      logging: false,
+      raw: true,
+      timezone: "+07:00",
+      query: {
+        raw: true,
+      },
+    },
+    test: {
+      username: "root",
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
+      host: process.env.HOST,
+      dialect: "mysql",
+    },
+    production: {
+      username: "root",
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
+      host: process.env.HOST,
+      dialect: "mysql",
+    },
+  },
+  "migrations-path": path.resolve("./src", "migrations"),
+  "models-path": path.resolve("./src", "models"),
+  "seeders-path": path.resolve("./src", "seeders"),
+};
