@@ -6,11 +6,26 @@ module.exports = (sequelize, DataTypes) => {
   }
   Bargain.init(
     {
-      realEstateId: DataTypes.INTEGER.UNSIGNED,
-      status: DataTypes.STRING(1),
-      renterId: DataTypes.INTEGER.UNSIGNED,
-      sellerId: DataTypes.INTEGER.UNSIGNED,
-      roomChatId: DataTypes.INTEGER.UNSIGNED,
+      realEstateId: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: false,
+      },
+      status: {
+        type: DataTypes.STRING(1),
+        allowNull: false,
+      },
+      renterId: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: false,
+      },
+      sellerId: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: false,
+      },
+      roomChatId: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: false,
+      },
     },
     {
       sequelize,

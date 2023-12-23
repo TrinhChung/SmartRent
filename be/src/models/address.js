@@ -6,9 +6,18 @@ module.exports = (sequelize, DataTypes) => {
   }
   Verify.init(
     {
-      address: DataTypes.STRING,
-      lat: DataTypes.STRING,
-      lng: DataTypes.STRING,
+      address: {
+        type: DataTypes.STRING(200),
+        allowNull: false,
+      },
+      lat: {
+        type: DataTypes.STRING(100),
+        allowNull: true,
+      },
+      lng: {
+        type: DataTypes.STRING(100),
+        allowNull: true,
+      },
     },
     {
       sequelize,

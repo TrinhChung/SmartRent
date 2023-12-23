@@ -6,9 +6,18 @@ module.exports = (sequelize, DataTypes) => {
   }
   Term.init(
     {
-      contractId: DataTypes.INTEGER.UNSIGNED,
-      name: DataTypes.STRING(200),
-      content: DataTypes.STRING(400),
+      contractId: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: false,
+      },
+      name: {
+        type: DataTypes.STRING(200),
+        allowNull: false,
+      },
+      content: {
+        type: DataTypes.STRING(400),
+        allowNull: false,
+      },
     },
     {
       sequelize,

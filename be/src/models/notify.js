@@ -6,11 +6,27 @@ module.exports = (sequelize, DataTypes) => {
   }
   Notify.init(
     {
-      fkId: DataTypes.INTEGER.UNSIGNED,
-      extraNotifyId: DataTypes.INTEGER.UNSIGNED,
-      type: DataTypes.STRING(1),
-      content: DataTypes.STRING(200),
-      isRead: DataTypes.BOOLEAN,
+      fkId: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: false,
+      },
+      extraNotifyId: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: false,
+      },
+      type: {
+        type: DataTypes.STRING(1),
+        allowNull: false,
+      },
+      content: {
+        type: DataTypes.STRING(200),
+        allowNull: false,
+      },
+      isRead: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+      },
     },
     {
       sequelize,

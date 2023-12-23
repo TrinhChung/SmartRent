@@ -6,18 +6,54 @@ module.exports = (sequelize, DataTypes) => {
   }
   RealEstate.init(
     {
-      name: DataTypes.STRING(200),
-      userId: DataTypes.INTEGER.UNSIGNED,
-      addressId: DataTypes.INTEGER.UNSIGNED,
-      cost: DataTypes.FLOAT.UNSIGNED,
-      descriptionHtml: DataTypes.TEXT,
-      descriptionMarkdown: DataTypes.TEXT,
-      acreage: DataTypes.FLOAT,
-      floorTotal: DataTypes.INTEGER.UNSIGNED,
-      roomTotal: DataTypes.INTEGER.UNSIGNED,
-      isElevator: DataTypes.BOOLEAN,
-      isPet: DataTypes.BOOLEAN,
-      status: DataTypes.STRING(1),
+      name: {
+        type: DataTypes.STRING(200),
+        allowNull: true,
+      },
+      userId: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: false,
+      },
+      addressId: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: false,
+      },
+      cost: {
+        type: DataTypes.FLOAT.UNSIGNED,
+        allowNull: false,
+      },
+      descriptionHtml: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+      },
+      descriptionMarkdown: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+      },
+      acreage: {
+        type: DataTypes.FLOAT,
+        allowNull: false,
+      },
+      floorTotal: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: false,
+      },
+      roomTotal: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: false,
+      },
+      isElevator: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+      },
+      isPet: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+      },
+      status: {
+        type: DataTypes.STRING(1),
+        allowNull: false,
+      },
     },
     {
       sequelize,

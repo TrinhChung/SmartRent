@@ -6,16 +6,53 @@ module.exports = (sequelize, DataTypes) => {
   }
   User.init(
     {
-      lastName: DataTypes.STRING,
-      firstName: DataTypes.STRING,
-      phoneNumber: DataTypes.STRING,
-      isActive: DataTypes.BOOLEAN,
+      lastName: {
+        type: DataTypes.STRING(100),
+        allowNull: true,
+      },
+      firstName: {
+        type: DataTypes.STRING(100),
+        allowNull: true,
+      },
+      fullName: {
+        type: DataTypes.VIRTUAL,
+        get() {
+          return `${this.firstName} ${this.lastName}`;
+        },
+        set(value) {
+          throw new Error("Do not try to set the `fullName` value!");
+        },
+      },
+      phoneNumber: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      isActive: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+      },
       addressId: DataTypes.INTEGER.UNSIGNED,
-      password: DataTypes.STRING,
-      role: DataTypes.STRING,
-      email: DataTypes.STRING,
-      gender: DataTypes.STRING,
-      avatar: DataTypes.STRING,
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      role: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: { isEmail: true },
+      },
+      gender: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      avatar: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
     },
     {
       sequelize,

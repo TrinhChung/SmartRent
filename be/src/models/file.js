@@ -6,11 +6,22 @@ module.exports = (sequelize, DataTypes) => {
   }
   File.init(
     {
-      url: DataTypes.STRING,
-      acreage: DataTypes.FLOAT.UNSIGNED,
-      typeFile: DataTypes.STRING(1),
-      typeFk: DataTypes.STRING(200),
-      fkId: DataTypes.INTEGER.UNSIGNED,
+      url: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      typeFile: {
+        type: DataTypes.STRING(1),
+        allowNull: false,
+      },
+      typeFk: {
+        type: DataTypes.STRING(200),
+        allowNull: false,
+      },
+      fkId: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: false,
+      },
     },
     {
       sequelize,

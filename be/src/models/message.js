@@ -6,10 +6,22 @@ module.exports = (sequelize, DataTypes) => {
   }
   Message.init(
     {
-      userId: DataTypes.INTEGER.UNSIGNED,
-      replyId: DataTypes.INTEGER.UNSIGNED,
-      roomChatId: DataTypes.INTEGER.UNSIGNED,
-      content: DataTypes.STRING(400),
+      userId: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: false,
+      },
+      replyId: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: false,
+      },
+      roomChatId: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: false,
+      },
+      content: {
+        type: DataTypes.STRING(400),
+        allowNull: false,
+      },
     },
     {
       sequelize,

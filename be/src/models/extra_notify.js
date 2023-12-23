@@ -6,9 +6,18 @@ module.exports = (sequelize, DataTypes) => {
   }
   ExtraNotify.init(
     {
-      userId: DataTypes.INTEGER.UNSIGNED,
-      userId: DataTypes.INTEGER.UNSIGNED,
-      type: DataTypes.STRING(1),
+      userId: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: false,
+      },
+      userId: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: false,
+      },
+      type: {
+        type: DataTypes.STRING(1),
+        allowNull: false,
+      },
     },
     {
       sequelize,

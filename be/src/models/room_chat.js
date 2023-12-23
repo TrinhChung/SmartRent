@@ -6,7 +6,10 @@ module.exports = (sequelize, DataTypes) => {
   }
   RoomChat.init(
     {
-      bargainId: DataTypes.INTEGER.UNSIGNED,
+      bargainId: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: false,
+      },
     },
     {
       sequelize,

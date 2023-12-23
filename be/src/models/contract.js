@@ -6,14 +6,38 @@ module.exports = (sequelize, DataTypes) => {
   }
   Contract.init(
     {
-      renterId: DataTypes.INTEGER.UNSIGNED,
-      sellerId: DataTypes.INTEGER.UNSIGNED,
-      renterCost: DataTypes.FLOAT.UNSIGNED,
-      duration: DataTypes.INTEGER.UNSIGNED,
-      timeStart: DataTypes.DATE,
-      paymentDeadline: DataTypes.STRING(100),
-      paymentType: DataTypes.STRING(1),
-      deposit: DataTypes.FLOAT.UNSIGNED,
+      renterId: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: false,
+      },
+      sellerId: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: false,
+      },
+      renterCost: {
+        type: DataTypes.FLOAT.UNSIGNED,
+        allowNull: false,
+      },
+      duration: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: true,
+      },
+      timeStart: {
+        type: DataTypes.DATE,
+        allowNull: false,
+      },
+      paymentDeadline: {
+        type: DataTypes.STRING(100),
+        allowNull: false,
+      },
+      paymentType: {
+        type: DataTypes.STRING(1),
+        allowNull: false,
+      },
+      deposit: {
+        type: DataTypes.FLOAT.UNSIGNED,
+        allowNull: false,
+      },
     },
     {
       sequelize,

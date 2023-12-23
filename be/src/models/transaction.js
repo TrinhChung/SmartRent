@@ -6,9 +6,18 @@ module.exports = (sequelize, DataTypes) => {
   }
   Room.init(
     {
-      contractId: DataTypes.INTEGER.UNSIGNED,
-      acreage: DataTypes.FLOAT.UNSIGNED,
-      cost: DataTypes.FLOAT.UNSIGNED,
+      contractId: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: false,
+      },
+      acreage: {
+        type: DataTypes.FLOAT.UNSIGNED,
+        allowNull: false,
+      },
+      cost: {
+        type: DataTypes.FLOAT.UNSIGNED,
+        allowNull: false,
+      },
     },
     {
       sequelize,
