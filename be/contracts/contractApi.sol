@@ -48,22 +48,24 @@ contract SmartContract {
         address _seller,
         address _renter
     ) public onlyOwner {
-        ContractEntity memory smartContract = ContractEntity(
-            _id,
-            _renterId,
-            _sellerId,
-            _rentCost,
-            _duration,
-            _timeStart,
-            _paymentDeadline,
-            _payment_type,
-            _termArray,
-            _seller,
-            _renter
-        );
+        ContractEntity storage newSmartContract = contracts[_id];
+        newSmartContract.id = _id;
+        newSmartContract.renterId = _renterId;
+        newSmartContract.sellerId = _sellerId;
+        newSmartContract.rentCost = _rentCost;
+        newSmartContract.duration = _duration;
+        newSmartContract.timeStart = _timeStart;
+        newSmartContract.paymentDeadline = _paymentDeadline;
+        newSmartContract.payment_type = _payment_type;
+        newSmartContract.seller = _seller;
+        newSmartContract.renter = _renter;
 
-        contracts[_id] = smartContract;
-        contractArray.push(smartContract);
+        for (uint256 i = 0; i < _termArray.length; i++) {
+            newSmartContract.termArray.push(_termArray[i]);
+        }
+
+        contracts[_id] = newSmartContract;
+        contractArray.push(newSmartContract);
     }
 
     function getSmartContractById(
