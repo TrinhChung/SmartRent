@@ -1,34 +1,61 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.9;
 
-// Uncomment this line to use console.log
-// import "hardhat/console.sol";
+contract SmartContract {
 
-contract Lock {
-    uint public unlockTime;
-    address payable public owner;
-
-    event Withdrawal(uint amount, uint when);
-
-    constructor(uint _unlockTime) payable {
-        require(
-            block.timestamp < _unlockTime,
-            "Unlock time should be in the future"
-        );
-
-        unlockTime = _unlockTime;
-        owner = payable(msg.sender);
+    struct Term {
+        string name;
+        string content;
     }
 
-    function withdraw() public {
-        // Uncomment this line, and the import of "hardhat/console.sol", to print a log in your terminal
-        // console.log("Unlock time is %o and block timestamp is %o", unlockTime, block.timestamp);
+    struct ContractEntity {
+        uint32 renterId;
 
-        require(block.timestamp >= unlockTime, "You can't withdraw yet");
-        require(msg.sender == owner, "You aren't the owner");
+        uint32 sellerId;
 
-        emit Withdrawal(address(this).balance, block.timestamp);
+        uint32 rentCost;
 
-        owner.transfer(address(this).balance);
+        uint32 duration;
+
+        uint256 timeStart;
+
+        uint256 paymentDeadline;
+
+        string payment_type;
+
+        Term[] termArray;
+
+        address renter;
+
+        address seller;
+    }
+
+    mapping(uint256=>ContractEntity) contracts;
+    ContractEntity[] contractArray;
+
+    address owner;
+
+    constructor() {
+        owner = msg.sender;
+    }
+
+    modifier onlyOwner {
+        require(msg.sender == owner);
+        _;
+    }
+
+    function getProductById(uint256 _id) public view returns(ContractEntity memory) {
+        require(contracts[_id].renterId != 0 && (msg.sender == contracts[_id].renter || msg.sender == contracts[_id].seller));
+
+        return (contracts[_id]);
+    }
+
+    function getContractBySellerId() public view returns(ContractEntity[] memory) {
+         ContractEntity[] memory resContracts;
+         for (uint i = 1; i <= contractArray.length; i++) {
+            if (contractArray[i].seller == msg.sender) {
+                // resContracts.push(contractArray[i]);
+            }
+        }
     }
 }
