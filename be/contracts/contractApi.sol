@@ -7,6 +7,8 @@ contract SmartContract {
         string content;
     }
 
+    event Log(string message);
+
     struct ContractEntity {
         uint256 id;
         uint32 renterId;
@@ -76,7 +78,19 @@ contract SmartContract {
                 (msg.sender == contracts[_id].renter ||
                     msg.sender == contracts[_id].seller)
         );
+        ContractEntity memory smartContract = contracts[_id];
+        return smartContract;
+    }
 
-        return (contracts[_id]);
+    function getAllSmartContracts()
+        external
+        view
+        returns (ContractEntity[] memory)
+    {
+        return contractArray;
+    }
+
+    function getMe() external view returns (address) {
+        return msg.sender;
     }
 }

@@ -7,11 +7,11 @@
 const hre = require("hardhat");
 
 async function main() {
-  const contractApi = await hre.ethers.deployContract("Lock");
+  const contractApi = await hre.ethers.deployContract("SmartContract");
 
   await contractApi.waitForDeployment();
 
-  console.log(`Contract address: ${contractApi.address}`);
+  console.log(`Address:  ${contractApi.target}`);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

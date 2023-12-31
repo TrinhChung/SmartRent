@@ -15,5 +15,16 @@ npx hardhat run scripts/deploy.js
 Connect remix to localhost
 
 ```shell
+connect remix to localhost
 npx remixd
+
+deploy
+npx hardhat run --network localhost scripts/deploy.js
+```
+
+create Private key for wallet
+
+```shell
+const wallet = ethers.Wallet.createRandom();
+const privateKeyHex = wallet.privateKey;
 ```
