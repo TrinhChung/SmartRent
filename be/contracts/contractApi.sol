@@ -26,10 +26,12 @@ contract SmartContract {
     mapping(uint256 => ContractEntity) contracts;
     ContractEntity[] contractArray;
 
-    address owner;
+    address payable owner;
+
+    uint public balance;
 
     constructor() {
-        owner = msg.sender;
+        owner = payable(msg.sender);
     }
 
     modifier onlyOwner() {
@@ -92,5 +94,11 @@ contract SmartContract {
 
     function getMe() external view returns (address) {
         return msg.sender;
+    }
+
+    function payment() external payable {}
+
+    function getBalance() external view returns (uint) {
+        return address(this).balance;
     }
 }

@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { ethers } from "ethers";
 export const router = Router();
+require("dotenv").config();
 
 const provider = new ethers.JsonRpcProvider(process.env.API_URL);
 const signer = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
@@ -85,6 +86,16 @@ router.get("/:id", async (req, res, next) => {
     const id = Number.parseInt(req.params?.id ? req.params?.id : 1);
     const smartContract = await contractInstance.getSmartContractById(id);
     return res.status(200).json({ status: 200, smartContract: smartContract });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ status: 500, error: error });
+  }
+});
+
+router.get("/payment/:id", async (req, res, next) => {
+  try {
+    const id = Number.parseInt(req.params?.id ? req.params?.id : 1);
+    return res.status(200).json({ status: id });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ status: 500, error: error });

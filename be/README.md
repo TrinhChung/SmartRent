@@ -18,8 +18,14 @@ Connect remix to localhost
 connect remix to localhost
 npx remixd
 
-deploy
+Compile contract
+npx hardhat compile
+
+deploy localhost
 npx hardhat run --network localhost scripts/deploy.js
+
+deploy bnb
+npx hardhat run --network testnet scripts/deploy.js
 ```
 
 create Private key for wallet
