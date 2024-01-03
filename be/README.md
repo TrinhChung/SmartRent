@@ -17,18 +17,29 @@ Connect remix to localhost
 ```shell
 connect remix to localhost
 npx remixd
+```
 
 Compile contract
-npx hardhat compile
 
+```shell
+npx hardhat compile
+```
+
+Deploy localhost
+
+```shell
 deploy localhost
 npx hardhat run --network localhost scripts/deploy.js
+```
 
+Deploy BNB network
+
+```shell
 deploy bnb
 npx hardhat run --network testnet scripts/deploy.js
 ```
 
-create Private key for wallet
+Create Private key for wallet
 
 ```shell
 const wallet = ethers.Wallet.createRandom();
