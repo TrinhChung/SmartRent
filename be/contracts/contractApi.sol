@@ -1,34 +1,104 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.9;
 
-// Uncomment this line to use console.log
-// import "hardhat/console.sol";
+contract SmartContract {
+    struct Term {
+        string name;
+        string content;
+    }
 
-contract Lock {
-    uint public unlockTime;
-    address payable public owner;
+    event Log(string message);
 
-    event Withdrawal(uint amount, uint when);
+    struct ContractEntity {
+        uint256 id;
+        uint32 renterId;
+        uint32 sellerId;
+        uint32 rentCost;
+        uint32 duration;
+        uint32 timeStart;
+        uint32 paymentDeadline;
+        string payment_type;
+        Term[] termArray;
+        address renter;
+        address seller;
+    }
 
-    constructor(uint _unlockTime) payable {
-        require(
-            block.timestamp < _unlockTime,
-            "Unlock time should be in the future"
-        );
+    mapping(uint256 => ContractEntity) contracts;
+    ContractEntity[] contractArray;
 
-        unlockTime = _unlockTime;
+    address payable owner;
+
+    uint public balance;
+
+    constructor() {
         owner = payable(msg.sender);
     }
 
-    function withdraw() public {
-        // Uncomment this line, and the import of "hardhat/console.sol", to print a log in your terminal
-        // console.log("Unlock time is %o and block timestamp is %o", unlockTime, block.timestamp);
+    modifier onlyOwner() {
+        require(msg.sender == owner);
+        _;
+    }
 
-        require(block.timestamp >= unlockTime, "You can't withdraw yet");
-        require(msg.sender == owner, "You aren't the owner");
+    function createSmartContract(
+        uint256 _id,
+        uint32 _renterId,
+        uint32 _sellerId,
+        uint32 _rentCost,
+        uint32 _duration,
+        uint32 _timeStart,
+        uint32 _paymentDeadline,
+        string memory _payment_type,
+        Term[] memory _termArray,
+        address _seller,
+        address _renter
+    ) public onlyOwner {
+        ContractEntity storage newSmartContract = contracts[_id];
+        newSmartContract.id = _id;
+        newSmartContract.renterId = _renterId;
+        newSmartContract.sellerId = _sellerId;
+        newSmartContract.rentCost = _rentCost;
+        newSmartContract.duration = _duration;
+        newSmartContract.timeStart = _timeStart;
+        newSmartContract.paymentDeadline = _paymentDeadline;
+        newSmartContract.payment_type = _payment_type;
+        newSmartContract.seller = _seller;
+        newSmartContract.renter = _renter;
 
-        emit Withdrawal(address(this).balance, block.timestamp);
+        for (uint256 i = 0; i < _termArray.length; i++) {
+            newSmartContract.termArray.push(_termArray[i]);
+        }
 
-        owner.transfer(address(this).balance);
+        contracts[_id] = newSmartContract;
+        contractArray.push(newSmartContract);
+    }
+
+    function getSmartContractById(
+        uint256 _id
+    ) public view returns (ContractEntity memory) {
+        require(
+            contracts[_id].renterId != 0 &&
+                (msg.sender == contracts[_id].renter ||
+                    msg.sender == contracts[_id].seller)
+        );
+        ContractEntity memory smartContract = contracts[_id];
+        return smartContract;
+    }
+
+    function getAllSmartContracts()
+        external
+        view
+        returns (ContractEntity[] memory)
+    {
+        return contractArray;
+    }
+
+    function getMe() external view returns (address) {
+        return msg.sender;
+    }
+
+    function payment() external payable {}
+
+    function getBalance() external view returns (uint) {
+        return address(this).balance;
     }
 }
