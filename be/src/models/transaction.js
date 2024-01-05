@@ -1,10 +1,10 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Room extends Model {
+  class Transaction extends Model {
     static associate(models) {}
   }
-  Room.init(
+  Transaction.init(
     {
       contractId: {
         type: DataTypes.INTEGER.UNSIGNED,
@@ -21,10 +21,10 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "Room",
+      modelName: "Transaction",
       paranoid: false,
     }
   );
 
-  return Room;
+  return Transaction;
 };

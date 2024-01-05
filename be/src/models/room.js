@@ -2,7 +2,11 @@
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Room extends Model {
-    static associate(models) {}
+    static associate(models) {
+      Room.belongsTo(models.Floor, {
+        foreignKey: { name: "floorId" },
+      });
+    }
   }
   Room.init(
     {

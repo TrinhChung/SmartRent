@@ -2,6 +2,15 @@
 
 This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
 
+Config BE
+Create file .env from .env.example
+
+Migrate Database
+
+```shell
+npx sequelize-cli db:migrate
+```
+
 Try running some of the following tasks:
 
 ```shell
@@ -44,4 +53,16 @@ Create Private key for wallet
 ```shell
 const wallet = ethers.Wallet.createRandom();
 const privateKeyHex = wallet.privateKey;
+```
+
+remove
+
+```shell
+npx sequelize-cli db:migrate:undo:all
+```
+
+seed
+
+```shell
+npx sequelize-cli db:seed:all
 ```

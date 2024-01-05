@@ -2,7 +2,18 @@
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class ExtraNotify extends Model {
-    static associate(models) {}
+    static associate(models) {
+      ExtraNotify.belongsTo(models.User, {
+        foreignKey: {
+          name: "userId",
+        },
+      });
+      ExtraNotify.belongsTo(models.Notify, {
+        foreignKey: {
+          name: "notifyId",
+        },
+      });
+    }
   }
   ExtraNotify.init(
     {
@@ -10,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
       },
-      userId: {
+      notifyId: {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
       },

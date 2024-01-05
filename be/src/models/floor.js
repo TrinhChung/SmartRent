@@ -2,7 +2,14 @@
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Floor extends Model {
-    static associate(models) {}
+    static associate(models) {
+      Floor.belongsTo(models.RealEstate, {
+        foreignKey: {
+          name: "realEstateId",
+        },
+      });
+      Floor.hasMany(models.Room);
+    }
   }
   Floor.init(
     {

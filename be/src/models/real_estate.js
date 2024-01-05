@@ -2,7 +2,12 @@
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class RealEstate extends Model {
-    static associate(models) {}
+    static associate(models) {
+      RealEstate.belongsTo(models.Address, {
+        foreignKey: { name: "addressId" },
+      });
+      RealEstate.hasMany(models.Floor);
+    }
   }
   RealEstate.init(
     {
