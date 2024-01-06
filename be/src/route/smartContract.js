@@ -95,7 +95,8 @@ router.get("/:id", async (req, res, next) => {
 router.get("/payment/:id", async (req, res, next) => {
   try {
     const id = Number.parseInt(req.params?.id ? req.params?.id : 1);
-    return res.status(200).json({ status: id });
+    const balance = await contractInstance.getBalance();
+    return res.status(200).json({ status: id, balance: balance });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ status: 500, error: error });

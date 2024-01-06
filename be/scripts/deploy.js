@@ -5,13 +5,19 @@
 // will compile your contracts, add the Hardhat Runtime Environment's members to the
 // global scope, and execute the script.
 const hre = require("hardhat");
+const { setEnv } = require("./setEnv.js");
 
 async function main() {
   const contractApi = await hre.ethers.deployContract("SmartContract");
 
   await contractApi.waitForDeployment();
 
-  console.log(`Address:  ${contractApi.target}`);
+  if (contractApi.target) {
+    // shell.env["CONTRACT_ADDRESS"] = contractApi.target;
+    setEnv("CONTRACT_ADDRESS", contractApi.target);
+  } else {
+    console.log("Contract address is not available");
+  }
 }
 
 // We recommend this pattern to be able to use async/await everywhere
