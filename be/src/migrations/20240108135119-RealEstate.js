@@ -17,10 +17,18 @@ module.exports = {
       userId: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
+        references: {
+          model: "User",
+          key: "id",
+        },
       },
       addressId: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
+        references: {
+          model: "Address",
+          key: "id",
+        },
       },
       cost: {
         type: Sequelize.FLOAT.UNSIGNED,

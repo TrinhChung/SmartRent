@@ -3,47 +3,43 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("Contract", {
+    await queryInterface.createTable("Bargain", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER.UNSIGNED,
       },
-      bargainId: {
+      realEstateId: {
         type: Sequelize.INTEGER.UNSIGNED,
+        allowNull: false,
+        references: {
+          model: "RealEstate",
+          key: "id",
+        },
+      },
+      status: {
+        type: Sequelize.STRING(1),
         allowNull: false,
       },
       renterId: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
+        references: {
+          model: "User",
+          key: "id",
+        },
       },
       sellerId: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
+        references: {
+          model: "User",
+          key: "id",
+        },
       },
-      renterCost: {
-        type: Sequelize.FLOAT.UNSIGNED,
-        allowNull: false,
-      },
-      duration: {
+      roomChatId: {
         type: Sequelize.INTEGER.UNSIGNED,
-        allowNull: true,
-      },
-      timeStart: {
-        type: Sequelize.DATE,
-        allowNull: false,
-      },
-      paymentDeadline: {
-        type: Sequelize.STRING(100),
-        allowNull: false,
-      },
-      paymentType: {
-        type: Sequelize.STRING(1),
-        allowNull: false,
-      },
-      deposit: {
-        type: Sequelize.FLOAT.UNSIGNED,
         allowNull: false,
       },
       createdAt: {
@@ -58,6 +54,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("Contract");
+    await queryInterface.dropTable("Bargain");
   },
 };

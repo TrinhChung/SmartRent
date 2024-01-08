@@ -3,28 +3,20 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("Message", {
+    await queryInterface.createTable("RoomChat", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER.UNSIGNED,
       },
-      userId: {
+      bargainId: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
-      },
-      replyId: {
-        type: Sequelize.INTEGER.UNSIGNED,
-        allowNull: false,
-      },
-      roomChatId: {
-        type: Sequelize.INTEGER.UNSIGNED,
-        allowNull: false,
-      },
-      content: {
-        type: Sequelize.STRING(400),
-        allowNull: false,
+        references: {
+          model: "Bargain",
+          key: "id",
+        },
       },
       createdAt: {
         allowNull: false,
@@ -38,6 +30,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("Message");
+    await queryInterface.dropTable("RoomChat");
   },
 };

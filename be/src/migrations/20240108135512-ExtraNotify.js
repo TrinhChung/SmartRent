@@ -3,31 +3,27 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("Bargain", {
+    await queryInterface.createTable("ExtraNotify", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER.UNSIGNED,
       },
-      realEstateId: {
+      userId: {
+        type: Sequelize.INTEGER.UNSIGNED,
+        allowNull: false,
+        references: {
+          model: "User",
+          key: "id",
+        },
+      },
+      notifyId: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
       },
-      status: {
+      type: {
         type: Sequelize.STRING(1),
-        allowNull: false,
-      },
-      renterId: {
-        type: Sequelize.INTEGER.UNSIGNED,
-        allowNull: false,
-      },
-      sellerId: {
-        type: Sequelize.INTEGER.UNSIGNED,
-        allowNull: false,
-      },
-      roomChatId: {
-        type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
       },
       createdAt: {
@@ -42,6 +38,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("Bargain");
+    await queryInterface.dropTable("ExtraNotify");
   },
 };

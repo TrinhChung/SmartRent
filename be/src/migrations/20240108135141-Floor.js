@@ -3,27 +3,35 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("File", {
+    await queryInterface.createTable("Floor", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER.UNSIGNED,
       },
-      url: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      typeFile: {
-        type: Sequelize.STRING(1),
-        allowNull: false,
-      },
-      typeFk: {
+      name: {
         type: Sequelize.STRING(200),
         allowNull: false,
       },
-      fkId: {
+      realEstateId: {
         type: Sequelize.INTEGER.UNSIGNED,
+        allowNull: false,
+        references: {
+          model: "RealEstate",
+          key: "id",
+        },
+      },
+      cost: {
+        type: Sequelize.FLOAT.UNSIGNED,
+        allowNull: false,
+      },
+      roomTotal: {
+        type: Sequelize.INTEGER.UNSIGNED,
+        allowNull: false,
+      },
+      status: {
+        type: Sequelize.STRING(1),
         allowNull: false,
       },
       createdAt: {
@@ -38,6 +46,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("File");
+    await queryInterface.dropTable("Floor");
   },
 };

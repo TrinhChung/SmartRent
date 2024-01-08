@@ -29,6 +29,10 @@ module.exports = {
       addressId: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
+        references: {
+          model: "Address",
+          key: "id",
+        },
       },
       password: {
         type: Sequelize.STRING,
