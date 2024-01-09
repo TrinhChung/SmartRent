@@ -2,7 +2,14 @@
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Verify extends Model {
-    static associate(models) {}
+    static associate(models) {
+      Verify.belongsTo(models.User, {
+        foreignKey: {
+          name: "fk_id",
+          as: "VerifyUser",
+        },
+      });
+    }
   }
   Verify.init(
     {

@@ -1,11 +1,18 @@
 "use strict";
 const { Model } = require("sequelize");
+const bargain = require("./bargain");
 module.exports = (sequelize, DataTypes) => {
   class Contract extends Model {
-    static associate(models) {}
+    static associate(models) {
+      Contract.belongsTo(models.Bargain, { foreignKey: { name: "bargainId" } });
+    }
   }
   Contract.init(
     {
+      bargainId: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: false,
+      },
       renterId: {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
