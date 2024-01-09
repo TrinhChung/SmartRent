@@ -1,0 +1,387 @@
+{
+	"compiler": {
+		"version": "0.8.22+commit.4fc1097e"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [],
+				"stateMutability": "payable",
+				"type": "constructor"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "message",
+						"type": "string"
+					}
+				],
+				"name": "Log",
+				"type": "event"
+			},
+			{
+				"inputs": [],
+				"name": "age",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_id",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint32",
+						"name": "_renterId",
+						"type": "uint32"
+					},
+					{
+						"internalType": "uint32",
+						"name": "_sellerId",
+						"type": "uint32"
+					},
+					{
+						"internalType": "uint32",
+						"name": "_rentCost",
+						"type": "uint32"
+					},
+					{
+						"internalType": "uint32",
+						"name": "_duration",
+						"type": "uint32"
+					},
+					{
+						"internalType": "uint32",
+						"name": "_timeStart",
+						"type": "uint32"
+					},
+					{
+						"internalType": "uint32",
+						"name": "_paymentDeadline",
+						"type": "uint32"
+					},
+					{
+						"internalType": "string",
+						"name": "_payment_type",
+						"type": "string"
+					},
+					{
+						"components": [
+							{
+								"internalType": "string",
+								"name": "name",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "content",
+								"type": "string"
+							}
+						],
+						"internalType": "struct SmartContract.Term[]",
+						"name": "_termArray",
+						"type": "tuple[]"
+					},
+					{
+						"internalType": "address payable",
+						"name": "_seller",
+						"type": "address"
+					},
+					{
+						"internalType": "address payable",
+						"name": "_renter",
+						"type": "address"
+					}
+				],
+				"name": "createSmartContract",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getAllSmartContracts",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "uint256",
+								"name": "id",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint32",
+								"name": "renterId",
+								"type": "uint32"
+							},
+							{
+								"internalType": "uint32",
+								"name": "sellerId",
+								"type": "uint32"
+							},
+							{
+								"internalType": "uint32",
+								"name": "rentCost",
+								"type": "uint32"
+							},
+							{
+								"internalType": "uint32",
+								"name": "duration",
+								"type": "uint32"
+							},
+							{
+								"internalType": "uint32",
+								"name": "timeStart",
+								"type": "uint32"
+							},
+							{
+								"internalType": "uint32",
+								"name": "paymentDeadline",
+								"type": "uint32"
+							},
+							{
+								"internalType": "string",
+								"name": "payment_type",
+								"type": "string"
+							},
+							{
+								"components": [
+									{
+										"internalType": "string",
+										"name": "name",
+										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "content",
+										"type": "string"
+									}
+								],
+								"internalType": "struct SmartContract.Term[]",
+								"name": "termArray",
+								"type": "tuple[]"
+							},
+							{
+								"internalType": "address payable",
+								"name": "renter",
+								"type": "address"
+							},
+							{
+								"internalType": "address payable",
+								"name": "seller",
+								"type": "address"
+							}
+						],
+						"internalType": "struct SmartContract.ContractEntity[]",
+						"name": "",
+						"type": "tuple[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getBalance",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getEth",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getMe",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_id",
+						"type": "uint256"
+					}
+				],
+				"name": "getSmartContractById",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "uint256",
+								"name": "id",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint32",
+								"name": "renterId",
+								"type": "uint32"
+							},
+							{
+								"internalType": "uint32",
+								"name": "sellerId",
+								"type": "uint32"
+							},
+							{
+								"internalType": "uint32",
+								"name": "rentCost",
+								"type": "uint32"
+							},
+							{
+								"internalType": "uint32",
+								"name": "duration",
+								"type": "uint32"
+							},
+							{
+								"internalType": "uint32",
+								"name": "timeStart",
+								"type": "uint32"
+							},
+							{
+								"internalType": "uint32",
+								"name": "paymentDeadline",
+								"type": "uint32"
+							},
+							{
+								"internalType": "string",
+								"name": "payment_type",
+								"type": "string"
+							},
+							{
+								"components": [
+									{
+										"internalType": "string",
+										"name": "name",
+										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "content",
+										"type": "string"
+									}
+								],
+								"internalType": "struct SmartContract.Term[]",
+								"name": "termArray",
+								"type": "tuple[]"
+							},
+							{
+								"internalType": "address payable",
+								"name": "renter",
+								"type": "address"
+							},
+							{
+								"internalType": "address payable",
+								"name": "seller",
+								"type": "address"
+							}
+						],
+						"internalType": "struct SmartContract.ContractEntity",
+						"name": "",
+						"type": "tuple"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address payable",
+						"name": "renter",
+						"type": "address"
+					}
+				],
+				"name": "payment",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "x",
+						"type": "uint256"
+					}
+				],
+				"name": "testRevert",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contracts/contractApi.sol": "SmartContract"
+		},
+		"evmVersion": "shanghai",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"contracts/contractApi.sol": {
+			"keccak256": "0xcb9bf3535c7efae66e47a6d9c663a43d74ab5fca7711d1fc85035ea38ba6b2d9",
+			"license": "UNLICENSED",
+			"urls": [
+				"bzz-raw://9da00fc8e01bec0a955608917c5bcb8c0ae1f454403cc8361380e6a039fb9c92",
+				"dweb:/ipfs/QmedVDRzH8aFqkMa8QyWjrpPcHGxPcNnWmtkE4iGraEU6V"
+			]
+		}
+	},
+	"version": 1
+}

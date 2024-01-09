@@ -10,7 +10,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER.UNSIGNED,
       },
-      userId: {
+      fkId: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
         references: {
@@ -21,6 +21,10 @@ module.exports = {
       notifyId: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
+        references: {
+          model: "Notify",
+          key: "id",
+        },
       },
       type: {
         type: Sequelize.STRING(1),

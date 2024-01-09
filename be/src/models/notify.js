@@ -8,14 +8,6 @@ module.exports = (sequelize, DataTypes) => {
   }
   Notify.init(
     {
-      fkId: {
-        type: DataTypes.INTEGER.UNSIGNED,
-        allowNull: false,
-      },
-      type: {
-        type: DataTypes.STRING(1),
-        allowNull: false,
-      },
       content: {
         type: DataTypes.STRING(200),
         allowNull: false,
