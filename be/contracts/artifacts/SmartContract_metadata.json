@@ -7,7 +7,7 @@
 		"abi": [
 			{
 				"inputs": [],
-				"stateMutability": "payable",
+				"stateMutability": "nonpayable",
 				"type": "constructor"
 			},
 			{
@@ -18,14 +18,24 @@
 						"internalType": "string",
 						"name": "message",
 						"type": "string"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "_address",
+						"type": "address"
 					}
 				],
-				"name": "Log",
+				"name": "log",
 				"type": "event"
 			},
 			{
+				"stateMutability": "payable",
+				"type": "fallback"
+			},
+			{
 				"inputs": [],
-				"name": "age",
+				"name": "balance",
 				"outputs": [
 					{
 						"internalType": "uint256",
@@ -44,19 +54,19 @@
 						"type": "uint256"
 					},
 					{
-						"internalType": "uint32",
-						"name": "_renterId",
-						"type": "uint32"
+						"internalType": "address",
+						"name": "_renterAddress",
+						"type": "address"
 					},
 					{
-						"internalType": "uint32",
-						"name": "_sellerId",
-						"type": "uint32"
+						"internalType": "address",
+						"name": "_sellerAdsress",
+						"type": "address"
 					},
 					{
-						"internalType": "uint32",
+						"internalType": "uint256",
 						"name": "_rentCost",
-						"type": "uint32"
+						"type": "uint256"
 					},
 					{
 						"internalType": "uint32",
@@ -94,21 +104,24 @@
 						"internalType": "struct SmartContract.Term[]",
 						"name": "_termArray",
 						"type": "tuple[]"
-					},
-					{
-						"internalType": "address payable",
-						"name": "_seller",
-						"type": "address"
-					},
-					{
-						"internalType": "address payable",
-						"name": "_renter",
-						"type": "address"
 					}
 				],
 				"name": "createSmartContract",
 				"outputs": [],
 				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getAddressContract",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
 				"type": "function"
 			},
 			{
@@ -123,19 +136,19 @@
 								"type": "uint256"
 							},
 							{
-								"internalType": "uint32",
-								"name": "renterId",
-								"type": "uint32"
+								"internalType": "address",
+								"name": "renter",
+								"type": "address"
 							},
 							{
-								"internalType": "uint32",
-								"name": "sellerId",
-								"type": "uint32"
+								"internalType": "address",
+								"name": "seller",
+								"type": "address"
 							},
 							{
-								"internalType": "uint32",
+								"internalType": "uint256",
 								"name": "rentCost",
-								"type": "uint32"
+								"type": "uint256"
 							},
 							{
 								"internalType": "uint32",
@@ -173,16 +186,6 @@
 								"internalType": "struct SmartContract.Term[]",
 								"name": "termArray",
 								"type": "tuple[]"
-							},
-							{
-								"internalType": "address payable",
-								"name": "renter",
-								"type": "address"
-							},
-							{
-								"internalType": "address payable",
-								"name": "seller",
-								"type": "address"
 							}
 						],
 						"internalType": "struct SmartContract.ContractEntity[]",
@@ -195,7 +198,7 @@
 			},
 			{
 				"inputs": [],
-				"name": "getBalance",
+				"name": "getContractBalance",
 				"outputs": [
 					{
 						"internalType": "uint256",
@@ -204,13 +207,6 @@
 					}
 				],
 				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "getEth",
-				"outputs": [],
-				"stateMutability": "payable",
 				"type": "function"
 			},
 			{
@@ -244,19 +240,19 @@
 								"type": "uint256"
 							},
 							{
-								"internalType": "uint32",
-								"name": "renterId",
-								"type": "uint32"
+								"internalType": "address",
+								"name": "renter",
+								"type": "address"
 							},
 							{
-								"internalType": "uint32",
-								"name": "sellerId",
-								"type": "uint32"
+								"internalType": "address",
+								"name": "seller",
+								"type": "address"
 							},
 							{
-								"internalType": "uint32",
+								"internalType": "uint256",
 								"name": "rentCost",
-								"type": "uint32"
+								"type": "uint256"
 							},
 							{
 								"internalType": "uint32",
@@ -294,16 +290,6 @@
 								"internalType": "struct SmartContract.Term[]",
 								"name": "termArray",
 								"type": "tuple[]"
-							},
-							{
-								"internalType": "address payable",
-								"name": "renter",
-								"type": "address"
-							},
-							{
-								"internalType": "address payable",
-								"name": "seller",
-								"type": "address"
 							}
 						],
 						"internalType": "struct SmartContract.ContractEntity",
@@ -318,33 +304,23 @@
 				"inputs": [
 					{
 						"internalType": "address payable",
-						"name": "renter",
+						"name": "_to",
 						"type": "address"
-					}
-				],
-				"name": "payment",
-				"outputs": [
+					},
 					{
 						"internalType": "uint256",
-						"name": "",
+						"name": "amount",
 						"type": "uint256"
 					}
 				],
+				"name": "transferETH",
+				"outputs": [],
 				"stateMutability": "payable",
 				"type": "function"
 			},
 			{
-				"inputs": [
-					{
-						"internalType": "uint256",
-						"name": "x",
-						"type": "uint256"
-					}
-				],
-				"name": "testRevert",
-				"outputs": [],
-				"stateMutability": "nonpayable",
-				"type": "function"
+				"stateMutability": "payable",
+				"type": "receive"
 			}
 		],
 		"devdoc": {
@@ -375,11 +351,11 @@
 	},
 	"sources": {
 		"contracts/contractApi.sol": {
-			"keccak256": "0xcb9bf3535c7efae66e47a6d9c663a43d74ab5fca7711d1fc85035ea38ba6b2d9",
+			"keccak256": "0xca90657c75fb5b60019f6a8186a13fdaef4e98739113fd95e1d1410c989efd55",
 			"license": "UNLICENSED",
 			"urls": [
-				"bzz-raw://9da00fc8e01bec0a955608917c5bcb8c0ae1f454403cc8361380e6a039fb9c92",
-				"dweb:/ipfs/QmedVDRzH8aFqkMa8QyWjrpPcHGxPcNnWmtkE4iGraEU6V"
+				"bzz-raw://b76e9fd6294738d9d8601fa827515722df59c346ad316899a7733d1dd65d98ee",
+				"dweb:/ipfs/QmXT8JV6rW47bWv6QStY2QDCAzpvfLdws6PAoPMBUN1frW"
 			]
 		}
 	},
