@@ -16,8 +16,8 @@ contract SmartContract {
 
     struct ContractEntity {
         uint256 id;
-        address renter;
-        address seller;
+        address payable renter;
+        address payable seller;
         uint rentCost;
         uint32 duration;
         uint32 timeStart;
@@ -34,7 +34,7 @@ contract SmartContract {
 
     uint public balance;
 
-    constructor() {
+    constructor() payable {
         owner = payable(msg.sender);
     }
 
@@ -72,7 +72,7 @@ contract SmartContract {
         uint32 _paymentDeadline,
         string memory _payment_type,
         Term[] memory _termArray
-    ) public onlyOwner {
+    ) public {
         Person memory renter = persons[_renterAddress];
         Person memory seller = persons[_sellerAdsress];
         require(
@@ -82,8 +82,8 @@ contract SmartContract {
 
         ContractEntity storage newSmartContract = contracts[_id];
         newSmartContract.id = _id;
-        newSmartContract.renter = _renterAddress;
-        newSmartContract.seller = _sellerAdsress;
+        newSmartContract.renter = payable(_renterAddress);
+        newSmartContract.seller = payable(_sellerAdsress);
         newSmartContract.rentCost = _rentCost;
         newSmartContract.duration = _duration;
         newSmartContract.timeStart = _timeStart;
@@ -105,9 +105,17 @@ contract SmartContract {
     }
 
     //Thanh toan
-    function transferETH(address payable _to, uint256 amount) external payable {
-        _to.transfer(amount);
+    function transferETH(uint256 contractId) external payable returns (ContractEntity memory){
+        ContractEntity memory smc = contracts[contractId];
+        Person memory renter = persons[smc.renter];
+        require(renter.balance >= smc.rentCost, "Renter insufficient balance");
+        payable(smc.seller).transfer(smc.rentCost);
+        renter.balance -= smc.rentCost;
+        persons[renter.addressWallet] = renter;
+        // _to.transfer(amount);
+        return  smc;
     }
+
 
     //
     function getMe() external view returns (address) {
@@ -115,11 +123,20 @@ contract SmartContract {
     }
 
     //
-    function getAddressContract() external view returns (uint) {
-        return address(this).balance;
+    function getAddressContract() external view returns (address) {
+        return address(this);
     }
 
     function getContractBalance() external view returns (uint) {
         return address(this).balance;
     }
+
+    //
+    function getPersonByAddress(address addressWallet)external view returns(Person memory) {
+        return persons[addressWallet];
+    }
+
+    function close(address _to) public {
+         payable(_to).transfer(address(this).balance);
+     }
 }
