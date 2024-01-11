@@ -95,7 +95,7 @@ router.get("/:id", async (req, res, next) => {
 router.get("/payment/:id", async (req, res, next) => {
   try {
     const id = Number.parseInt(req.params?.id ? req.params?.id : 1);
-    const balance = await contractInstance.getBalance();
+    const balance = await contractInstance.deposit(id);
     return res.status(200).json({ status: id, balance: balance });
   } catch (error) {
     console.log(error);

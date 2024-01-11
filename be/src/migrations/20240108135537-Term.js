@@ -13,6 +13,10 @@ module.exports = {
       contractId: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
+        references: {
+          model: "Contract",
+          key: "id",
+        },
       },
       name: {
         type: Sequelize.STRING(200),

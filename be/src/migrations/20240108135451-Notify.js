@@ -10,19 +10,6 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER.UNSIGNED,
       },
-      fkId: {
-        type: Sequelize.INTEGER.UNSIGNED,
-        allowNull: false,
-        references: {
-          model: "User",
-          key: "id",
-        },
-        allowNull: false,
-      },
-      type: {
-        type: Sequelize.STRING(1),
-        allowNull: false,
-      },
       content: {
         type: Sequelize.STRING(200),
         allowNull: false,

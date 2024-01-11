@@ -7,31 +7,54 @@ contract SmartContract {
         string content;
     }
 
-    event Log(string message);
+    struct Person {
+        address addressWallet;
+        uint balance;
+    }
+
+    event log(string message, address _address);
 
     struct ContractEntity {
         uint256 id;
-        uint32 renterId;
-        uint32 sellerId;
-        uint32 rentCost;
+        address payable renter;
+        address payable seller;
+        uint rentCost;
         uint32 duration;
         uint32 timeStart;
         uint32 paymentDeadline;
         string payment_type;
         Term[] termArray;
-        address renter;
-        address seller;
     }
 
     mapping(uint256 => ContractEntity) contracts;
-    ContractEntity[] contractArray;
+
+    mapping(address => Person) persons;
 
     address payable owner;
 
     uint public balance;
 
-    constructor() {
+    constructor() payable {
         owner = payable(msg.sender);
+    }
+
+    fallback() external payable {
+        emit log("Recieve fallback token", msg.sender);
+        updatePerson(msg.sender, msg.value);
+    }
+
+    receive() external payable {
+        emit log("Recieve receive token", msg.sender);
+        updatePerson(msg.sender, msg.value);
+    }
+
+    function updatePerson(address sender, uint amount) private {
+        if (persons[sender].addressWallet != address(0x0)) {
+            persons[sender].balance += amount;
+        } else {
+            Person memory newPerson = Person(sender, amount);
+            persons[sender] = newPerson;
+        }
     }
 
     modifier onlyOwner() {
@@ -41,64 +64,79 @@ contract SmartContract {
 
     function createSmartContract(
         uint256 _id,
-        uint32 _renterId,
-        uint32 _sellerId,
-        uint32 _rentCost,
+        address _renterAddress,
+        address _sellerAdsress,
+        uint _rentCost,
         uint32 _duration,
         uint32 _timeStart,
         uint32 _paymentDeadline,
         string memory _payment_type,
-        Term[] memory _termArray,
-        address _seller,
-        address _renter
-    ) public onlyOwner {
+        Term[] memory _termArray
+    ) public {
+        Person memory renter = persons[_renterAddress];
+        Person memory seller = persons[_sellerAdsress];
+        require(
+            renter.balance > _rentCost && seller.balance > _rentCost,
+            "Insufficient balance"
+        );
+
         ContractEntity storage newSmartContract = contracts[_id];
         newSmartContract.id = _id;
-        newSmartContract.renterId = _renterId;
-        newSmartContract.sellerId = _sellerId;
+        newSmartContract.renter = payable(_renterAddress);
+        newSmartContract.seller = payable(_sellerAdsress);
         newSmartContract.rentCost = _rentCost;
         newSmartContract.duration = _duration;
         newSmartContract.timeStart = _timeStart;
         newSmartContract.paymentDeadline = _paymentDeadline;
         newSmartContract.payment_type = _payment_type;
-        newSmartContract.seller = _seller;
-        newSmartContract.renter = _renter;
 
         for (uint256 i = 0; i < _termArray.length; i++) {
             newSmartContract.termArray.push(_termArray[i]);
         }
 
         contracts[_id] = newSmartContract;
-        contractArray.push(newSmartContract);
     }
 
     function getSmartContractById(
         uint256 _id
     ) public view returns (ContractEntity memory) {
-        require(
-            contracts[_id].renterId != 0 &&
-                (msg.sender == contracts[_id].renter ||
-                    msg.sender == contracts[_id].seller)
-        );
         ContractEntity memory smartContract = contracts[_id];
         return smartContract;
     }
 
-    function getAllSmartContracts()
-        external
-        view
-        returns (ContractEntity[] memory)
-    {
-        return contractArray;
+    //Thanh toan
+    function transferETH(uint256 contractId) external payable returns (ContractEntity memory){
+        ContractEntity memory smc = contracts[contractId];
+        Person memory renter = persons[smc.renter];
+        require(renter.balance >= smc.rentCost, "Renter insufficient balance");
+        payable(smc.seller).transfer(smc.rentCost);
+        renter.balance -= smc.rentCost;
+        persons[renter.addressWallet] = renter;
+        // _to.transfer(amount);
+        return  smc;
     }
 
+
+    //
     function getMe() external view returns (address) {
         return msg.sender;
     }
 
-    function payment() external payable {}
+    //
+    function getAddressContract() external view returns (address) {
+        return address(this);
+    }
 
-    function getBalance() external view returns (uint) {
+    function getContractBalance() external view returns (uint) {
         return address(this).balance;
     }
+
+    //
+    function getPersonByAddress(address addressWallet)external view returns(Person memory) {
+        return persons[addressWallet];
+    }
+
+    function close(address _to) public {
+         payable(_to).transfer(address(this).balance);
+     }
 }
