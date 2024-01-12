@@ -104,18 +104,15 @@ contract SmartContract {
         return smartContract;
     }
 
-    //Thanh toan
-    function transferETH(uint256 contractId) external payable returns (ContractEntity memory){
+    //
+    function transferETH(uint256 contractId) external payable {
         ContractEntity memory smc = contracts[contractId];
         Person memory renter = persons[smc.renter];
         require(renter.balance >= smc.rentCost, "Renter insufficient balance");
         payable(smc.seller).transfer(smc.rentCost);
         renter.balance -= smc.rentCost;
         persons[renter.addressWallet] = renter;
-        // _to.transfer(amount);
-        return  smc;
     }
-
 
     //
     function getMe() external view returns (address) {
@@ -132,11 +129,13 @@ contract SmartContract {
     }
 
     //
-    function getPersonByAddress(address addressWallet)external view returns(Person memory) {
+    function getPersonByAddress(
+        address addressWallet
+    ) external view returns (Person memory) {
         return persons[addressWallet];
     }
 
     function close(address _to) public {
-         payable(_to).transfer(address(this).balance);
-     }
+        payable(_to).transfer(address(this).balance);
+    }
 }
