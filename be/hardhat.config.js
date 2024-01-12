@@ -14,15 +14,15 @@ module.exports = {
   },
   etherscan: {
     apiKey: {
-      bscTestnet: process.env.ETHERSCAN_API_KEY
+      bscTestnet: process.env.ETHERSCAN_API_KEY,
     },
   },
   networks: {
     localhost: {
-      url: "http://127.0.0.1:8545",
+      url: process.env.API_URL,
     },
     testnet: {
-      url: "https://data-seed-prebsc-1-s1.bnbchain.org:8545",
+      url: process.env.API_URL_TESTNET,
       chainId: 97,
       gasPrice: 20000000000,
       accounts: [process.env.PRIVATE_KEY_METAMASK],
@@ -34,5 +34,5 @@ module.exports = {
     apiUrl: "https://sourcify.dev/server",
     // Optional: specify a different Sourcify repository
     browserUrl: "https://repo.sourcify.dev",
-  }
+  },
 };

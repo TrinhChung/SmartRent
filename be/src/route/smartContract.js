@@ -80,3 +80,28 @@ router.get("/vnd-to-ether", async (req, res, next) => {
   const test = await vndToWei(65329379.78);
   return res.status(200).json({ test: test });
 });
+
+router.post("/close/contract", async (req, res, next) => {
+  const data = req.body;
+  if (!data.address) {
+    return res.status(404).json({ msgError: "Address not empty" });
+  } else {
+    const resData = await contractInstance.close(data.address);
+    res.status(200).json({ data: resData });
+  }
+});
+
+router.post("/smart-contract/person", async (req, res, next) => {
+  try {
+    const data = req.body;
+    if (!data.address) {
+      return res.status(404).json({ msgError: "Address not empty" });
+    } else {
+      const person = await contractInstance.getPersonByAddress(data.address);
+      res.status(200).json({ person: person });
+    }
+  } catch (error) {
+    console.log("get person by address");
+    return res.status(500).json({ status: 500, error: error });
+  }
+});
