@@ -15,6 +15,7 @@ async function main() {
   if (contractApi.target) {
     // shell.env["CONTRACT_ADDRESS"] = contractApi.target;
     setEnv("CONTRACT_ADDRESS", contractApi.target);
+    console.log("Contract address: ", contractApi.target);
   } else {
     console.log("Contract address is not available");
   }
