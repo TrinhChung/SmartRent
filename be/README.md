@@ -48,6 +48,14 @@ deploy bnb
 npx hardhat run --network testnet scripts/deploy.js
 ```
 
+Verify Smart Contract 
+```shell
+network=NAME_NETWORK ./verify.sh
+
+example
+network=testnet ./verify.sh
+```
+
 Create Private key for wallet
 
 ```shell
