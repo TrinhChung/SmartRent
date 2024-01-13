@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import Home from "./home";
 import HomeLayout from "../../layouts/HomeLayout";
 import LinkCustom from "../../components/layout/LinkCustom";
+import Login from "./auth/Login";
 
 const Guest = () => {
   const items = [
@@ -26,9 +27,11 @@ const Guest = () => {
   const wrapLayout = (children) => {
     return <HomeLayout menu={items}>{children}</HomeLayout>;
   };
+
   return (
     <Routes>
       <Route path="/" element={wrapLayout(<Home />)} />
+      <Route path="/auth/login" element={wrapLayout(<Login />)} />
       <Route path="/*" element={wrapLayout(<div>Chua dinh nghia</div>)} />
     </Routes>
   );

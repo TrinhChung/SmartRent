@@ -1,0 +1,30 @@
+.login {
+  height: 543px;
+  .background-banner-container {
+    height: 543px;
+    width: 400px;
+    position: relative;
+    justify-content: end;
+
+    .background-banner-image {
+      background-image: url("../../../public/images/background-banner-login.jpeg");
+      background-repeat: no-repeat;
+      background-position: center center;
+      padding-left: 200;
+    }
+  }
+  .image-banner-login {
+    height: 543px;
+    width: 100%;
+    position: absolute;
+    background-image: url("../../../public/images/banner-side-login.png");
+    background-repeat: no-repeat;
+    background-position: center center;
+    top: 0;
+    right: 0;
+  }
+
+  .form-auth {
+    background-color: white;
+  }
+}
