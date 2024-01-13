@@ -135,7 +135,7 @@ contract SmartContract {
         return persons[addressWallet];
     }
 
-    function close(address _to) public {
+    function close(address _to) public onlyOwner {
         payable(_to).transfer(address(this).balance);
     }
 }
