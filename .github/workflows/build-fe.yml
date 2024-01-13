@@ -2,7 +2,7 @@ name: React build
 
 on:
   push:
-    branches: ["test-build"]
+    branches: ["fe"]
 
 jobs:
   build:
