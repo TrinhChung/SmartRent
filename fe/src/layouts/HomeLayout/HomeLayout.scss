@@ -2,8 +2,6 @@
   font-family: "Inter";
 
   .container-content {
-    padding: 0 var(--margin-side);
-    padding-top: 38px;
     min-height: calc(
       100vh - var(--height-navbar) - var(--height-footer) - 24px
     );

@@ -5,6 +5,7 @@ import HomeLayout from "../../layouts/HomeLayout";
 import LinkCustom from "../../components/layout/LinkCustom";
 import Login from "./auth/Login";
 import SignUp from "./auth/SignUp";
+import RoomChat from "./roomChat";
 
 const Guest = () => {
   const items = [
@@ -25,8 +26,12 @@ const Guest = () => {
       key: "search",
     },
   ];
-  const wrapLayout = (children) => {
-    return <HomeLayout menu={items}>{children}</HomeLayout>;
+  const wrapLayout = (children, isFooter = true) => {
+    return (
+      <HomeLayout menu={items} isFooter={isFooter}>
+        {children}
+      </HomeLayout>
+    );
   };
 
   return (
@@ -34,6 +39,7 @@ const Guest = () => {
       <Route path="/" element={wrapLayout(<Home />)} />
       <Route path="/auth/login" element={wrapLayout(<Login />)} />
       <Route path="/auth/signup" element={wrapLayout(<SignUp />)} />
+      <Route path="/room-chat" element={wrapLayout(<RoomChat />, false)} />
       <Route path="/*" element={wrapLayout(<div>Chua dinh nghia</div>)} />
     </Routes>
   );
