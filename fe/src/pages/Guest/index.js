@@ -13,12 +13,12 @@ const Guest = () => {
       key: "home",
     },
     {
-      label: <LinkCustom to={"/history"} label="Lịch sử" />,
-      key: "history",
+      label: <LinkCustom to={"/negotiating"} label="Đàm phá" />,
+      key: "negotiating",
     },
     {
-      label: <LinkCustom to={"/follow"} label="Theo dõi" />,
-      key: "follow",
+      label: <LinkCustom to={"/room-chat"} label="Room chat" />,
+      key: "room-chat",
     },
     {
       label: <LinkCustom to={"/search"} label="Tìm kiếm" />,
