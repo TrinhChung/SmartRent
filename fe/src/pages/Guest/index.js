@@ -4,6 +4,7 @@ import Home from "./home";
 import HomeLayout from "../../layouts/HomeLayout";
 import LinkCustom from "../../components/layout/LinkCustom";
 import Login from "./auth/Login";
+import SignUp from "./auth/SignUp";
 
 const Guest = () => {
   const items = [
@@ -32,6 +33,7 @@ const Guest = () => {
     <Routes>
       <Route path="/" element={wrapLayout(<Home />)} />
       <Route path="/auth/login" element={wrapLayout(<Login />)} />
+      <Route path="/auth/signup" element={wrapLayout(<SignUp />)} />
       <Route path="/*" element={wrapLayout(<div>Chua dinh nghia</div>)} />
     </Routes>
   );
