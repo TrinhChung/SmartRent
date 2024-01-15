@@ -32,7 +32,7 @@
     "peer": "^0.6.1",
     "react-number-format": "^4.6.4",
     "sequelize": "^6.6.2",
-    "socket.io": "^4.5.4",
+    "socket.io": "^4.7.4",
     "uuid": "8.3.2"
   },
   "devDependencies": {
