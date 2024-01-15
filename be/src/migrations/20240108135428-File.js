@@ -3,7 +3,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("File", {
+    await queryInterface.createTable("Files", {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -25,15 +25,19 @@ module.exports = {
       fkId: {
         type: Sequelize.INTEGER.UNSIGNED,
         references: {
-          model: "Message",
+          model: "Messages",
           key: "id",
         },
         references: {
-          model: "Floor",
+          model: "Floors",
           key: "id",
         },
         references: {
-          model: "Room",
+          model: "Rooms",
+          key: "id",
+        },
+        references: {
+          model: "RealEstates",
           key: "id",
         },
         allowNull: false,
@@ -50,6 +54,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("File");
+    await queryInterface.dropTable("Files");
   },
 };

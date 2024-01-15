@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
       Address.hasOne(models.RealEstate, { onDelete: "CASCADE" });
     }
   }
-  Verify.init(
+  Address.init(
     {
       address: {
         type: DataTypes.STRING(200),
