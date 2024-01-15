@@ -1,0 +1,18 @@
+.msg {
+  .msg-owner,
+  .msg-partner {
+    font-size: 18px;
+    padding: 8px 12px;
+    border-radius: 16px;
+    max-width: 40vw;
+  }
+  .msg-owner {
+    background-color: var(--light-blue);
+    color: var(--dark-blue);
+  }
+
+  .msg-partner {
+    background-color: var(--dark-blue);
+    color: white;
+  }
+}

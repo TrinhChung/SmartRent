@@ -9,149 +9,73 @@ import {
   SendOutlined,
 } from "@ant-design/icons";
 import Message from "./Message";
+import ChatList from "./ChatList";
+import ChatInfo from "./ChatInfo";
 
-const { Header, Footer, Content, Sider } = Layout;
+const { Footer, Content } = Layout;
 
 const RoomChat = () => {
   const messages = [
     {
-      content: "message 1",
+      content: `Hi, this is Bing. I can help you with creating a messenger codepen layout. 😊
+A codepen layout is a web page that you can create and edit online using HTML, CSS, and JavaScript. You can use codepen to showcase your web projects, experiment with new ideas, or learn from other developers.`,
       isOwner: true,
     },
     {
-      content: "message 2",
-      isOwner: true,
-    },
-    {
-      content: "message 3",
-      isOwner: true,
-    },
-    {
-      content: "message 4",
-      isOwner: true,
-    },
-    {
-      content: "message 1",
-      isOwner: true,
-    },
-    {
-      content: "message 2",
-      isOwner: true,
+      content: `Hi, this is Bing. I can help you with creating a messenger codepen layout. 😊
+A codepen layout is a web page that you can create and edit online using HTML, CSS, and JavaScript. You can use codepen to showcase your web projects, experiment with new ideas, or learn from other developers`,
+      isOwner: false,
     },
     {
       content: "message 3",
-      isOwner: true,
-    },
-    {
-      content: "message 4",
-      isOwner: true,
-    },
-    {
-      content: "message 1",
-      isOwner: true,
-    },
-    {
-      content: "message 2",
-      isOwner: true,
-    },
-    {
-      content: "message 3",
-      isOwner: true,
-    },
-    {
-      content: "message 4",
-      isOwner: true,
-    },
-    {
-      content: "message 1",
-      isOwner: true,
-    },
-    {
-      content: "message 2",
-      isOwner: true,
-    },
-    {
-      content: "message 3",
-      isOwner: true,
-    },
-    {
-      content: "message 4",
-      isOwner: true,
-    },
-    {
-      content: "message 1",
-      isOwner: true,
-    },
-    {
-      content: "message 2",
-      isOwner: true,
-    },
-    {
-      content: "message 3",
-      isOwner: true,
-    },
-    {
-      content: "message 4",
-      isOwner: true,
-    },
-    {
-      content: "message 1",
-      isOwner: true,
-    },
-    {
-      content: "message 2",
-      isOwner: true,
-    },
-    {
-      content: "message 3",
-      isOwner: true,
-    },
-    {
-      content: "message 4",
-      isOwner: true,
-    },
-    {
-      content: "message 1",
-      isOwner: true,
-    },
-    {
-      content: "message 2",
-      isOwner: true,
-    },
-    {
-      content: "message 3",
-      isOwner: true,
-    },
-    {
-      content: "message 4",
-      isOwner: true,
-    },
-    {
-      content: "message 1",
-      isOwner: true,
-    },
-    {
-      content: "message 2",
-      isOwner: true,
-    },
-    {
-      content: "message 3",
-      isOwner: true,
+      isOwner: false,
     },
     {
       content: "message 4",
       isOwner: true,
     },
   ];
+
+  const roomChatList = [
+    {
+      name: "Dự án Hà Nội",
+      id: 1,
+      lastMessage: {
+        content: "Diện tích gần 400m2",
+        time: "12 phút",
+        user: {
+          avatar: "TrangBech",
+        },
+      },
+    },
+    {
+      name: "Dự án Hà Nội",
+      id: 2,
+      lastMessage: {
+        content: "Diện tích gần 400m2",
+        time: "12 phút",
+        user: {
+          avatar: "TrangBech",
+        },
+      },
+    },
+    {
+      name: "Dự án Hà Nội",
+      id: 3,
+      lastMessage: {
+        content: "Diện tích gần 400m2",
+        time: "12 phút",
+        user: {
+          avatar: "TrangBech",
+        },
+      },
+    },
+  ];
   return (
     <Layout className="room-chat">
-      <Sider className="list-chat" width={360}>
-        <Row className="text-bold-18" style={{ padding: "20px 20px" }}>
-          Đoạn chat
-        </Row>
-      </Sider>
+      <ChatList chatList={roomChatList} />
       <Layout className="content-room-chat">
-        <Row className="menu-room-chat">
+        <Row className="msg-header">
           <Col className="text-bold-18 ">Name</Col>
           <Col>
             <Row gutter={[16]}>
@@ -167,15 +91,10 @@ const RoomChat = () => {
             </Row>
           </Col>
         </Row>
-        <Content className="box-message">
-          <Col
-            style={{ paddingTop: 20, height: "100%", overflow: "auto" }}
-            span={24}
-          >
-            {messages.map((message) => {
-              return <Message message={message} />;
-            })}
-          </Col>
+        <Content className="msg-body">
+          {messages.map((message) => {
+            return <Message message={message} />;
+          })}
         </Content>
         <Footer className="input-message">
           <Col span={24}>
@@ -203,9 +122,7 @@ const RoomChat = () => {
           </Col>
         </Footer>
       </Layout>
-      <Sider className="list-chat" width={360}>
-        Sidebar
-      </Sider>
+      <ChatInfo />
     </Layout>
   );
 };

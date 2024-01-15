@@ -1,22 +1,30 @@
 .room-chat {
-  min-height: calc(100vh - var(--height-navbar) - 24px);
+  height: calc(100vh - var(--height-navbar) - 24px);
+  overflow: hidden;
 
   .text-bold-18 {
     font-size: 18px;
     font-weight: bold;
   }
 
-  .list-chat {
+  .chat-list,
+  .chat-info {
     background-color: white !important;
     border: 1px solid var(--shadow-2);
+    padding: 8px 8px;
+    overflow: auto;
+
+    .title-sidebar {
+      font-size: 23px;
+      font-weight: bold;
+      padding: 20px 12px;
+    }
   }
 
   .content-room-chat {
-    // display: flex;
-    // flex-flow: column;
-    // height: calc(100vh - var(--height-navbar) -24px);
+    background-color: white;
 
-    .menu-room-chat {
+    .msg-header {
       justify-content: space-between;
       box-shadow: 0 0 4px var(--shadow-2);
       align-items: center;
@@ -39,10 +47,13 @@
       }
     }
 
-    .box-message {
-      // height: calc(100vh - var(--height-navbar) - 24px - 128px) !important;
-      // flex: 0 1;
-      flex-grow: 1;
+    .msg-body {
+      flex: 1 1 auto;
+      overflow-y: auto;
+      padding: 20px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
 
     .input-message {
