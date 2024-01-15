@@ -18,7 +18,7 @@ const Guest = () => {
       key: "negotiating",
     },
     {
-      label: <LinkCustom to={"/room-chat"} label="Room chat" />,
+      label: <LinkCustom to={"/room-chat/1"} label="Room chat" />,
       key: "room-chat",
     },
     {
@@ -39,7 +39,7 @@ const Guest = () => {
       <Route path="/" element={wrapLayout(<Home />)} />
       <Route path="/auth/login" element={wrapLayout(<Login />)} />
       <Route path="/auth/signup" element={wrapLayout(<SignUp />)} />
-      <Route path="/room-chat" element={wrapLayout(<RoomChat />, false)} />
+      <Route path="/room-chat/:id" element={wrapLayout(<RoomChat />, false)} />
       <Route path="/*" element={wrapLayout(<div>Chua dinh nghia</div>)} />
     </Routes>
   );
