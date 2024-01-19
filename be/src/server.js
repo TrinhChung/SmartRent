@@ -3,11 +3,19 @@ import bodyParser from "body-parser";
 import { router } from "./route";
 import connectDB from "./config/connectDB";
 import cors from "cors";
+import { eventSocket } from "./controllers/socket";
+
 require("dotenv").config();
 
 const app = express();
 
 const server = require("http").createServer(app);
+global.io = require("socket.io")(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"],
+  },
+});
 
 app.use(cors({ origin: true }));
 app.use(function (req, res, next) {
@@ -42,6 +50,7 @@ connectDB();
 app.use("/api", router);
 
 let port = process.env.PORT || 8080;
+io.on("connection", eventSocket);
 
 server.listen(port, () => {
   console.log("listening on port: " + port);

@@ -13,7 +13,7 @@ export const logoutService = () => {
 };
 
 export const signupService = (data) => {
-  return axios.post("/api/auth/signup", data);
+  return axios.post("/api/auth/register", data);
 };
 
 export const forgotPasswordService = (data) => {
