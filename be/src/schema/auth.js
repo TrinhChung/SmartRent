@@ -1,4 +1,4 @@
-import { checkUserEmail } from "../utils/validatorDb";
+import { checkUserEmail, checkUserIsActive } from "../utils/validatorDb";
 
 const validator = require("validator");
 
@@ -56,6 +56,34 @@ export const signUpSchema = {
       {
         rule: (input) => !validator.isStrongPassword(input),
         message: "This password is not strong enough",
+      },
+    ],
+  },
+};
+
+export const loginSchema = {
+  email: {
+    rules: [
+      {
+        rule: (input) => !input || validator.isEmpty("input"),
+        message: "Email address is required",
+      },
+      {
+        rule: (input) => !validator.isEmail(input),
+        message: "This is not a valid email address",
+      },
+      {
+        rule: async (input) => !(await checkUserIsActive(input)),
+        message: "Account not exist or not active",
+      },
+    ],
+  },
+
+  password: {
+    rules: [
+      {
+        rule: (input) => !input || validator.isEmpty("input"),
+        message: "password is required",
       },
     ],
   },

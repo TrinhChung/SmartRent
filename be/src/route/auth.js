@@ -2,7 +2,7 @@ import { Router } from "express";
 import { handleRegisterUser, handleLoginUser } from "../controllers/auth";
 const SchemaValidator = require("nodejs-schema-validator");
 const schemaValidatorInstance = new SchemaValidator();
-import { signUpSchema } from "../schema/auth";
+import { signUpSchema, loginSchema } from "../schema/auth";
 
 export const router = Router();
 
@@ -12,4 +12,8 @@ router.post(
   handleRegisterUser
 );
 
-router.post("/login", handleLoginUser);
+router.post(
+  "/login",
+  schemaValidatorInstance.validateBody(loginSchema),
+  handleLoginUser
+);

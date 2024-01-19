@@ -1,3 +1,4 @@
+import { loginUserService } from "../services/auth";
 const { signUpUserService } = require("../services/auth");
 
 let handleRegisterUser = async (req, res) => {
@@ -9,15 +10,18 @@ let handleRegisterUser = async (req, res) => {
       .status(200)
       .json({ message: "Sign up successfully", data: user });
   } catch (error) {
-    console.log(error);
-    return res.status(500).json(error);
+    return res.status(500).json({ message: error.message });
   }
 };
 
 let handleLoginUser = async (req, res) => {
-  const data = req.body;
-  console.log(data);
-  return res.status(200).json(data);
+  try {
+    const data = await loginUserService(req.body);
+    return res.status(200).json(data);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: error.message });
+  }
 };
 
 module.exports = {

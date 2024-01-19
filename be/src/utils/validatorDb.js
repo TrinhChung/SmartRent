@@ -8,6 +8,15 @@ export const checkUserEmail = async (email) => {
   }
 };
 
+export const checkUserIsActive = async (email) => {
+  let user = await db.User.findOne({ where: { email: email } });
+  if (!user || (user && user.isActive === false)) {
+    return false;
+  } else {
+    return true;
+  }
+};
+
 export const checkTokenIsExist = async (token) => {
   try {
     let verify = await db.Verify.findOne({

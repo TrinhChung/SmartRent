@@ -49,7 +49,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         get() {
-          return hashUserPassword(this.getDataValue("password"));
+          return this.getDataValue("password");
         },
         set(value) {
           this.setDataValue("password", hashUserPassword(value));

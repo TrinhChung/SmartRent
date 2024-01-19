@@ -5,14 +5,24 @@ import LayoutAuth from "./LayoutAuth";
 import { useNavigate } from "react-router-dom";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { loginService } from "../../../services/Auth";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const navigate = useNavigate();
   const [form] = Form.useForm();
 
   const onFinish = async (values) => {
-    const res = await loginService(values);
-    console.log(res);
+    try {
+      const res = await loginService(values);
+      if (res.status === 200) {
+        toast.success("Login successfully completed");
+      } else {
+        toast.error("Login failed");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Login failed");
+    }
   };
 
   return (
@@ -37,11 +47,12 @@ const Login = () => {
 
           <Form layout="vertical" form={form} onFinish={onFinish}>
             <Form.Item
-              label="Username"
+              label="Email"
+              name="email"
               rules={[
                 {
                   required: true,
-                  message: "Vui lòng nhập tên đăng nhập",
+                  message: "Vui lòng nhập email",
                 },
               ]}
             >
