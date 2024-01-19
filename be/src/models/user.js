@@ -1,4 +1,6 @@
 "use strict";
+import { hashUserPassword } from "../utils/hashPassword";
+
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
@@ -6,7 +8,9 @@ module.exports = (sequelize, DataTypes) => {
       User.belongsTo(models.Address, {
         foreignKey: { name: "addressId" },
       });
-      User.hasOne(models.Verify);
+      User.hasMany(models.Verify, {
+        foreignKey: "fkId",
+      });
       User.hasMany(models.ExtraNotify);
     }
   }
@@ -37,14 +41,24 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         allowNull: false,
       },
-      addressId: DataTypes.INTEGER.UNSIGNED,
+      addressId: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: true,
+      },
       password: {
         type: DataTypes.STRING,
         allowNull: false,
+        get() {
+          return hashUserPassword(this.getDataValue("password"));
+        },
+        set(value) {
+          this.setDataValue("password", hashUserPassword(value));
+        },
       },
       role: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
+        defaultValue: "1",
       },
       email: {
         type: DataTypes.STRING,

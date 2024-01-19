@@ -1,24 +1,34 @@
-import React from "react";
+import React, { useState } from "react";
 import { Col, Form, Input, Row, Button } from "antd";
 import { useNavigate } from "react-router-dom";
 import LayoutAuth from "./LayoutAuth";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { signupService } from "../../../services/Auth/index";
+import { toast } from "react-toastify";
 
 const SignUp = () => {
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const onFinish = async (values) => {
     try {
+      setLoading(true);
       const res = await signupService(values);
-      console.log(res);
+      if (res.status === 200) {
+        toast.success(res.msg);
+      } else {
+        toast.error(res.msg);
+      }
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
       console.log(error);
+      toast.error(error.msg);
     }
   };
 
   return (
-    <LayoutAuth>
+    <LayoutAuth loading={loading}>
       <Row
         style={{
           height: "100%",
