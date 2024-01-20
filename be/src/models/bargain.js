@@ -20,7 +20,8 @@ module.exports = (sequelize, DataTypes) => {
       },
       status: {
         type: DataTypes.STRING(1),
-        allowNull: false,
+        allowNull: true,
+        defaultValue: "1",
       },
       renterId: {
         type: DataTypes.INTEGER.UNSIGNED,
