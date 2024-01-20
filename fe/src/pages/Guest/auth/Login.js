@@ -2,8 +2,29 @@ import { Col, Form, Input, Row, Button } from "antd";
 import React from "react";
 import "./Auth.scss";
 import LayoutAuth from "./LayoutAuth";
+import { useNavigate } from "react-router-dom";
+import { LockOutlined, UserOutlined } from "@ant-design/icons";
+import { loginService } from "../../../services/Auth";
+import { toast } from "react-toastify";
 
 const Login = () => {
+  const navigate = useNavigate();
+  const [form] = Form.useForm();
+
+  const onFinish = async (values) => {
+    try {
+      const res = await loginService(values);
+      if (res.status === 200) {
+        toast.success("Login successfully completed");
+      } else {
+        toast.error("Login failed");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Login failed");
+    }
+  };
+
   return (
     <LayoutAuth>
       <Row
@@ -24,18 +45,21 @@ const Login = () => {
             Login Now
           </Row>
 
-          <Form>
+          <Form layout="vertical" form={form} onFinish={onFinish}>
             <Form.Item
-              label="Username"
-              name="username"
+              label="Email"
+              name="email"
               rules={[
                 {
                   required: true,
-                  message: "Vui lòng nhập tên đăng nhập",
+                  message: "Vui lòng nhập email",
                 },
               ]}
             >
-              <Input />
+              <Input
+                prefix={<UserOutlined className="site-form-item-icon" />}
+                placeholder="Username"
+              />
             </Form.Item>
 
             <Form.Item
@@ -48,7 +72,11 @@ const Login = () => {
                 },
               ]}
             >
-              <Input.Password />
+              <Input.Password
+                prefix={<LockOutlined className="site-form-item-icon" />}
+                type="password"
+                placeholder="Password"
+              />
             </Form.Item>
             <Form.Item>
               <Row style={{ justifyContent: "center" }}>
@@ -58,7 +86,22 @@ const Login = () => {
               </Row>
             </Form.Item>
           </Form>
-          <Row>Navigate Register</Row>
+          <Row>
+            <Col>
+              <Row>Bạn chưa có tài khoản</Row>
+              <Row>
+                <Col>Đăng ký</Col>
+                <Col
+                  className={"navigate-auth"}
+                  onClick={() => {
+                    navigate("/auth/signup");
+                  }}
+                >
+                  Tại đây
+                </Col>
+              </Row>
+            </Col>
+          </Row>
         </Col>
       </Row>
     </LayoutAuth>

@@ -2,7 +2,7 @@ name: React build
 
 on:
   push:
-    branches: ["fe"]
+    branches: ["main"]
 
 jobs:
   build:
