@@ -9,11 +9,7 @@ module.exports = {
     port: process.env.PORT_DB,
     dialect: "mysql",
     logging: false,
-    raw: true,
     timezone: "+07:00",
-    query: {
-      raw: true,
-    },
   },
   testnet: {
     username: "root",
@@ -23,11 +19,7 @@ module.exports = {
     port: process.env.PORT_DB,
     dialect: "mysql",
     logging: false,
-    raw: true,
     timezone: "+07:00",
-    query: {
-      raw: true,
-    },
   },
   test: {
     username: "root",

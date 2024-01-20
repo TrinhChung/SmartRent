@@ -30,4 +30,21 @@
   .form-auth {
     background-color: white;
   }
+
+  .ant-form-item {
+    margin-bottom: 12px;
+  }
+
+  .wrap-form-item {
+    .ant-form-item {
+      margin-bottom: 0;
+    }
+  }
+}
+.navigate-auth {
+  padding-left: 4px;
+  color: rgb(0, 106, 255);
+}
+.navigate-auth:hover {
+  cursor: pointer;
 }

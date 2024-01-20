@@ -28,7 +28,7 @@ module.exports = {
       },
       addressId: {
         type: Sequelize.INTEGER.UNSIGNED,
-        allowNull: false,
+        allowNull: true,
         references: {
           model: "Addresses",
           key: "id",
@@ -40,7 +40,8 @@ module.exports = {
       },
       role: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
+        defaultValue: "1",
       },
       email: {
         type: Sequelize.STRING,

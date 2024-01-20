@@ -24,13 +24,9 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      fk_id: {
+      fkId: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
-        references: {
-          model: "Users",
-          key: "id",
-        },
       },
       createdAt: {
         allowNull: false,

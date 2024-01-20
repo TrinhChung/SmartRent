@@ -1,13 +1,12 @@
 "use strict";
+import { v4 as uuidv4 } from "uuid";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Verify extends Model {
     static associate(models) {
       Verify.belongsTo(models.User, {
-        foreignKey: {
-          name: "fk_id",
-          as: "VerifyUser",
-        },
+        foreignKey: "fkId",
+        as: "VerifyUser",
       });
     }
   }
@@ -21,13 +20,13 @@ module.exports = (sequelize, DataTypes) => {
       token: {
         type: DataTypes.STRING,
         allowNull: false,
-        validate: { isUUID: true },
+        validate: { isUUID: 4 },
       },
       type: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      fk_id: {
+      fkId: {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
       },
