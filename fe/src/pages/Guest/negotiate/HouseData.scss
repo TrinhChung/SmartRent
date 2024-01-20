@@ -1,0 +1,57 @@
+// styles.scss
+
+.list-data-house_home {
+  margin: 50px;
+  .data-house_home {
+    border: 1px solid black;
+    border-radius: 16px;
+    padding: 32px;
+  
+    .image-data_house_home {
+      margin-left: 16px;
+      width: 100%;
+    }
+  
+    .text_title {
+      font-family: Outfit;
+      font-size: 24px;
+      color: black;
+    }
+
+    .text-shadow {
+      font-family: Inter;
+      font-weight: 100;
+      font-size: 20px;
+      padding: 8px;
+      color: black;
+    }  
+
+    .button-column {
+      padding: 10px;
+      
+      .custom-button {
+        height: 48px;
+        width: 100%;
+        margin: 16px 0px;
+        padding-bottom: 4px;
+        font-size: 18px;
+        border: 1px solid;
+        font-family: 'Inter';
+        font-weight: bold;
+  
+        &.cancel {
+          border-color: darkred;
+          color: 	#f83838;
+        }
+  
+        &.watch-contract {
+          background-color: #ececec;          ;
+        }
+
+        &.chat {
+          background-color: #ececec;   
+        }
+      }
+    }
+  }
+}

@@ -7,10 +7,14 @@ export default function AuthProvider({ children }) {
   const [authUser, setAuthUser] = useState(null);
 
   const handlerLogin = async () => {
-    const res = await loginMe();
-    if (res.success === 1 && res.data) {
-      setAuthUser(res.data);
-      localStorage.setItem("authUser", JSON.stringify(res.data));
+    try {
+      const res = await loginMe();
+      if (res.status === 200) {
+        setAuthUser(res.data);
+        localStorage.setItem("authUser", JSON.stringify(res.data));
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 

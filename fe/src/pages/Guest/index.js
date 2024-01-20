@@ -1,6 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Home from "./home";
+import Negotiate from "./negotiate"
 import HomeLayout from "../../layouts/HomeLayout";
 import LinkCustom from "../../components/layout/LinkCustom";
 import Login from "./auth/Login";
@@ -14,7 +15,7 @@ const Guest = () => {
       key: "home",
     },
     {
-      label: <LinkCustom to={"/negotiating"} label="Đàm phá" />,
+      label: <LinkCustom to={"/negotiating"} label="Đàm phán" />,
       key: "negotiating",
     },
     {
@@ -38,6 +39,7 @@ const Guest = () => {
     <Routes>
       <Route path="/" element={wrapLayout(<Home />)} />
       <Route path="/auth/login" element={wrapLayout(<Login />)} />
+      <Route path="/negotiating" element={wrapLayout(<Negotiate />)} />
       <Route path="/auth/signup" element={wrapLayout(<SignUp />)} />
       <Route path="/room-chat/:id" element={wrapLayout(<RoomChat />, false)} />
       <Route path="/*" element={wrapLayout(<div>Chua dinh nghia</div>)} />

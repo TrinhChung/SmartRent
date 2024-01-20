@@ -41,11 +41,13 @@ module.exports = (sequelize, DataTypes) => {
       },
       floorTotal: {
         type: DataTypes.INTEGER.UNSIGNED,
-        allowNull: false,
+        allowNull: true,
+        defaultValue: 0,
       },
       roomTotal: {
         type: DataTypes.INTEGER.UNSIGNED,
-        allowNull: false,
+        allowNull: true,
+        defaultValue: 0,
       },
       isElevator: {
         type: DataTypes.BOOLEAN,

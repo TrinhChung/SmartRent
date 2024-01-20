@@ -1,13 +1,15 @@
 import { Col, Form, Input, Row, Button } from "antd";
-import React from "react";
+import React, { useContext } from "react";
 import "./Auth.scss";
 import LayoutAuth from "./LayoutAuth";
 import { useNavigate } from "react-router-dom";
-import { LockOutlined, UserOutlined } from "@ant-design/icons";
+import { LockOutlined, MailOutlined } from "@ant-design/icons";
 import { loginService } from "../../../services/Auth";
 import { toast } from "react-toastify";
+import { AuthContext } from "../../../providers/authProvider";
 
 const Login = () => {
+  const { setAuthUser } = useContext(AuthContext);
   const navigate = useNavigate();
   const [form] = Form.useForm();
 
@@ -15,13 +17,17 @@ const Login = () => {
     try {
       const res = await loginService(values);
       if (res.status === 200) {
-        toast.success("Login successfully completed");
+        setAuthUser(res.data?.user);
+        localStorage.setItem("accessToken", JSON.stringify(res.data.token));
+        localStorage.setItem("authUser", JSON.stringify(res.data.user));
+        toast.success("Đăng nhập thành công");
+        navigate("/");
       } else {
-        toast.error("Login failed");
+        toast.error("Đăng nhập thất bại");
       }
     } catch (error) {
       console.log(error);
-      toast.error("Login failed");
+      toast.error("Đăng nhập thất bại");
     }
   };
 
@@ -57,8 +63,8 @@ const Login = () => {
               ]}
             >
               <Input
-                prefix={<UserOutlined className="site-form-item-icon" />}
-                placeholder="Username"
+                prefix={<MailOutlined className="site-form-item-icon" />}
+                placeholder="Email"
               />
             </Form.Item>
 

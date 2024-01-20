@@ -27,7 +27,9 @@ module.exports = (sequelize, DataTypes) => {
       fullName: {
         type: DataTypes.VIRTUAL,
         get() {
-          return `${this.firstName} ${this.lastName}`;
+          return `${this.getDataValue("firstName")} ${this.getDataValue(
+            "lastName"
+          )}`;
         },
         set(value) {
           throw new Error("Do not try to set the `fullName` value!");
@@ -78,6 +80,7 @@ module.exports = (sequelize, DataTypes) => {
       sequelize,
       modelName: "User",
       paranoid: false,
+      timestamps: true,
     }
   );
   return User;
