@@ -11,6 +11,12 @@ Migrate Database
 npx sequelize-cli db:migrate
 ```
 
+Seeder
+
+```shell
+npx sequelize-cli db:seed:all
+```
+
 Try running some of the following tasks:
 
 ```shell
@@ -48,7 +54,8 @@ deploy bnb
 npx hardhat run --network testnet scripts/deploy.js
 ```
 
-Verify Smart Contract 
+Verify Smart Contract
+
 ```shell
 network=NAME_NETWORK ./verify.sh
 
