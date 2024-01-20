@@ -1,6 +1,7 @@
 import db from "../models/index";
 import { createVerify } from "./verify";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 export const signUpUserService = async (data) => {
   try {
@@ -27,11 +28,17 @@ export const loginUserService = async (data) => {
   let user = await db.User.findOne({
     where: { email: data.email },
   });
+
   if (user) {
+    user = user.get({ plain: true });
     let check = bcrypt.compareSync(data.password, user.password);
-    delete user.password;
+    delete user["password"];
     if (check) {
-      return { message: "Login successful", data: user };
+      let token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
+      return {
+        message: "Login successful",
+        data: { user: user, token: token },
+      };
     }
   }
   throw new Error("Email or password is incorrect");

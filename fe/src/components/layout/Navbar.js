@@ -4,11 +4,13 @@ import { BellFilled, UserOutlined, LogoutOutlined } from "@ant-design/icons";
 import { Menu } from "antd";
 import { useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../providers/authProvider";
+import { toast } from "react-toastify";
 import "./Navbar.scss";
+import { logoutService } from "../../services/Auth";
 
 const { Header } = Layout;
 const Navbar = ({ data }) => {
-  const { authUser } = useContext(AuthContext);
+  const { authUser, setAuthUser } = useContext(AuthContext);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [current, setCurrent] = useState("home");
   const navigate = useNavigate();
@@ -28,7 +30,23 @@ const Navbar = ({ data }) => {
     }
   }, [pathname]);
 
-  const onLogout = async () => {};
+  const onLogout = async () => {
+    try {
+      const res = await logoutService();
+      if (res.status === 200) {
+        toast.success("Đã đăng xuất");
+      } else {
+        toast.error(res.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("authUser");
+    setAuthUser(null);
+    setIsOpenModal(false);
+    navigate("/");
+  };
 
   const items = [
     {
@@ -104,7 +122,7 @@ const Navbar = ({ data }) => {
                         <UserOutlined style={{ fontSize: "20px" }} />
                       </Col>
                       <Col>
-                        <div>{authUser?.username}</div>
+                        <div>{authUser?.fullName}</div>
                       </Col>
                     </Row>
                   </Dropdown>
