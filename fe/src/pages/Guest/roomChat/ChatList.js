@@ -13,12 +13,13 @@ const ChatList = ({ chatList = [] }) => {
       <Row className="title-sidebar">Đoạn chat</Row>
       <Row>
         <Col span={24}>
-          {chatList.map((roomChat) => {
+          {chatList.map((roomChat, index) => {
             return (
               <Row
                 className={`box-room-chat-list ${
                   roomChatId === roomChat.id ? "is-room-chat-selected" : ""
                 }`}
+                key={`chatlist${index}`}
               >
                 <Col>
                   <Avatar size={56} icon={<UserOutlined />} />

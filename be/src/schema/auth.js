@@ -53,10 +53,10 @@ export const signUpSchema = {
         rule: (input, { passwordConfirm }) => input !== passwordConfirm,
         message: "This password and password confirm must equal",
       },
-      {
-        rule: (input) => !validator.isStrongPassword(input),
-        message: "This password is not strong enough",
-      },
+      // {
+      //   rule: (input) => !validator.isStrongPassword(input),
+      //   message: "This password is not strong enough",
+      // },
     ],
   },
 };

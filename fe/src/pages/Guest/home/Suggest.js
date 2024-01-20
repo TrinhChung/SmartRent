@@ -17,7 +17,7 @@ const Suggest = ({ houses = [] }) => {
         <Slider {...settingSlider}>
           {houses.length > 0 &&
             houses.map((house, index) => {
-              return <CardHouseHome house={{ ...house, id: index }} />;
+              return <CardHouseHome house={{ ...house }} key={index} />;
             })}
         </Slider>
       </Col>

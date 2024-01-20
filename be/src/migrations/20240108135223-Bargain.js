@@ -38,17 +38,15 @@ module.exports = {
           key: "id",
         },
       },
-      roomChatId: {
-        type: Sequelize.INTEGER.UNSIGNED,
-        allowNull: false,
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
+        defaultValue: Sequelize.fn("NOW"),
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
+        defaultValue: Sequelize.fn("NOW"),
       },
     });
   },

@@ -1,5 +1,5 @@
 import { Col, Row, Layout, Input } from "antd";
-import React from "react";
+import React, { useContext } from "react";
 import "./RoomChat.scss";
 import {
   InfoCircleOutlined,
@@ -11,10 +11,12 @@ import {
 import Message from "./Message";
 import ChatList from "./ChatList";
 import ChatInfo from "./ChatInfo";
+import { SocketContext } from "../../../providers/socketProvider";
 
 const { Footer, Content } = Layout;
 
 const RoomChat = () => {
+  const { socket } = useContext(SocketContext);
   const messages = [
     {
       content: `Hi, this is Bing. I can help you with creating a messenger codepen layout. 😊
@@ -92,8 +94,8 @@ A codepen layout is a web page that you can create and edit online using HTML, C
           </Col>
         </Row>
         <Content className="msg-body">
-          {messages.map((message) => {
-            return <Message message={message} />;
+          {messages.map((message, index) => {
+            return <Message message={message} key={`chat${index}`} />;
           })}
         </Content>
         <Footer className="input-message">
@@ -115,7 +117,11 @@ A codepen layout is a web page that you can create and edit online using HTML, C
                   className="icon-input"
                   style={{ justifyContent: "center" }}
                 >
-                  <SendOutlined />
+                  <SendOutlined
+                    onClick={() => {
+                      console.log(socket.connected);
+                    }}
+                  />
                 </Row>
               </Col>
             </Row>
