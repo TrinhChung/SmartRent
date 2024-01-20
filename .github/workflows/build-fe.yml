@@ -2,7 +2,7 @@ name: React build
 
 on:
   push:
-    branches: ["fe"]
+    branches: ["main"]
 
 jobs:
   build:
@@ -27,7 +27,7 @@ jobs:
           cache-dependency-path: "**/package-lock.json"
       - run: npm install
       - run: npm ci
-      - run: npm run build
+      - run: npm run build --if-present
       - name: Deploy with gh-pages
         run: |
           git remote set-url origin https://git:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
