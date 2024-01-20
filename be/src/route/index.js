@@ -1,9 +1,8 @@
 import { Router } from "express";
 import { router as smartContract } from "./smartContract";
+import { router as roomChat } from "./roomChat";
 export const router = Router();
 
 router.use("/smc", smartContract);
 
-router.use("/", (req, res, next) => {
-  return res.status(200).json({ status: 200 });
-});
+router.use("/room-chat", roomChat);

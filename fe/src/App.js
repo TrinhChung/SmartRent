@@ -1,5 +1,5 @@
 import "./App.css";
-import { BrowserRouter } from "react-router-dom";
+import { HashRouter } from "react-router-dom";
 import Guest from "./pages/Guest";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
@@ -9,7 +9,7 @@ import "@fontsource/inter"; // Defaults to weight 400
 
 function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Guest />
       <ToastContainer
         position="top-right"
@@ -21,7 +21,7 @@ function App() {
         draggable
         style={{ textAlign: "left" }}
       />
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 

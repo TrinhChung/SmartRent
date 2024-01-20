@@ -4,7 +4,7 @@ import FooterComponent from "./Footer";
 import { useEffect } from "react";
 const { Content } = Layout;
 
-const HomeLayout = ({ children, menu }) => {
+const HomeLayout = ({ children, menu, isFooter = true }) => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -13,7 +13,7 @@ const HomeLayout = ({ children, menu }) => {
     <Layout className="main-layout">
       <Navbar data={menu} />
       <Content className="container-content">{children}</Content>
-      <FooterComponent />
+      {isFooter && <FooterComponent />}
     </Layout>
   );
 };
