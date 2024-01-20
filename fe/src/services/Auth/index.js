@@ -5,11 +5,11 @@ export const loginService = (data) => {
 };
 
 export const loginMe = () => {
-  return axios.get("/api/me");
+  return axios.get("/api/auth/me");
 };
 
 export const logoutService = () => {
-  return axios.delete("/api/auth/logout");
+  return axios.get("/api/auth/logout");
 };
 
 export const signupService = (data) => {

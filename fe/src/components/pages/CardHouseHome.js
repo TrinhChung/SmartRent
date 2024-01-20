@@ -3,9 +3,12 @@ import React from "react";
 import { ExportOutlined } from "@ant-design/icons";
 import "./Page.scss";
 
-const CardHouseHome = ({ house = { name: "name", address: "address" } }) => {
+const CardHouseHome = ({
+  house = { name: "name", address: "address" },
+  key = 1,
+}) => {
   return (
-    <Col className="card-house_home">
+    <Col className="card-house_home" key={key}>
       <Image
         className="image-card_house_home"
         preview={false}
