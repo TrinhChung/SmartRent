@@ -3,13 +3,17 @@ import { Col, Image, Input, Row } from "antd";
 import PlacesAutocomplete from "../../../components/maps/PlacesAutocomplete";
 import ImageBannerHome from "../../../public/images/home-banner.jpg";
 import "./Home.scss";
-import { MapContext } from "../../../providers/mapProvider";
 import Suggest from "./Suggest";
 import ImageHouse from "../../../public/images/house1.jpg";
 import MapCustom from "../../../components/maps/MapCustom";
+import { useJsApiLoader } from "@react-google-maps/api";
 
 const Home = () => {
-  const { isLoaded } = useContext(MapContext);
+  const { isLoaded } = useJsApiLoader({
+    mapIds: process.env.REACT_APP_MAP_ID,
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAP_KEY,
+    libraries: ["drawing", "places"],
+  });
   const [position, setPosition] = useState({
     lat: 21.0469701,
     lng: 105.8021347,
