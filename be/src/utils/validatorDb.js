@@ -23,7 +23,6 @@ export const checkTokenIsExist = async (token) => {
       where: { token: token },
       raw: false,
     });
-    console.log(verify);
     if (verify) {
       return true;
     } else {

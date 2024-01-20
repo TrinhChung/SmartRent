@@ -1,13 +1,17 @@
 import { Row, Col, Avatar, Tooltip } from "antd";
 import React from "react";
 import "./Message.scss";
-const Message = ({ message = { content: "message", isOwner: true } }) => {
+const Message = ({
+  message = { content: "message", isOwner: true },
+  key = "chat1",
+}) => {
   return (
     <Row
       className="msg"
       style={{
         flexDirection: `${message.isOwner ? "row-reverse" : "row"}`,
       }}
+      key={key}
     >
       {!message.isOwner && (
         <Col>
