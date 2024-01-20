@@ -30,10 +30,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
       },
-      roomChatId: {
-        type: DataTypes.INTEGER.UNSIGNED,
-        allowNull: false,
-      },
     },
     {
       sequelize,

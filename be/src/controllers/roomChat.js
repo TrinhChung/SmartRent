@@ -1,6 +1,6 @@
 import { getRoomChatService } from "../services/roomChat";
 
-let getRoomChatController = async (req, res, next) => {
+export const getRoomChatController = async (req, res, next) => {
   try {
     const id = req.params.id;
     const roomChat = await getRoomChatService(id);
@@ -15,6 +15,10 @@ let getRoomChatController = async (req, res, next) => {
   }
 };
 
-module.exports = {
-  getRoomChatController: getRoomChatController,
+export const handleCreateRoomChat = async (req, res, next) => {
+  try {
+    return res.status(200).json({ message: "Create room chat" });
+  } catch (error) {
+    return res.status(400).json({ error: "Create room chat error" });
+  }
 };
