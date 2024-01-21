@@ -18,6 +18,10 @@ module.exports = {
           key: "id",
         },
       },
+      name: {
+        type: Sequelize.STRING(200),
+        allowNull: true,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

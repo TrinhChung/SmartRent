@@ -1,3 +1,5 @@
+const validator = require("validator");
+
 export const createBargainSchema = {
   sellerId: {
     rules: [

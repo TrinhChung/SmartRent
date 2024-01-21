@@ -1,7 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Home from "./home";
-import Negotiate from "./negotiate"
+import Negotiate from "./negotiate";
 import HomeLayout from "../../layouts/HomeLayout";
 import LinkCustom from "../../components/layout/LinkCustom";
 import Login from "./auth/Login";
@@ -19,7 +19,7 @@ const Guest = () => {
       key: "negotiating",
     },
     {
-      label: <LinkCustom to={"/room-chat/1"} label="Room chat" />,
+      label: <LinkCustom to={"/room-chat/0"} label="Room chat" />,
       key: "room-chat",
     },
     {
