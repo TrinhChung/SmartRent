@@ -20,7 +20,7 @@ module.exports = {
       },
       replyId: {
         type: Sequelize.INTEGER.UNSIGNED,
-        allowNull: false,
+        allowNull: true,
       },
       roomChatId: {
         type: Sequelize.INTEGER.UNSIGNED,

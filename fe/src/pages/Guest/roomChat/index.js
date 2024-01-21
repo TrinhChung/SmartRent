@@ -1,5 +1,5 @@
 import { Col, Row, Layout, Input } from "antd";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./RoomChat.scss";
 import {
   InfoCircleOutlined,
@@ -12,11 +12,16 @@ import Message from "./Message";
 import ChatList from "./ChatList";
 import ChatInfo from "./ChatInfo";
 import { SocketContext } from "../../../providers/socketProvider";
+import { getRoomChatForMeService } from "../../../services/RoomChat";
+import { useNavigate, useParams } from "react-router-dom";
 
 const { Footer, Content } = Layout;
 
 const RoomChat = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
   const { socket } = useContext(SocketContext);
+  const [roomChats, setRoomChats] = useState([]);
   const messages = [
     {
       content: `Hi, this is Bing. I can help you with creating a messenger codepen layout. 😊
@@ -38,44 +43,27 @@ A codepen layout is a web page that you can create and edit online using HTML, C
     },
   ];
 
-  const roomChatList = [
-    {
-      name: "Dự án Hà Nội",
-      id: 1,
-      lastMessage: {
-        content: "Diện tích gần 400m2",
-        time: "12 phút",
-        user: {
-          avatar: "TrangBech",
-        },
-      },
-    },
-    {
-      name: "Dự án Hà Nội",
-      id: 2,
-      lastMessage: {
-        content: "Diện tích gần 400m2",
-        time: "12 phút",
-        user: {
-          avatar: "TrangBech",
-        },
-      },
-    },
-    {
-      name: "Dự án Hà Nội",
-      id: 3,
-      lastMessage: {
-        content: "Diện tích gần 400m2",
-        time: "12 phút",
-        user: {
-          avatar: "TrangBech",
-        },
-      },
-    },
-  ];
+  const getRoomChatForMe = async () => {
+    try {
+      const res = await getRoomChatForMeService();
+      if (res.status === 200) {
+        setRoomChats(res.data);
+        if (res.data.length > 0) {
+          navigate(`/room-chat/${res.data[0].id}`);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getRoomChatForMe();
+  }, []);
+
   return (
     <Layout className="room-chat">
-      <ChatList chatList={roomChatList} />
+      <ChatList chatList={roomChats} />
       <Layout className="content-room-chat">
         <Row className="msg-header">
           <Col className="text-bold-18 ">Name</Col>

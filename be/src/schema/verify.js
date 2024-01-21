@@ -1,5 +1,5 @@
-import { checkTokenIsExist } from "../utils/validatorDb";
 const validator = require("validator");
+import { checkTokenIsExist } from "../utils/validatorDb";
 
 export const verifyAccountSchema = {
   token: {

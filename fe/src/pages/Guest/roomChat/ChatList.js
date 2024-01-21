@@ -5,9 +5,7 @@ import "./ChatList.scss";
 
 const { Sider } = Layout;
 
-const ChatList = ({ chatList = [] }) => {
-  const roomChatId = 1;
-
+const ChatList = ({ chatList = [], currentRoomChatId = 1 }) => {
   return (
     <Sider className="chat-list" width={360}>
       <Row className="title-sidebar">Đoạn chat</Row>
@@ -17,7 +15,9 @@ const ChatList = ({ chatList = [] }) => {
             return (
               <Row
                 className={`box-room-chat-list ${
-                  roomChatId === roomChat.id ? "is-room-chat-selected" : ""
+                  currentRoomChatId === roomChat.id
+                    ? "is-room-chat-selected"
+                    : ""
                 }`}
                 key={`chatlist${index}`}
               >

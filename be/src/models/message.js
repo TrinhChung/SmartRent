@@ -3,12 +3,21 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Message extends Model {
     static associate(models) {
-      Message.belongsTo(models.RoomChat, {
+      Message.belongsTo(models.RoomChat);
+
+      Message.hasMany(models.Message, {
         foreignKey: {
-          name: "roomChatId",
+          name: "replyId",
+          as: "children",
         },
       });
-      Message.hasMany(models.Message);
+
+      Message.belongsTo(models.Message, {
+        foreignKey: {
+          name: "replyId",
+          as: "children",
+        },
+      });
     }
   }
   Message.init(
@@ -19,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       replyId: {
         type: DataTypes.INTEGER.UNSIGNED,
-        allowNull: false,
+        allowNull: true,
       },
       roomChatId: {
         type: DataTypes.INTEGER.UNSIGNED,
