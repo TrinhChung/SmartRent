@@ -1,6 +1,6 @@
 const users = {};
 
-const eventSocket = (socket) => {
+export const eventSocket = (socket) => {
   eventRoom(socket);
   socket.on("login", (userId) => {
     console.log("user-login " + userId);
@@ -9,14 +9,17 @@ const eventSocket = (socket) => {
       console.log("disconnect " + userId);
       delete users[Number(userId)];
     });
-    console.log(users);
   });
 };
 
-const sendNotification = (data) => {
+export const sendNotification = (data) => {
   console.log(data);
   console.log(users[Number(data.userId)]);
   global.io.to(users[Number(data.userId)]).emit("notification", data);
+};
+
+export const sendNotifyToRoom = (roomId) => {
+  global.io.to(roomId).emit("new-message");
 };
 
 const sendMessage = (socket, roomId) => {
@@ -47,9 +50,4 @@ const eventRoom = (socket) => {
     sendMessage(socket, roomId);
     disconnect(socket, userId, roomId);
   });
-};
-
-module.exports = {
-  eventSocket: eventSocket,
-  sendNotification: sendNotification,
 };

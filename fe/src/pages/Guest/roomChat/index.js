@@ -12,45 +12,40 @@ import Message from "./Message";
 import ChatList from "./ChatList";
 import ChatInfo from "./ChatInfo";
 import { SocketContext } from "../../../providers/socketProvider";
-import { getRoomChatForMeService } from "../../../services/RoomChat";
-import { useNavigate, useParams } from "react-router-dom";
+import {
+  getMessagesOfRoomChatService,
+  sendMessageToRoomService,
+} from "../../../services/RoomChat";
+import { useParams } from "react-router-dom";
+import { AuthContext } from "../../../providers/authProvider";
 
 const { Footer, Content } = Layout;
+const { TextArea } = Input;
 
 const RoomChat = () => {
+  const { authUser } = useContext(AuthContext);
   const { id } = useParams();
-  const navigate = useNavigate();
-  const { socket } = useContext(SocketContext);
-  const [roomChats, setRoomChats] = useState([]);
-  const messages = [
-    {
-      content: `Hi, this is Bing. I can help you with creating a messenger codepen layout. 😊
-A codepen layout is a web page that you can create and edit online using HTML, CSS, and JavaScript. You can use codepen to showcase your web projects, experiment with new ideas, or learn from other developers.`,
-      isOwner: true,
-    },
-    {
-      content: `Hi, this is Bing. I can help you with creating a messenger codepen layout. 😊
-A codepen layout is a web page that you can create and edit online using HTML, CSS, and JavaScript. You can use codepen to showcase your web projects, experiment with new ideas, or learn from other developers`,
-      isOwner: false,
-    },
-    {
-      content: "message 3",
-      isOwner: false,
-    },
-    {
-      content: "message 4",
-      isOwner: true,
-    },
-  ];
+  const { socket, roomChats } = useContext(SocketContext);
+  const [messages, setMessages] = useState([]);
+  const [content, setContent] = useState("");
 
-  const getRoomChatForMe = async () => {
+  const sendMessage = async (data) => {
     try {
-      const res = await getRoomChatForMeService();
+      const res = await sendMessageToRoomService(data);
       if (res.status === 200) {
-        setRoomChats(res.data);
-        if (res.data.length > 0) {
-          navigate(`/room-chat/${res.data[0].id}`);
-        }
+        fetchMessageOfRoom(id);
+        setContent("");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchMessageOfRoom = async (roomChatId) => {
+    try {
+      const res = await getMessagesOfRoomChatService(roomChatId);
+      if (res.status === 200) {
+        setMessages(res.data);
       }
     } catch (error) {
       console.log(error);
@@ -58,8 +53,19 @@ A codepen layout is a web page that you can create and edit online using HTML, C
   };
 
   useEffect(() => {
-    getRoomChatForMe();
-  }, []);
+    if (id > 0 && authUser?.id > 0) {
+      socket.emit("join-room", id, authUser?.id);
+    }
+    socket.on("new-message", async () => {
+      await fetchMessageOfRoom(id);
+    });
+  }, [socket, authUser, id]);
+
+  useEffect(() => {
+    if (id > 0) {
+      fetchMessageOfRoom(id);
+    }
+  }, [id]);
 
   return (
     <Layout className="room-chat">
@@ -98,7 +104,14 @@ A codepen layout is a web page that you can create and edit online using HTML, C
                 </Row>
               </Col>
               <Col xxl={22}>
-                <Input />
+                <TextArea
+                  placeholder="Gửi đoạn chat"
+                  value={content}
+                  onChange={(value) => {
+                    setContent(value.target.value);
+                  }}
+                  autoSize
+                />
               </Col>
               <Col xxl={1}>
                 <Row
@@ -106,8 +119,9 @@ A codepen layout is a web page that you can create and edit online using HTML, C
                   style={{ justifyContent: "center" }}
                 >
                   <SendOutlined
+                    className="send-message-button"
                     onClick={() => {
-                      console.log(socket.connected);
+                      sendMessage({ content: content, roomChatId: id });
                     }}
                   />
                 </Row>
