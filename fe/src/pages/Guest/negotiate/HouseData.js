@@ -4,8 +4,8 @@ import "./HouseData.scss"
 
 const HouseData = ({ house = { name: "name", address: "address" }}) => {
     return (
-      <Col className="data-house_home">
-      <Row>
+      <Col className="list-data-house_home">
+      <Row className="data-house_home">
         {/* Col for Image */}
         <Col span={6}>
           <Image
@@ -16,34 +16,30 @@ const HouseData = ({ house = { name: "name", address: "address" }}) => {
         </Col>
         {/* Col for House Information */}
         <Col span={14} >
-          <Row className="house-info_card">
-            <Col span={2}></Col>
-            <Col span={22}>
-              <Row className="text_title text-shadow">
-                {house?.name}
-              </Row>
-              <Row>
-                <Col className="text-shadow" xs={24} xl={24}>
-                  <div><strong>Status:</strong> {house?.status}</div>
-                  <div><strong>Stage:</strong> {house?.stage}</div>
-                  <div><strong>Cost Per Month:</strong> {house?.costPerMonth}</div>
-                  <div><strong>Acreage:</strong> {house?.acreage}</div>
-                  <div><strong>Address:</strong> {house?.address}</div>
-                </Col>
-              </Row>
+          <Row className="text_title">
+            {house?.name}
+          </Row>
+          <Row>
+            <Col xs={24} xl={24}>
+              <div className="text-shadow" >Status: {house?.status}</div>
+              <div className="text-shadow" >Stage: {house?.stage}</div>
+              <div className="text-shadow" >Cost :{house?.costPerMonth}</div>
+              <div className="text-shadow" >Acreage: {house?.acreage}</div>
+              <div className="text-shadow" >Parking Acreage: {house?.acreage}</div>
+              <div className="text-shadow" >Address: {house?.address}</div>
             </Col>
           </Row>
         </Col>
         {/* Col for Buttons */}
         <Col span={4} className="button-column">
-          <Button type="danger" className="custom-button cancel" onClick={() => console.log("Cancel clicked")}>
-            Cancel
+          <Button type="default" className="custom-button chat">
+            Chat
           </Button>
-          <Button type="primary" className="custom-button watch-contract" onClick={() => console.log("Watch Contract clicked")}>
+          <Button type="default" className="custom-button watch-contract">
             Watch Contract
           </Button>
-          <Button type="default" className="custom-button chat" onClick={() => console.log("Chat clicked")}>
-            Chat
+          <Button type="danger" className="custom-button cancel">
+            Cancel
           </Button>
         </Col>
       </Row>
