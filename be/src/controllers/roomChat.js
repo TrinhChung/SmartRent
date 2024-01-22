@@ -35,7 +35,6 @@ export const handleCreateRoomChat = async (req, res, next) => {
 export const handleGetRoomChatForMe = async (req, res, next) => {
   try {
     const userId = req.user.id;
-    console.log(req.user);
     const roomChats = await getRoomChatForMeService(userId);
     return res
       .status(200)

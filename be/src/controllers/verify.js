@@ -2,7 +2,6 @@ import db from "../models/index";
 export const verifyAccountController = async (req, res, next) => {
   try {
     const token = req.params.token;
-    console.log(token);
     let verify = (verify = await db.Verify.findOne({
       where: { token: token },
     }));

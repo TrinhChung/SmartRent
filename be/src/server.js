@@ -4,6 +4,7 @@ import { router } from "./route";
 import connectDB from "./config/connectDB";
 import cors from "cors";
 import { eventSocket } from "./controllers/socket";
+import { checkRoomPermissionSocket } from "./route/socket";
 
 require("dotenv").config();
 
@@ -50,6 +51,8 @@ connectDB();
 app.use("/api", router);
 
 let port = process.env.PORT || 8080;
+
+io.use(checkRoomPermissionSocket);
 io.on("connection", eventSocket);
 
 server.listen(port, () => {

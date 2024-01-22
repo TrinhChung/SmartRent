@@ -1,5 +1,8 @@
 import { Router } from "express";
-import { handleCreateMessage } from "../controllers/message";
+import {
+  handleCreateMessage,
+  handleGetMessageByRoomId,
+} from "../controllers/message";
 import { createMessageSchema } from "../schema/message";
 import { roomPermission } from "../middleware/roomChat";
 const SchemaValidator = require("nodejs-schema-validator");
@@ -13,3 +16,5 @@ router.post(
   roomPermission,
   handleCreateMessage
 );
+
+router.get("/", handleGetMessageByRoomId);

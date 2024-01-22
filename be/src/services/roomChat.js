@@ -24,7 +24,6 @@ export const createRoomChatService = async (data) => {
 };
 
 export const getRoomChatForMeService = async (userId) => {
-  console.log(userId);
   const roomChats = await db.RoomChat.findAll({
     include: [
       {

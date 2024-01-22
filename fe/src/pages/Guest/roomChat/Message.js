@@ -1,19 +1,25 @@
 import { Row, Col, Avatar, Tooltip } from "antd";
-import React from "react";
+import React, { useContext } from "react";
+import { AuthContext } from "../../../providers/authProvider";
 import "./Message.scss";
+
 const Message = ({
   message = { content: "message", isOwner: true },
   key = "chat1",
 }) => {
+  const { authUser } = useContext(AuthContext);
+
   return (
     <Row
       className="msg"
       style={{
-        flexDirection: `${message.isOwner ? "row-reverse" : "row"}`,
+        flexDirection: `${
+          message.userId === authUser.id ? "row-reverse" : "row"
+        }`,
       }}
       key={key}
     >
-      {!message.isOwner && (
+      {message.userId !== authUser.id && (
         <Col>
           <Avatar
             style={{
@@ -28,7 +34,11 @@ const Message = ({
 
       <Col style={{ paddingLeft: 12 }}>
         <Tooltip title={"Time"} placement="left" arrow={false}>
-          <Row className={`${message.isOwner ? "msg-owner" : "msg-partner"}`}>
+          <Row
+            className={`${
+              message.userId === authUser.id ? "msg-owner" : "msg-partner"
+            }`}
+          >
             {message.content}
           </Row>
         </Tooltip>
