@@ -22,7 +22,6 @@ export const roomPermission = async (req, res, next) => {
 
 export const roomSocketPermission = async (socket, next) => {
   socket.on("join-room", async (roomId, userId) => {
-    console.log("Middleware", roomId, userId);
     next();
   });
 };

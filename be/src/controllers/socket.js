@@ -24,7 +24,7 @@ export const sendNotifyToRoom = (roomId) => {
 
 const sendMessage = (socket, roomId) => {
   socket.on("message", (message) => {
-    console.log(message);
+    console.log("new message");
     io.to(roomId).emit("newMessage", message);
   });
 };
@@ -36,18 +36,22 @@ const disconnect = (socket, userId, roomId) => {
   });
 };
 
-const joinRoom = (socket, userId, roomId) => {
+const senNotifyJoinRoom = (socket, userId, roomId) => {
   socket.join(roomId);
   socket.to(roomId).emit("user-connected", userId);
-  console.log("send-id user connected");
+  console.log(`user ${userId} joined room ${roomId}`);
 };
 
 const eventRoom = (socket) => {
   socket.emit("connect-success", "connect-success");
-  socket.on("join-room", (roomId, userId) => {
-    console.log("user-joined-room", userId);
-    joinRoom(socket, userId, roomId);
+  const eventInRoom = (roomId, userId) => {
+    senNotifyJoinRoom(socket, userId, roomId);
     sendMessage(socket, roomId);
     disconnect(socket, userId, roomId);
+  };
+  socket.on("join-room", eventInRoom);
+  socket.on("leave-room", (userId, roomId) => {
+    socket.leave("room" + roomId);
+    console.log(`User ${userId} out room ${roomId}`);
   });
 };

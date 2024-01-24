@@ -16,7 +16,7 @@ import {
   getMessagesOfRoomChatService,
   sendMessageToRoomService,
 } from "../../../services/RoomChat";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../../../providers/authProvider";
 
 const { Footer, Content } = Layout;
@@ -28,12 +28,12 @@ const RoomChat = () => {
   const { socket, roomChats } = useContext(SocketContext);
   const [messages, setMessages] = useState([]);
   const [content, setContent] = useState("");
+  const navigate = useNavigate();
 
   const sendMessage = async (data) => {
     try {
       const res = await sendMessageToRoomService(data);
       if (res.status === 200) {
-        fetchMessageOfRoom(id);
         setContent("");
       }
     } catch (error) {
@@ -54,12 +54,17 @@ const RoomChat = () => {
 
   useEffect(() => {
     if (id > 0 && authUser?.id > 0) {
+      console.log("Join new room");
+      socket.emit("leave-room", id, authUser?.id);
       socket.emit("join-room", id, authUser?.id);
     }
+
     socket.on("new-message", async () => {
+      console.log("Receive message");
       await fetchMessageOfRoom(id);
     });
-  }, [socket, authUser, id]);
+    return () => socket.off("new-message");
+  }, [id]);
 
   useEffect(() => {
     if (id > 0) {
@@ -67,9 +72,13 @@ const RoomChat = () => {
     }
   }, [id]);
 
+  const switchRoomChat = (chatId) => {
+    navigate(`/room-chat/${chatId}`);
+  };
+
   return (
     <Layout className="room-chat">
-      <ChatList chatList={roomChats} />
+      <ChatList chatList={roomChats} switchRoomChat={switchRoomChat} />
       <Layout className="content-room-chat">
         <Row className="msg-header">
           <Col className="text-bold-18 ">Name</Col>
