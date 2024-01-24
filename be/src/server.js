@@ -52,7 +52,7 @@ app.use("/api", router);
 
 let port = process.env.PORT || 8080;
 
-io.use(checkRoomPermissionSocket);
+// io.use(checkRoomPermissionSocket);
 io.on("connection", eventSocket);
 
 server.listen(port, () => {
