@@ -1,4 +1,3 @@
-import db from "../models/index";
 import { getRoomChatService } from "../services/roomChat";
 
 export const roomPermission = async (req, res, next) => {
@@ -11,7 +10,7 @@ export const roomPermission = async (req, res, next) => {
       req.user.id !== room.bargain.renterId &&
       req.user.id !== room.bargain.sellerId
     ) {
-      return res.status(403).json({ message: "Không có quyền của room này" });
+      return res.status(403).json({ message: "Không có quyền vào room này" });
     }
     next();
   } catch (error) {

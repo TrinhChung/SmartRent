@@ -1,4 +1,5 @@
 import {
+  changeNameRoomChatService,
   createRoomChatService,
   getRoomChatForMeService,
   getRoomChatService,
@@ -42,5 +43,21 @@ export const handleGetRoomChatForMe = async (req, res, next) => {
   } catch (error) {
     console.log(error);
     return res.status(400).json({ error: "Get room chat for me error" });
+  }
+};
+
+export const handleChangeNameRoomChat = async (req, res, next) => {
+  try {
+    const data = req.body;
+    console.log(data);
+    const newRoom = await changeNameRoomChatService(data);
+
+    return res
+      .status(200)
+      .json({ message: "Change name room chat successfully", data: newRoom });
+  } catch (error) {
+    return res
+      .status(400)
+      .json({ error: "change name room chat for me error" });
   }
 };

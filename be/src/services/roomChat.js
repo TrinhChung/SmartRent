@@ -37,3 +37,17 @@ export const getRoomChatForMeService = async (userId) => {
   });
   return roomChats;
 };
+
+export const changeNameRoomChatService = async ({ roomChatId, name }) => {
+  try {
+    const roomChat = await db.RoomChat.findOne({
+      where: { id: roomChatId },
+    });
+
+    const newRoom = await roomChat.update({ name: name });
+    return newRoom;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Change name room chat service error", error);
+  }
+};
