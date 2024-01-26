@@ -38,7 +38,9 @@ export const SocketProvider = ({ children }) => {
   }, [socket]);
 
   return (
-    <SocketContext.Provider value={{ socket, roomChats, socketDisconnect }}>
+    <SocketContext.Provider
+      value={{ socket, roomChats, socketDisconnect, getRoomChatForMe }}
+    >
       {children}
     </SocketContext.Provider>
   );

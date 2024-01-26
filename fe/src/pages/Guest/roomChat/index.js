@@ -7,6 +7,7 @@ import {
   EditOutlined,
   PaperClipOutlined,
   SendOutlined,
+  FormOutlined,
 } from "@ant-design/icons";
 import Message from "./Message";
 import ChatList from "./ChatList";
@@ -26,6 +27,7 @@ const RoomChat = () => {
   const { authUser } = useContext(AuthContext);
   const { id } = useParams();
   const { socket, roomChats } = useContext(SocketContext);
+  const [roomChat, setRoomChat] = useState();
   const [messages, setMessages] = useState([]);
   const [content, setContent] = useState("");
   const navigate = useNavigate();
@@ -72,6 +74,16 @@ const RoomChat = () => {
     }
   }, [id]);
 
+  useEffect(() => {
+    if (roomChats.length > 0) {
+      for (var room of roomChats) {
+        if (room.id == id) {
+          setRoomChat(room);
+        }
+      }
+    }
+  }, [roomChats, id]);
+
   const switchRoomChat = (chatId) => {
     navigate(`/room-chat/${chatId}`);
   };
@@ -81,14 +93,16 @@ const RoomChat = () => {
       <ChatList chatList={roomChats} switchRoomChat={switchRoomChat} />
       <Layout className="content-room-chat">
         <Row className="msg-header">
-          <Col className="text-bold-18 ">Name</Col>
+          <Col className="text-bold-18 ">
+            {roomChat?.name ? roomChat.name : "RoomChat"}
+          </Col>
           <Col>
             <Row gutter={[16]}>
               <Col className="text-bold-18 wrap-icon" style={{ color: "red" }}>
                 <DeleteOutlined />
               </Col>
               <Col className="text-bold-18 wrap-icon">
-                <EditOutlined />
+                <FormOutlined />
               </Col>
               <Col className="text-bold-18 wrap-icon">
                 <InfoCircleOutlined spin />

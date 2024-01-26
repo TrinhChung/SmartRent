@@ -1,20 +1,38 @@
-import React from "react";
-import { ContainerOutlined } from "@ant-design/icons";
+import React, { useCallback, useState } from "react";
+import { ContainerOutlined, EditOutlined } from "@ant-design/icons";
 import { Layout, Row, Col } from "antd";
 import "./ChatList.scss";
+import EditNameRoom from "./EditNameRoom";
 
 const { Sider } = Layout;
 
 const ChatInfo = ({}) => {
+  const [isOpenModelEditName, setIsOpenModelEditName] = useState(false);
+  const closeModal = useCallback(() => {
+    return setIsOpenModelEditName(false);
+  }, []);
+
   return (
     <Sider className="chat-info" width={360}>
-      <Row className="title-sidebar">Sidebar</Row>
+      <Row className="title-sidebar">Thông tin phòng</Row>
       <Row className="box-chat-info">
         <Col>
           <ContainerOutlined />
         </Col>
-        <Col>Hợp đồng</Col>
+        <Col className="item-chat-info">Hợp đồng</Col>
       </Row>
+      <Row
+        className="box-chat-info"
+        onClick={() => {
+          setIsOpenModelEditName(true);
+        }}
+      >
+        <Col>
+          <EditOutlined />
+        </Col>
+        <Col className="item-chat-info">Đổi tên phòng</Col>
+      </Row>
+      <EditNameRoom isOpen={isOpenModelEditName} close={closeModal} />
     </Sider>
   );
 };

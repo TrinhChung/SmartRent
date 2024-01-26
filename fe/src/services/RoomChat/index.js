@@ -11,3 +11,7 @@ export const sendMessageToRoomService = (data) => {
 export const getMessagesOfRoomChatService = (roomChatId) => {
   return axios.get(`/api/message?roomChatId=${roomChatId}`);
 };
+
+export const updateNameRoomChatService = (data) => {
+  return axios.post("/api/room-chat/change-name", data);
+};

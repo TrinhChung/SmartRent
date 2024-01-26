@@ -17,3 +17,25 @@ export const createVerify = async ({ type = "1", data }) => {
     });
   }
 };
+
+export const verifyAccountService = async (token) => {
+  const transaction = await db.sequelize.transaction();
+  try {
+    let verify = (verify = await db.Verify.findOne({
+      where: { token: token },
+    }));
+
+    if (verify) {
+      let user = await db.User.findByPk(verify.fkId);
+      if (user) {
+        await user.update({ isActive: true });
+        await db.Verify.destroy({ where: { id: verify.id } });
+      }
+    }
+    transaction.commit();
+  } catch (error) {
+    console.log(error);
+    await transaction.rollback();
+    throw new Error(error);
+  }
+};
