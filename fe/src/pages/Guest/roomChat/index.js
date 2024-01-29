@@ -4,7 +4,6 @@ import "./RoomChat.scss";
 import {
   InfoCircleOutlined,
   DeleteOutlined,
-  EditOutlined,
   PaperClipOutlined,
   SendOutlined,
   FormOutlined,
@@ -117,6 +116,7 @@ const RoomChat = () => {
         </Content>
         <Footer className="input-message">
           <Col span={24}>
+            <Row>List Images</Row>
             <Row className="wrap-input-message">
               <Col xxl={1}>
                 <Row

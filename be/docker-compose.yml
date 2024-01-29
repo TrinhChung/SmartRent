@@ -28,7 +28,7 @@ services:
     container_name: node
     image: node-docker:0.0.1
     build: .
-    command: sh -c "./migrate.sh && HOST=mysql npm start"
+    command: sh -c "./migrate.sh && HOST=mysql && HOST_REDIS=redis npm start"
     ports:
       - 8000:8000
     # restart: always
@@ -40,7 +40,11 @@ services:
     depends_on:
       my-mysql:
         condition: service_healthy
-
+  my-redis:
+    container_name: redis
+    image: redis:alpine
+    ports:
+      - ${PORT_REDIS}:${PORT_REDIS}
   my-nginx:
     container_name: nginx
     image: nginx:1.23.3
