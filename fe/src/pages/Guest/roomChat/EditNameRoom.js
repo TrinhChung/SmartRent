@@ -18,6 +18,7 @@ const EditNameRoom = ({
     const res = await updateNameRoomChatService({ roomChatId: id, name: name });
     if (res.status === 200) {
       await getRoomChatForMe();
+      setName("");
       close();
     }
     setLoading(false);
@@ -29,10 +30,21 @@ const EditNameRoom = ({
       onOk={confirm}
       onCancel={close}
       footer={[
-        <Button key="submit" type="primary" onClick={changeNameRoomChat}>
+        <Button
+          key="submit"
+          type="primary"
+          loading={loading}
+          onClick={changeNameRoomChat}
+        >
           Đổi tên
         </Button>,
-        <Button key="cancel" onClick={close}>
+        <Button
+          key="cancel"
+          onClick={() => {
+            setName("");
+            close();
+          }}
+        >
           Hủy
         </Button>,
       ]}

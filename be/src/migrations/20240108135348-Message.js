@@ -32,7 +32,7 @@ module.exports = {
       },
       content: {
         type: Sequelize.STRING(400),
-        allowNull: false,
+        allowNull: true,
       },
       createdAt: {
         allowNull: false,
