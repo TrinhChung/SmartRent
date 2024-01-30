@@ -1,4 +1,4 @@
-import { Col, Row, Layout, Input } from "antd";
+import { Col, Row, Layout, Input, Image } from "antd";
 import React, { useContext, useEffect, useState } from "react";
 import "./RoomChat.scss";
 import {
@@ -28,6 +28,7 @@ const RoomChat = () => {
   const { socket, roomChats } = useContext(SocketContext);
   const [roomChat, setRoomChat] = useState();
   const [messages, setMessages] = useState([]);
+  const [files, setFiles] = useState([]);
   const [content, setContent] = useState("");
   const navigate = useNavigate();
 
@@ -87,6 +88,22 @@ const RoomChat = () => {
     navigate(`/room-chat/${chatId}`);
   };
 
+  const uploadMultipleFiles = (e) => {
+    const listFile = Array.from(e.target.files);
+    if (listFile.length > 5) {
+      e.preventDefault();
+      alert(`Cannot upload files more than 5`);
+      return;
+    } else if (listFile.length > 0) {
+      var fileBuilt = listFile.map((file) => {
+        return { name: file.name, key: file.name + "*" + file.size, url: window.URL.createObjectURL(file) }
+      })
+      setFiles(fileBuilt);
+    } else {
+      setFiles([]);
+    }
+  }
+
   return (
     <Layout className="room-chat">
       <ChatList chatList={roomChats} switchRoomChat={switchRoomChat} />
@@ -116,14 +133,21 @@ const RoomChat = () => {
         </Content>
         <Footer className="input-message">
           <Col span={24}>
-            <Row>List Images</Row>
+            {files.length > 0 && 
+            <Row style={{paddingBottom: 10, gap: 5}}>
+              {files.map(file => {
+                return (<Col><Image src={file?.url} style={{ height: 80, width: 80 }} /></Col>)
+              })}
+            </Row>}
             <Row className="wrap-input-message">
               <Col xxl={1}>
                 <Row
-                  className="icon-input"
                   style={{ justifyContent: "center" }}
                 >
-                  <PaperClipOutlined />
+                  <label className="icon-input" for="input-image-message">
+                    <PaperClipOutlined />
+                  </label>
+                  <input type="file" id="input-image-message" multiple onChange={uploadMultipleFiles} accept="image/*, application/pdf" />
                 </Row>
               </Col>
               <Col xxl={22}>
