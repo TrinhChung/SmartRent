@@ -5,6 +5,7 @@ import connectDB from "./config/connectDB";
 import cors from "cors";
 import { eventSocket } from "./controllers/socket";
 import { checkRoomPermissionSocket } from "./route/socket";
+import { connectRedis } from "./config/connectRedis";
 
 require("dotenv").config();
 
@@ -47,7 +48,7 @@ app.use(bodyParser.json({ limit: "10mb" }));
 app.use(bodyParser.urlencoded({ limit: "10mb" }));
 
 connectDB();
-
+connectRedis();
 app.use("/api", router);
 
 let port = process.env.PORT || 8080;
