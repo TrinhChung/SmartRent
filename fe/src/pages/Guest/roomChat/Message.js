@@ -1,4 +1,4 @@
-import { Row, Col, Avatar, Tooltip } from "antd";
+import { Row, Col, Avatar, Tooltip, Image } from "antd";
 import React, { useContext } from "react";
 import { AuthContext } from "../../../providers/authProvider";
 import "./Message.scss";
@@ -34,12 +34,32 @@ const Message = ({
 
       <Col style={{ paddingLeft: 12 }}>
         <Tooltip title={"Time"} placement="left" arrow={false}>
+          {message?.messageFiles.length > 0 && (
+            <Row style={{ justifyContent: "end", paddingBottom: 8 }}>
+              {message.messageFiles.map((image) => {
+                return (
+                  <Image
+                    className="message-image"
+                    src={process.env.REACT_APP_HOST_BE + "/" + image.url}
+                  />
+                );
+              })}
+            </Row>
+          )}
           <Row
-            className={`${
-              message.userId === authUser.id ? "msg-owner" : "msg-partner"
-            }`}
+            style={{
+              justifyContent: `${
+                message.userId === authUser.id ? "end" : "start"
+              }`,
+            }}
           >
-            {message.content}
+            <Col
+              className={`${
+                message.userId === authUser.id ? "msg-owner" : "msg-partner"
+              }`}
+            >
+              {message.content}
+            </Col>
           </Row>
         </Tooltip>
       </Col>

@@ -4,9 +4,9 @@ import { router } from "./route";
 import connectDB from "./config/connectDB";
 import cors from "cors";
 import { eventSocket } from "./controllers/socket";
-import { checkRoomPermissionSocket } from "./route/socket";
 import { connectRedis } from "./config/connectRedis";
 
+const path = require("path");
 require("dotenv").config();
 
 const app = express();
@@ -44,9 +44,11 @@ app.use(function (req, res, next) {
   next();
 });
 
+var dir = path.resolve("./media");
+app.use(express.static(dir));
+
 app.use(bodyParser.json({ limit: "10mb" }));
 app.use(bodyParser.urlencoded({ limit: "10mb" }));
-
 connectDB();
 connectRedis();
 app.use("/api", router);
