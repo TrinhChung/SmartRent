@@ -7,9 +7,11 @@ import { AuthContext } from "../../providers/authProvider";
 import { toast } from "react-toastify";
 import "./Navbar.scss";
 import { logoutService } from "../../services/Auth";
+import { dropdownUser } from "../../const/index";
 
 const { Header } = Layout;
 const Navbar = ({ data }) => {
+  console.log(data);
   const { authUser, setAuthUser } = useContext(AuthContext);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [current, setCurrent] = useState("home");
@@ -48,19 +50,7 @@ const Navbar = ({ data }) => {
     navigate("/");
   };
 
-  const items = [
-    {
-      label: "Profile",
-      key: "profile",
-      icon: <UserOutlined />,
-    },
-    {
-      label: "Đăng xuất",
-      key: "logout",
-      icon: <UserOutlined />,
-      danger: true,
-    },
-  ];
+  const items = dropdownUser[authUser?.role ? authUser.role : 1];
 
   const handleMenuClick = (e) => {
     if (e.key === "logout") {

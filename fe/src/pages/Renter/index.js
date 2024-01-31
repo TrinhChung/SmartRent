@@ -1,13 +1,17 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Home from "./home";
-import Negotiate from "./negotiate";
+import Home from "../Guest/home";
+import Negotiate from "../Guest/negotiate";
+import RoomChat from "../Guest/roomChat";
 import HomeLayout from "../../layouts/HomeLayout";
+import { useContext } from "react";
+import { SocketContext } from "../../providers/socketProvider";
 import LinkCustom from "../../components/layout/LinkCustom";
-import Login from "./auth/Login";
-import SignUp from "./auth/SignUp";
 
-const Guest = () => {
+const Renter = () => {
+  const { roomChats } = useContext(SocketContext);
+  const roomChatId = roomChats.length > 0 ? roomChats[0].id : 0;
+
   const items = [
     {
       label: <LinkCustom to="/" label="Trang chủ" />,
@@ -17,7 +21,10 @@ const Guest = () => {
       label: <LinkCustom to={"/negotiating"} label="Đàm phán" />,
       key: "negotiating",
     },
-
+    {
+      label: <LinkCustom to={`/room-chat/${roomChatId}`} label="Room chat" />,
+      key: "room-chat",
+    },
     {
       label: <LinkCustom to={"/search"} label="Tìm kiếm" />,
       key: "search",
@@ -25,16 +32,15 @@ const Guest = () => {
   ];
 
   return (
-    <HomeLayout menu={items}>
+    <HomeLayout menu={items} isFooter={true}>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/auth/login" element={<Login />} />
         <Route path="/negotiating" element={<Negotiate />} />
-        <Route path="/auth/signup" element={<SignUp />} />
+        <Route path="/room-chat/:id" element={<RoomChat />} />
         <Route path="/*" element={<div>Chua dinh nghia</div>} />
       </Routes>
     </HomeLayout>
   );
 };
 
-export default Guest;
+export default Renter;
