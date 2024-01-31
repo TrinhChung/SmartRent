@@ -46,7 +46,6 @@ const RoomChat = () => {
 
   useEffect(() => {
     if (id > 0 && authUser?.id > 0) {
-      console.log("Join new room");
       socket.emit("leave-room", id, authUser?.id);
       socket.emit("join-room", id, authUser?.id);
     }
@@ -55,7 +54,7 @@ const RoomChat = () => {
       await fetchMessageOfRoom(id);
     });
     return () => socket.off("new-message");
-  }, [id]);
+  }, [id, authUser]);
 
   useEffect(() => {
     if (id > 0) {
