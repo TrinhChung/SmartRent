@@ -2,22 +2,26 @@ import { Layout } from "antd";
 import Navbar from "../../components/layout/Navbar";
 import FooterComponent from "./Footer";
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 const { Content } = Layout;
 
 const HomeLayout = ({ children, menu }) => {
   const [isFooter, setIsFooter] = useState(true);
   const listHiddenFooter = ["room-chat"];
+  const location = useLocation();
 
   useEffect(() => {
-    const url = window.location.href;
+    var check = true;
+    const currentUrl = location.pathname;
     for (var item of listHiddenFooter) {
-      console.log(url);
-      if (url.includes(item)) {
-        setIsFooter(false);
+      if (currentUrl.includes(item)) {
+        check = false;
       }
     }
+    setIsFooter(check);
+
     window.scrollTo(0, 0);
-  }, [window.location.href]);
+  }, [location]);
 
   return (
     <Layout className="main-layout">
