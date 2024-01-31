@@ -24,7 +24,6 @@ const buildHtmlSend = async ({ pathHtml, data }) => {
 };
 
 const sendMailRegister = async (data) => {
-  console.log(data);
   const content = {
     from: '"SmartRent" <chungtrinh2k2@gmail.com>',
     to: data.email,

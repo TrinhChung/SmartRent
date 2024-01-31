@@ -4,8 +4,8 @@ import { createContractInstanceSMC } from "../config/connectSMC";
 export const router = Router();
 require("dotenv").config();
 
-const contractInstance = createContractInstanceSMC();
-
+// const contractInstance = createContractInstanceSMC();
+const contractInstance = null;
 BigInt.prototype.toJSON = function () {
   return this.toString();
 };

@@ -32,19 +32,19 @@ contract SmartContract {
 
     address payable owner;
 
-    uint public balance;
+    uint balance;
 
     constructor() payable {
         owner = payable(msg.sender);
     }
 
     fallback() external payable {
-        emit log("Recieve fallback token", msg.sender);
+        emit log("Receive fallback token", msg.sender);
         updatePerson(msg.sender, msg.value);
     }
 
     receive() external payable {
-        emit log("Recieve receive token", msg.sender);
+        emit log("Receive receive token", msg.sender);
         updatePerson(msg.sender, msg.value);
     }
 
@@ -114,21 +114,22 @@ contract SmartContract {
         persons[renter.addressWallet] = renter;
     }
 
-    //
+    //v
     function getMe() external view returns (address) {
         return msg.sender;
     }
 
-    //
+    //v
     function getAddressContract() external view returns (address) {
         return address(this);
     }
 
+    //v
     function getContractBalance() external view returns (uint) {
         return address(this).balance;
     }
 
-    //
+    //v
     function getPersonByAddress(
         address addressWallet
     ) external view returns (Person memory) {

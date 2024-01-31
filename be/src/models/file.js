@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
       File.belongsTo(models.Message, {
         foreignKey: {
           name: "fkId",
+          as: "messageFile",
         },
       });
     }
@@ -27,11 +28,11 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       typeFile: {
-        type: DataTypes.STRING(1),
+        type: DataTypes.STRING(10),
         allowNull: false,
       },
       typeFk: {
-        type: DataTypes.STRING(200),
+        type: DataTypes.STRING(1),
         allowNull: false,
       },
       fkId: {

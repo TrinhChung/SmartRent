@@ -1,12 +1,13 @@
 import React from "react";
 import { Row, Col, Layout, Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
+import { useParams } from "react-router-dom";
 import "./ChatList.scss";
 
 const { Sider } = Layout;
 
-const ChatList = ({ chatList = [] }) => {
-  const roomChatId = 1;
+const ChatList = ({ chatList = [], switchRoomChat = () => {} }) => {
+  const { id } = useParams();
 
   return (
     <Sider className="chat-list" width={360}>
@@ -17,9 +18,12 @@ const ChatList = ({ chatList = [] }) => {
             return (
               <Row
                 className={`box-room-chat-list ${
-                  roomChatId === roomChat.id ? "is-room-chat-selected" : ""
+                  id == roomChat.id ? "is-room-chat-selected" : ""
                 }`}
                 key={`chatlist${index}`}
+                onClick={() => {
+                  switchRoomChat(roomChat.id);
+                }}
               >
                 <Col>
                   <Avatar size={56} icon={<UserOutlined />} />

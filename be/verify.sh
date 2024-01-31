@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 source .env
 
 if [ -z "$network" ]; then

@@ -1,14 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Routes, Route } from "react-router-dom";
 import Home from "./home";
-import Negotiate from "./negotiate"
+import Negotiate from "./negotiate";
 import HomeLayout from "../../layouts/HomeLayout";
 import LinkCustom from "../../components/layout/LinkCustom";
 import Login from "./auth/Login";
 import SignUp from "./auth/SignUp";
 import RoomChat from "./roomChat";
+import { SocketContext } from "../../providers/socketProvider";
 
 const Guest = () => {
+  const { roomChats } = useContext(SocketContext);
+  const roomChatId = roomChats.length > 0 ? roomChats[0].id : 0;
   const items = [
     {
       label: <LinkCustom to="/" label="Trang chủ" />,
@@ -19,7 +22,7 @@ const Guest = () => {
       key: "negotiating",
     },
     {
-      label: <LinkCustom to={"/room-chat/1"} label="Room chat" />,
+      label: <LinkCustom to={`/room-chat/${roomChatId}`} label="Room chat" />,
       key: "room-chat",
     },
     {

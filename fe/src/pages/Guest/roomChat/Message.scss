@@ -5,7 +5,12 @@
     padding: 8px 12px;
     border-radius: 16px;
     max-width: 40vw;
+    word-wrap: break-word;
+    white-space: -webkit-pre-wrap;
+    word-break: break-all;
+    white-space: normal;
   }
+
   .msg-owner {
     background-color: var(--light-blue);
     color: var(--dark-blue);
@@ -14,5 +19,9 @@
   .msg-partner {
     background-color: var(--dark-blue);
     color: white;
+  }
+
+  .message-image {
+    max-width: 300px;
   }
 }

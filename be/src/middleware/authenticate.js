@@ -19,10 +19,10 @@ export const authenticate = async (req, res, next) => {
         req.user = user;
         next();
       } else {
-        res.status(401).json("failed to find user ");
+        res.status(401).json({ message: "Failed to find user" });
       }
     } else {
-      res.status(401).json("failed to find user ");
+      res.status(401).json({ message: "Failed to find user" });
     }
   } catch (err) {
     console.error(err);

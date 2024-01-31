@@ -59,7 +59,7 @@
     .input-message {
       background-color: white;
       min-height: 64px;
-      display: flex;
+      display: inline-table;
       align-items: center;
       justify-content: center;
       padding: 0px 20px;
@@ -81,6 +81,14 @@
         .icon-input {
           font-size: 18px;
           cursor: pointer;
+        }
+
+        .icon-input:hover {
+          font-size: 20px;
+        }
+
+        #input-image-message {
+          display: none;
         }
       }
     }

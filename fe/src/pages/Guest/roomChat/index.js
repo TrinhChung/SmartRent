@@ -1,91 +1,146 @@
-import { Col, Row, Layout, Input } from "antd";
-import React, { useContext } from "react";
+import { Col, Row, Layout, Input, Image } from "antd";
+import React, { useContext, useEffect, useState } from "react";
 import "./RoomChat.scss";
 import {
   InfoCircleOutlined,
   DeleteOutlined,
-  EditOutlined,
   PaperClipOutlined,
   SendOutlined,
+  FormOutlined,
 } from "@ant-design/icons";
 import Message from "./Message";
 import ChatList from "./ChatList";
 import ChatInfo from "./ChatInfo";
 import { SocketContext } from "../../../providers/socketProvider";
+import {
+  getMessagesOfRoomChatService,
+  sendMessageToRoomService,
+} from "../../../services/RoomChat";
+import { useNavigate, useParams } from "react-router-dom";
+import { AuthContext } from "../../../providers/authProvider";
+import { uploadFileToSessionService } from "../../../services/UploadFile/index";
 
 const { Footer, Content } = Layout;
+const { TextArea } = Input;
 
 const RoomChat = () => {
-  const { socket } = useContext(SocketContext);
-  const messages = [
-    {
-      content: `Hi, this is Bing. I can help you with creating a messenger codepen layout. 😊
-A codepen layout is a web page that you can create and edit online using HTML, CSS, and JavaScript. You can use codepen to showcase your web projects, experiment with new ideas, or learn from other developers.`,
-      isOwner: true,
-    },
-    {
-      content: `Hi, this is Bing. I can help you with creating a messenger codepen layout. 😊
-A codepen layout is a web page that you can create and edit online using HTML, CSS, and JavaScript. You can use codepen to showcase your web projects, experiment with new ideas, or learn from other developers`,
-      isOwner: false,
-    },
-    {
-      content: "message 3",
-      isOwner: false,
-    },
-    {
-      content: "message 4",
-      isOwner: true,
-    },
-  ];
+  const { authUser } = useContext(AuthContext);
+  const { id } = useParams();
+  const { socket, roomChats } = useContext(SocketContext);
+  const [roomChat, setRoomChat] = useState();
+  const [messages, setMessages] = useState([]);
+  const [files, setFiles] = useState([]);
+  const [content, setContent] = useState("");
+  const navigate = useNavigate();
 
-  const roomChatList = [
-    {
-      name: "Dự án Hà Nội",
-      id: 1,
-      lastMessage: {
-        content: "Diện tích gần 400m2",
-        time: "12 phút",
-        user: {
-          avatar: "TrangBech",
-        },
-      },
-    },
-    {
-      name: "Dự án Hà Nội",
-      id: 2,
-      lastMessage: {
-        content: "Diện tích gần 400m2",
-        time: "12 phút",
-        user: {
-          avatar: "TrangBech",
-        },
-      },
-    },
-    {
-      name: "Dự án Hà Nội",
-      id: 3,
-      lastMessage: {
-        content: "Diện tích gần 400m2",
-        time: "12 phút",
-        user: {
-          avatar: "TrangBech",
-        },
-      },
-    },
-  ];
+  const fetchMessageOfRoom = async (roomChatId) => {
+    try {
+      const res = await getMessagesOfRoomChatService(roomChatId);
+      if (res.status === 200) {
+        setMessages(res.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if (id > 0 && authUser?.id > 0) {
+      console.log("Join new room");
+      socket.emit("leave-room", id, authUser?.id);
+      socket.emit("join-room", id, authUser?.id);
+    }
+
+    socket.on("new-message", async () => {
+      await fetchMessageOfRoom(id);
+    });
+    return () => socket.off("new-message");
+  }, [id]);
+
+  useEffect(() => {
+    if (id > 0) {
+      fetchMessageOfRoom(id);
+    }
+  }, [id]);
+
+  useEffect(() => {
+    if (roomChats.length > 0) {
+      for (var room of roomChats) {
+        if (room.id == id) {
+          setRoomChat(room);
+        }
+      }
+    }
+  }, [roomChats, id]);
+
+  const switchRoomChat = (chatId) => {
+    navigate(`/room-chat/${chatId}`);
+  };
+
+  const uploadMultipleFiles = async (e) => {
+    const listFile = Array.from(e.target.files);
+    if (listFile.length > 5) {
+      e.preventDefault();
+      alert(`Cannot upload files more than 5`);
+      return;
+    } else if (listFile.length > 0) {
+      const formData = new FormData();
+      for (let i = 0; i < listFile.length; i++) {
+        formData.append("file", listFile[i]);
+      }
+
+      try {
+        const res = await uploadFileToSessionService(formData);
+        if (res.statusCode === 200) {
+          console.log(res.message);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+
+      var fileBuilt = listFile.map((file) => {
+        return {
+          name: file.name,
+          key: file.name + "*" + file.size,
+          url: window.URL.createObjectURL(file),
+        };
+      });
+
+      setFiles(fileBuilt);
+    } else {
+      setFiles([]);
+    }
+  };
+
+  const sendMessage = async (data) => {
+    try {
+      if ((data.content && data.content.length > 0) || files.length > 0) {
+        const res = await sendMessageToRoomService(data);
+        if (res.status === 200) {
+          setContent("");
+          setFiles([]);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <Layout className="room-chat">
-      <ChatList chatList={roomChatList} />
+      <ChatList chatList={roomChats} switchRoomChat={switchRoomChat} />
       <Layout className="content-room-chat">
         <Row className="msg-header">
-          <Col className="text-bold-18 ">Name</Col>
+          <Col className="text-bold-18 ">
+            {roomChat?.name ? roomChat.name : "RoomChat"}
+          </Col>
           <Col>
             <Row gutter={[16]}>
               <Col className="text-bold-18 wrap-icon" style={{ color: "red" }}>
                 <DeleteOutlined />
               </Col>
               <Col className="text-bold-18 wrap-icon">
-                <EditOutlined />
+                <FormOutlined />
               </Col>
               <Col className="text-bold-18 wrap-icon">
                 <InfoCircleOutlined spin />
@@ -100,17 +155,44 @@ A codepen layout is a web page that you can create and edit online using HTML, C
         </Content>
         <Footer className="input-message">
           <Col span={24}>
+            {files.length > 0 && (
+              <Row style={{ paddingBottom: 10, gap: 5 }}>
+                {files.map((file) => {
+                  return (
+                    <Col>
+                      <Image
+                        src={file?.url}
+                        style={{ height: 80, width: 80 }}
+                      />
+                    </Col>
+                  );
+                })}
+              </Row>
+            )}
             <Row className="wrap-input-message">
               <Col xxl={1}>
-                <Row
-                  className="icon-input"
-                  style={{ justifyContent: "center" }}
-                >
-                  <PaperClipOutlined />
+                <Row style={{ justifyContent: "center" }}>
+                  <label className="icon-input" for="input-image-message">
+                    <PaperClipOutlined />
+                  </label>
+                  <input
+                    type="file"
+                    id="input-image-message"
+                    multiple
+                    onChange={uploadMultipleFiles}
+                    accept="image/*, application/pdf"
+                  />
                 </Row>
               </Col>
               <Col xxl={22}>
-                <Input />
+                <TextArea
+                  placeholder="Gửi đoạn chat"
+                  value={content}
+                  onChange={(value) => {
+                    setContent(value.target.value);
+                  }}
+                  autoSize
+                />
               </Col>
               <Col xxl={1}>
                 <Row
@@ -118,8 +200,13 @@ A codepen layout is a web page that you can create and edit online using HTML, C
                   style={{ justifyContent: "center" }}
                 >
                   <SendOutlined
+                    className="send-message-button"
                     onClick={() => {
-                      console.log(socket.connected);
+                      sendMessage({
+                        content: content,
+                        roomChatId: id,
+                        files: files,
+                      });
                     }}
                   />
                 </Row>
