@@ -1,4 +1,4 @@
-import { Col, Row, Layout, Input } from "antd";
+import { Col, Row, Layout, Input, Image } from "antd";
 import React, { useContext, useEffect, useState } from "react";
 import "./RoomChat.scss";
 import {
@@ -18,6 +18,7 @@ import {
 } from "../../../services/RoomChat";
 import { useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../../../providers/authProvider";
+import { uploadFileToSessionService } from "../../../services/UploadFile/index";
 
 const { Footer, Content } = Layout;
 const { TextArea } = Input;
@@ -28,19 +29,9 @@ const RoomChat = () => {
   const { socket, roomChats } = useContext(SocketContext);
   const [roomChat, setRoomChat] = useState();
   const [messages, setMessages] = useState([]);
+  const [files, setFiles] = useState([]);
   const [content, setContent] = useState("");
   const navigate = useNavigate();
-
-  const sendMessage = async (data) => {
-    try {
-      const res = await sendMessageToRoomService(data);
-      if (res.status === 200) {
-        setContent("");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const fetchMessageOfRoom = async (roomChatId) => {
     try {
@@ -61,7 +52,6 @@ const RoomChat = () => {
     }
 
     socket.on("new-message", async () => {
-      console.log("Receive message");
       await fetchMessageOfRoom(id);
     });
     return () => socket.off("new-message");
@@ -85,6 +75,55 @@ const RoomChat = () => {
 
   const switchRoomChat = (chatId) => {
     navigate(`/room-chat/${chatId}`);
+  };
+
+  const uploadMultipleFiles = async (e) => {
+    const listFile = Array.from(e.target.files);
+    if (listFile.length > 5) {
+      e.preventDefault();
+      alert(`Cannot upload files more than 5`);
+      return;
+    } else if (listFile.length > 0) {
+      const formData = new FormData();
+      for (let i = 0; i < listFile.length; i++) {
+        formData.append("file", listFile[i]);
+      }
+
+      try {
+        const res = await uploadFileToSessionService(formData);
+        if (res.statusCode === 200) {
+          console.log(res.message);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+
+      var fileBuilt = listFile.map((file) => {
+        return {
+          name: file.name,
+          key: file.name + "*" + file.size,
+          url: window.URL.createObjectURL(file),
+        };
+      });
+
+      setFiles(fileBuilt);
+    } else {
+      setFiles([]);
+    }
+  };
+
+  const sendMessage = async (data) => {
+    try {
+      if ((data.content && data.content.length > 0) || files.length > 0) {
+        const res = await sendMessageToRoomService(data);
+        if (res.status === 200) {
+          setContent("");
+          setFiles([]);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -116,14 +155,33 @@ const RoomChat = () => {
         </Content>
         <Footer className="input-message">
           <Col span={24}>
-            <Row>List Images</Row>
+            {files.length > 0 && (
+              <Row style={{ paddingBottom: 10, gap: 5 }}>
+                {files.map((file) => {
+                  return (
+                    <Col>
+                      <Image
+                        src={file?.url}
+                        style={{ height: 80, width: 80 }}
+                      />
+                    </Col>
+                  );
+                })}
+              </Row>
+            )}
             <Row className="wrap-input-message">
               <Col xxl={1}>
-                <Row
-                  className="icon-input"
-                  style={{ justifyContent: "center" }}
-                >
-                  <PaperClipOutlined />
+                <Row style={{ justifyContent: "center" }}>
+                  <label className="icon-input" for="input-image-message">
+                    <PaperClipOutlined />
+                  </label>
+                  <input
+                    type="file"
+                    id="input-image-message"
+                    multiple
+                    onChange={uploadMultipleFiles}
+                    accept="image/*, application/pdf"
+                  />
                 </Row>
               </Col>
               <Col xxl={22}>
@@ -144,7 +202,11 @@ const RoomChat = () => {
                   <SendOutlined
                     className="send-message-button"
                     onClick={() => {
-                      sendMessage({ content: content, roomChatId: id });
+                      sendMessage({
+                        content: content,
+                        roomChatId: id,
+                        files: files,
+                      });
                     }}
                   />
                 </Row>

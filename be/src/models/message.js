@@ -12,11 +12,11 @@ module.exports = (sequelize, DataTypes) => {
         },
       });
 
-      Message.belongsTo(models.Message, {
+      Message.hasMany(models.File, {
         foreignKey: {
-          name: "replyId",
-          as: "children",
+          name: "fkId",
         },
+        as: "messageFiles",
       });
     }
   }
@@ -36,7 +36,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       content: {
         type: DataTypes.STRING(400),
-        allowNull: false,
+        allowNull: true,
       },
     },
     {

@@ -17,4 +17,22 @@ export const createMessageSchema = {
       },
     ],
   },
+  files: {
+    optional: true,
+    rules: [
+      {
+        rule: (input) => {
+          if (input.length > 0) {
+            for (var file of input) {
+              if (!file?.key) {
+                return true;
+              }
+            }
+          }
+          return false;
+        },
+        message: "File required field ",
+      },
+    ],
+  },
 };

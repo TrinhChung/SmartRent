@@ -15,31 +15,15 @@ module.exports = {
         allowNull: false,
       },
       typeFile: {
-        type: Sequelize.STRING(1),
+        type: Sequelize.STRING(10),
         allowNull: false,
       },
       typeFk: {
-        type: Sequelize.STRING(200),
+        type: Sequelize.STRING(1),
         allowNull: false,
       },
       fkId: {
         type: Sequelize.INTEGER.UNSIGNED,
-        references: {
-          model: "Messages",
-          key: "id",
-        },
-        references: {
-          model: "Floors",
-          key: "id",
-        },
-        references: {
-          model: "Rooms",
-          key: "id",
-        },
-        references: {
-          model: "RealEstates",
-          key: "id",
-        },
         allowNull: false,
       },
       createdAt: {
