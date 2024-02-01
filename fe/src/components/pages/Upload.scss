@@ -1,0 +1,14 @@
+.upload-component {
+  .label-upload {
+    border: 1px dashed black;
+    display: flex;
+    border-radius: 8px;
+    justify-content: center;
+  }
+
+  .label-upload:hover {
+    border: 1px dashed var(--jade);
+    color: var(--jade);
+    cursor: pointer;
+  }
+}
