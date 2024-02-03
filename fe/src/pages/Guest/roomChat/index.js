@@ -1,5 +1,5 @@
 import { Col, Row, Layout, Input, Image } from "antd";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import "./RoomChat.scss";
 import {
   InfoCircleOutlined,
@@ -32,6 +32,7 @@ const RoomChat = () => {
   const [files, setFiles] = useState([]);
   const [content, setContent] = useState("");
   const navigate = useNavigate();
+  const chatWindowRef = useRef(null);
 
   const fetchMessageOfRoom = async (roomChatId) => {
     try {
@@ -119,6 +120,9 @@ const RoomChat = () => {
           setContent("");
           setFiles([]);
         }
+        setTimeout(() => {
+          chatWindowRef.current.scrollTo(0, chatWindowRef.current.scrollHeight);
+        }, 50);
       }
     } catch (error) {
       console.log(error);
@@ -147,7 +151,7 @@ const RoomChat = () => {
             </Row>
           </Col>
         </Row>
-        <Content className="msg-body">
+        <Content className="msg-body" ref={chatWindowRef}>
           {messages.map((message, index) => {
             return <Message message={message} key={`chat${index}`} />;
           })}

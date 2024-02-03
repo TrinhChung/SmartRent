@@ -32,13 +32,15 @@ describe("ContractApi", function () {
     })
     
     describe("receive", async () => {
-        it("should update person balance on fallback", async function () {
+        it("should update person balance on receive", async function () {
             const { contractApi, sender } = await loadFixture(beforeEach);
 
             // Send Ether to the contract using a simple Ether transfer without data
             await sender.sendTransaction({ to: contractApi.target, value: ethers.parseEther("1") })
 
             expect((await contractApi.getPersonByAddress(sender.address)).balance).to.equal(ethers.parseEther("1"));
+            await sender.sendTransaction({ to: contractApi.target, value: ethers.parseEther("1") })
+            expect((await contractApi.getPersonByAddress(sender.address)).balance).to.equal(ethers.parseEther("2"));
         })
 
         it("should add person balance on receive", async function () {
@@ -46,8 +48,9 @@ describe("ContractApi", function () {
 
             // Send Ether to the contract using a simple Ether transfer without data
             await deployer.sendTransaction({ to: contractApi.target, value: ethers.parseEther("5") })
+            await deployer.sendTransaction({ to: contractApi.target, value: ethers.parseEther("5") })
 
-            expect((await contractApi.getPersonByAddress(deployer.address)).balance).to.equal(ethers.parseEther("5"));
+            expect((await contractApi.getPersonByAddress(deployer.address)).balance).to.equal(ethers.parseEther("10"));
         });
 
         it("should emit log event when receiving Ether", async function () {
@@ -67,21 +70,22 @@ describe("ContractApi", function () {
 
     describe("CreatSmartContract", async () => {
         it("should create a smart contract", async function () {
-            const termArray = [{ Term: ["first","SampleTerm"] }, { Term: ["second","SampleTerm"] }];
             const { deployer, contractApi , sender } = await loadFixture(beforeEach)
+            await deployer.sendTransaction({ to: contractApi.target, value: ethers.parseEther("10") })
+            await sender.sendTransaction({ to: contractApi.target, value: ethers.parseEther("10") })
+
             await contractApi.createSmartContract(
                 1,
                 deployer.address,
                 sender.address,
-                100, // rentCost
+                1, // rentCost
                 30, // duration
                 0, // timeStart
                 30, // paymentDeadline
                 "Monthly",
-                termArray
+                []
             )
                 
-            console.log("hey")
             const smartContract = await contractApi.getSmartContractById(1);
             expect(smartContract.id).to.equal(1);
             expect(smartContract.renter).to.equal(deployer.address);
@@ -89,58 +93,60 @@ describe("ContractApi", function () {
         });
         
         it("should revert with insufficient balance", async function () {
-            const termArray = [{ Term: ["first","SampleTerm"] }];
             const { deployer, contractApi , sender } = await loadFixture(beforeEach)
-            const rentCost = await ethers.provider.getBalance(sender.address)
-            expect(() =>
-            contractApi.createSmartContract(
+            expect(async () =>
+            await contractApi.createSmartContract(
                 1,
                 deployer.address,
                 sender.address,
-                rentCost,
+                100,
                 30, // duration
                 0, // timeStart
                 30, // paymentDeadline
                 "Monthly",
-                termArray
+                []
               )
             ).to.be.revertedWith("Insufficient balance");
         });
     })
 
-    // describe("transferETH", async () => {
-    //     it("should transfer ETH from renter to seller", async function () {
-    //         // Set up a contract and persons for testing
-    //         await yourContract.createSmartContract(
-    //           1,
-    //           renter.address,
-    //           seller.address,
-    //           ethers.utils.parseEther("1"), // rentCost
-    //           30, // duration
-    //           0, // timeStart
-    //           30, // paymentDeadline
-    //           "Monthly",
-    //           [] // Empty term array for simplicity
-    //         );
+    describe("transferETH", async () => {
+        it("should transfer ETH from renter to seller", async function () {
+            // Set up a contract and persons for testing
+            const { deployer, contractApi , sender } = await loadFixture(beforeEach)
+            await deployer.sendTransaction({ to: contractApi.target, value: ethers.parseEther("10") })
+            await sender.sendTransaction({ to: contractApi.target, value: ethers.parseEther("10") })
+
+            await contractApi.createSmartContract(
+              1,
+              deployer.address,
+              sender.address,
+              ethers.parseEther("1"), // rentCost
+              30, // duration
+              0, // timeStart
+              30, // paymentDeadline
+              "Monthly",
+              [] // Empty term array for simplicity
+            );
         
-    //         // Initial balances
-    //         const initialRenterBalance = await renter.getBalance();
-    //         const initialSellerBalance = await seller.getBalance();
+            // Initial balances
+            const initialRenterBalance = await ethers.provider.getBalance(deployer.address) 
+            const initialSellerBalance = await ethers.provider.getBalance(sender.address)
         
-    //         // Call the transferETH function
-    //         await yourContract.transferETH(1, { value: ethers.parseEther("1") });
+            // Call the transferETH function
+            await contractApi.transferETH(1, { value: ethers.parseEther("1") })
         
-    //         // Updated balances
-    //         const updatedRenterBalance = await renter.getBalance();
-    //         const updatedSellerBalance = await seller.getBalance();
+            // Updated balances
+            const updatedRenterBalance = await ethers.provider.getBalance(deployer.address)
+            const updatedSellerBalance = await ethers.provider.getBalance(sender.address)
         
-    //         // Check if the renter's balance is decreased by rentCost
-    //         expect(updatedRenterBalance).to.equal(initialRenterBalance.sub(ethers.utils.parseEther("1")));
+            // Check if the renter's balance is decreased by rentCost
+            // expect(updatedRenterBalance).to.equal(initialRenterBalance - (await ethers.parseEther("1")));
         
-    //         // Check if the seller's balance is increased by rentCost
-    //         expect(updatedSellerBalance).to.equal(initialSellerBalance.add(ethers.utils.parseEther("1")));
-    //       });
-    // })
+            // Check if the seller's balance is increased by rentCost
+            expect(updatedSellerBalance).to.equal(initialSellerBalance + (await ethers.parseEther("1")));
+          });
+    })
 
     describe("close address", async () => {
         it("should close smart contract", async () => {
@@ -152,7 +158,7 @@ describe("ContractApi", function () {
             expect((await contractApi.getPersonByAddress(sender.address)).balance).to.equal(ethers.parseEther("1"));
             await contractApi.close(contractApi.getMe())
 
-            expect((await contractApi.getPersonByAddress(sender.address)).balance).to.equal(0);
+            expect(await contractApi.getContractBalance()).to.equal(0);
         })
         it("should not close smart contract", async () => {
             const { contractApi, sender, deployer } = await loadFixture(beforeEach);
