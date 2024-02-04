@@ -1,11 +1,17 @@
 import React, { useState } from "react";
-import { Col, Row, Input, Form, Image, Switch } from "antd";
+import { Col, Row, Input, Form, Image, Switch, Steps, Button } from "antd";
 import Upload from "../../../components/pages/Upload";
 import MarkdownEditor from "@uiw/react-markdown-editor";
 import { useJsApiLoader } from "@react-google-maps/api";
 import MapCustom from "../../../components/maps/MapCustom";
 import PlacesAutocomplete from "../../../components/maps/PlacesAutocomplete";
-import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
+import {
+  CheckOutlined,
+  CloseOutlined,
+  UserOutlined,
+  SolutionOutlined,
+  SmileOutlined,
+} from "@ant-design/icons";
 import "./NewPost.scss";
 
 const NewPost = () => {
@@ -19,6 +25,8 @@ const NewPost = () => {
   const [description, setDescription] = useState(false);
   const [listImg, setListImg] = useState([]);
   const [isPaymentCoin, setIsPaymentCoin] = useState(true);
+  const [statusPost, setStatusPost] = useState({ step: 0, status: "loading" });
+
   const [position, setPosition] = useState({
     lat: 21.0469701,
     lng: 105.8021347,
@@ -28,9 +36,42 @@ const NewPost = () => {
     setIsPaymentCoin(checked);
   };
 
+  const items = [
+    {
+      title: <Row className="text_title">Thông tin tòa nhà</Row>,
+      icon: <UserOutlined />,
+    },
+    {
+      title: <Row className="text_title">Thông tin tầng</Row>,
+      icon: <SolutionOutlined />,
+    },
+    {
+      title: <Row className="text_title">Thông tin phòng</Row>,
+      icon: <SolutionOutlined />,
+    },
+    {
+      title: <Row className="text_title">Done</Row>,
+      icon: <SmileOutlined />,
+    },
+  ];
+
+  const handleNextStep = () => {
+    setStatusPost({ status: "process", step: statusPost.step + 1 });
+  };
+
+  const handleDoneStep = () => {};
+
+  const handlePreStep = () => {};
+
   return (
     <Col span={24} className="home-container new-post">
-      <Row className="text_title">Tạo bài đăng</Row>
+      <Row>
+        <Steps
+          current={statusPost.step}
+          status={statusPost.status}
+          items={items}
+        />
+      </Row>
       {isLoaded && (
         <Form
           layout="vertical"
@@ -203,8 +244,28 @@ const NewPost = () => {
               />
             </Form.Item>
           </Row>
-          <Row>Attributes</Row>
-          <Row>Create Room</Row>
+          <Row style={{ paddingBottom: 10 }}>
+            {statusPost.step < items.length - 1 && (
+              <Button type="primary" onClick={handleNextStep}>
+                Next
+              </Button>
+            )}
+            {statusPost.step === items.length - 1 && (
+              <Button type="primary" onClick={handleDoneStep}>
+                Done
+              </Button>
+            )}
+            {statusPost.step > 0 && (
+              <Button
+                style={{
+                  margin: "0 8px",
+                }}
+                onClick={handlePreStep}
+              >
+                Previous
+              </Button>
+            )}
+          </Row>
         </Form>
       )}
     </Col>
