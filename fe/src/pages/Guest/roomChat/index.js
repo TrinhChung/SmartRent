@@ -54,7 +54,7 @@ const RoomChat = () => {
       await fetchMessageOfRoom(id);
     });
     return () => socket.off("new-message");
-  }, [id, authUser]);
+  }, [socket, id, authUser]);
 
   useEffect(() => {
     if (id > 0) {
@@ -65,7 +65,7 @@ const RoomChat = () => {
   useEffect(() => {
     if (roomChats.length > 0) {
       for (var room of roomChats) {
-        if (room.id == id) {
+        if (String(room.id) === String(id)) {
           setRoomChat(room);
         }
       }

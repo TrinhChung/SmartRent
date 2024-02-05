@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { uploadFileToSessionService } from "../../services/UploadFile/index";
-import { Col, Input } from "antd";
+import { Col } from "antd";
 import "./Upload.scss";
 
 const Upload = ({ idInput, setFiles = () => {}, height = 80, width = 80 }) => {
