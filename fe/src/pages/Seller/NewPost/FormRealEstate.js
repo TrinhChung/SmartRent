@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Col, Row, Input, Form, Image, Switch } from "antd";
+import React, { useCallback, useState } from "react";
+import { Col, Row, Input, Form, Image, Switch, Button } from "antd";
 import MapCustom from "../../../components/maps/MapCustom";
 import PlacesAutocomplete from "../../../components/maps/PlacesAutocomplete";
 import Upload from "../../../components/pages/Upload";
@@ -9,7 +9,7 @@ import { useJsApiLoader } from "@react-google-maps/api";
 
 import "./NewPost.scss";
 
-const FormRealEstate = ({ form }) => {
+const FormRealEstate = ({ form, setFieldsValue = () => {} }) => {
   const { isLoaded } = useJsApiLoader({
     mapIds: process.env.REACT_APP_MAP_ID,
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAP_KEY,
@@ -22,6 +22,14 @@ const FormRealEstate = ({ form }) => {
     lat: 21.0469701,
     lng: 105.8021347,
   });
+
+  const handleUploadImg = useCallback(
+    (listImgInput) => {
+      setListImg(listImgInput);
+      form.setFieldsValue({ imgRealEstate: listImgInput, isWhole: true });
+    },
+    [form, setListImg, setFieldsValue]
+  );
 
   const onChangeTypPayment = (checked) => {
     setIsPaymentCoin(checked);
@@ -51,24 +59,46 @@ const FormRealEstate = ({ form }) => {
                       label="Tên tòa nhà"
                       name="nameRealEstate"
                       style={{ width: "100%" }}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Tên tòa nhà không được trống",
+                        },
+                      ]}
                     >
                       <Input placeholder="Tên tòa nhà" />
                     </Form.Item>
                   </Row>
                   <Row>
                     <Form.Item
-                      label="Diện tích"
+                      label={
+                        <div>
+                          Diện tích(m<sup>2</sup>)
+                        </div>
+                      }
                       name="acreage"
                       style={{ width: "100%" }}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Diện tích không được trống",
+                        },
+                      ]}
                     >
                       <Input placeholder="Diện tích sàn" />
                     </Form.Item>
                   </Row>
                   <Row>
                     <Form.Item
-                      label="Giá thuê"
+                      label="Giá thuê(VNĐ)"
                       name="cost"
                       style={{ width: "100%" }}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Giá thuê không được trống",
+                        },
+                      ]}
                     >
                       <Input placeholder="Giá thuê theo tháng" />
                     </Form.Item>
@@ -97,7 +127,10 @@ const FormRealEstate = ({ form }) => {
                             Tự động thanh toán
                           </Col>
                           <Col style={{ paddingLeft: 8 }}>
-                            <Form.Item name="autoPayment">
+                            <Form.Item
+                              name="autoPayment"
+                              valuePropName="checked"
+                            >
                               <Switch
                                 defaultChecked
                                 size="small"
@@ -111,7 +144,7 @@ const FormRealEstate = ({ form }) => {
                       <Row>
                         <Col style={{ paddingTop: 5 }}>Thuê nguyên căn</Col>
                         <Col style={{ paddingLeft: 8 }}>
-                          <Form.Item name="isWhole">
+                          <Form.Item name="isWhole" valuePropName="checked">
                             <Switch
                               defaultChecked
                               size="small"
@@ -126,7 +159,7 @@ const FormRealEstate = ({ form }) => {
                           Cho phép nuôi động vật
                         </Col>
                         <Col style={{ paddingLeft: 8 }}>
-                          <Form.Item name="isAllowPet">
+                          <Form.Item name="isAllowPet" valuePropName="checked">
                             <Switch
                               defaultChecked
                               size="small"
@@ -143,6 +176,12 @@ const FormRealEstate = ({ form }) => {
                       label="Địa chỉ"
                       name="address"
                       style={{ width: "100%" }}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Địa chỉ không được trống",
+                        },
+                      ]}
                     >
                       <PlacesAutocomplete
                         setPosition={setPosition}
@@ -159,17 +198,16 @@ const FormRealEstate = ({ form }) => {
               </Row>
             </Form.Item>
           </Row>
-          <Row></Row>
           <Row>
             <Form.Item
-              label="Ảnh tòa nhà"
               name="imgRealEstate"
-              style={{ width: "100%" }}
-            >
+              style={{ width: "100%", display: "none" }}
+            ></Form.Item>
+            <Form.Item label="Ảnh tòa nhà" style={{ width: "100%" }}>
               <Row style={{ width: "100%", gap: 8 }}>
                 <Upload
                   idInput="upload-img-real-estate"
-                  setFiles={setListImg}
+                  setFiles={handleUploadImg}
                 />
                 {listImg.length > 0 &&
                   listImg.map((img) => {
