@@ -5,7 +5,10 @@ import usePlacesAutocomplete, {
 import { Col, Input, Row, Popover } from "antd";
 import "./Map.scss";
 
-const PlacesAutocomplete = ({ setPosition = () => {} }) => {
+const PlacesAutocomplete = ({
+  setPosition = () => {},
+  isShowDetail = true,
+}) => {
   const {
     ready,
     value,
@@ -63,7 +66,7 @@ const PlacesAutocomplete = ({ setPosition = () => {} }) => {
           />
         </Popover>
       </Row>
-      {value && (
+      {value && isShowDetail && (
         <>
           <Row style={{ paddingTop: 10, fontWeight: "bold" }}>
             Thông tin chi tiết
