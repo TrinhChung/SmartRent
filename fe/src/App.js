@@ -16,7 +16,7 @@ function App() {
 
   return (
     <HashRouter>
-      {authUser ? authUser.role == 1 ? <Renter /> : <Seller /> : <Guest />}
+      {authUser ? authUser.role === "1" ? <Renter /> : <Seller /> : <Guest />}
       <ToastContainer
         position="top-right"
         autoClose={2000}

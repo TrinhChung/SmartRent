@@ -32,11 +32,6 @@ export const SocketProvider = ({ children }) => {
     socket.disconnect();
   };
 
-  useEffect(() => {
-    if (authUser) {
-    }
-  }, [socket]);
-
   return (
     <SocketContext.Provider
       value={{ socket, roomChats, socketDisconnect, getRoomChatForMe }}
