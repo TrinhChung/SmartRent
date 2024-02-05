@@ -53,6 +53,7 @@ const Message = ({
               }`,
             }}
           >
+            {message.content && (
             <Col
               className={`${
                 message.userId === authUser.id ? "msg-owner" : "msg-partner"
@@ -60,6 +61,7 @@ const Message = ({
             >
               {message.content}
             </Col>
+            )}
           </Row>
         </Tooltip>
       </Col>
