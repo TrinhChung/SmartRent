@@ -9,7 +9,7 @@ import "./NewPost.scss";
 import FormRealEstate from "./FormRealEstate";
 import FormFloor from "./FormFloor";
 
-const NewPost = () => {
+const FullHouse = () => {
   const [formRealEstate] = Form.useForm();
   const [formFloor] = Form.useForm();
   const [formRoom] = Form.useForm();
@@ -106,4 +106,4 @@ const NewPost = () => {
   );
 };
 
-export default NewPost;
+export default FullHouse;

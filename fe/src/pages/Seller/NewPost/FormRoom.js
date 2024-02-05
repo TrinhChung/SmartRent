@@ -1,7 +1,8 @@
+import { Form } from "antd";
 import React from "react";
 
 const FormRoom = () => {
-  return <div>Form room</div>;
+  return <Form></Form>;
 };
 
 export default FormRoom;

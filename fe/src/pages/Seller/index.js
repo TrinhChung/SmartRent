@@ -8,6 +8,7 @@ import HomeLayout from "../../layouts/HomeLayout";
 import { useContext } from "react";
 import { SocketContext } from "../../providers/socketProvider";
 import LinkCustom from "../../components/layout/LinkCustom";
+import FullHouse from "./NewPost/FullHouse";
 import NewPost from "./NewPost";
 
 const Seller = () => {
@@ -24,7 +25,7 @@ const Seller = () => {
       key: "negotiating",
     },
     {
-      label: <LinkCustom to={`/new-post`} label="Tạo bài đăng" />,
+      label: <LinkCustom to={`/new-post/`} label="Tạo bài đăng" />,
       key: "my-post",
     },
     {
@@ -42,7 +43,8 @@ const Seller = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/negotiating" element={<Negotiate />} />
-        <Route path="/new-post" element={<NewPost />} />
+        <Route path="/new-post/" element={<NewPost />} />
+        <Route path="/new-post/full-house" element={<FullHouse />} />
         <Route path="/room-chat/:id" element={<RoomChat />} />
         <Route path="/*" element={<div>Chua dinh nghia</div>} />
       </Routes>
