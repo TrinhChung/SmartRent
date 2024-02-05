@@ -40,3 +40,15 @@ export const dropdownUser = {
     },
   ],
 };
+
+export const typeFile = [
+  { key: "1", name: "message" },
+  { key: "2", name: "real-estate" },
+];
+
+export const statusRent = [
+  { key: "1", name: "rent" },
+  { key: "2", name: "negotiating" },
+  { key: "3", name: "contracted" },
+  { key: "4", name: "closed" },
+];

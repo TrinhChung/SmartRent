@@ -3,7 +3,13 @@ import { createRealEstateService } from "../services/realEstate";
 export const handleCreateRealEstate = async (req, res, next) => {
   try {
     const data = req.body;
-    const realEstate = await createRealEstateService(data);
+    const user = req.user;
+
+    const realEstate = await createRealEstateService({
+      ...data,
+      userId: user.id,
+    });
+
     return res
       .status(200)
       .json({ message: "Create real estate success", data: realEstate });

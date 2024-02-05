@@ -1,47 +1,24 @@
-import React, { useEffect, useState } from "react";
-import { Col, Row, Form, Steps, Button } from "antd";
-import {
-  UserOutlined,
-  SolutionOutlined,
-  SmileOutlined,
-} from "@ant-design/icons";
+import React, { useEffect } from "react";
+import { Col, Row, Form, Button } from "antd";
+
 import "./NewPost.scss";
 import FormRealEstate from "./FormRealEstate";
-import FormFloor from "./FormFloor";
+import { createRealEstateService } from "../../../services/Post/index";
+import { toast } from "react-toastify";
 
 const FullHouse = () => {
   const [formRealEstate] = Form.useForm();
-  const [formFloor] = Form.useForm();
-  const [formRoom] = Form.useForm();
-
-  const [statusPost, setStatusPost] = useState({ step: 1, status: "loading" });
-
-  const items = [
-    {
-      title: <Row className="text_title">Thông tin tòa nhà</Row>,
-      icon: <UserOutlined />,
-    },
-    {
-      title: <Row className="text_title">Thông tin tầng</Row>,
-      icon: <SolutionOutlined />,
-    },
-    {
-      title: <Row className="text_title">Thông tin phòng</Row>,
-      icon: <SolutionOutlined />,
-    },
-    {
-      title: <Row className="text_title">Done</Row>,
-      icon: <SmileOutlined />,
-    },
-  ];
 
   const handleNextStep = async () => {
     try {
-      if (statusPost.step === 0) {
-        await formRealEstate.validateFields();
-        setStatusPost({ status: "process", step: statusPost.step + 1 });
+      await formRealEstate.validateFields();
+      const data = formRealEstate.getFieldsValue();
+      const res = await createRealEstateService(data);
+      if (res.status === 200) {
+        toast.success("Create Real Estate Success");
       }
     } catch (error) {
+      toast.error("Create Real Estate Success");
       console.log(error);
     }
   };
@@ -50,56 +27,21 @@ const FullHouse = () => {
     formRealEstate.resetFields();
   }, []);
 
-  const handleDoneStep = () => {};
-
-  const handlePreStep = () => {
-    setStatusPost({ status: "process", step: statusPost.step - 1 });
-  };
-
-  const getValueFormRealEstate = () => {
-    console.log(formFloor.getFieldsValue());
-  };
-
   return (
     <Col span={24} className="home-container new-post">
-      <Row>
-        <Steps
-          current={statusPost.step}
-          status={statusPost.status}
-          items={items}
-        />
-      </Row>
-      {statusPost.step === 0 && <FormRealEstate form={formRealEstate} />}
-      {statusPost.step === 1 && <FormFloor form={formFloor} />}
-      {statusPost.step === 2 && <FormFloor form={formRoom} />}
-      <Row style={{ paddingBottom: 10 }}>
-        {statusPost.step < items.length - 1 && (
-          <Button type="primary" onClick={handleNextStep}>
-            Next
-          </Button>
-        )}
-        {statusPost.step === items.length - 1 && (
-          <Button type="primary" onClick={handleDoneStep}>
-            Done
-          </Button>
-        )}
-        {statusPost.step > 0 && (
-          <Button
-            style={{
-              margin: "0 8px",
-            }}
-            onClick={handlePreStep}
-          >
-            Previous
-          </Button>
-        )}
+      {<FormRealEstate form={formRealEstate} />}
+
+      <Row style={{ paddingBottom: 10, gap: 10 }}>
+        <Button type="primary" onClick={handleNextStep}>
+          Create
+        </Button>
         <Button
-          style={{
-            margin: "0 8px",
+          type="primary"
+          onClick={() => {
+            formRealEstate.resetFields();
           }}
-          onClick={getValueFormRealEstate}
         >
-          Get value form real estate
+          Clear
         </Button>
       </Row>
     </Col>

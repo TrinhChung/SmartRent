@@ -49,17 +49,30 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
         defaultValue: 0,
       },
-      isElevator: {
+      isWhole: {
         type: DataTypes.BOOLEAN,
         allowNull: true,
+        defaultValue: true,
       },
       isPet: {
         type: DataTypes.BOOLEAN,
         allowNull: true,
+        defaultValue: true,
+      },
+      autoPayment: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: true,
+      },
+      isPaymentCoin: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: true,
       },
       status: {
         type: DataTypes.STRING(1),
-        allowNull: false,
+        allowNull: true,
+        defaultValue: "1",
       },
     },
     {

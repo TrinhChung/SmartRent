@@ -18,8 +18,8 @@ const FormRealEstate = ({ form, setFieldsValue = () => {} }) => {
   const [listImg, setListImg] = useState([]);
   const [isPaymentCoin, setIsPaymentCoin] = useState(true);
   const [position, setPosition] = useState(
-    form.getFieldValue("position")
-      ? form.getFieldValue("position")
+    form.getFieldValue("location")
+      ? form.getFieldValue("location")
       : {
           lat: 21.0469701,
           lng: 105.8021347,
@@ -36,13 +36,8 @@ const FormRealEstate = ({ form, setFieldsValue = () => {} }) => {
 
   useEffect(() => {
     const lstImg = form.getFieldValue("imgRealEstate");
-    const positionInit = form.getFieldValue("position");
     if (lstImg) {
       setListImg(lstImg);
-    }
-    if (positionInit) {
-      console.log(positionInit);
-      setPosition(positionInit);
     }
   }, []);
 
@@ -86,7 +81,7 @@ const FormRealEstate = ({ form, setFieldsValue = () => {} }) => {
                   <Row>
                     <Form.Item
                       label="Tên tòa nhà"
-                      name="nameRealEstate"
+                      name="name"
                       style={{ width: "100%" }}
                       rules={[
                         {
@@ -214,7 +209,7 @@ const FormRealEstate = ({ form, setFieldsValue = () => {} }) => {
                       <PlacesAutocomplete
                         setPosition={(position) => {
                           setPosition(position);
-                          form.setFieldsValue({ position: position });
+                          form.setFieldsValue({ location: position });
                         }}
                         isShowDetail={false}
                         setAddress={setAddress}
@@ -224,7 +219,7 @@ const FormRealEstate = ({ form, setFieldsValue = () => {} }) => {
                   </Row>
                 </Col>
                 <Col xs={24} xl={18}>
-                  <Form.Item name="position">
+                  <Form.Item name="location">
                     <Row style={{ justifyContent: "end" }}>
                       <MapCustom
                         position={position}

@@ -25,7 +25,7 @@ const Seller = () => {
       key: "negotiating",
     },
     {
-      label: <LinkCustom to={`/new-post/`} label="Tạo bài đăng" />,
+      label: <LinkCustom to={`/new-post/full-house`} label="Tạo bài đăng" />,
       key: "my-post",
     },
     {
