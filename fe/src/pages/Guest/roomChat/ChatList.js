@@ -18,7 +18,9 @@ const ChatList = ({ chatList = [], switchRoomChat = () => {} }) => {
             return (
               <Row
                 className={`box-room-chat-list ${
-                  id == roomChat.id ? "is-room-chat-selected" : ""
+                  String(id) === String(roomChat.id)
+                    ? "is-room-chat-selected"
+                    : ""
                 }`}
                 key={`chatlist${index}`}
                 onClick={() => {

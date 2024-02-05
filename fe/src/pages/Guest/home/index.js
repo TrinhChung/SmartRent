@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { Col, Image, Input, Row } from "antd";
 import PlacesAutocomplete from "../../../components/maps/PlacesAutocomplete";
 import ImageBannerHome from "../../../public/images/home-banner.jpg";
@@ -18,6 +18,10 @@ const Home = () => {
     lat: 21.0469701,
     lng: 105.8021347,
   });
+
+  const setPositionAction = useCallback((position) => {
+    return setPosition(position);
+  }, []);
 
   const listSuggest = [
     {
@@ -116,7 +120,7 @@ const Home = () => {
                 </Col>
               </Row>
               <Row>
-                <PlacesAutocomplete setPosition={setPosition} />
+                <PlacesAutocomplete setPosition={setPositionAction} />
               </Row>
               <Row style={{ paddingTop: 8 }}>
                 <Col xxl={12}>
