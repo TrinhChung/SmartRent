@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Row, Form, Steps, Button } from "antd";
 import {
   UserOutlined,
@@ -11,8 +11,10 @@ import FormFloor from "./FormFloor";
 
 const NewPost = () => {
   const [formRealEstate] = Form.useForm();
+  const [formFloor] = Form.useForm();
+  const [formRoom] = Form.useForm();
 
-  const [statusPost, setStatusPost] = useState({ step: 0, status: "loading" });
+  const [statusPost, setStatusPost] = useState({ step: 1, status: "loading" });
 
   const items = [
     {
@@ -33,14 +35,29 @@ const NewPost = () => {
     },
   ];
 
-  const handleNextStep = () => {
-    setStatusPost({ status: "process", step: statusPost.step + 1 });
+  const handleNextStep = async () => {
+    try {
+      if (statusPost.step === 0) {
+        await formRealEstate.validateFields();
+        setStatusPost({ status: "process", step: statusPost.step + 1 });
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
+
+  useEffect(() => {
+    formRealEstate.resetFields();
+  }, []);
 
   const handleDoneStep = () => {};
 
   const handlePreStep = () => {
     setStatusPost({ status: "process", step: statusPost.step - 1 });
+  };
+
+  const getValueFormRealEstate = () => {
+    console.log(formFloor.getFieldsValue());
   };
 
   return (
@@ -53,8 +70,8 @@ const NewPost = () => {
         />
       </Row>
       {statusPost.step === 0 && <FormRealEstate form={formRealEstate} />}
-      {statusPost.step === 1 && <FormFloor form={formRealEstate} />}
-      {statusPost.step === 2 && <FormFloor form={formRealEstate} />}
+      {statusPost.step === 1 && <FormFloor form={formFloor} />}
+      {statusPost.step === 2 && <FormFloor form={formRoom} />}
       <Row style={{ paddingBottom: 10 }}>
         {statusPost.step < items.length - 1 && (
           <Button type="primary" onClick={handleNextStep}>
@@ -76,6 +93,14 @@ const NewPost = () => {
             Previous
           </Button>
         )}
+        <Button
+          style={{
+            margin: "0 8px",
+          }}
+          onClick={getValueFormRealEstate}
+        >
+          Get value form real estate
+        </Button>
       </Row>
     </Col>
   );

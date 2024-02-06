@@ -6,15 +6,25 @@ export const createMessageService = async (data) => {
   const transaction = await db.sequelize.transaction();
 
   try {
-    var message = await db.Message.create({
-      userId: data.userId,
-      content: data.content,
-      roomChatId: data.roomChatId,
-    });
+    var message = await db.Message.create(
+      {
+        userId: data.userId,
+        content: data.content,
+        roomChatId: data.roomChatId,
+      },
+      transaction
+    );
 
     if (data.files.length > 0) {
       message = message.get({ plain: true });
-      await createFileService({ messageId: message.id, files: data.files });
+      await createFileService(
+        {
+          fkId: message.id,
+          files: data.files,
+        },
+        "1",
+        transaction
+      );
     }
 
     sendNotifyToRoom(data.roomChatId);
