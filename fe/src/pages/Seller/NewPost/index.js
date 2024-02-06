@@ -10,9 +10,11 @@ import FormRealEstate from "./FormRealEstate";
 import FormFloor from "./FormFloor";
 
 const NewPost = () => {
-  const [formRealEstate, formFloor, formRoom] = Form.useForm();
+  const [formRealEstate] = Form.useForm();
+  const [formFloor] = Form.useForm();
+  const [formRoom] = Form.useForm();
 
-  const [statusPost, setStatusPost] = useState({ step: 0, status: "loading" });
+  const [statusPost, setStatusPost] = useState({ step: 1, status: "loading" });
 
   const items = [
     {
@@ -55,7 +57,7 @@ const NewPost = () => {
   };
 
   const getValueFormRealEstate = () => {
-    console.log(formRealEstate.getFieldsValue());
+    console.log(formFloor.getFieldsValue());
   };
 
   return (

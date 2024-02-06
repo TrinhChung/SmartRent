@@ -3,8 +3,8 @@ import db from "../models/index";
 const path = require("path");
 const fs = require("fs");
 
-export const createFileService = async (data) => {
-  const messageId = data.messageId;
+export const createFileService = async (data, typeFk = "1", transaction) => {
+  const fkId = data.fkId;
 
   for (var file of data.files) {
     var typeFile = file.name.split(".");
@@ -18,12 +18,15 @@ export const createFileService = async (data) => {
     }
 
     fs.writeFileSync(pathWrite, imgBase64, { encoding: "base64" });
-    const fileEntity = await db.File.create({
-      typeFk: "1",
-      fkId: messageId,
-      typeFile: typeFile,
-      url: fileName,
-    });
+    const fileEntity = await db.File.create(
+      {
+        typeFk: typeFk,
+        fkId: fkId,
+        typeFile: typeFile,
+        url: fileName,
+      },
+      { transaction: transaction }
+    );
 
     if (!fileEntity) {
       throw new Error("Couldn't create file");

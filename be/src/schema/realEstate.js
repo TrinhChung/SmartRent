@@ -1,14 +1,6 @@
 const validator = require("validator");
 
 export const createRealEstateSchema = {
-  userId: {
-    rules: [
-      {
-        rule: (input) => !input || validator.isEmpty("input"),
-        message: "UserId is required",
-      },
-    ],
-  },
   name: {
     rules: [
       {
@@ -25,11 +17,20 @@ export const createRealEstateSchema = {
       },
     ],
   },
+  location: {
+    rules: [
+      {
+        rule: (input) => !input || validator.isEmpty("input"),
+        message: "location is required",
+      },
+    ],
+  },
 
   cost: {
     rules: [
       {
-        rule: (input) => !input || validator.isEmpty("input"),
+        rule: (input) =>
+          input === null || input === undefined || validator.isEmpty("input"),
         message: "Cost is required",
       },
     ],
@@ -43,10 +44,27 @@ export const createRealEstateSchema = {
     ],
   },
   status: {
+    optional: true,
     rules: [
       {
         rule: (input) => !input || validator.isEmpty("input"),
         message: "Status is required",
+      },
+    ],
+  },
+  imgRealEstate: {
+    optional: true,
+    rules: [
+      {
+        rule: (images) => {
+          for (var image of images) {
+            if (!image.name || !image.key) {
+              return true;
+            }
+          }
+          return false;
+        },
+        message: "Image invalid",
       },
     ],
   },

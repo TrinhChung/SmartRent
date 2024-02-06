@@ -10,14 +10,14 @@ export const createBargainService = async (data) => {
         realEstateId: data.realEstateId,
         status: data.status,
       },
-      { transaction }
+      { transaction: transaction }
     );
 
     await db.RoomChat.create(
       {
         bargainId: bargain.id,
       },
-      { transaction }
+      { transaction: transaction }
     );
 
     transaction.commit();
