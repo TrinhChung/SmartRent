@@ -69,3 +69,14 @@ export const createRealEstateSchema = {
     ],
   },
 };
+
+export const getRealEstateFullHouseSchema = {
+  id: {
+    rules: [
+      {
+        rule: (input) => !input || validator.isEmpty("input"),
+        message: "Id is required",
+      },
+    ],
+  },
+};

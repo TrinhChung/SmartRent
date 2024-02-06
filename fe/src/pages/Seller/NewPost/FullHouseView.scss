@@ -1,0 +1,22 @@
+.full-house-view {
+  .text_title {
+    font-size: 26px;
+  }
+
+  .slick-arrow::before {
+    color: var(--color-text) !important;
+    font-size: 20px !important;
+  }
+
+  .slick-prev {
+    left: -20px !important;
+  }
+
+  .slick-next {
+    z-index: 10 !important;
+  }
+
+  .icon-real-estate {
+    font-size: 20px;
+  }
+}

@@ -19,6 +19,13 @@ module.exports = (sequelize, DataTypes) => {
           as: "messageFile",
         },
       });
+
+      File.belongsTo(models.RealEstate, {
+        foreignKey: {
+          name: "fkId",
+          as: "realEstateFiles",
+        },
+      });
     }
   }
   File.init(
