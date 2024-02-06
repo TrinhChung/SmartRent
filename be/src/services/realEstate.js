@@ -13,8 +13,6 @@ export const createRealEstateService = async (data) => {
       transaction: transaction,
     });
 
-    console.log(address);
-
     var realEstate = await db.RealEstate.create(
       {
         name: data.name,
@@ -22,9 +20,9 @@ export const createRealEstateService = async (data) => {
         addressId: address.id,
         cost: data.cost,
         acreage: data.acreage,
-        descriptionMarkdown: data.description,
+        description: data.description,
         autoPayment: data?.autoPayment,
-        isAllowPet: data?.isAllowPet,
+        isPet: data?.isAllowPet,
         isPaymentCoin: data?.isPaymentCoin,
         isWhole: data?.isWhole,
       },
@@ -50,5 +48,43 @@ export const createRealEstateService = async (data) => {
     console.log(error);
     await transaction.rollback();
     throw new Error("Create real estate service error", error);
+  }
+};
+
+export const getRealEstateFullHouseService = async (id) => {
+  try {
+    const realEstate = await db.RealEstate.findOne({
+      where: { id: id },
+      include: [
+        {
+          model: db.File,
+          where: {
+            typeFk: "2",
+          },
+          as: "realEstateFiles",
+          attributes: ["url"],
+        },
+        {
+          model: db.Floor,
+          include: [
+            {
+              model: db.File,
+              where: {
+                typeFk: "3",
+              },
+              attributes: ["url"],
+            },
+          ],
+        },
+        { model: db.Address },
+      ],
+    });
+    if (!realEstate) {
+      return null;
+    }
+    return realEstate.get({ plain: true });
+  } catch (error) {
+    console.log(error.status);
+    throw new Error(error.message, error);
   }
 };

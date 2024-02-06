@@ -7,6 +7,13 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: { name: "addressId" },
       });
       RealEstate.hasMany(models.Floor);
+
+      RealEstate.hasMany(models.File, {
+        foreignKey: {
+          name: "fkId",
+        },
+        as: "realEstateFiles",
+      });
     }
   }
   RealEstate.init(
@@ -27,11 +34,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.FLOAT.UNSIGNED,
         allowNull: false,
       },
-      descriptionHtml: {
-        type: DataTypes.TEXT,
-        allowNull: true,
-      },
-      descriptionMarkdown: {
+      description: {
         type: DataTypes.TEXT,
         allowNull: true,
       },

@@ -1,7 +1,11 @@
 import React, { memo, useCallback } from "react";
 import { GoogleMap, MarkerF } from "@react-google-maps/api";
 
-const MapCustom = ({ position = {}, setPosition = () => {} }) => {
+const MapCustom = ({
+  position = {},
+  setPosition = () => {},
+  height = "50vh",
+}) => {
   const dragMarker = useCallback(
     (marker) => {
       const lat = marker?.latLng?.lat();
@@ -12,7 +16,7 @@ const MapCustom = ({ position = {}, setPosition = () => {} }) => {
   );
 
   const containerStyle = {
-    height: "50vh",
+    height: height,
     width: "100%",
   };
 

@@ -11,23 +11,21 @@ const CardItem = ({ img = ImageBannerHome, name, url }) => {
     <Row>
       <Col span={24}>
         <Row>
-          <div
+          <Image
             className="background-image"
             style={{
-              backgroundImage: `url(
-                ${img}
-              )`,
               height: "30vh",
               width: "100%",
+              cursor: "pointer",
             }}
+            src={img}
             onClick={() => {
               navigate(url);
             }}
+            preview={false}
           />
         </Row>
-        <Row className="text_title" style={{ paddingTop: 5 }}>
-          {name}
-        </Row>
+        <Row style={{ paddingTop: 5 }}>{name}</Row>
       </Col>
     </Row>
   );

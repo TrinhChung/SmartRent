@@ -236,27 +236,16 @@ const FormRealEstate = ({ form, setFieldsValue = () => {} }) => {
           </Row>
           <Row>
             <Form.Item
+              label="Upload"
               name="imgRealEstate"
-              style={{ width: "100%", display: "none" }}
-            ></Form.Item>
-            <Form.Item label="Ảnh tòa nhà" style={{ width: "100%" }}>
-              <Row style={{ width: "100%", gap: 8 }}>
-                <Upload
-                  idInput="upload-img-real-estate"
-                  setFiles={handleUploadImg}
-                />
-                {listImg.length > 0 &&
-                  listImg.map((img) => {
-                    return (
-                      <Col>
-                        <Image
-                          src={img?.url}
-                          style={{ height: 80, width: 80 }}
-                        />
-                      </Col>
-                    );
-                  })}
-              </Row>
+              valuePropName="fileList"
+            >
+              <Upload
+                idInput={`upload-img-real-estate`}
+                fileList={listImg}
+                setFiles={handleUploadImg}
+                isShowFile={true}
+              />
             </Form.Item>
           </Row>
           <Row>
