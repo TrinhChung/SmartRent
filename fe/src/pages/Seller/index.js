@@ -11,6 +11,7 @@ import LinkCustom from "../../components/layout/LinkCustom";
 import FullHouse from "./NewPost/FullHouse";
 import NewPost from "./NewPost";
 import FullHouseView from "./NewPost/FullHouseView";
+import Floor from "./NewPost/Floor";
 
 const Seller = () => {
   const { roomChats } = useContext(SocketContext);
@@ -46,6 +47,7 @@ const Seller = () => {
         <Route path="/negotiating" element={<Negotiate />} />
         <Route path="/new-post/" element={<NewPost />} />
         <Route path="/new-post/full-house" element={<FullHouse />} />
+        <Route path="/new-post/new-floor" element={<Floor />} />
         <Route path="/room-chat/:id" element={<RoomChat />} />
         <Route
           path="/new-post/full-house-view/:id"

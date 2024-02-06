@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getRealEstateFullHouseService } from "../../../services/RealEstate";
-import { Row, Col, Image } from "antd";
+import { Row, Col, Image, Button } from "antd";
 import Slider from "react-slick";
 import MarkdownEditor from "@uiw/react-markdown-editor";
 import { useJsApiLoader } from "@react-google-maps/api";
@@ -13,10 +13,12 @@ import {
   ProfileOutlined,
   CheckOutlined,
   CloseOutlined,
+  PlusOutlined,
 } from "@ant-design/icons";
 import MapCustom from "../../../components/maps/MapCustom";
 
 const FullHouseView = () => {
+  const navigate = useNavigate();
   const { isLoaded } = useJsApiLoader({
     mapIds: process.env.REACT_APP_MAP_ID,
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAP_KEY,
@@ -190,12 +192,38 @@ const FullHouseView = () => {
           <Row
             style={{
               paddingTop: 20,
-              fontWeight: "bold",
-              color: "var(--color-text)",
-              fontSize: 20,
+              justifyContent: "space-between",
             }}
+            className="box-title"
           >
-            Tầng
+            <Col>
+              <label className="box-title">Tầng</label>
+            </Col>
+            <Col>
+              <Button
+                onClick={() => {
+                  navigate(`/new-post/new-floor?house=${id}`);
+                }}
+              >
+                <PlusOutlined />
+                <label>Thêm mới</label>
+              </Button>
+            </Col>
+          </Row>
+        </Col>
+      </Row>
+      <Row>
+        <Col span={24}>
+          <Row
+            style={{
+              paddingTop: 20,
+            }}
+            className="box-title"
+          >
+            <Col>
+              <label className="box-title">Phòng</label>
+            </Col>
+            <Col></Col>
           </Row>
         </Col>
       </Row>
