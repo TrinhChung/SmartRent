@@ -6,6 +6,12 @@ module.exports = (sequelize, DataTypes) => {
       Room.belongsTo(models.Floor, {
         foreignKey: { name: "floorId" },
       });
+
+      Room.hasMany(models.File, {
+        foreignKey: {
+          name: "fkId",
+        },
+      });
     }
   }
   Room.init(

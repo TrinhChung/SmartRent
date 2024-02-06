@@ -56,8 +56,26 @@ export const getRealEstateFullHouseService = async (id) => {
     const realEstate = await db.RealEstate.findOne({
       where: { id: id },
       include: [
-        { model: db.File, as: "realEstateFiles", attributes: ["url"] },
-        { model: db.Floor },
+        {
+          model: db.File,
+          where: {
+            typeFk: "2",
+          },
+          as: "realEstateFiles",
+          attributes: ["url"],
+        },
+        {
+          model: db.Floor,
+          include: [
+            {
+              model: db.File,
+              where: {
+                typeFk: "3",
+              },
+              attributes: ["url"],
+            },
+          ],
+        },
         { model: db.Address },
       ],
     });

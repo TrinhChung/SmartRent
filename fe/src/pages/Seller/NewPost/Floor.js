@@ -20,7 +20,6 @@ const Floor = () => {
   const handleCreateFloorForHouse = async () => {
     try {
       const data = formFloor.getFieldsValue();
-      console.log(data);
       await formFloor.validateFields();
       if (data.floors.length === 0) {
         toast.error("Dữ liệu trống");
@@ -29,6 +28,7 @@ const Floor = () => {
         const res = await createFloorsService(data);
         if (res.status === 200) {
           toast.success("Create Floor Success");
+          formFloor.resetFields();
         }
       }
     } catch (error) {

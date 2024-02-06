@@ -38,7 +38,7 @@ export const bulkCreateFloorsSchema = {
           }
           return false;
         },
-        message: "Description floor is required",
+        message: "Files floor is required",
       },
       {
         rule: (floors) => {
@@ -49,7 +49,6 @@ export const bulkCreateFloorsSchema = {
                   return true;
                 }
               }
-              return true;
             }
           }
           return false;

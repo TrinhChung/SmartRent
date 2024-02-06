@@ -92,7 +92,7 @@ const FormFloor = ({ form }) => {
                     <Col span={18} style={{ paddingLeft: 30 }}>
                       <Form.Item
                         label="Mô tả"
-                        name="description"
+                        name={[field.name, "description"]}
                         style={{ width: "100%" }}
                       >
                         <MarkdownEditor height="300px" enablePreview={true} />

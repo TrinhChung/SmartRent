@@ -9,6 +9,12 @@ module.exports = (sequelize, DataTypes) => {
         },
       });
       Floor.hasMany(models.Room);
+
+      Floor.hasMany(models.File, {
+        foreignKey: {
+          name: "fkId",
+        },
+      });
     }
   }
   Floor.init(
@@ -31,7 +37,8 @@ module.exports = (sequelize, DataTypes) => {
       },
       roomTotal: {
         type: DataTypes.INTEGER.UNSIGNED,
-        allowNull: false,
+        allowNull: true,
+        defaultValue: 0,
       },
       status: {
         type: DataTypes.STRING(1),

@@ -11,3 +11,15 @@ export const getRealEstateFullHouseService = ({ id: id }) => {
 export const createFloorsService = (data) => {
   return axios.post("/api/floor/bulk", data);
 };
+
+export const getFloorByIdService = ({ id: id }) => {
+  return axios.get(`/api/floor/${id}`);
+};
+
+export const createRoomsService = (data) => {
+  return axios.post("/api/room/bulk", data);
+};
+
+export const getRoomByIdService = ({ id: id }) => {
+  return axios.get(`/api/room/${id}`);
+};

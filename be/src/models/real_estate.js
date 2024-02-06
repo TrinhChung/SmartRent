@@ -14,12 +14,6 @@ module.exports = (sequelize, DataTypes) => {
         },
         as: "realEstateFiles",
       });
-
-      RealEstate.hasMany(models.File, {
-        foreignKey: {
-          name: "addressId",
-        },
-      });
     }
   }
   RealEstate.init(
