@@ -20,7 +20,7 @@ export const createRealEstateService = async (data) => {
         addressId: address.id,
         cost: data.cost,
         acreage: data.acreage,
-        descriptionMarkdown: data.description,
+        description: data.description,
         autoPayment: data?.autoPayment,
         isPet: data?.isAllowPet,
         isPaymentCoin: data?.isPaymentCoin,
@@ -57,6 +57,7 @@ export const getRealEstateFullHouseService = async (id) => {
       where: { id: id },
       include: [
         { model: db.File, as: "realEstateFiles", attributes: ["url"] },
+        { model: db.Floor },
         { model: db.Address },
       ],
     });

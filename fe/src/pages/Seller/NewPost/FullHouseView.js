@@ -166,7 +166,7 @@ const FullHouseView = () => {
           </Col>
         </Row>
       )}
-      {data?.descriptionMarkdown && (
+      {data?.description && (
         <>
           <Row
             style={{
@@ -180,7 +180,7 @@ const FullHouseView = () => {
           </Row>
           <Row>
             <MarkdownEditor.Markdown
-              source={data?.descriptionMarkdown}
+              source={data?.description}
               style={{ width: "100%", backgroundColor: "transparent" }}
               height="200px"
             />

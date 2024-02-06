@@ -40,11 +40,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.FLOAT.UNSIGNED,
         allowNull: false,
       },
-      descriptionHtml: {
-        type: DataTypes.TEXT,
-        allowNull: true,
-      },
-      descriptionMarkdown: {
+      description: {
         type: DataTypes.TEXT,
         allowNull: true,
       },

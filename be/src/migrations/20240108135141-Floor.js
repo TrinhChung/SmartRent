@@ -22,6 +22,10 @@ module.exports = {
           key: "id",
         },
       },
+      description: {
+        type: Sequelize.TEXT,
+        allowNull: true,
+      },
       cost: {
         type: Sequelize.FLOAT.UNSIGNED,
         allowNull: false,

@@ -25,6 +25,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.FLOAT.UNSIGNED,
         allowNull: false,
       },
+      description: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+      },
       roomTotal: {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,

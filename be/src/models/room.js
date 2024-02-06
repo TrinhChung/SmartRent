@@ -30,6 +30,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.FLOAT.UNSIGNED,
         allowNull: false,
       },
+      description: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+      },
       status: {
         type: DataTypes.STRING(1),
         allowNull: false,

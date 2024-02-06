@@ -7,3 +7,7 @@ export const createRealEstateService = (data) => {
 export const getRealEstateFullHouseService = ({ id: id }) => {
   return axios.get(`/api/real-estate/full-house/${id}`);
 };
+
+export const createFloorsService = (data) => {
+  return axios.post("/api/floor/bulk", data);
+};
