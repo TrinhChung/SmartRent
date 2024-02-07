@@ -2,17 +2,22 @@ import { Col, Image, Row } from "antd";
 import React from "react";
 import { ExportOutlined } from "@ant-design/icons";
 import "./Page.scss";
+import { useNavigate } from "react-router-dom";
 
 const CardHouseHome = ({
-  house = { name: "name", address: "address" },
+  name = "name",
+  address = "address",
+  image = "",
   key = 1,
+  url = "",
 }) => {
+  const navigate = useNavigate();
   return (
     <Col className="card-house_home" key={key}>
       <Image
         className="image-card_house_home"
         preview={false}
-        src={house?.image}
+        src={process.env.REACT_APP_HOST_BE + "/" + image.url}
       />
       <Row className="house-info_card">
         <Col span={24}>
@@ -20,14 +25,19 @@ const CardHouseHome = ({
             className="text_title text-shadow"
             style={{ fontSize: 26, color: "var(--color-text-light)" }}
           >
-            {house?.name}
+            {name}
           </Row>
           <Row style={{ alignItems: "center" }}>
             <Col className="text-shadow" xs={24} xl={20}>
-              {house?.address}
+              {address}
             </Col>
             <Col xs={24} xl={4}>
-              <ExportOutlined style={{}} className="open-link-house" />
+              <ExportOutlined
+                onClick={() => {
+                  navigate(url);
+                }}
+                className="open-link-house"
+              />
             </Col>
           </Row>
         </Col>

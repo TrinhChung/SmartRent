@@ -88,3 +88,59 @@ export const getRealEstateFullHouseService = async (id) => {
     throw new Error(error.message, error);
   }
 };
+
+export const getRealEstateFullHouseByUserIdService = async ({ userId }) => {
+  try {
+    const list = await db.RealEstate.findAll(
+      {
+        where: { userId: userId },
+        include: [
+          {
+            model: db.File,
+            where: {
+              typeFk: "2",
+            },
+            as: "realEstateFiles",
+            attributes: ["url"],
+          },
+          { model: db.Address },
+        ],
+      },
+      { raw: true }
+    );
+
+    return list;
+  } catch (error) {
+    console.log(error.status);
+    throw new Error(error.message, error);
+  }
+};
+
+export const getRealEstateByRecommendService = async ({ userId }) => {
+  try {
+    const list = await db.RealEstate.findAll(
+      {
+        include: [
+          {
+            model: db.File,
+            where: {
+              typeFk: "2",
+            },
+            as: "realEstateFiles",
+            attributes: ["url"],
+          },
+          { model: db.Address },
+        ],
+        subQuery: false,
+        duplicating: false,
+        limit: 10,
+      },
+      { raw: true }
+    );
+
+    return list;
+  } catch (error) {
+    console.log(error.status);
+    throw new Error(error.message, error);
+  }
+};

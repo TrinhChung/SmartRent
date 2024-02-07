@@ -14,7 +14,7 @@ const CardItem = ({ img = ImageBannerHome, name, url }) => {
           <Image
             className="background-image"
             style={{
-              height: "30vh",
+              height: "150px",
               width: "100%",
               cursor: "pointer",
             }}

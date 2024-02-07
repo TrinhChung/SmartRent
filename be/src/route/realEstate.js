@@ -2,6 +2,8 @@ import { Router } from "express";
 import {
   handleCreateRealEstate,
   handleGetRealEstate,
+  handleGetRealEstateByRecommend,
+  handleGetRealEstateByUserId,
 } from "../controllers/realEstate";
 import {
   createRealEstateSchema,
@@ -27,3 +29,7 @@ router.get(
   schemaValidatorInstance.validateParams(getRealEstateFullHouseSchema),
   handleGetRealEstate
 );
+
+router.get("/posted-by-me", authenticate, handleGetRealEstateByUserId);
+
+router.get("/recommend", handleGetRealEstateByRecommend);

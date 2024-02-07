@@ -1,6 +1,8 @@
 import {
   createRealEstateService,
   getRealEstateFullHouseService,
+  getRealEstateFullHouseByUserIdService,
+  getRealEstateByRecommendService,
 } from "../services/realEstate";
 
 export const handleCreateRealEstate = async (req, res, next) => {
@@ -35,6 +37,40 @@ export const handleGetRealEstate = async (req, res) => {
     return res
       .status(200)
       .json({ message: "Get real estate success", data: data });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({ message: error.message });
+  }
+};
+
+export const handleGetRealEstateByUserId = async (req, res) => {
+  try {
+    const user = req.user;
+
+    const data = await getRealEstateFullHouseByUserIdService({
+      userId: user?.id,
+    });
+
+    return res
+      .status(200)
+      .json({ message: "Get real estate success", data: data });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({ message: error.message });
+  }
+};
+
+export const handleGetRealEstateByRecommend = async (req, res) => {
+  try {
+    const user = req.user;
+
+    const data = await getRealEstateByRecommendService({
+      userId: user?.id,
+    });
+
+    return res
+      .status(200)
+      .json({ message: "Get real estate recommend success", data: data });
   } catch (error) {
     console.log(error);
     return res.status(400).json({ message: error.message });

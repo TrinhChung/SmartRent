@@ -9,6 +9,7 @@ import SignUp from "./auth/SignUp";
 import FullHouseView from "../Seller/NewPost/FullHouseView";
 import FloorView from "../Seller/NewPost/FloorView";
 import RoomView from "../Seller/NewPost/RoomView";
+import Search from "./search";
 
 const Guest = () => {
   const items = [
@@ -40,6 +41,7 @@ const Guest = () => {
         />
         <Route path="/new-post/floor-view/:id" element={<FloorView />} />
         <Route path="/new-post/room-view/:id" element={<RoomView />} />
+        <Route path="/search" element={<Search />} />
         <Route path="/*" element={<div>Chua dinh nghia</div>} />
       </Routes>
     </HomeLayout>

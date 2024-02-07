@@ -22,6 +22,7 @@ const Navbar = ({ data }) => {
   };
 
   useEffect(() => {
+    console.log(pathname);
     if (pathname) {
       const pathArr = pathname.split("/");
       if (pathArr[1] === "") {

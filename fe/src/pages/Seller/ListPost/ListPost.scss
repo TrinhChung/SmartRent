@@ -1,0 +1,15 @@
+.list-post {
+  height: calc(100vh - var(--height-navbar) - 24px);
+  overflow: hidden;
+
+  .search-container {
+    background-color: white !important;
+    border: 1px solid var(--shadow-2);
+    padding: 8px 8px;
+    overflow: auto;
+  }
+
+  .list-post-body {
+    padding: 0 20px;
+  }
+}
