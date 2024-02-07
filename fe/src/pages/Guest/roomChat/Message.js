@@ -1,6 +1,7 @@
 import { Row, Col, Avatar, Tooltip, Image } from "antd";
 import React, { useContext } from "react";
 import { AuthContext } from "../../../providers/authProvider";
+import ImageWithLoading from "../../../components/pages/IsLoading"
 import "./Message.scss";
 
 const Message = ({
@@ -38,10 +39,10 @@ const Message = ({
             <Row style={{ justifyContent: "end", paddingBottom: 8 }}>
               {message.messageFiles.map((image) => {
                 return (
-                  <Image
-                    className="message-image"
-                    src={process.env.REACT_APP_HOST_BE + "/" + image.url}
-                  />
+                  <div>
+                    {/* Other message content */}
+                    <ImageWithLoading image={image} />
+                  </div>
                 );
               })}
             </Row>
