@@ -28,10 +28,7 @@ services:
     container_name: node
     image: node-docker:0.0.1
     build: .
-    command:
-      sh -c "./migrate.sh && HOST=mysql npm start"
-      # npx hardhat run scripts/deploy.js --network testnet &&
-      # network=testnet ./verify.sh &&
+    command: sh -c "./checkFileChange.sh && HOST=mysql npm start"
 
     ports:
       - 8000:8000
