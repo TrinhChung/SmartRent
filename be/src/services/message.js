@@ -50,6 +50,7 @@ export const getMessagesOfRoomChatService = async (data) => {
           },
           as: "messageFiles",
           attributes: ["url"],
+          required: false,
         },
       ],
     });

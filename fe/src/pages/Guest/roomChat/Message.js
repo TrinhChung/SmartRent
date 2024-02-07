@@ -1,7 +1,7 @@
 import { Row, Col, Avatar, Tooltip, Image } from "antd";
 import React, { useContext } from "react";
 import { AuthContext } from "../../../providers/authProvider";
-import ImageWithLoading from "../../../components/pages/IsLoading"
+import ImageWithLoading from "../../../components/pages/IsLoading";
 import "./Message.scss";
 
 const Message = ({
@@ -36,7 +36,14 @@ const Message = ({
       <Col style={{ paddingLeft: 12 }}>
         <Tooltip title={"Time"} placement="left" arrow={false}>
           {message?.messageFiles.length > 0 && (
-            <Row style={{ justifyContent: "end", paddingBottom: 8 }}>
+            <Row
+              style={{
+                justifyContent: `${
+                  message.userId === authUser.id ? "end" : "start"
+                }`,
+                paddingBottom: 8,
+              }}
+            >
               {message.messageFiles.map((image) => {
                 return (
                   <div>
@@ -55,13 +62,13 @@ const Message = ({
             }}
           >
             {message.content && (
-            <Col
-              className={`${
-                message.userId === authUser.id ? "msg-owner" : "msg-partner"
-              }`}
-            >
-              {message.content}
-            </Col>
+              <Col
+                className={`${
+                  message.userId === authUser.id ? "msg-owner" : "msg-partner"
+                }`}
+              >
+                {message.content}
+              </Col>
             )}
           </Row>
         </Tooltip>

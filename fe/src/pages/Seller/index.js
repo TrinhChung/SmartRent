@@ -53,12 +53,9 @@ const Seller = () => {
         <Route path="/new-post/new-floor" element={<Floor />} />
         <Route path="/new-post/new-room" element={<FormRoom />} />
         <Route path="/room-chat/:id" element={<RoomChat />} />
-        <Route
-          path="/new-post/full-house-view/:id"
-          element={<FullHouseView />}
-        />
-        <Route path="/new-post/floor-view/:id" element={<FloorView />} />
-        <Route path="/new-post/room-view/:id" element={<RoomView />} />
+        <Route path="/full-house-view/:id" element={<FullHouseView />} />
+        <Route path="/floor-view/:id" element={<FloorView />} />
+        <Route path="/room-view/:id" element={<RoomView />} />
         <Route path="/*" element={<div>Chua dinh nghia</div>} />
       </Routes>
     </HomeLayout>
