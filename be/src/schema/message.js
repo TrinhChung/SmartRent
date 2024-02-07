@@ -10,6 +10,7 @@ export const createMessageSchema = {
     ],
   },
   content: {
+    optional: true,
     rules: [
       {
         rule: (input) => !input || validator.isEmpty("input"),

@@ -6,6 +6,12 @@ module.exports = (sequelize, DataTypes) => {
       Room.belongsTo(models.Floor, {
         foreignKey: { name: "floorId" },
       });
+
+      Room.hasMany(models.File, {
+        foreignKey: {
+          name: "fkId",
+        },
+      });
     }
   }
   Room.init(
@@ -29,6 +35,10 @@ module.exports = (sequelize, DataTypes) => {
       cost: {
         type: DataTypes.FLOAT.UNSIGNED,
         allowNull: false,
+      },
+      description: {
+        type: DataTypes.TEXT,
+        allowNull: true,
       },
       status: {
         type: DataTypes.STRING(1),

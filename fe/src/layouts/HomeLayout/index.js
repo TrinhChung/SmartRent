@@ -1,13 +1,15 @@
 import { Layout } from "antd";
 import Navbar from "../../components/layout/Navbar";
 import FooterComponent from "./Footer";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
 const { Content } = Layout;
 
 const HomeLayout = ({ children, menu }) => {
   const [isFooter, setIsFooter] = useState(true);
-  const listHiddenFooter = ["room-chat"];
+  const listHiddenFooter = useMemo(() => {
+    return ["room-chat"];
+  }, []);
   const location = useLocation();
 
   useEffect(() => {
@@ -21,7 +23,7 @@ const HomeLayout = ({ children, menu }) => {
     setIsFooter(check);
 
     window.scrollTo(0, 0);
-  }, [location]);
+  }, [location, listHiddenFooter]);
 
   return (
     <Layout className="main-layout">

@@ -7,6 +7,13 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: { name: "addressId" },
       });
       RealEstate.hasMany(models.Floor);
+
+      RealEstate.hasMany(models.File, {
+        foreignKey: {
+          name: "fkId",
+        },
+        as: "realEstateFiles",
+      });
     }
   }
   RealEstate.init(
@@ -27,11 +34,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.FLOAT.UNSIGNED,
         allowNull: false,
       },
-      descriptionHtml: {
-        type: DataTypes.TEXT,
-        allowNull: true,
-      },
-      descriptionMarkdown: {
+      description: {
         type: DataTypes.TEXT,
         allowNull: true,
       },
@@ -49,17 +52,30 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
         defaultValue: 0,
       },
-      isElevator: {
+      isWhole: {
         type: DataTypes.BOOLEAN,
         allowNull: true,
+        defaultValue: true,
       },
       isPet: {
         type: DataTypes.BOOLEAN,
         allowNull: true,
+        defaultValue: true,
+      },
+      autoPayment: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: true,
+      },
+      isPaymentCoin: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: true,
       },
       status: {
         type: DataTypes.STRING(1),
-        allowNull: false,
+        allowNull: true,
+        defaultValue: "1",
       },
     },
     {

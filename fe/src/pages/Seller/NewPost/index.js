@@ -1,119 +1,107 @@
-import React, { useState } from "react";
-import { Col, Row, Input, Form, Image } from "antd";
-import Upload from "../../../components/pages/Upload";
-import MarkdownEditor from "@uiw/react-markdown-editor";
-import { useJsApiLoader } from "@react-google-maps/api";
-import MapCustom from "../../../components/maps/MapCustom";
-import PlacesAutocomplete from "../../../components/maps/PlacesAutocomplete";
+import React, { useEffect, useState } from "react";
+import { Col, Row, Form, Steps, Button } from "antd";
+import {
+  UserOutlined,
+  SolutionOutlined,
+  SmileOutlined,
+} from "@ant-design/icons";
 import "./NewPost.scss";
+import FormRealEstate from "./FormRealEstate";
+import FormFloor from "./FormFloor";
 
 const NewPost = () => {
-  const { isLoaded } = useJsApiLoader({
-    mapIds: process.env.REACT_APP_MAP_ID,
-    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAP_KEY,
-    libraries: ["drawing", "places"],
-  });
-  const [form] = Form.useForm();
-  const [description, setDescription] = useState(false);
-  const [listImg, setListImg] = useState([]);
-  const [position, setPosition] = useState({
-    lat: 21.0469701,
-    lng: 105.8021347,
-  });
+  const [formRealEstate] = Form.useForm();
+  const [formFloor] = Form.useForm();
+  const [formRoom] = Form.useForm();
+
+  const [statusPost, setStatusPost] = useState({ step: 1, status: "loading" });
+
+  const items = [
+    {
+      title: <Row className="text_title">Thông tin tòa nhà</Row>,
+      icon: <UserOutlined />,
+    },
+    {
+      title: <Row className="text_title">Thông tin tầng</Row>,
+      icon: <SolutionOutlined />,
+    },
+    {
+      title: <Row className="text_title">Thông tin phòng</Row>,
+      icon: <SolutionOutlined />,
+    },
+    {
+      title: <Row className="text_title">Done</Row>,
+      icon: <SmileOutlined />,
+    },
+  ];
+
+  const handleNextStep = async () => {
+    try {
+      if (statusPost.step === 0) {
+        await formRealEstate.validateFields();
+        setStatusPost({ status: "process", step: statusPost.step + 1 });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    formRealEstate.resetFields();
+  }, []);
+
+  const handleDoneStep = () => {};
+
+  const handlePreStep = () => {
+    setStatusPost({ status: "process", step: statusPost.step - 1 });
+  };
+
+  const getValueFormRealEstate = () => {
+    console.log(formFloor.getFieldsValue());
+  };
 
   return (
     <Col span={24} className="home-container new-post">
-      <Row className="text_title">Tạo bài đăng</Row>
-      {isLoaded && (
-        <Form
-          layout="vertical"
-          form={form}
+      <Row>
+        <Steps
+          current={statusPost.step}
+          status={statusPost.status}
+          items={items}
+        />
+      </Row>
+      {statusPost.step === 0 && <FormRealEstate form={formRealEstate} />}
+      {statusPost.step === 1 && <FormFloor form={formFloor} />}
+      {statusPost.step === 2 && <FormFloor form={formRoom} />}
+      <Row style={{ paddingBottom: 10 }}>
+        {statusPost.step < items.length - 1 && (
+          <Button type="primary" onClick={handleNextStep}>
+            Next
+          </Button>
+        )}
+        {statusPost.step === items.length - 1 && (
+          <Button type="primary" onClick={handleDoneStep}>
+            Done
+          </Button>
+        )}
+        {statusPost.step > 0 && (
+          <Button
+            style={{
+              margin: "0 8px",
+            }}
+            onClick={handlePreStep}
+          >
+            Previous
+          </Button>
+        )}
+        <Button
           style={{
-            width: "100%",
-            paddingTop: 16,
+            margin: "0 8px",
           }}
+          onClick={getValueFormRealEstate}
         >
-          <Row>
-            <Form.Item style={{ width: "100%" }}>
-              <Row style={{ width: "100%" }}>
-                <Col
-                  style={{ paddingLeft: 10, paddingRight: 10 }}
-                  xs={24}
-                  xl={6}
-                >
-                  <Row>
-                    <Form.Item
-                      label="Tên tòa nhà"
-                      name="nameRealEstate"
-                      style={{ width: "100%" }}
-                    >
-                      <Input placeholder="Tên tòa nhà" />
-                    </Form.Item>
-                  </Row>
-                  <Row>
-                    <Form.Item
-                      label="Địa chỉ"
-                      name="address"
-                      style={{ width: "100%" }}
-                    >
-                      <PlacesAutocomplete setPosition={setPosition} />
-                    </Form.Item>
-                  </Row>
-                </Col>
-                <Col xs={24} xl={18}>
-                  <Row style={{ justifyContent: "end" }}>
-                    <MapCustom position={position} setPosition={setPosition} />
-                  </Row>
-                </Col>
-              </Row>
-            </Form.Item>
-          </Row>
-          <Row></Row>
-          <Row>
-            <Form.Item
-              label="Ảnh tòa nhà"
-              name="imgRealEstate"
-              style={{ width: "100%" }}
-            >
-              <Row style={{ width: "100%", gap: 8 }}>
-                <Upload
-                  idInput="upload-img-real-estate"
-                  setFiles={setListImg}
-                />
-                {listImg.length > 0 &&
-                  listImg.map((img) => {
-                    return (
-                      <Col>
-                        <Image
-                          src={img?.url}
-                          style={{ height: 80, width: 80 }}
-                        />
-                      </Col>
-                    );
-                  })}
-              </Row>
-            </Form.Item>
-          </Row>
-          <Row>
-            <Form.Item
-              label="Mô tả"
-              name="description"
-              style={{ width: "100%" }}
-            >
-              <MarkdownEditor
-                value={description}
-                onChange={(value) => {
-                  setDescription(value);
-                }}
-                height="200px"
-                enablePreview={true}
-              />
-            </Form.Item>
-          </Row>
-          <Row>Attributes</Row>
-          <Row>Create Room</Row>
-        </Form>
-      )}
+          Get value form real estate
+        </Button>
+      </Row>
     </Col>
   );
 };

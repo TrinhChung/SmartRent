@@ -34,11 +34,7 @@ module.exports = {
         type: Sequelize.FLOAT.UNSIGNED,
         allowNull: false,
       },
-      descriptionHtml: {
-        type: Sequelize.TEXT,
-        allowNull: true,
-      },
-      descriptionMarkdown: {
+      description: {
         type: Sequelize.TEXT,
         allowNull: true,
       },
@@ -54,13 +50,24 @@ module.exports = {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
       },
-      isElevator: {
+      isWhole: {
         type: Sequelize.BOOLEAN,
         allowNull: true,
+        defaultValue: true,
       },
       isPet: {
         type: Sequelize.BOOLEAN,
         allowNull: true,
+      },
+      autoPayment: {
+        type: Sequelize.BOOLEAN,
+        allowNull: true,
+        defaultValue: true,
+      },
+      isPaymentCoin: {
+        type: Sequelize.BOOLEAN,
+        allowNull: true,
+        defaultValue: true,
       },
       status: {
         type: Sequelize.STRING(1),

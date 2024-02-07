@@ -8,7 +8,13 @@ import HomeLayout from "../../layouts/HomeLayout";
 import { useContext } from "react";
 import { SocketContext } from "../../providers/socketProvider";
 import LinkCustom from "../../components/layout/LinkCustom";
+import FullHouse from "./NewPost/FullHouse";
 import NewPost from "./NewPost";
+import FullHouseView from "./NewPost/FullHouseView";
+import Floor from "./NewPost/Floor";
+import FloorView from "./NewPost/FloorView";
+import FormRoom from "./NewPost/FormRoom";
+import RoomView from "./NewPost/RoomView";
 
 const Seller = () => {
   const { roomChats } = useContext(SocketContext);
@@ -24,7 +30,7 @@ const Seller = () => {
       key: "negotiating",
     },
     {
-      label: <LinkCustom to={`/new-post`} label="Tạo bài đăng" />,
+      label: <LinkCustom to={`/new-post/full-house`} label="Tạo bài đăng" />,
       key: "my-post",
     },
     {
@@ -42,8 +48,17 @@ const Seller = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/negotiating" element={<Negotiate />} />
-        <Route path="/new-post" element={<NewPost />} />
+        <Route path="/new-post/" element={<NewPost />} />
+        <Route path="/new-post/full-house" element={<FullHouse />} />
+        <Route path="/new-post/new-floor" element={<Floor />} />
+        <Route path="/new-post/new-room" element={<FormRoom />} />
         <Route path="/room-chat/:id" element={<RoomChat />} />
+        <Route
+          path="/new-post/full-house-view/:id"
+          element={<FullHouseView />}
+        />
+        <Route path="/new-post/floor-view/:id" element={<FloorView />} />
+        <Route path="/new-post/room-view/:id" element={<RoomView />} />
         <Route path="/*" element={<div>Chua dinh nghia</div>} />
       </Routes>
     </HomeLayout>

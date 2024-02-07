@@ -7,6 +7,8 @@ import { router as bargain } from "./bargain";
 import { router as realEstate } from "./realEstate";
 import { router as message } from "./message";
 import { router as file } from "./file";
+import { router as floor } from "./floor";
+import { router as room } from "./room";
 
 import { authenticate } from "../middleware/authenticate";
 export const router = Router();
@@ -26,3 +28,7 @@ router.use("/real-estate", realEstate);
 router.use("/message", authenticate, message);
 
 router.use("/file", authenticate, file);
+
+router.use("/floor", floor);
+
+router.use("/room", room);

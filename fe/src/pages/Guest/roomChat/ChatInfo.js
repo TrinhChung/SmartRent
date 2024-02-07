@@ -6,7 +6,7 @@ import EditNameRoom from "./EditNameRoom";
 
 const { Sider } = Layout;
 
-const ChatInfo = ({}) => {
+const ChatInfo = () => {
   const [isOpenModelEditName, setIsOpenModelEditName] = useState(false);
   const closeModal = useCallback(() => {
     return setIsOpenModelEditName(false);
