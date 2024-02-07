@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Col, Image, Input, Row } from "antd";
 import PlacesAutocomplete from "../../../components/maps/PlacesAutocomplete";
 import ImageBannerHome from "../../../public/images/home-banner.jpg";
@@ -7,6 +7,8 @@ import Suggest from "./Suggest";
 import ImageHouse from "../../../public/images/house1.jpg";
 import MapCustom from "../../../components/maps/MapCustom";
 import { useJsApiLoader } from "@react-google-maps/api";
+import { getRealEstateFullHouseService } from "../../../services/RealEstate";
+import { getEstateByRecommendService } from "../../../services/RealEstate/index";
 
 const Home = () => {
   const { isLoaded } = useJsApiLoader({
@@ -19,42 +21,35 @@ const Home = () => {
     lng: 105.8021347,
   });
 
+  const [listSuggest, setListSuggest] = useState([]);
+
   const setPositionAction = useCallback((position) => {
     return setPosition(position);
   }, []);
 
-  const listSuggest = [
-    {
-      image: ImageHouse,
-      name: "Sunny Village Berawa - Villa",
-      address: "Complex modern villas in Texas",
-    },
-    {
-      image: ImageHouse,
-      name: "Sunny Village Berawa - Villa",
-      address: "Complex modern villas in Texas",
-    },
-    {
-      image: ImageHouse,
-      name: "Sunny Village Berawa - Villa",
-      address: "Complex modern villas in Texas",
-    },
-    {
-      image: ImageHouse,
-      name: "Sunny Village Berawa - Villa",
-      address: "Complex modern villas in Texas",
-    },
-    {
-      image: ImageHouse,
-      name: "Sunny Village Berawa - Villa",
-      address: "Complex modern villas in Texas",
-    },
-    {
-      image: ImageHouse,
-      name: "Sunny Village Berawa - Villa",
-      address: "Complex modern villas in Texas",
-    },
-  ];
+  const fetchRealEstateRecommend = async () => {
+    try {
+      const res = await getEstateByRecommendService();
+      if (res.status === 200) {
+        setListSuggest(
+          res.data.map((realEstate) => {
+            return {
+              name: realEstate.name,
+              address: realEstate.Address.address,
+              image: realEstate?.realEstateFiles[0],
+              url: `/full-house-view/${realEstate.id}`,
+            };
+          })
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchRealEstateRecommend();
+  }, []);
 
   return (
     <Col span={24} className="home-container">

@@ -10,6 +10,7 @@ import LinkCustom from "../../components/layout/LinkCustom";
 import FullHouseView from "../Seller/NewPost/FullHouseView";
 import FloorView from "../Seller/NewPost/FloorView";
 import RoomView from "../Seller/NewPost/RoomView";
+import Search from "../Guest/search";
 
 const Renter = () => {
   const { roomChats } = useContext(SocketContext);
@@ -44,6 +45,7 @@ const Renter = () => {
         <Route path="/floor-view/:id" element={<FloorView />} />
         <Route path="/room-view/:id" element={<RoomView />} />
         <Route path="/*" element={<div>Chua dinh nghia</div>} />
+        <Route path="/search" element={<Search />} />
       </Routes>
     </HomeLayout>
   );

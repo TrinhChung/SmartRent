@@ -15,6 +15,8 @@ import Floor from "./NewPost/Floor";
 import FloorView from "./NewPost/FloorView";
 import FormRoom from "./NewPost/FormRoom";
 import RoomView from "./NewPost/RoomView";
+import ListPost from "./ListPost";
+import Search from "../Guest/search";
 
 const Seller = () => {
   const { roomChats } = useContext(SocketContext);
@@ -30,8 +32,8 @@ const Seller = () => {
       key: "negotiating",
     },
     {
-      label: <LinkCustom to={`/new-post/full-house`} label="Tạo bài đăng" />,
-      key: "my-post",
+      label: <LinkCustom to={`/list-post`} label="Bài đăng" />,
+      key: "list-post",
     },
     {
       label: <LinkCustom to={`/room-chat/${roomChatId}`} label="Room chat" />,
@@ -56,6 +58,8 @@ const Seller = () => {
         <Route path="/full-house-view/:id" element={<FullHouseView />} />
         <Route path="/floor-view/:id" element={<FloorView />} />
         <Route path="/room-view/:id" element={<RoomView />} />
+        <Route path="list-post" element={<ListPost />} />
+        <Route path="/search" element={<Search />} />
         <Route path="/*" element={<div>Chua dinh nghia</div>} />
       </Routes>
     </HomeLayout>

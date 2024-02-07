@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
       RealEstate.belongsTo(models.Address, {
         foreignKey: { name: "addressId" },
       });
+
       RealEstate.hasMany(models.Floor);
 
       RealEstate.hasMany(models.File, {

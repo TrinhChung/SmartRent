@@ -8,9 +8,11 @@ module.exports = (sequelize, DataTypes) => {
       User.belongsTo(models.Address, {
         foreignKey: { name: "addressId" },
       });
+
       User.hasMany(models.Verify, {
         foreignKey: "fkId",
       });
+
       User.hasMany(models.ExtraNotify);
     }
   }

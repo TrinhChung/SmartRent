@@ -23,3 +23,11 @@ export const createRoomsService = (data) => {
 export const getRoomByIdService = ({ id: id }) => {
   return axios.get(`/api/room/${id}`);
 };
+
+export const getPostedByMeService = () => {
+  return axios.get(`/api/real-estate/posted-by-me`);
+};
+
+export const getEstateByRecommendService = () => {
+  return axios.get(`/api/real-estate/recommend`);
+};
