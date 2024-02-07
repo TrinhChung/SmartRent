@@ -6,6 +6,9 @@ import HomeLayout from "../../layouts/HomeLayout";
 import LinkCustom from "../../components/layout/LinkCustom";
 import Login from "./auth/Login";
 import SignUp from "./auth/SignUp";
+import FullHouseView from "../Seller/NewPost/FullHouseView";
+import FloorView from "../Seller/NewPost/FloorView";
+import RoomView from "../Seller/NewPost/RoomView";
 
 const Guest = () => {
   const items = [
@@ -31,6 +34,12 @@ const Guest = () => {
         <Route path="/auth/login" element={<Login />} />
         <Route path="/negotiating" element={<Negotiate />} />
         <Route path="/auth/signup" element={<SignUp />} />
+        <Route
+          path="/new-post/full-house-view/:id"
+          element={<FullHouseView />}
+        />
+        <Route path="/new-post/floor-view/:id" element={<FloorView />} />
+        <Route path="/new-post/room-view/:id" element={<RoomView />} />
         <Route path="/*" element={<div>Chua dinh nghia</div>} />
       </Routes>
     </HomeLayout>

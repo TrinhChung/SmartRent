@@ -92,7 +92,7 @@ const FloorView = () => {
                   <Col span={4} key={"room" + index}>
                     <CardItem
                       name={room?.name}
-                      url={`/new-post/room-view/${room?.id}`}
+                      url={`/room-view/${room?.id}`}
                       img={
                         room?.Files.length > 0
                           ? process.env.REACT_APP_HOST_BE +

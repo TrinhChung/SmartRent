@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getRealEstateFullHouseService } from "../../../services/RealEstate";
 import { Row, Col, Button } from "antd";
@@ -8,7 +8,10 @@ import { PlusOutlined } from "@ant-design/icons";
 import CardItem from "../../../components/pages/NewPost/CardItem";
 import Overview from "./Overview";
 
+import { AuthContext } from "../../../providers/authProvider";
+
 const FullHouseView = () => {
+  const { authUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const { id } = useParams();
@@ -64,19 +67,19 @@ const FullHouseView = () => {
           </Row>
         </>
       )}
-      {data?.Floors && data?.Floors.length > 0 && (
-        <Row style={{ paddingBottom: 20 }}>
-          <Col span={24}>
-            <Row
-              style={{
-                paddingTop: 20,
-                justifyContent: "space-between",
-              }}
-              className="box-title"
-            >
-              <Col>
-                <label className="box-title">Tầng</label>
-              </Col>
+      <Row style={{ paddingBottom: 20 }}>
+        <Col span={24}>
+          <Row
+            style={{
+              paddingTop: 20,
+              justifyContent: "space-between",
+            }}
+            className="box-title"
+          >
+            <Col>
+              <label className="box-title">Tầng</label>
+            </Col>
+            {data?.userId === authUser?.id && (
               <Col>
                 <Button
                   onClick={() => {
@@ -87,14 +90,17 @@ const FullHouseView = () => {
                   <label>Thêm mới</label>
                 </Button>
               </Col>
-            </Row>
-            <Row style={{ gap: 8 }}>
-              {data?.Floors.map((floor, index) => {
+            )}
+          </Row>
+          <Row style={{ gap: 8 }}>
+            {data?.Floors &&
+              data?.Floors.length > 0 &&
+              data?.Floors.map((floor, index) => {
                 return (
                   <Col span={4}>
                     <CardItem
                       name={floor?.name}
-                      url={`/new-post/floor-view/${floor?.id}`}
+                      url={`/floor-view/${floor?.id}`}
                       img={
                         floor?.Files.length > 0
                           ? process.env.REACT_APP_HOST_BE +
@@ -106,10 +112,9 @@ const FullHouseView = () => {
                   </Col>
                 );
               })}
-            </Row>
-          </Col>
-        </Row>
-      )}
+          </Row>
+        </Col>
+      </Row>
     </Col>
   );
 };
