@@ -34,11 +34,7 @@ module.exports = {
         type: Sequelize.FLOAT.UNSIGNED,
         allowNull: false,
       },
-      descriptionHtml: {
-        type: Sequelize.TEXT,
-        allowNull: true,
-      },
-      descriptionMarkdown: {
+      description: {
         type: Sequelize.TEXT,
         allowNull: true,
       },

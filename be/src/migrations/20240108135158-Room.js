@@ -22,6 +22,10 @@ module.exports = {
         type: Sequelize.FLOAT.UNSIGNED,
         allowNull: false,
       },
+      description: {
+        type: Sequelize.TEXT,
+        allowNull: true,
+      },
       type: {
         type: Sequelize.STRING(1),
         allowNull: false,

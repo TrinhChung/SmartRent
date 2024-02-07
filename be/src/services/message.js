@@ -42,7 +42,16 @@ export const getMessagesOfRoomChatService = async (data) => {
   try {
     const messages = await db.Message.findAll({
       where: { roomChatId: data.roomChatId },
-      include: [{ model: db.File, as: "messageFiles", attributes: ["url"] }],
+      include: [
+        {
+          model: db.File,
+          where: {
+            typeFk: "1",
+          },
+          as: "messageFiles",
+          attributes: ["url"],
+        },
+      ],
     });
     return messages;
   } catch (error) {

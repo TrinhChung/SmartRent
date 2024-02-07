@@ -3,7 +3,7 @@ import { Col, Row, Form, Button } from "antd";
 
 import "./NewPost.scss";
 import FormRealEstate from "./FormRealEstate";
-import { createRealEstateService } from "../../../services/Post/index";
+import { createRealEstateService } from "../../../services/RealEstate/index";
 import { toast } from "react-toastify";
 
 const FullHouse = () => {
