@@ -23,4 +23,9 @@ jobs:
           USERNAME: ${{ secrets.USER_NAME }}
           PORT: ${{ secrets.PORT }}
           KEY: ${{ secrets.SSH_KEY }}
-          script: ls
+          script: |
+            cd SmartRent
+            git pull
+            cd be
+            docker compose down
+            docker compose up
