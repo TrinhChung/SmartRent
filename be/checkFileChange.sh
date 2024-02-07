@@ -5,13 +5,13 @@ changeBackend=false
 for file in $files; do
   echo $file
   if [[ $file == *"be"* ]]; then
-     changeBackend = true
+     $changeBackend = true
   fi
   if [[ $file == *"be/contracts/contractApi.sol"* ]]; then
-     checkChangeDb = true
+     $checkChangeDb = true
   fi
   if [[ $file == *"be/src/migrations"* ]]; then
-     checkChangeSc = true
+     $checkChangeSc = true
   fi
 done
 
