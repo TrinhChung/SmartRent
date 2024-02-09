@@ -1,8 +1,9 @@
-import { Col, Image, Row } from "antd";
+import { Col, Row } from "antd";
 import React from "react";
 import { ExportOutlined } from "@ant-design/icons";
 import "./Page.scss";
 import { useNavigate } from "react-router-dom";
+import ImageCustom from "./ImageCustom";
 
 const CardHouseHome = ({
   name = "name",
@@ -14,10 +15,10 @@ const CardHouseHome = ({
   const navigate = useNavigate();
   return (
     <Col className="card-house_home" key={key}>
-      <Image
+      <ImageCustom
         className="image-card_house_home"
         preview={false}
-        src={process.env.REACT_APP_HOST_BE + "/" + image.url}
+        src={process.env.REACT_APP_HOST_BE + "/" + image}
       />
       <Row className="house-info_card">
         <Col span={24}>

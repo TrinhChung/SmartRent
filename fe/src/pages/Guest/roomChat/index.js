@@ -88,19 +88,10 @@ const RoomChat = () => {
       return;
     } else if (listFile.length > 0) {
       const formData = new FormData();
+
       for (let i = 0; i < listFile.length; i++) {
         formData.append("file", listFile[i]);
       }
-
-      try {
-        const res = await uploadFileToSessionService(formData);
-        if (res.statusCode === 200) {
-          console.log(res.message);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-
       var fileBuilt = listFile.map((file) => {
         return {
           name: file.name,
@@ -110,6 +101,15 @@ const RoomChat = () => {
       });
 
       setFiles(fileBuilt);
+
+      try {
+        const res = await uploadFileToSessionService(formData);
+        if (res.statusCode === 200) {
+          console.log(res.message);
+        }
+      } catch (error) {
+        console.log(error);
+      }
     } else {
       setFiles([]);
     }

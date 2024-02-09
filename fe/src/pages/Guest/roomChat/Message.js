@@ -1,8 +1,8 @@
-import { Row, Col, Avatar, Tooltip, Image } from "antd";
+import { Row, Col, Avatar, Tooltip } from "antd";
 import React, { useContext } from "react";
 import { AuthContext } from "../../../providers/authProvider";
-import ImageWithLoading from "../../../components/pages/IsLoading";
 import "./Message.scss";
+import ImageCustom from "../../../components/pages/ImageCustom";
 
 const Message = ({
   message = { content: "message", isOwner: true },
@@ -42,13 +42,18 @@ const Message = ({
                   message.userId === authUser.id ? "end" : "start"
                 }`,
                 paddingBottom: 8,
+                gap: 3,
               }}
+              gutter={[3, 3]}
             >
-              {message.messageFiles.map((image) => {
+              {message.messageFiles.map((image, index) => {
                 return (
                   <div>
-                    {/* Other message content */}
-                    <ImageWithLoading image={image} />
+                    <ImageCustom
+                      src={process.env.REACT_APP_HOST_BE + "/" + image.url}
+                      index={index}
+                      className="message-image"
+                    />
                   </div>
                 );
               })}
