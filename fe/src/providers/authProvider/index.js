@@ -21,12 +21,14 @@ export default function AuthProvider({ children }) {
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
     const userLocal = JSON.parse(localStorage.getItem("authUser"));
-
+    console.log(token);
+    console.log(userLocal);
     if (userLocal) {
       setAuthUser(userLocal);
     }
 
     if (!userLocal && token) {
+      console.log("Fetch info user");
       handlerLogin();
     }
   }, []);

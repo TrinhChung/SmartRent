@@ -1,5 +1,5 @@
 import { Col, Row } from "antd";
-import React from "react";
+import React, { memo } from "react";
 import { ExportOutlined } from "@ant-design/icons";
 import "./Page.scss";
 import { useNavigate } from "react-router-dom";
@@ -47,4 +47,4 @@ const CardHouseHome = ({
   );
 };
 
-export default CardHouseHome;
+export default memo(CardHouseHome);

@@ -1,4 +1,5 @@
 "use strict";
+import real_estate from "./real_estate";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Address extends Model {

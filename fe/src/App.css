@@ -229,3 +229,7 @@
 .hidden {
   display: none;
 }
+
+.slick-slider .slick-list .slick-track {
+  margin: 0;
+}

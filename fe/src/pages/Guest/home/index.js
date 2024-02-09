@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { memo, useCallback, useEffect, useState } from "react";
 import { Col, Image, Input, Row } from "antd";
 import PlacesAutocomplete from "../../../components/maps/PlacesAutocomplete";
 import ImageBannerHome from "../../../public/images/home-banner.jpg";
@@ -142,4 +142,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default memo(Home);
