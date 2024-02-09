@@ -1,5 +1,5 @@
 import { Col, Row } from "antd";
-import React from "react";
+import React, { memo } from "react";
 import CardHouseHome from "../../../components/pages/CardHouseHome";
 import Slider from "react-slick";
 import { settingSlider } from "../../../const";
@@ -14,7 +14,7 @@ const Suggest = ({ houses = [] }) => {
         <Slider {...settingSlider}>
           {houses.length > 0 &&
             houses.map((house, index) => {
-              return <CardHouseHome {...house} />;
+              return <CardHouseHome {...house} key={index} />;
             })}
         </Slider>
       </Col>
@@ -22,4 +22,4 @@ const Suggest = ({ houses = [] }) => {
   );
 };
 
-export default Suggest;
+export default memo(Suggest);

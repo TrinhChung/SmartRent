@@ -78,6 +78,7 @@ export const getRealEstateFullHouseService = async (id) => {
         },
         { model: db.Address },
       ],
+      subQuery: false,
     });
     if (!realEstate) {
       return null;
@@ -126,13 +127,13 @@ export const getRealEstateByRecommendService = async ({ userId }) => {
             where: {
               typeFk: "2",
             },
+            limit: 1,
             as: "realEstateFiles",
             attributes: ["url"],
           },
           { model: db.Address },
         ],
         subQuery: false,
-        duplicating: false,
         limit: 10,
       },
       { raw: true }
