@@ -7,13 +7,10 @@ import { settingSlider } from "../../../const";
 const Suggest = ({ houses = [] }) => {
   return (
     <Col span={24}>
-      <Row
-        style={{ fontSize: 32, paddingBottom: 32, lineHeight: "40px" }}
-        className="text_title"
-      >
+      <Row style={{ fontSize: 32, lineHeight: "40px" }} className="text_title">
         Real Estate for your World
       </Row>
-      <Col span={24}>
+      <Col span={24} style={{ padding: "16px 0" }}>
         <Slider {...settingSlider}>
           {houses.length > 0 &&
             houses.map((house, index) => {

@@ -181,10 +181,6 @@
   color: var(--jade);
 }
 
-.button-hover-jade:hover {
-  background-color: #50d8db;
-}
-
 .user-search-bar-custom .ant-input-wrapper * {
   background-color: #ebebeb;
 }
@@ -228,4 +224,8 @@
 
 .mg-side {
   margin: 0 var(var(--margin-side));
+}
+
+.hidden {
+  display: none;
 }

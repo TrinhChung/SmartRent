@@ -39,7 +39,7 @@ const ChatList = ({ chatList = [], switchRoomChat = () => {} }) => {
                     paddingLeft: 4,
                   }}
                 >
-                  <Row>{roomChat?.name}</Row>
+                  <Row>{roomChat?.name ? roomChat?.name : "RoomChat"}</Row>
                   <Row>{roomChat?.lastMessage?.content}</Row>
                 </Col>
                 <Col

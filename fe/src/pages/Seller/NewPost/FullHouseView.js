@@ -5,10 +5,10 @@ import { Row, Col, Button } from "antd";
 import MarkdownEditor from "@uiw/react-markdown-editor";
 import "./FullHouseView.scss";
 import { PlusOutlined } from "@ant-design/icons";
-import CardItem from "../../../components/pages/NewPost/CardItem";
 import Overview from "./Overview";
 
 import { AuthContext } from "../../../providers/authProvider";
+import CardHouseHome from "../../../components/pages/CardHouseHome";
 
 const FullHouseView = () => {
   const { authUser } = useContext(AuthContext);
@@ -97,19 +97,14 @@ const FullHouseView = () => {
               data?.Floors.length > 0 &&
               data?.Floors.map((floor, index) => {
                 return (
-                  <Col span={4}>
-                    <CardItem
-                      name={floor?.name}
-                      url={`/floor-view/${floor?.id}`}
-                      img={
-                        floor?.Files.length > 0
-                          ? process.env.REACT_APP_HOST_BE +
-                            "/" +
-                            floor?.Files[0]?.url
-                          : undefined
-                      }
-                    />
-                  </Col>
+                  <CardHouseHome
+                    name={floor.name}
+                    url={`/floor-view/${floor?.id}`}
+                    image={
+                      floor?.Files.length > 0 ? floor?.Files[0]?.url : undefined
+                    }
+                    address={data?.Address?.address}
+                  />
                 );
               })}
           </Row>

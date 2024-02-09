@@ -3,7 +3,6 @@ import { Col, Row, Layout, Button, Empty } from "antd";
 import "./ListPost.scss";
 import { useNavigate } from "react-router-dom";
 import { getPostedByMeService } from "../../../services/RealEstate/index";
-import CardItem from "../../../components/pages/NewPost/CardItem";
 import CardHouseHome from "../../../components/pages/CardHouseHome";
 
 const { Sider, Content } = Layout;
@@ -46,14 +45,14 @@ const ListPost = () => {
         </Row>
         <Row>
           <Col span={24}>
-            <Row>
+            <Row gutter={[8, 8]}>
               {data && data?.length > 0 ? (
                 data.map((post, key) => {
                   return (
                     <CardHouseHome
                       name={post?.name}
                       address={post?.Address?.address}
-                      image={post?.realEstateFiles[0]}
+                      image={post?.realEstateFiles[0]?.url}
                       url={`/full-house-view/${post?.id}`}
                     />
                   );

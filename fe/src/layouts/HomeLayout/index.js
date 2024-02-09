@@ -27,7 +27,7 @@ const HomeLayout = ({ children, menu }) => {
 
   return (
     <Layout className="main-layout">
-      <Navbar data={menu} />
+      <Navbar className="header" data={menu} />
       <Content className="container-content">{children}</Content>
       {isFooter && <FooterComponent />}
     </Layout>

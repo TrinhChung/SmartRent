@@ -4,10 +4,8 @@ import PlacesAutocomplete from "../../../components/maps/PlacesAutocomplete";
 import ImageBannerHome from "../../../public/images/home-banner.jpg";
 import "./Home.scss";
 import Suggest from "./Suggest";
-import ImageHouse from "../../../public/images/house1.jpg";
 import MapCustom from "../../../components/maps/MapCustom";
 import { useJsApiLoader } from "@react-google-maps/api";
-import { getRealEstateFullHouseService } from "../../../services/RealEstate";
 import { getEstateByRecommendService } from "../../../services/RealEstate/index";
 
 const Home = () => {
@@ -36,7 +34,7 @@ const Home = () => {
             return {
               name: realEstate.name,
               address: realEstate.Address.address,
-              image: realEstate?.realEstateFiles[0],
+              image: realEstate?.realEstateFiles[0]?.url,
               url: `/full-house-view/${realEstate.id}`,
             };
           })
