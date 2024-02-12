@@ -97,7 +97,7 @@ const Overview = ({
               </label>
             </Col>
           )}
-          {floorTotal && (
+          {floorTotal >= 0 && (
             <Col>
               <HomeOutlined className="icon-real-estate" />
               <label style={{ paddingLeft: 4 }}>

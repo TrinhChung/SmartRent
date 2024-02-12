@@ -36,14 +36,14 @@ const FullHouse = () => {
       {<FormRealEstate form={formRealEstate} />}
 
       <Row style={{ paddingBottom: 10, gap: 10 }}>
-        <Button type="primary" onClick={handleNextStep}>
+        <Button onClick={handleNextStep} className="button-border">
           Create
         </Button>
         <Button
-          type="primary"
           onClick={() => {
             formRealEstate.resetFields();
           }}
+          className="button-border button-error"
         >
           Clear
         </Button>

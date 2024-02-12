@@ -233,3 +233,20 @@
 .slick-slider .slick-list .slick-track {
   margin: 0;
 }
+
+.button-border {
+  color: var(--color-text);
+  border: 1px solid var(--color-text);
+  border-radius: 8px;
+  background-color: var(--background-hr);
+  font-weight: bold;
+}
+
+.button-border:hover {
+  background-color: var(--background-hr);
+}
+
+.button-error:hover {
+  border: 1px solid red !important;
+  color: red !important;
+}

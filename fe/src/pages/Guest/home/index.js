@@ -35,7 +35,10 @@ const Home = () => {
               name: realEstate.name,
               address: realEstate.Address.address,
               image: realEstate?.realEstateFiles[0]?.url,
+              cost: realEstate?.cost,
+              acreage: realEstate?.acreage,
               url: `/full-house-view/${realEstate.id}`,
+              date: realEstate?.createdAt,
             };
           })
         );

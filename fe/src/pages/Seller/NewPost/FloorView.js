@@ -100,6 +100,9 @@ const FloorView = () => {
                             room?.Files[0]?.url
                           : undefined
                       }
+                      cost={data?.cost}
+                      acreage={data?.acreage}
+                      date={data?.createdAt}
                     />
                   </Col>
                 );

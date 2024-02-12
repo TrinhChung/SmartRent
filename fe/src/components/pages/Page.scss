@@ -9,11 +9,18 @@
     ) !important;
   }
 
+  label {
+    text-shadow: 1px 1px 2px black;
+  }
   .house-info_card {
     position: absolute;
     bottom: 20px;
     left: 40px;
     color: var(--color-text-light);
+
+    .name_house:hover {
+      text-decoration: underline;
+    }
   }
 
   .open-link-house {
