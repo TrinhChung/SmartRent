@@ -71,7 +71,7 @@ const FullHouseView = () => {
         <Col span={24}>
           <Row
             style={{
-              paddingTop: 20,
+              padding: "20px 0",
               justifyContent: "space-between",
             }}
             className="box-title"
@@ -85,6 +85,7 @@ const FullHouseView = () => {
                   onClick={() => {
                     navigate(`/new-post/new-floor?house=${id}`);
                   }}
+                  className="button-border"
                 >
                   <PlusOutlined />
                   <label>Thêm mới</label>
@@ -104,6 +105,8 @@ const FullHouseView = () => {
                       floor?.Files.length > 0 ? floor?.Files[0]?.url : undefined
                     }
                     address={data?.Address?.address}
+                    cost={data?.cost}
+                    acreage={data?.acreage}
                   />
                 );
               })}
