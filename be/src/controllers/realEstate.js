@@ -46,9 +46,23 @@ export const handleGetRealEstate = async (req, res) => {
 export const handleGetRealEstateByUserId = async (req, res) => {
   try {
     const user = req.user;
+    const queries = req.query;
+    const limit = 10;
+    var { page, ...orders } = queries;
+    const orderByList = [];
+    for (let order in orders) {
+      const orderBy = [];
+      orderBy.push(order);
+      orderBy.push(orders[order]);
+      orderByList.push(orderBy);
+    }
+    console.log(orderByList);
 
     const data = await getRealEstateFullHouseByUserIdService({
       userId: user?.id,
+      page: page,
+      limit: limit,
+      orders: orderByList,
     });
 
     return res

@@ -9,8 +9,23 @@
     overflow: auto;
   }
 
-  .list-post-body {
-    padding: 0 20px;
-    overflow: scroll;
+  .content-list-post {
+    .list-post-body {
+      flex: 1 1 auto;
+      padding: 0 20px;
+      overflow-y: scroll;
+    }
+  }
+
+  .ant-pagination-item-active {
+    border-color: var(--color-text);
+  }
+
+  .ant-pagination-item-active a {
+    color: var(--color-text);
+  }
+
+  .ant-form-item {
+    margin-bottom: 0;
   }
 }
