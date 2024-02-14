@@ -24,8 +24,8 @@ export const getRoomByIdService = ({ id: id }) => {
   return axios.get(`/api/room/${id}`);
 };
 
-export const getPostedByMeService = () => {
-  return axios.get(`/api/real-estate/posted-by-me`);
+export const getPostedByMeService = (query) => {
+  return axios.get(`/api/real-estate/posted-by-me${query}`);
 };
 
 export const getEstateByRecommendService = () => {

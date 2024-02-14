@@ -90,8 +90,17 @@ export const getRealEstateFullHouseService = async (id) => {
   }
 };
 
-export const getRealEstateFullHouseByUserIdService = async ({ userId }) => {
+export const getRealEstateFullHouseByUserIdService = async ({
+  userId,
+  page = 1,
+  limit = 10,
+  orders = [],
+}) => {
   try {
+    const total = await db.RealEstate.count({
+      where: { userId: userId },
+    });
+
     const list = await db.RealEstate.findAll(
       {
         where: { userId: userId },
@@ -101,16 +110,21 @@ export const getRealEstateFullHouseByUserIdService = async ({ userId }) => {
             where: {
               typeFk: "2",
             },
+            limit: 1,
             as: "realEstateFiles",
             attributes: ["url"],
           },
           { model: db.Address },
         ],
+        order: orders,
+        offset: (page - 1) * limit,
+        subQuery: false,
+        limit: 10,
       },
       { raw: true }
     );
 
-    return list;
+    return { total: total, list: list };
   } catch (error) {
     console.log(error.status);
     throw new Error(error.message, error);
