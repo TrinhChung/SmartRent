@@ -1,6 +1,8 @@
 import React, { memo, useCallback } from "react";
-import { GoogleMap, MarkerF } from "@react-google-maps/api";
+import { GoogleMap, MarkerF, Marker } from "@react-google-maps/api";
 import spriteLocation from "../../public/images/mylocation-sprite-2x.png";
+import IconMarker from "../../public/icon/logo192.png";
+
 const MapCustom = ({
   position = {},
   setPosition = () => {},

@@ -57,7 +57,6 @@ export const handleGetRealEstateByUserId = async (req, res) => {
       orderBy.push(orders[order]);
       orderByList.push(orderBy);
     }
-    console.log(orderByList);
 
     const data = await getRealEstateFullHouseByUserIdService({
       userId: user?.id,
@@ -78,13 +77,25 @@ export const handleGetRealEstateByUserId = async (req, res) => {
 export const handleSearchRealEstate = async (req, res) => {
   try {
     const user = req.user;
-    const queries = req.query;
+    const queries = req.body.queries;
+    const orders = req.body.orders;
+    const page = req.body.page;
     const limit = 10;
-    var { page } = queries;
+
+    const orderByList = [];
+    for (let order in orders) {
+      if (orders[order]) {
+        const orderBy = [];
+        orderBy.push(order);
+        orderBy.push(orders[order]);
+        orderByList.push(orderBy);
+      }
+    }
 
     const data = await searchRealEstateService({
-      userId: user?.id,
       page: page,
+      orders: orderByList,
+      queries: queries,
       limit: limit,
     });
 

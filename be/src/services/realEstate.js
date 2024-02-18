@@ -161,18 +161,16 @@ export const getRealEstateByRecommendService = async ({ userId }) => {
 };
 
 export const searchRealEstateService = async ({
-  userId,
   page = 1,
+  orders,
+  queries,
   limit = 10,
 }) => {
   try {
-    const total = await db.RealEstate.count({
-      where: { userId: userId },
-    });
+    const total = await db.RealEstate.count({});
 
     const list = await db.RealEstate.findAll(
       {
-        where: { userId: userId },
         include: [
           {
             model: db.File,
@@ -185,6 +183,7 @@ export const searchRealEstateService = async ({
           },
           { model: db.Address },
         ],
+        order: orders,
         offset: (page - 1) * limit,
         subQuery: false,
         limit: 10,

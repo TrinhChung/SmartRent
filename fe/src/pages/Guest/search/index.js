@@ -9,6 +9,7 @@ import {
   Switch,
   Button,
   InputNumber,
+  Radio,
 } from "antd";
 import { useState, useEffect } from "react";
 import { useJsApiLoader } from "@react-google-maps/api";
@@ -28,6 +29,7 @@ const Search = () => {
     libraries: ["drawing", "places"],
   });
   const [form] = Form.useForm();
+  const [formOrder] = Form.useForm();
 
   const [position, setPosition] = useState(
     form.getFieldValue("location")
@@ -42,16 +44,14 @@ const Search = () => {
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(50);
 
-  const fetchPostedByMe = async () => {
-    var query = `?page=${page}`;
-    const fields = form.getFieldsValue();
-    for (var field in fields) {
-      if (field && fields[field]) {
-        query += `&${field}=${fields[field]}`;
-      }
-    }
+  const fetchRealEstate = async () => {
+    var data = {
+      queries: form.getFieldsValue(),
+      orders: formOrder.getFieldsValue(),
+      page: page,
+    };
 
-    const res = await searchRealEstateService(query);
+    const res = await searchRealEstateService(data);
     if (res.status === 200) {
       setData(res.data.list);
       setTotalPage(res.data.total);
@@ -59,7 +59,7 @@ const Search = () => {
   };
 
   useEffect(() => {
-    fetchPostedByMe();
+    fetchRealEstate();
   }, [page]);
 
   return (
@@ -74,7 +74,10 @@ const Search = () => {
                 lat: 21.0469701,
                 lng: 105.8021347,
               },
+              isWhole: true,
+              isAllowPet: true,
             }}
+            id="order-form"
           >
             <Form.Item name="location" valuePropName="location">
               <MapCustom
@@ -99,32 +102,48 @@ const Search = () => {
             </Form.Item>
             <Form.Item>
               <Row style={{ gap: 24 }}>
-                <Form.Item label="Giá">
+                <Form.Item label="Giá(VNĐ)">
                   <Row style={{ gap: 8 }}>
                     <Form.Item name="cost-min">
                       <InputNumber
-                        placeholder="Tối thiểu"
+                        step={500000}
                         min={0}
-                        style={{ minWidth: 190 }}
+                        formatter={(value) =>
+                          `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                        }
+                        parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                        placeholder="Tối thiểu"
+                        style={{ minWidth: 180 }}
                       />
                     </Form.Item>
 
                     <Form.Item name="cost-max">
                       <InputNumber
-                        placeholder="Tối đa"
+                        step={500000}
                         min={0}
-                        style={{ minWidth: 190 }}
+                        formatter={(value) =>
+                          `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                        }
+                        parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                        placeholder="Tối đa"
+                        style={{ minWidth: 180 }}
                       />
                     </Form.Item>
                   </Row>
                 </Form.Item>
-                <Form.Item label="Diện tích">
+                <Form.Item
+                  label={
+                    <div>
+                      Diện tích(m<sup>2</sup>)
+                    </div>
+                  }
+                >
                   <Row style={{ gap: 8 }}>
                     <Form.Item name="acreage-min">
                       <InputNumber
                         placeholder="Tối thiểu"
                         min={0}
-                        style={{ minWidth: 190 }}
+                        style={{ minWidth: 180 }}
                       />
                     </Form.Item>
 
@@ -132,7 +151,7 @@ const Search = () => {
                       <InputNumber
                         placeholder="Tối đa"
                         min={1}
-                        style={{ minWidth: 190 }}
+                        style={{ minWidth: 180 }}
                       />
                     </Form.Item>
                   </Row>
@@ -140,47 +159,87 @@ const Search = () => {
               </Row>
             </Form.Item>
 
-            <Row gutter={[8, 8]}>
-              <Col>
-                <Row>
-                  <Col style={{ paddingTop: 5 }}>Cho phép nuôi động vật</Col>
-                  <Col style={{ paddingLeft: 8 }}>
-                    <Form.Item name="isAllowPet">
-                      <Switch
-                        size="small"
-                        checkedChildren={<CheckOutlined />}
-                        unCheckedChildren={<CloseOutlined />}
-                      />
-                    </Form.Item>
-                  </Col>
-                </Row>
-              </Col>
-              <Col>
-                <Row>
-                  <Col style={{ paddingTop: 5 }}>Thuê nguyên căn</Col>
-                  <Col style={{ paddingLeft: 8 }}>
-                    <Form.Item name="isWhole">
-                      <Switch
-                        size="small"
-                        checkedChildren={<CheckOutlined />}
-                        unCheckedChildren={<CloseOutlined />}
-                      />
-                    </Form.Item>
-                  </Col>
-                </Row>
-              </Col>
-            </Row>
-            <Row>
-              <Button
-                onClick={() => {
-                  console.log(form.getFieldsValue());
-                }}
-              >
-                Tìm kiếm
-              </Button>
-            </Row>
+            <Form.Item>
+              <Row>
+                <Col span={12}>
+                  <Row gutter={[8, 8]}>
+                    <Col>
+                      <Row>
+                        <Col style={{ paddingTop: 5 }}>
+                          Cho phép nuôi động vật
+                        </Col>
+                        <Col style={{ paddingLeft: 8 }}>
+                          <Form.Item name="isAllowPet">
+                            <Switch
+                              size="small"
+                              checkedChildren={<CheckOutlined />}
+                              unCheckedChildren={<CloseOutlined />}
+                            />
+                          </Form.Item>
+                        </Col>
+                      </Row>
+                    </Col>
+                    <Col>
+                      <Row>
+                        <Col style={{ paddingTop: 5 }}>Thuê nguyên căn</Col>
+                        <Col style={{ paddingLeft: 8 }}>
+                          <Form.Item name="isWhole">
+                            <Switch
+                              size="small"
+                              checkedChildren={<CheckOutlined />}
+                              unCheckedChildren={<CloseOutlined />}
+                            />
+                          </Form.Item>
+                        </Col>
+                      </Row>
+                    </Col>
+                  </Row>
+                </Col>
+              </Row>
+            </Form.Item>
           </Form>
         )}
+        <Row>Sắp xếp theo:</Row>
+        <Form
+          labelCol={{ span: 3 }}
+          labelAlign="left"
+          form={formOrder}
+          initialValues={{ createdAt: "DESC", cost: "DESC", acreage: "DESC" }}
+          onChange={() => {
+            fetchRealEstate();
+          }}
+        >
+          <Form.Item name="createdAt" label="Thời gian">
+            <Radio.Group buttonStyle="solid">
+              <Radio value="">Không</Radio>
+              <Radio value="DESC">Mới nhất</Radio>
+              <Radio value="ASC">Cũ nhất</Radio>
+            </Radio.Group>
+          </Form.Item>
+          <Form.Item name="acreage" label="Diện tích">
+            <Radio.Group buttonStyle="solid">
+              <Radio value="">Không</Radio>
+              <Radio value="DESC">Giảm dần</Radio>
+              <Radio value="ASC">Tăng dần</Radio>
+            </Radio.Group>
+          </Form.Item>
+          <Form.Item name="cost" label="Giá">
+            <Radio.Group buttonStyle="solid">
+              <Radio value="DESC">Giảm dần</Radio>
+              <Radio value="ASC">Tăng dần</Radio>
+            </Radio.Group>
+          </Form.Item>
+        </Form>
+        <Row>
+          <Button
+            onClick={() => {
+              console.log(form.getFieldsValue());
+              console.log(formOrder.getFieldsValue());
+            }}
+          >
+            Tìm kiếm
+          </Button>
+        </Row>
       </Sider>
       <Layout className="result">
         <Content className="result-container">
