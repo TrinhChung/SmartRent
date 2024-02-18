@@ -3,6 +3,7 @@ import {
   getRealEstateFullHouseService,
   getRealEstateFullHouseByUserIdService,
   getRealEstateByRecommendService,
+  searchRealEstateService,
 } from "../services/realEstate";
 
 export const handleCreateRealEstate = async (req, res, next) => {
@@ -63,6 +64,28 @@ export const handleGetRealEstateByUserId = async (req, res) => {
       page: page,
       limit: limit,
       orders: orderByList,
+    });
+
+    return res
+      .status(200)
+      .json({ message: "Get real estate success", data: data });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({ message: error.message });
+  }
+};
+
+export const handleSearchRealEstate = async (req, res) => {
+  try {
+    const user = req.user;
+    const queries = req.query;
+    const limit = 10;
+    var { page } = queries;
+
+    const data = await searchRealEstateService({
+      userId: user?.id,
+      page: page,
+      limit: limit,
     });
 
     return res
