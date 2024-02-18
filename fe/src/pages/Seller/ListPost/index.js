@@ -53,16 +53,15 @@ const ListPost = () => {
               <Radio value="ASC">Cũ nhất</Radio>
             </Radio.Group>
           </Form.Item>
-          <Form.Item name="cost" label="Giá">
+          <Form.Item name="acreage" label="Diện tích">
             <Radio.Group buttonStyle="solid">
               <Radio value="">Không</Radio>
               <Radio value="DESC">Giảm dần</Radio>
               <Radio value="ASC">Tăng dần</Radio>
             </Radio.Group>
           </Form.Item>
-          <Form.Item name="acreage" label="Diện tích">
+          <Form.Item name="cost" label="Giá">
             <Radio.Group buttonStyle="solid">
-              <Radio value="">Không</Radio>
               <Radio value="DESC">Giảm dần</Radio>
               <Radio value="ASC">Tăng dần</Radio>
             </Radio.Group>
