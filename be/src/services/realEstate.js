@@ -159,3 +159,42 @@ export const getRealEstateByRecommendService = async ({ userId }) => {
     throw new Error(error.message, error);
   }
 };
+
+export const searchRealEstateService = async ({
+  userId,
+  page = 1,
+  limit = 10,
+}) => {
+  try {
+    const total = await db.RealEstate.count({
+      where: { userId: userId },
+    });
+
+    const list = await db.RealEstate.findAll(
+      {
+        where: { userId: userId },
+        include: [
+          {
+            model: db.File,
+            where: {
+              typeFk: "2",
+            },
+            limit: 1,
+            as: "realEstateFiles",
+            attributes: ["url"],
+          },
+          { model: db.Address },
+        ],
+        offset: (page - 1) * limit,
+        subQuery: false,
+        limit: 10,
+      },
+      { raw: true }
+    );
+
+    return { total: total, list: list };
+  } catch (error) {
+    console.log(error.status);
+    throw new Error(error.message, error);
+  }
+};

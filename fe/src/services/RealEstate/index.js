@@ -31,3 +31,7 @@ export const getPostedByMeService = (query) => {
 export const getEstateByRecommendService = () => {
   return axios.get(`/api/real-estate/recommend`);
 };
+
+export const searchRealEstateService = (query) => {
+  return axios.get(`/api/real-estate/search${query}`);
+};

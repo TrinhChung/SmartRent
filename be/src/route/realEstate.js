@@ -4,6 +4,7 @@ import {
   handleGetRealEstate,
   handleGetRealEstateByRecommend,
   handleGetRealEstateByUserId,
+  handleSearchRealEstate,
 } from "../controllers/realEstate";
 import {
   createRealEstateSchema,
@@ -31,5 +32,7 @@ router.get(
 );
 
 router.get("/posted-by-me", authenticate, handleGetRealEstateByUserId);
+
+router.get("/search", authenticate, handleSearchRealEstate);
 
 router.get("/recommend", handleGetRealEstateByRecommend);

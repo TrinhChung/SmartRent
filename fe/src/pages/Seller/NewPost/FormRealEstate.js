@@ -219,13 +219,13 @@ const FormRealEstate = ({ form, setFieldsValue = () => {} }) => {
                   </Row>
                 </Col>
                 <Col xs={24} xl={18}>
-                  <Form.Item name="location">
+                  <Form.Item name="location" valuePropName="location">
                     <Row style={{ justifyContent: "end" }}>
                       <MapCustom
                         position={position}
                         setPosition={(position) => {
                           setPosition(position);
-                          form.setFieldsValue({ position: position });
+                          form.setFieldsValue({ location: position });
                         }}
                       />
                     </Row>
