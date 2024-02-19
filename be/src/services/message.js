@@ -2,6 +2,31 @@ import { sendNotifyToRoom } from "../controllers/socket";
 import db from "../models/index";
 import { createFileService } from "./file";
 
+const getNewMessages = async (data) => {
+  try {
+    var message = await db.Message.findAll({
+      where: {
+        id: data.id,
+        roomChatId: data.roomChatId
+      },
+      include: [
+        {
+          model: db.File,
+          where: {
+            typeFk: "1",
+          },
+          as: "messageFiles",
+          attributes: ["url"],
+          required: false,
+        },
+      ],
+    });
+    return message;
+  } catch (error) {
+    console.log("Get new message error");
+  }
+}
+
 export const createMessageService = async (data) => {
   const transaction = await db.sequelize.transaction();
 
@@ -27,7 +52,8 @@ export const createMessageService = async (data) => {
       );
     }
 
-    sendNotifyToRoom(data.roomChatId);
+    const newMessage = await getNewMessages(message)
+    sendNotifyToRoom(data,newMessage);
     await transaction.commit();
 
     return message;

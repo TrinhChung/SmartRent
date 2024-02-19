@@ -18,8 +18,9 @@ export const sendNotification = (data) => {
   global.io.to(users[Number(data.userId)]).emit("notification", data);
 };
 
-export const sendNotifyToRoom = (roomId) => {
-  global.io.to(roomId).emit("new-message");
+export const sendNotifyToRoom = (data,newMessage) => {
+  global.io.to(data.roomChatId).emit("new-message", data.userId);
+  global.io.to(data.roomChatId).to(data.userId).emit("add-message", newMessage);
 };
 
 const sendMessage = (socket, roomId) => {

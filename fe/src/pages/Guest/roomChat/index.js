@@ -19,6 +19,7 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../../../providers/authProvider";
 import { uploadFileToSessionService } from "../../../services/UploadFile/index";
+import { connect } from "socket.io-client";
 
 const { Footer, Content } = Layout;
 const { TextArea } = Input;
@@ -48,16 +49,37 @@ const RoomChat = () => {
     }
   };
 
+  const addMessageToSender = (message) => {
+    try {
+      messages.push(...message.map(item => item));
+      setMessages(messages);
+      setTimeout(() => {
+        chatWindowRef.current.scrollTo(0, chatWindowRef.current.scrollHeight);
+      }, 50);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     if (id > 0 && authUser?.id > 0) {
       socket.emit("leave-room", id, authUser?.id);
       socket.emit("join-room", id, authUser?.id);
     }
 
-    socket.on("new-message", async () => {
-      await fetchMessageOfRoom(id);
-    });
-    return () => socket.off("new-message");
+    socket.on("new-message", async (data) => {
+      if (data != authUser.id) {
+        await fetchMessageOfRoom(id);
+      }
+    })
+    
+    socket.on("add-message", (message) => {
+      addMessageToSender(message);
+    })
+    return () => {      
+      socket.off("add-message");
+      socket.off("new-message");
+    }
   }, [socket, id, authUser]);
 
   useEffect(() => {
