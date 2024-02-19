@@ -259,7 +259,7 @@ const Search = () => {
               </Row>
               <Row gutter={[8, 8]}>
                 {data && data?.length > 0 ? (
-                  data.map((post, key) => {
+                  data.map((post, index) => {
                     return (
                       <CardHouseHome
                         name={post?.name}
@@ -269,7 +269,7 @@ const Search = () => {
                         cost={post?.cost}
                         acreage={post?.acreage}
                         date={post?.createdAt}
-                        key={key}
+                        key={index}
                       />
                     );
                   })

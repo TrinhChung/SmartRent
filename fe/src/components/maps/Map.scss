@@ -1,9 +1,22 @@
-.address-suggestion {
+.map-custom-container {
+  .address-suggestion {
     margin: 4px 4px;
     padding: 4px 16px;
     width: 400px;
-}
-.address-suggestion:hover {
+  }
+  .address-suggestion:hover {
     cursor: pointer;
     background-color: bisque;
+  }
+}
+
+.marker-house-custom {
+  position: relative;
+}
+.name-house {
+  font-weight: bold;
+}
+.name-house:hover {
+  text-decoration: underline;
+  cursor: pointer;
 }

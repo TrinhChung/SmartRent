@@ -20,7 +20,7 @@ const CardHouseHome = ({
   const navigate = useNavigate();
 
   return (
-    <Col className="card-house_home" key={key}>
+    <Col className="card-house_home" key={"card-home" + key}>
       <ImageCustom
         className="image-card_house_home"
         preview={false}

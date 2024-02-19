@@ -1,8 +1,7 @@
-import React, { memo, useCallback, useMemo, useState } from "react";
-import { GoogleMap, MarkerF } from "@react-google-maps/api";
+import React, { useCallback, useMemo, useState } from "react";
+import { GoogleMap, MarkerF, OverlayView } from "@react-google-maps/api";
 import spriteLocation from "../../public/images/mylocation-sprite-2x.png";
-import { faHouse } from "@fortawesome/free-solid-svg-icons";
-import IconMarker from "../../public/icon/house.png";
+import HouseInfo from "./HouseInfo";
 
 const MapCustom = ({
   position = {},
@@ -10,8 +9,7 @@ const MapCustom = ({
   height = "50vh",
   houses = [],
 }) => {
-  const { AdvancedMarkerElement } = window.google.maps.importLibrary("maps");
-  const [scaleIcon, setScaleIcon] = useState(0.05);
+  const [scaleIcon, setScaleIcon] = useState(26);
   const [map, setMap] = useState(null);
   const dragMarker = useCallback(
     (marker) => {
@@ -98,40 +96,18 @@ const MapCustom = ({
 
   const listHouseIcon = useMemo(() => {
     if (houses?.length === 0 || (map && map?.zoom < 5)) return <></>;
-    if (map) {
-      houses.map((house, index) => {
-        new window.google.maps.marker.AdvancedMarkerElement({
-          map: map,
-          position: {
-            lat: Number(house.Address.lat),
-            lng: Number(house.Address.lng),
-          },
-          content: <div>House</div>,
-        });
-      });
-    }
     return houses.map((house, index) => {
       return (
-        <MarkerF
-          key={"mapiCon" + index}
-          draggable={false}
+        <OverlayView
           position={{
-            lat: Number(house.Address.lat),
-            lng: Number(house.Address.lng),
+            lat: Number(house.Address?.lat),
+            lng: Number(house.Address?.lng),
           }}
-          icon={{
-            path: faHouse.icon[4],
-            fillColor: "#3c3c3c",
-            fillOpacity: 1,
-            anchor: new window.google.maps.Point(
-              faHouse.icon[0] / 2,
-              faHouse.icon[1]
-            ),
-            strokeWeight: 1,
-            strokeColor: "#3c3c3c",
-            scale: 0.05,
-          }}
-        />
+          key={"house" + index}
+          mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
+        >
+          <HouseInfo scaleIcon={scaleIcon} house={house} />
+        </OverlayView>
       );
     });
   }, [houses, map?.zoom]);
@@ -144,8 +120,9 @@ const MapCustom = ({
       onLoad={onLoad}
       onRightClick={dragMarker}
       onZoomChanged={() => {
-        setScaleIcon((map?.zoom * 0.05) / 15);
+        setScaleIcon((map?.zoom * 26) / 15);
       }}
+      className="map-custom-container"
     >
       {position && (
         <MarkerF
@@ -160,4 +137,4 @@ const MapCustom = ({
   );
 };
 
-export default memo(MapCustom);
+export default MapCustom;
