@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Col, Popover, Row } from "antd";
-import { HomeFilled } from "@ant-design/icons";
+import { HomeTwoTone } from "@ant-design/icons";
 import "./Map.scss";
 import { useNavigate } from "react-router-dom";
 
@@ -38,9 +38,7 @@ const HouseInfo = ({ house, scaleIcon }) => {
         open={open}
         onOpenChange={handleOpenChange}
       >
-        <HomeFilled
-          style={{ fontSize: scaleIcon, color: "var(--color-text)" }}
-        />
+        <HomeTwoTone twoToneColor="#e74c3c" style={{ fontSize: scaleIcon }} />
       </Popover>
     </Col>
   );
