@@ -48,16 +48,35 @@ const RoomChat = () => {
     }
   };
 
+  const addMessageToSender = (message) => {
+    try {
+      messages.push(...message.map(item => item));
+      setMessages(messages);
+      setTimeout(() => {
+        chatWindowRef.current.scrollTo(0, chatWindowRef.current.scrollHeight);
+      }, 50);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     if (id > 0 && authUser?.id > 0) {
       socket.emit("leave-room", id, authUser?.id);
       socket.emit("join-room", id, authUser?.id);
     }
 
-    socket.on("new-message", async () => {
-      await fetchMessageOfRoom(id);
+    socket.on("new-message", async (data,message) => {
+      if (data !== authUser.id) {
+        await fetchMessageOfRoom(id);
+      }
+      else {
+        addMessageToSender(message);
+      }
     });
-    return () => socket.off("new-message");
+    return () => {      
+      socket.off("new-message");
+    }
   }, [socket, id, authUser]);
 
   useEffect(() => {
