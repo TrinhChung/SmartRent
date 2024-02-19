@@ -9,11 +9,13 @@ import { useJsApiLoader } from "@react-google-maps/api";
 import { getEstateByRecommendService } from "../../../services/RealEstate/index";
 
 const Home = () => {
+  const [libraries] = useState(["drawing", "places"]);
   const { isLoaded } = useJsApiLoader({
     mapIds: process.env.REACT_APP_MAP_ID,
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAP_KEY,
-    libraries: ["drawing", "places"],
+    libraries: libraries,
   });
+
   const [position, setPosition] = useState({
     lat: 21.0469701,
     lng: 105.8021347,
