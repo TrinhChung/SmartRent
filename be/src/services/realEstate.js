@@ -1,4 +1,5 @@
 import db from "../models/index";
+import { Op } from "sequelize";
 import { createAddressService } from "./address";
 import { createFileService } from "./file";
 
@@ -167,10 +168,42 @@ export const searchRealEstateService = async ({
   limit = 10,
 }) => {
   try {
+    var whereCondition = {};
+    console.log(queries);
+
+    if (queries?.costMin) {
+      whereCondition["cost"] = { [Op.gte]: queries.costMin };
+    }
+    if (queries?.isWhole === true) {
+      whereCondition["isWhole"] = queries?.isWhole;
+    }
+
+    if (queries?.isAllowPet === true) {
+      whereCondition["isPet"] = queries?.isAllowPet;
+    }
+
+    if (queries?.costMax) {
+      whereCondition["cost"] = {
+        ...whereCondition["cost"],
+        [Op.lte]: queries.costMax,
+      };
+    }
+
+    if (queries?.acreageMin) {
+      whereCondition["acreage"] = { [Op.gte]: queries.acreageMin };
+    }
+    if (queries?.acreageMax) {
+      whereCondition["acreage"] = {
+        ...whereCondition["acreage"],
+        [Op.lte]: queries.acreageMax,
+      };
+    }
+
     const total = await db.RealEstate.count({});
 
     const list = await db.RealEstate.findAll(
       {
+        where: whereCondition,
         include: [
           {
             model: db.File,
