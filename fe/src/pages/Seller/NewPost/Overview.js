@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React, { memo, useEffect } from "react";
 import { Row, Col, Image } from "antd";
 import Slider from "react-slick";
 import {
@@ -27,13 +27,24 @@ const Overview = ({
   autoPayment,
 }) => {
   const [position, setPosition] = useState(
-    address && address?.location
-      ? address.location
+    address && address?.lat && address?.lng
+      ? {
+          lat: Number(address?.lat),
+          lng: Number(address?.lng),
+        }
       : {
           lat: 21.0469701,
           lng: 105.8021347,
         }
   );
+  useEffect(() => {
+    if (address && address?.lat && address?.lng) {
+      setPosition({
+        lat: Number(address?.lat),
+        lng: Number(address?.lng),
+      });
+    }
+  }, [address]);
 
   const { isLoaded } = useJsApiLoader({
     mapIds: process.env.REACT_APP_MAP_ID,

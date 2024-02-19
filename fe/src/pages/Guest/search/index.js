@@ -86,6 +86,7 @@ const Search = () => {
                   setPosition(position);
                   form.setFieldValue("location", position);
                 }}
+                houses={data}
               />
             </Form.Item>
 
