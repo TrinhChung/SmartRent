@@ -51,11 +51,14 @@ const Search = () => {
       orders: formOrder.getFieldsValue(),
       page: page,
     };
-
-    const res = await searchRealEstateService(data);
-    if (res.status === 200) {
-      setData(res.data.list);
-      setTotalPage(res.data.total);
+    try {
+      const res = await searchRealEstateService(data);
+      if (res.status === 200) {
+        setData(res.data.list);
+        setTotalPage(res.data.total);
+      }
+    } catch (error) {
+      alert(error.message);
     }
   };
 
@@ -106,7 +109,7 @@ const Search = () => {
               <Row style={{ gap: 24 }}>
                 <Form.Item label="Giá(VNĐ)">
                   <Row style={{ gap: 8 }}>
-                    <Form.Item name="cost-min">
+                    <Form.Item name="costMin">
                       <InputNumber
                         step={500000}
                         min={0}
@@ -119,7 +122,7 @@ const Search = () => {
                       />
                     </Form.Item>
 
-                    <Form.Item name="cost-max">
+                    <Form.Item name="costMax">
                       <InputNumber
                         step={500000}
                         min={0}
@@ -141,7 +144,7 @@ const Search = () => {
                   }
                 >
                   <Row style={{ gap: 8 }}>
-                    <Form.Item name="acreage-min">
+                    <Form.Item name="acreageMin">
                       <InputNumber
                         placeholder="Tối thiểu"
                         min={0}
@@ -149,7 +152,7 @@ const Search = () => {
                       />
                     </Form.Item>
 
-                    <Form.Item name="acreage-max">
+                    <Form.Item name="acreageMax">
                       <InputNumber
                         placeholder="Tối đa"
                         min={1}
@@ -213,14 +216,14 @@ const Search = () => {
         >
           <Form.Item name="createdAt" label="Thời gian">
             <Radio.Group buttonStyle="solid">
-              <Radio value="">Không</Radio>
+              <Radio value="">Tất cả</Radio>
               <Radio value="DESC">Mới nhất</Radio>
               <Radio value="ASC">Cũ nhất</Radio>
             </Radio.Group>
           </Form.Item>
           <Form.Item name="acreage" label="Diện tích">
             <Radio.Group buttonStyle="solid">
-              <Radio value="">Không</Radio>
+              <Radio value="">Tất cả</Radio>
               <Radio value="DESC">Giảm dần</Radio>
               <Radio value="ASC">Tăng dần</Radio>
             </Radio.Group>
@@ -235,8 +238,7 @@ const Search = () => {
         <Row>
           <Button
             onClick={() => {
-              console.log(form.getFieldsValue());
-              console.log(formOrder.getFieldsValue());
+              fetchRealEstate();
             }}
           >
             Tìm kiếm
@@ -275,13 +277,23 @@ const Search = () => {
                     );
                   })
                 ) : (
-                  <Empty />
+                  <Col span={24}>
+                    <Row style={{ justifyContent: "center" }}>
+                      <Empty
+                        image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
+                        imageStyle={{
+                          height: 60,
+                        }}
+                        description={<span>Không có dữ liệu phù hợp</span>}
+                      ></Empty>
+                    </Row>
+                  </Col>
                 )}
               </Row>
             </Col>
           </Row>
         </Content>
-        <Footer>
+        <Footer style={{ padding: "10px 24px" }}>
           <Row style={{ paddingTop: 10, justifyContent: "center" }}>
             <Pagination
               current={page}
