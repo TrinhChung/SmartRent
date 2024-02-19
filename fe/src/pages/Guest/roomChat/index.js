@@ -19,7 +19,6 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../../../providers/authProvider";
 import { uploadFileToSessionService } from "../../../services/UploadFile/index";
-import { connect } from "socket.io-client";
 
 const { Footer, Content } = Layout;
 const { TextArea } = Input;
@@ -67,17 +66,15 @@ const RoomChat = () => {
       socket.emit("join-room", id, authUser?.id);
     }
 
-    socket.on("new-message", async (data) => {
-      if (data != authUser.id) {
+    socket.on("new-message", async (data,message) => {
+      if (data !== authUser.id) {
         await fetchMessageOfRoom(id);
       }
-    })
-    
-    socket.on("add-message", (message) => {
-      addMessageToSender(message);
-    })
+      else {
+        addMessageToSender(message);
+      }
+    });
     return () => {      
-      socket.off("add-message");
       socket.off("new-message");
     }
   }, [socket, id, authUser]);
