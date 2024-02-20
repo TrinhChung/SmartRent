@@ -4,9 +4,10 @@ import { HomeTwoTone } from "@ant-design/icons";
 import "./Map.scss";
 import { useNavigate } from "react-router-dom";
 
-const HouseInfo = ({ house, scaleIcon }) => {
+const HouseInfo = ({ house, scaleIcon, setDirection = () => {}, origin }) => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const directionsService = new window.google.maps.DirectionsService();
 
   const handleOpenChange = (newOpen) => {
     setOpen(newOpen);
@@ -32,13 +33,41 @@ const HouseInfo = ({ house, scaleIcon }) => {
             <Row>
               Diện tích: {house?.acreage} m<sup>2</sup>
             </Row>
+            <Row
+              style={{ color: "blue", cursor: "pointer" }}
+              onClick={() => {
+                directionsService.route(
+                  {
+                    origin: origin,
+                    destination: {
+                      lat: Number(house?.Address?.lat),
+                      lng: Number(house?.Address?.lng),
+                    },
+                    travelMode: window.google.maps.TravelMode.DRIVING,
+                  },
+                  (result, status) => {
+                    if (status === window.google.maps.DirectionsStatus.OK) {
+                      setDirection(result);
+                    } else {
+                      console.error(`error fetching directions ${result}`);
+                    }
+                  }
+                );
+              }}
+            >
+              Xem quãng đường
+            </Row>
           </Col>
         }
         trigger="click"
         open={open}
         onOpenChange={handleOpenChange}
       >
-        <HomeTwoTone twoToneColor="#e74c3c" style={{ fontSize: scaleIcon }} />
+        <HomeTwoTone
+          twoToneColor="#e74c3c"
+          style={{ fontSize: scaleIcon }}
+          className="icon-house"
+        />
       </Popover>
     </Col>
   );

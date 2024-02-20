@@ -1,13 +1,12 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { getRoomByIdService } from "../../../services/RealEstate/index";
 import { Col, Row } from "antd";
 import Overview from "./Overview";
 import MarkdownEditor from "@uiw/react-markdown-editor";
 
 const RoomView = () => {
-  const navigate = useNavigate();
   const [data, setData] = useState([]);
   const { id } = useParams();
 

@@ -132,6 +132,25 @@ const Search = () => {
                         parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
                         placeholder="Tối đa"
                         style={{ minWidth: 180 }}
+                        dependencies={["costMin"]}
+                        rules={[
+                          ({ getFieldValue }) => ({
+                            validator(_, value) {
+                              console.log(value);
+                              console.log(getFieldValue("costMin"));
+                              if (
+                                value &&
+                                getFieldValue("costMin") &&
+                                value < getFieldValue("costMin")
+                              ) {
+                                return Promise.resolve();
+                              }
+                              return Promise.reject(
+                                new Error("Giá trị không hợp lệ!")
+                              );
+                            },
+                          }),
+                        ]}
                       />
                     </Form.Item>
                   </Row>
@@ -157,6 +176,23 @@ const Search = () => {
                         placeholder="Tối đa"
                         min={1}
                         style={{ minWidth: 180 }}
+                        dependencies={["acreageMin"]}
+                        rules={[
+                          ({ getFieldValue }) => ({
+                            validator(_, value) {
+                              if (
+                                value &&
+                                getFieldValue("acreageMin") &&
+                                value < getFieldValue("acreageMin")
+                              ) {
+                                return Promise.resolve();
+                              }
+                              return Promise.reject(
+                                new Error("Giá trị không hợp lệ!")
+                              );
+                            },
+                          }),
+                        ]}
                       />
                     </Form.Item>
                   </Row>
