@@ -248,6 +248,8 @@ const Search = () => {
           initialValues={{ createdAt: "DESC", cost: "DESC", acreage: "DESC" }}
           onChange={() => {
             fetchRealEstate();
+            formOrder.resetFields();
+            form.resetFields();
           }}
         >
           <Form.Item name="createdAt" label="Thời gian">

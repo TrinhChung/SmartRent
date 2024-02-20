@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {
   GoogleMap,
   MarkerF,
@@ -17,6 +23,16 @@ const MapCustom = ({
   const [scaleIcon, setScaleIcon] = useState(26);
   const [map, setMap] = useState(null);
   const [directions, setDirections] = useState(null);
+  const directionRef = useRef(null);
+  const directionsRenderer = useRef(
+    new window.google.maps.DirectionsRenderer({ suppressMarkers: true })
+  );
+
+  useEffect(() => {
+    if (!directionsRenderer?.current?.setDirections) return;
+    directionsRenderer.current.setMap(map);
+    directionsRenderer.current.setDirections(directions);
+  }, [directions]);
 
   const dragMarker = useCallback(
     (marker) => {
@@ -101,6 +117,10 @@ const MapCustom = ({
     [addYourLocationButton]
   );
 
+  useEffect(() => {
+    setDirections(null);
+  }, [position]);
+
   const listHouseIcon = useMemo(() => {
     if (houses?.length === 0 || (map && map?.zoom < 5)) return <></>;
     return houses.map((house, index) => {
@@ -123,16 +143,6 @@ const MapCustom = ({
       );
     });
   }, [houses, map?.zoom]);
-
-  const directionDistance = useMemo(() => {
-    if (!directions) return <></>;
-    return (
-      <DirectionsRenderer
-        options={{ suppressMarkers: true }}
-        directions={directions}
-      ></DirectionsRenderer>
-    );
-  }, [directions, map?.zoom]);
 
   return (
     <GoogleMap
@@ -158,7 +168,6 @@ const MapCustom = ({
         />
       )}
       {listHouseIcon}
-      {directionDistance}
     </GoogleMap>
   );
 };

@@ -49,10 +49,11 @@ const HouseInfo = ({ house, scaleIcon, setDirection = () => {}, origin }) => {
                     if (status === window.google.maps.DirectionsStatus.OK) {
                       setDirection(result);
                     } else {
-                      console.error(`error fetching directions ${result}`);
+                      alert(`error fetching directions ${result}`);
                     }
                   }
                 );
+                setOpen(false);
               }}
             >
               Xem quãng đường
@@ -65,8 +66,12 @@ const HouseInfo = ({ house, scaleIcon, setDirection = () => {}, origin }) => {
       >
         <HomeTwoTone
           twoToneColor="#e74c3c"
-          style={{ fontSize: scaleIcon }}
-          className="icon-house"
+          style={{
+            fontSize: scaleIcon,
+            position: "absolute",
+            top: -Number(scaleIcon / 2),
+            left: -Number(scaleIcon / 2),
+          }}
         />
       </Popover>
     </Col>
