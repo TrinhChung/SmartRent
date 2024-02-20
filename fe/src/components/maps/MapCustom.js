@@ -5,14 +5,10 @@ import React, {
   useRef,
   useState,
 } from "react";
-import {
-  GoogleMap,
-  MarkerF,
-  DirectionsRenderer,
-  OverlayView,
-} from "@react-google-maps/api";
+import { GoogleMap, MarkerF, OverlayView } from "@react-google-maps/api";
 import spriteLocation from "../../public/images/mylocation-sprite-2x.png";
 import HouseInfo from "./HouseInfo";
+import { Col, Row, Select } from "antd";
 
 const MapCustom = ({
   position = {},
@@ -23,16 +19,14 @@ const MapCustom = ({
   const [scaleIcon, setScaleIcon] = useState(26);
   const [map, setMap] = useState(null);
   const [directions, setDirections] = useState(null);
-  const directionRef = useRef(null);
+  const [modeTravel, setModeTravel] = useState("DRIVING");
+  const [currentDestination, setCurrentDestination] = useState(null);
   const directionsRenderer = useRef(
-    new window.google.maps.DirectionsRenderer({ suppressMarkers: true })
+    new window.google.maps.DirectionsRenderer({
+      suppressMarkers: true,
+    })
   );
-
-  useEffect(() => {
-    if (!directionsRenderer?.current?.setDirections) return;
-    directionsRenderer.current.setMap(map);
-    directionsRenderer.current.setDirections(directions);
-  }, [directions]);
+  const directionsService = new window.google.maps.DirectionsService();
 
   const dragMarker = useCallback(
     (marker) => {
@@ -118,8 +112,42 @@ const MapCustom = ({
   );
 
   useEffect(() => {
-    setDirections(null);
+    if (position && currentDestination) {
+      getDirectionRoute(currentDestination);
+    }
   }, [position]);
+
+  useEffect(() => {
+    if (!directionsRenderer?.current?.setDirections) return;
+    if (directions) {
+      directionsRenderer?.current?.setMap(map);
+    } else {
+      directionsRenderer?.current?.setMap(null);
+    }
+    directionsRenderer?.current?.setDirections(directions);
+  }, [directions]);
+
+  const getDirectionRoute = useCallback(
+    (location) => {
+      setCurrentDestination(location);
+      directionsService.route(
+        {
+          origin: position,
+          destination: location,
+          travelMode: modeTravel,
+        },
+        (result, status) => {
+          console.log(result);
+          if (status === window.google.maps.DirectionsStatus.OK) {
+            setDirections(result);
+          } else {
+            alert(`error fetching directions ${result}`);
+          }
+        }
+      );
+    },
+    [position, modeTravel]
+  );
 
   const listHouseIcon = useMemo(() => {
     if (houses?.length === 0 || (map && map?.zoom < 5)) return <></>;
@@ -137,7 +165,7 @@ const MapCustom = ({
             scaleIcon={scaleIcon}
             house={house}
             origin={position}
-            setDirection={setDirections}
+            getDirectionRoute={getDirectionRoute}
           />
         </OverlayView>
       );
@@ -168,6 +196,26 @@ const MapCustom = ({
         />
       )}
       {listHouseIcon}
+      <Row id="floating-panel">
+        <Col>
+          <b>Mode of Travel: </b>
+        </Col>
+        <Col>
+          <Select
+            value={modeTravel}
+            style={{ paddingLeft: 5 }}
+            options={[
+              { label: "Driving", value: "DRIVING" },
+              { label: "Walking", value: "WALKING" },
+              { label: "Bicycling", value: "BICYCLING" },
+              { label: "Transit", value: "TRANSIT" },
+            ]}
+            onChange={(value) => {
+              setModeTravel(value);
+            }}
+          />
+        </Col>
+      </Row>
     </GoogleMap>
   );
 };
