@@ -27,6 +27,7 @@ const MapCustom = ({
   setPosition = () => {},
   height = "50vh",
   houses = [],
+  isModeTravel = false,
 }) => {
   const [scaleIcon, setScaleIcon] = useState(26);
   const [map, setMap] = useState(null);
@@ -236,60 +237,62 @@ const MapCustom = ({
         />
       )}
       {listHouseIcon}
-      <Row id="floating-panel">
-        <Col>
-          <Select
-            value={modeTravel}
-            style={{
-              paddingLeft: 5,
-              width: 120,
-              height: 40,
-              borderRadius: "0!important",
-            }}
-            options={[
-              {
-                label: (
-                  <Row style={{ alignItems: "center", cursor: "pointer" }}>
-                    <FontAwesomeIcon icon={faCar} />
-                    <label style={{ paddingLeft: 4 }}>Car</label>
-                  </Row>
-                ),
-                value: "DRIVING",
-              },
-              {
-                label: (
-                  <Row style={{ alignItems: "center", cursor: "pointer" }}>
-                    <FontAwesomeIcon icon={faPersonWalking} />
-                    <label style={{ paddingLeft: 4 }}>Walking</label>
-                  </Row>
-                ),
-                value: "WALKING",
-              },
-              {
-                label: (
-                  <Row style={{ alignItems: "center", cursor: "pointer" }}>
-                    <FontAwesomeIcon icon={faBicycle} />
-                    <label style={{ paddingLeft: 4 }}>Bicycle</label>
-                  </Row>
-                ),
-                value: "BICYCLING",
-              },
-              {
-                label: (
-                  <Row style={{ alignItems: "center", cursor: "pointer" }}>
-                    <FontAwesomeIcon icon={faPlane} />
-                    <label style={{ paddingLeft: 4 }}>Transit</label>
-                  </Row>
-                ),
-                value: "TRANSIT",
-              },
-            ]}
-            onChange={(value) => {
-              setModeTravel(value);
-            }}
-          />
-        </Col>
-      </Row>
+      {isModeTravel === true && (
+        <Row id="floating-panel">
+          <Col>
+            <Select
+              value={modeTravel}
+              style={{
+                paddingLeft: 5,
+                width: 120,
+                height: 40,
+                borderRadius: "0!important",
+              }}
+              options={[
+                {
+                  label: (
+                    <Row style={{ alignItems: "center", cursor: "pointer" }}>
+                      <FontAwesomeIcon icon={faCar} />
+                      <label style={{ paddingLeft: 4 }}>Car</label>
+                    </Row>
+                  ),
+                  value: "DRIVING",
+                },
+                {
+                  label: (
+                    <Row style={{ alignItems: "center", cursor: "pointer" }}>
+                      <FontAwesomeIcon icon={faPersonWalking} />
+                      <label style={{ paddingLeft: 4 }}>Walking</label>
+                    </Row>
+                  ),
+                  value: "WALKING",
+                },
+                {
+                  label: (
+                    <Row style={{ alignItems: "center", cursor: "pointer" }}>
+                      <FontAwesomeIcon icon={faBicycle} />
+                      <label style={{ paddingLeft: 4 }}>Bicycle</label>
+                    </Row>
+                  ),
+                  value: "BICYCLING",
+                },
+                {
+                  label: (
+                    <Row style={{ alignItems: "center", cursor: "pointer" }}>
+                      <FontAwesomeIcon icon={faPlane} />
+                      <label style={{ paddingLeft: 4 }}>Transit</label>
+                    </Row>
+                  ),
+                  value: "TRANSIT",
+                },
+              ]}
+              onChange={(value) => {
+                setModeTravel(value);
+              }}
+            />
+          </Col>
+        </Row>
+      )}
     </GoogleMap>
   );
 };
