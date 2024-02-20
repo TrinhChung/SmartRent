@@ -24,6 +24,15 @@ const MapCustom = ({
   const [map, setMap] = useState(null);
   const [directions, setDirections] = useState(null);
   const directionRef = useRef(null);
+  const directionsRenderer = useRef(
+    new window.google.maps.DirectionsRenderer({ suppressMarkers: true })
+  );
+
+  useEffect(() => {
+    if (!directionsRenderer?.current?.setDirections) return;
+    directionsRenderer.current.setMap(map);
+    directionsRenderer.current.setDirections(directions);
+  }, [directions]);
 
   const dragMarker = useCallback(
     (marker) => {
@@ -135,24 +144,6 @@ const MapCustom = ({
     });
   }, [houses, map?.zoom]);
 
-  const directionDistance = useMemo(() => {
-    if (!directions) {
-      console.log("direction null");
-      if (directionRef) {
-        console.log(directionRef);
-      }
-      return <></>;
-    }
-
-    return (
-      <DirectionsRenderer
-        options={{ suppressMarkers: true }}
-        directions={directions}
-        ref={directionRef}
-      ></DirectionsRenderer>
-    );
-  }, [directions]);
-
   return (
     <GoogleMap
       center={position}
@@ -177,7 +168,6 @@ const MapCustom = ({
         />
       )}
       {listHouseIcon}
-      {directionDistance}
     </GoogleMap>
   );
 };

@@ -53,6 +53,7 @@ const HouseInfo = ({ house, scaleIcon, setDirection = () => {}, origin }) => {
                     }
                   }
                 );
+                setOpen(false);
               }}
             >
               Xem quãng đường
