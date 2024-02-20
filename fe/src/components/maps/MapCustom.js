@@ -5,7 +5,12 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { GoogleMap, MarkerF, OverlayView } from "@react-google-maps/api";
+import {
+  GoogleMap,
+  MarkerF,
+  OverlayView,
+  InfoWindowF,
+} from "@react-google-maps/api";
 import spriteLocation from "../../public/images/mylocation-sprite-2x.png";
 import HouseInfo from "./HouseInfo";
 import { Col, Row, Select } from "antd";
@@ -28,9 +33,17 @@ const MapCustom = ({
   const [directions, setDirections] = useState(null);
   const [modeTravel, setModeTravel] = useState("DRIVING");
   const [currentDestination, setCurrentDestination] = useState(null);
+
   const directionsRenderer = useRef(
     new window.google.maps.DirectionsRenderer({
       suppressMarkers: true,
+    })
+  );
+
+  const infoWindow = useRef(
+    new window.google.maps.InfoWindow({
+      content: "Your custom content goes here",
+      position: position,
     })
   );
   const directionsService = new window.google.maps.DirectionsService();
@@ -127,6 +140,26 @@ const MapCustom = ({
   useEffect(() => {
     if (!directionsRenderer?.current?.setDirections) return;
     if (directions) {
+      const view_path = directions.routes[0]?.overview_path;
+      if (view_path.length > 0) {
+        infoWindow.current.setPosition({
+          lat: view_path[Math.round(view_path.length / 2)].lat(),
+          lng: view_path[Math.round(view_path.length / 2)].lng(),
+        });
+        console.log(directions);
+        let distance = undefined;
+        let duration = undefined;
+        if (directions?.routes[0].legs.length > 0) {
+          distance = directions?.routes[0]?.legs[0]?.distance?.text;
+          duration = directions?.routes[0]?.legs[0]?.duration?.text;
+        }
+        const contentDirection = `<div>
+            <div>Khoảng cách: ${distance}</div>
+            <div>Thời gian: ${duration}</div>
+          </div>`;
+        infoWindow.current.setContent(contentDirection);
+        infoWindow.current.open(map);
+      }
       directionsRenderer?.current?.setMap(map);
     } else {
       directionsRenderer?.current?.setMap(null);
@@ -143,7 +176,7 @@ const MapCustom = ({
           destination: location,
           travelMode: modeTravel,
         },
-        (result, status) => {
+        async (result, status) => {
           if (status === window.google.maps.DirectionsStatus.OK) {
             setDirections(result);
           } else {
