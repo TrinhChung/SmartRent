@@ -9,10 +9,11 @@ import { useJsApiLoader } from "@react-google-maps/api";
 import "./NewPost.scss";
 
 const FormRealEstate = ({ form, setFieldsValue = () => {} }) => {
+  const [libraries] = useState(["drawing", "places"]);
   const { isLoaded } = useJsApiLoader({
     mapIds: process.env.REACT_APP_MAP_ID,
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAP_KEY,
-    libraries: ["drawing", "places"],
+    libraries: libraries,
   });
   const [description, setDescription] = useState(false);
   const [listImg, setListImg] = useState([]);

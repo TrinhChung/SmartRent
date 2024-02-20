@@ -37,6 +37,13 @@ const Overview = ({
           lng: 105.8021347,
         }
   );
+  const [libraries] = useState(["drawing", "places"]);
+  const { isLoaded } = useJsApiLoader({
+    mapIds: process.env.REACT_APP_MAP_ID,
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAP_KEY,
+    libraries: libraries,
+  });
+
   useEffect(() => {
     if (address && address?.lat && address?.lng) {
       setPosition({
@@ -45,12 +52,6 @@ const Overview = ({
       });
     }
   }, [address]);
-
-  const { isLoaded } = useJsApiLoader({
-    mapIds: process.env.REACT_APP_MAP_ID,
-    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAP_KEY,
-    libraries: ["drawing", "places"],
-  });
 
   const settings = {
     className: "center",

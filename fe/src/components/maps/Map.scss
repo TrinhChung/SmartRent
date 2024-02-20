@@ -12,6 +12,12 @@
 
 .marker-house-custom {
   position: relative;
+
+  .icon-house {
+    position: absolute;
+    top: -13px;
+    left: -13px;
+  }
 }
 .name-house {
   font-weight: bold;

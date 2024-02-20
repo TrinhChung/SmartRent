@@ -169,7 +169,6 @@ export const searchRealEstateService = async ({
 }) => {
   try {
     var whereCondition = {};
-    console.log(queries);
 
     if (queries?.costMin) {
       whereCondition["cost"] = { [Op.gte]: queries.costMin };

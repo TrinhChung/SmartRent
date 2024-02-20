@@ -1,5 +1,10 @@
-import React, { useCallback, useMemo, useState } from "react";
-import { GoogleMap, MarkerF, OverlayView } from "@react-google-maps/api";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import {
+  GoogleMap,
+  MarkerF,
+  DirectionsRenderer,
+  OverlayView,
+} from "@react-google-maps/api";
 import spriteLocation from "../../public/images/mylocation-sprite-2x.png";
 import HouseInfo from "./HouseInfo";
 
@@ -11,6 +16,8 @@ const MapCustom = ({
 }) => {
   const [scaleIcon, setScaleIcon] = useState(26);
   const [map, setMap] = useState(null);
+  const [directions, setDirections] = useState(null);
+
   const dragMarker = useCallback(
     (marker) => {
       const lat = marker?.latLng?.lat();
@@ -106,11 +113,26 @@ const MapCustom = ({
           key={"house" + index}
           mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
         >
-          <HouseInfo scaleIcon={scaleIcon} house={house} />
+          <HouseInfo
+            scaleIcon={scaleIcon}
+            house={house}
+            origin={position}
+            setDirection={setDirections}
+          />
         </OverlayView>
       );
     });
   }, [houses, map?.zoom]);
+
+  const directionDistance = useMemo(() => {
+    if (!directions) return <></>;
+    return (
+      <DirectionsRenderer
+        options={{ suppressMarkers: true }}
+        directions={directions}
+      ></DirectionsRenderer>
+    );
+  }, [directions, map?.zoom]);
 
   return (
     <GoogleMap
@@ -120,7 +142,10 @@ const MapCustom = ({
       onLoad={onLoad}
       onRightClick={dragMarker}
       onZoomChanged={() => {
-        setScaleIcon((map?.zoom * 26) / 15);
+        if (!map?.zoom) {
+          setScaleIcon(26);
+        }
+        setScaleIcon(Number(map?.zoom * 26) / 15);
       }}
       className="map-custom-container"
     >
@@ -133,6 +158,7 @@ const MapCustom = ({
         />
       )}
       {listHouseIcon}
+      {directionDistance}
     </GoogleMap>
   );
 };
