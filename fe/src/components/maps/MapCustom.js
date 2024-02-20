@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {
   GoogleMap,
   MarkerF,
@@ -17,6 +23,7 @@ const MapCustom = ({
   const [scaleIcon, setScaleIcon] = useState(26);
   const [map, setMap] = useState(null);
   const [directions, setDirections] = useState(null);
+  const directionRef = useRef(null);
 
   const dragMarker = useCallback(
     (marker) => {
@@ -101,6 +108,10 @@ const MapCustom = ({
     [addYourLocationButton]
   );
 
+  useEffect(() => {
+    setDirections(null);
+  }, [position]);
+
   const listHouseIcon = useMemo(() => {
     if (houses?.length === 0 || (map && map?.zoom < 5)) return <></>;
     return houses.map((house, index) => {
@@ -125,14 +136,22 @@ const MapCustom = ({
   }, [houses, map?.zoom]);
 
   const directionDistance = useMemo(() => {
-    if (!directions) return <></>;
+    if (!directions) {
+      console.log("direction null");
+      if (directionRef) {
+        console.log(directionRef);
+      }
+      return <></>;
+    }
+
     return (
       <DirectionsRenderer
         options={{ suppressMarkers: true }}
         directions={directions}
+        ref={directionRef}
       ></DirectionsRenderer>
     );
-  }, [directions, map?.zoom]);
+  }, [directions]);
 
   return (
     <GoogleMap
