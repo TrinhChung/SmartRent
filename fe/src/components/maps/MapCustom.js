@@ -9,6 +9,13 @@ import { GoogleMap, MarkerF, OverlayView } from "@react-google-maps/api";
 import spriteLocation from "../../public/images/mylocation-sprite-2x.png";
 import HouseInfo from "./HouseInfo";
 import { Col, Row, Select } from "antd";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faBicycle,
+  faCar,
+  faPersonWalking,
+  faPlane,
+} from "@fortawesome/free-solid-svg-icons";
 
 const MapCustom = ({
   position = {},
@@ -115,7 +122,7 @@ const MapCustom = ({
     if (position && currentDestination) {
       getDirectionRoute(currentDestination);
     }
-  }, [position]);
+  }, [position, modeTravel]);
 
   useEffect(() => {
     if (!directionsRenderer?.current?.setDirections) return;
@@ -137,11 +144,11 @@ const MapCustom = ({
           travelMode: modeTravel,
         },
         (result, status) => {
-          console.log(result);
           if (status === window.google.maps.DirectionsStatus.OK) {
             setDirections(result);
           } else {
-            alert(`error fetching directions ${result}`);
+            alert(`Không tìm thấy tuyến đường phù hợp`);
+            directionsRenderer.current.setMap(null);
           }
         }
       );
@@ -198,17 +205,51 @@ const MapCustom = ({
       {listHouseIcon}
       <Row id="floating-panel">
         <Col>
-          <b>Mode of Travel: </b>
-        </Col>
-        <Col>
           <Select
             value={modeTravel}
-            style={{ paddingLeft: 5 }}
+            style={{
+              paddingLeft: 5,
+              width: 120,
+              height: 40,
+              borderRadius: "0!important",
+            }}
             options={[
-              { label: "Driving", value: "DRIVING" },
-              { label: "Walking", value: "WALKING" },
-              { label: "Bicycling", value: "BICYCLING" },
-              { label: "Transit", value: "TRANSIT" },
+              {
+                label: (
+                  <Row style={{ alignItems: "center", cursor: "pointer" }}>
+                    <FontAwesomeIcon icon={faCar} />
+                    <label style={{ paddingLeft: 4 }}>Car</label>
+                  </Row>
+                ),
+                value: "DRIVING",
+              },
+              {
+                label: (
+                  <Row style={{ alignItems: "center", cursor: "pointer" }}>
+                    <FontAwesomeIcon icon={faPersonWalking} />
+                    <label style={{ paddingLeft: 4 }}>Walking</label>
+                  </Row>
+                ),
+                value: "WALKING",
+              },
+              {
+                label: (
+                  <Row style={{ alignItems: "center", cursor: "pointer" }}>
+                    <FontAwesomeIcon icon={faBicycle} />
+                    <label style={{ paddingLeft: 4 }}>Bicycle</label>
+                  </Row>
+                ),
+                value: "BICYCLING",
+              },
+              {
+                label: (
+                  <Row style={{ alignItems: "center", cursor: "pointer" }}>
+                    <FontAwesomeIcon icon={faPlane} />
+                    <label style={{ paddingLeft: 4 }}>Transit</label>
+                  </Row>
+                ),
+                value: "TRANSIT",
+              },
             ]}
             onChange={(value) => {
               setModeTravel(value);
