@@ -35,11 +35,11 @@ const HouseInfo = ({ house, scaleIcon, getDirectionRoute = () => {} }) => {
             <Row
               style={{ color: "blue", cursor: "pointer" }}
               onClick={() => {
+                setOpen(false);
                 getDirectionRoute({
                   lat: Number(house?.Address?.lat),
                   lng: Number(house?.Address?.lng),
                 });
-                setOpen(false);
               }}
             >
               Xem quãng đường
