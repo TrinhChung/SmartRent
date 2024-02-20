@@ -91,6 +91,7 @@ const Search = () => {
                   form.setFieldValue("location", position);
                 }}
                 houses={data}
+                isModeTravel={true}
               />
             </Form.Item>
 
