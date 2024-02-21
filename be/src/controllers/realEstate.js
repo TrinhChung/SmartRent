@@ -76,7 +76,6 @@ export const handleGetRealEstateByUserId = async (req, res) => {
 
 export const handleSearchRealEstate = async (req, res) => {
   try {
-    const user = req.user;
     const queries = req.body.queries;
     const orders = req.body.orders;
     const page = req.body.page;
