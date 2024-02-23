@@ -12,10 +12,6 @@ module.exports = {
       },
       userId: {
         type: Sequelize.INTEGER.UNSIGNED,
-        references: {
-          model: "Users",
-          key: "id",
-        },
         allowNull: false,
       },
       replyId: {
@@ -25,10 +21,6 @@ module.exports = {
       roomChatId: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
-        references: {
-          model: "RoomChats",
-          key: "id",
-        },
       },
       content: {
         type: Sequelize.STRING(400),

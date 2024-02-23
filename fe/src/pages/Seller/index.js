@@ -17,6 +17,8 @@ import FormRoom from "./NewPost/FormRoom";
 import RoomView from "./NewPost/RoomView";
 import ListPost from "./ListPost";
 import Search from "../Guest/search";
+import Profile from "./PersonInfo/Profile";
+import PersonInfo from "./PersonInfo";
 
 const Seller = () => {
   const { roomChats } = useContext(SocketContext);
@@ -60,6 +62,7 @@ const Seller = () => {
         <Route path="/room-view/:id" element={<RoomView />} />
         <Route path="list-post" element={<ListPost />} />
         <Route path="/search" element={<Search />} />
+        <Route path="/person-info/*" element={<PersonInfo />} />
         <Route path="/*" element={<div>Chua dinh nghia</div>} />
       </Routes>
     </HomeLayout>

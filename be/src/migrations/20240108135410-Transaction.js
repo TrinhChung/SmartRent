@@ -12,10 +12,6 @@ module.exports = {
       },
       contractId: {
         type: Sequelize.INTEGER.UNSIGNED,
-        references: {
-          model: "Contracts",
-          key: "id",
-        },
         allowNull: false,
       },
       acreage: {

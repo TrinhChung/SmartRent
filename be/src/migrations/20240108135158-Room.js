@@ -13,10 +13,6 @@ module.exports = {
       floorId: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
-        references: {
-          model: "Floors",
-          key: "id",
-        },
       },
       acreage: {
         type: Sequelize.FLOAT.UNSIGNED,

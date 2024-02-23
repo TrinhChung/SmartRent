@@ -23,7 +23,7 @@ const LayoutAuth = ({ children, loading = false }) => {
             </Row>
             <Row className="image-banner-login" style={{ height: height }} />
           </Col>
-          <Col xxl={6} className="form-auth">
+          <Col xxl={6} className="form-auth" style={{ minWidth: 400 }}>
             {children}
           </Col>
         </Row>

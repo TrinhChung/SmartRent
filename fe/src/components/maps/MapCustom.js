@@ -154,9 +154,18 @@ const MapCustom = ({
           distance = directions?.routes[0]?.legs[0]?.distance?.text;
           duration = directions?.routes[0]?.legs[0]?.duration?.text;
         }
+        const icons = {
+          DRIVING: "&#128664;",
+          WALKING: "&#x1f6b6;",
+          BICYCLING: "🛵",
+          TRANSIT: "🛸",
+        };
         const contentDirection = `<div>
-            <div>Khoảng cách: ${distance}</div>
-            <div>Thời gian: ${duration}</div>
+            <div style="display:flex">
+               <div style="font-size:20px, align-items: end, margin-right:4px">${icons[modeTravel]}</div>
+               <strong>${duration}</strong>
+            </div>
+            <div>${distance}</div>
           </div>`;
         infoWindow.current.setContent(contentDirection);
         infoWindow.current.open(map);

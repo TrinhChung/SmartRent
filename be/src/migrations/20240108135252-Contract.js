@@ -13,26 +13,14 @@ module.exports = {
       bargainId: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
-        references: {
-          model: "Bargains",
-          key: "id",
-        },
       },
       renterId: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
-        references: {
-          model: "Users",
-          key: "id",
-        },
       },
       sellerId: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
-        references: {
-          model: "Users",
-          key: "id",
-        },
       },
       renterCost: {
         type: Sequelize.FLOAT.UNSIGNED,

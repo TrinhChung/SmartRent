@@ -13,10 +13,6 @@ module.exports = {
       bargainId: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
-        references: {
-          model: "Bargains",
-          key: "id",
-        },
       },
       name: {
         type: Sequelize.STRING(200),
