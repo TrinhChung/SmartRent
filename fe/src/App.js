@@ -1,4 +1,4 @@
-import "./App.css";
+import "./App.scss";
 import { HashRouter } from "react-router-dom";
 import Guest from "./pages/Guest";
 import "react-toastify/dist/ReactToastify.css";
