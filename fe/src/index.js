@@ -5,14 +5,25 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import AuthProvider from "./providers/authProvider";
 import { SocketProvider } from "./providers/socketProvider";
+import { MetaMaskProvider } from "@metamask/sdk-react";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <AuthProvider>
-      <SocketProvider>
-        <App />
-      </SocketProvider>
+      <MetaMaskProvider
+        debug={false}
+        sdkOptions={{
+          dappMetadata: {
+            name: "SmartRent",
+            url: window.location.href,
+          },
+        }}
+      >
+        <SocketProvider>
+          <App />
+        </SocketProvider>
+      </MetaMaskProvider>
     </AuthProvider>
   </React.StrictMode>
 );

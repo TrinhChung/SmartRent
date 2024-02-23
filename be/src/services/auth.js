@@ -27,8 +27,19 @@ export const signUpUserService = async (data) => {
 export const loginUserService = async (data) => {
   let user = await db.User.findOne({
     where: { email: data.email },
+    include: [
+      {
+        model: db.File,
+        where: {
+          typeFk: "4",
+        },
+        required: false,
+        attributes: ["url"],
+      },
+    ],
   });
 
+  console.log(user);
   if (user) {
     user = user.get({ plain: true });
     let check = bcrypt.compareSync(data.password, user.password);

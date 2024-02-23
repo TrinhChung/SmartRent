@@ -1,0 +1,12 @@
+.person-info {
+  height: calc(100vh - var(--height-navbar) - 24px);
+  overflow: hidden;
+
+  .navigate-sider {
+    background-color: white;
+  }
+
+  .content {
+    padding: 16px 32px;
+  }
+}

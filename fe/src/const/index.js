@@ -29,7 +29,7 @@ export const dropdownUser = {
   2: [
     {
       label: "Profile",
-      key: "profile",
+      key: "person-info/profile",
       icon: <UserOutlined />,
     },
     {
@@ -45,6 +45,7 @@ export const typeFile = [
   { key: "1", name: "message" },
   { key: "2", name: "real-estate" },
   { key: "3", name: "floor" },
+  { key: "4", name: "real-estate" },
 ];
 
 export const statusRent = [

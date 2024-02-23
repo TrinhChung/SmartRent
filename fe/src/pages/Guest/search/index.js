@@ -29,9 +29,12 @@ const Search = () => {
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAP_KEY,
     libraries: libraries,
   });
+
   const [form] = Form.useForm();
   const [formOrder] = Form.useForm();
-
+  const [data, setData] = useState([]);
+  const [page, setPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(50);
   const [position, setPosition] = useState(
     form.getFieldValue("location")
       ? form.getFieldValue("location")
@@ -40,10 +43,6 @@ const Search = () => {
           lng: 105.8021347,
         }
   );
-
-  const [data, setData] = useState([]);
-  const [page, setPage] = useState(1);
-  const [totalPage, setTotalPage] = useState(50);
 
   const fetchRealEstate = async () => {
     var data = {
@@ -137,8 +136,6 @@ const Search = () => {
                         rules={[
                           ({ getFieldValue }) => ({
                             validator(_, value) {
-                              console.log(value);
-                              console.log(getFieldValue("costMin"));
                               if (
                                 value &&
                                 getFieldValue("costMin") &&
@@ -249,8 +246,6 @@ const Search = () => {
           initialValues={{ createdAt: "DESC", cost: "DESC", acreage: "DESC" }}
           onChange={() => {
             fetchRealEstate();
-            formOrder.resetFields();
-            form.resetFields();
           }}
         >
           <Form.Item name="createdAt" label="Thời gian">

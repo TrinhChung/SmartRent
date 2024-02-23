@@ -17,10 +17,6 @@ module.exports = {
       realEstateId: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
-        references: {
-          model: "RealEstates",
-          key: "id",
-        },
       },
       description: {
         type: Sequelize.TEXT,

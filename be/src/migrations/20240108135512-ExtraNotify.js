@@ -13,18 +13,10 @@ module.exports = {
       fkId: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
-        references: {
-          model: "Users",
-          key: "id",
-        },
       },
       notifyId: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
-        references: {
-          model: "Notifies",
-          key: "id",
-        },
       },
       type: {
         type: Sequelize.STRING(1),

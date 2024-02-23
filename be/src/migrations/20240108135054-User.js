@@ -29,10 +29,6 @@ module.exports = {
       addressId: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: true,
-        references: {
-          model: "Addresses",
-          key: "id",
-        },
       },
       password: {
         type: Sequelize.STRING,
@@ -48,10 +44,6 @@ module.exports = {
         allowNull: false,
       },
       gender: {
-        type: Sequelize.STRING,
-        allowNull: true,
-      },
-      avatar: {
         type: Sequelize.STRING,
         allowNull: true,
       },

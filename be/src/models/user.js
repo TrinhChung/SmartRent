@@ -14,6 +14,8 @@ module.exports = (sequelize, DataTypes) => {
       });
 
       User.hasMany(models.ExtraNotify);
+
+      User.hasOne(models.File, { foreignKey: { name: "fkId" } });
     }
   }
   User.init(
@@ -70,10 +72,6 @@ module.exports = (sequelize, DataTypes) => {
         validate: { isEmail: true },
       },
       gender: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      avatar: {
         type: DataTypes.STRING,
         allowNull: true,
       },

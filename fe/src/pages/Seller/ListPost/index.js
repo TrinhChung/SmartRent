@@ -106,7 +106,17 @@ const ListPost = () => {
                     );
                   })
                 ) : (
-                  <Empty />
+                  <Col span={24}>
+                    <Row style={{ justifyContent: "center" }}>
+                      <Empty
+                        image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
+                        imageStyle={{
+                          height: 60,
+                        }}
+                        description={<span>Không có dữ liệu phù hợp</span>}
+                      ></Empty>
+                    </Row>
+                  </Col>
                 )}
               </Row>
             </Col>

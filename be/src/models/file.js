@@ -28,6 +28,12 @@ module.exports = (sequelize, DataTypes) => {
           name: "fkId",
         },
       });
+
+      File.belongsTo(models.User, {
+        foreignKey: {
+          name: "fkId",
+        },
+      });
     }
   }
   File.init(

@@ -13,10 +13,6 @@ module.exports = {
       realEstateId: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
-        references: {
-          model: "RealEstates",
-          key: "id",
-        },
       },
       status: {
         type: Sequelize.STRING(1),
@@ -25,18 +21,10 @@ module.exports = {
       renterId: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
-        references: {
-          model: "Users",
-          key: "id",
-        },
       },
       sellerId: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
-        references: {
-          model: "Users",
-          key: "id",
-        },
       },
       createdAt: {
         allowNull: false,
