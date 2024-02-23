@@ -147,7 +147,6 @@ const MapCustom = ({
           lat: view_path[Math.round(view_path.length / 2)].lat(),
           lng: view_path[Math.round(view_path.length / 2)].lng(),
         });
-        console.log(directions);
         let distance = undefined;
         let duration = undefined;
         if (directions?.routes[0].legs.length > 0) {
@@ -171,10 +170,10 @@ const MapCustom = ({
         infoWindow.current.open(map);
       }
       directionsRenderer?.current?.setMap(map);
+      directionsRenderer?.current?.setDirections(directions);
     } else {
       directionsRenderer?.current?.setMap(null);
     }
-    directionsRenderer?.current?.setDirections(directions);
   }, [directions]);
 
   const getDirectionRoute = useCallback(
