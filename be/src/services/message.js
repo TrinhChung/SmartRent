@@ -1,4 +1,4 @@
-import { sendNotifyToRoom } from "../controllers/socket";
+import { sendNotifyToRoom,sendNotification } from "../controllers/socket";
 import db from "../models/index";
 import { createFileService } from "./file";
 
@@ -52,7 +52,8 @@ export const createMessageService = async (data) => {
       );
     }
 
-    const newMessage = await getNewMessages(message)
+    const newMessage = await getNewMessages(message);
+    sendNotification(data);
     sendNotifyToRoom(data,newMessage);
     await transaction.commit();
 
