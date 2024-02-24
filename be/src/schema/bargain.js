@@ -4,7 +4,7 @@ export const createBargainSchema = {
   sellerId: {
     rules: [
       {
-        rule: (input) => !input || validator.isEmpty("input"),
+        rule: (input) => !input || validator.isEmpty(input),
         message: "SellerId address is required",
       },
     ],
@@ -12,7 +12,7 @@ export const createBargainSchema = {
   renterId: {
     rules: [
       {
-        rule: (input) => !input || validator.isEmpty("input"),
+        rule: (input) => !input || validator.isEmpty(input),
         message: "renterId address is required",
       },
     ],
@@ -20,7 +20,7 @@ export const createBargainSchema = {
   realEstateId: {
     rules: [
       {
-        rule: (input) => !input || validator.isEmpty("input"),
+        rule: (input) => !input || validator.isEmpty(input),
         message: "realEstateId address is required",
       },
     ],

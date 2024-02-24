@@ -21,6 +21,8 @@ import PlacesAutocomplete from "../../../../components/maps/PlacesAutocomplete";
 import MapCustom from "../../../../components/maps/MapCustom";
 import { useJsApiLoader } from "@react-google-maps/api";
 import dayjs from "dayjs";
+import { uploadFileToSessionService } from "../../../../services/UploadFile/index";
+import { updateUserInfoService } from "../../../../services/User";
 
 const Profile = () => {
   const [libraries] = useState(["drawing", "places"]);
@@ -32,7 +34,6 @@ const Profile = () => {
   const { authUser } = useContext(AuthContext);
   const [form] = Form.useForm();
   const [wallets, setWallets] = useState([]);
-  const [accounts, setAccounts] = useState([]);
   const [position, setPosition] = useState(
     form.getFieldValue("location")
       ? form.getFieldValue("location")
@@ -41,15 +42,19 @@ const Profile = () => {
           lng: 105.8021347,
         }
   );
+  const [filesView, setFilesView] = useState([]);
+  const [files, setFiles] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const setAddress = useCallback(
     (name) => {
+      console.log(name);
       form.setFieldsValue({ address: name });
     },
     [form, position]
   );
 
-  const connectAccountSc = async () => {
+  const connectAccountSc = useCallback(async () => {
     if (window?.ethereum) {
       try {
         const accounts = await window.ethereum.request({
@@ -62,15 +67,14 @@ const Profile = () => {
               return { label: account, value: account };
             })
           );
-          setAccounts(accounts);
         }
       } catch (error) {
         alert(error.message);
       }
     }
-  };
+  }, [window.ethereum]);
 
-  const disconnectAccountMetaMask = async () => {
+  const disconnectAccountMetaMask = useCallback(async () => {
     try {
       await window.ethereum.request({
         method: "wallet_revokePermissions",
@@ -81,7 +85,6 @@ const Profile = () => {
         method: "wallet_getPermissions",
       });
       if (permissions.length === 0) {
-        setAccounts([]);
         setWallets([]);
         form.setFieldValue("wallet", null);
       } else {
@@ -90,7 +93,15 @@ const Profile = () => {
     } catch (error) {
       alert(error.message);
     }
-  };
+  }, [window.ethereum]);
+
+  const fetchUpdateUserInfo = useCallback(async (data) => {
+    try {
+      const res = await updateUserInfoService(data);
+    } catch (error) {
+      alert(error.message);
+    }
+  });
 
   const listWallets = useMemo(() => {
     return (
@@ -113,7 +124,17 @@ const Profile = () => {
             </Button>
           )}
         </Row>
-        <Form.Item name={"wallet"} label="Địa chỉ ví" className="input-profile">
+        <Form.Item
+          name={"wallet"}
+          label="Địa chỉ ví"
+          className="input-profile"
+          rules={[
+            {
+              required: true,
+              message: "Địa chỉ ví không được trống",
+            },
+          ]}
+        >
           <Select options={wallets} style={{ width: "100%" }} />
         </Form.Item>
         <Row>Số dư</Row>
@@ -121,28 +142,80 @@ const Profile = () => {
     );
   }, [wallets]);
 
+  const uploadMultipleFiles = async (e) => {
+    const listFile = Array.from(e.target.files);
+    if (listFile.length > 0) {
+      const formData = new FormData();
+      var check = true;
+      for (let i = 0; i < listFile.length; i++) {
+        if (listFile[i]?.size / 1024 / 1024 > 2) {
+          check = false;
+        }
+        formData.append("file", listFile[i]);
+      }
+
+      if (!check) {
+        e.preventDefault();
+        alert(`Do not upload files larger than 2mb`);
+        return;
+      }
+      setLoading(true);
+      var fileBuilt = listFile.map((file) => {
+        return {
+          name: file.name,
+          key: file.name + "*" + file.size,
+          url: window.URL.createObjectURL(file),
+        };
+      });
+
+      setFiles(fileBuilt);
+      form.setFieldValue("avatar", fileBuilt[0]);
+      setFilesView(fileBuilt);
+
+      try {
+        const res = await uploadFileToSessionService(formData);
+        if (res.statusCode === 200) {
+          console.log(res.message);
+        }
+      } catch (error) {
+        console.log(error);
+        setFiles([]);
+      }
+      setLoading(false);
+    } else {
+      form.setFieldValue("avatar", null);
+      setFiles([]);
+    }
+  };
+
   return (
     <Col span={24}>
       <Form
         layout="vertical"
         form={form}
         initialValues={{
-          gender: "1",
+          gender: authUser?.gender,
           birthday: dayjs(),
-          maritalStatus: "1",
+          maritalStatus: authUser?.maritalStatus,
           firstName: authUser?.firstName,
           lastName: authUser?.lastName,
           email: authUser?.email,
           phoneNumber: authUser?.phoneNumber,
+          location: {
+            lat: authUser?.Address?.lat,
+            lng: authUser?.Address?.lng,
+          },
+          address: authUser?.Address?.name,
         }}
         onFinish={() => {
           console.log(form.getFieldsValue());
+          fetchUpdateUserInfo(form.getFieldsValue());
         }}
       >
         <Row className="info-basic" gutter={[8, 8]}>
           <Col>
-            <Form.Item>
-              <label for="input-avatar">
+            <Form.Item name="avatar" valuePropName="avatar">
+              <label for="input-avatar" avatar={files[0]}>
                 <Avatar
                   shape="square"
                   style={{
@@ -152,41 +225,81 @@ const Profile = () => {
                   }}
                   size={200}
                   src={
-                    authUser.File
+                    filesView.length > 0
+                      ? filesView[0].url
+                      : authUser.File
                       ? process.env.REACT_APP_HOST_BE + "/" + authUser.File?.url
                       : null
                   }
                 >
-                  {authUser.File ? null : authUser.fullName}
+                  {authUser.File ? null : authUser?.fullName}
                 </Avatar>
               </label>
 
               <input
                 id="input-avatar"
                 type="file"
+                accept="image/*"
                 style={{ display: "none" }}
+                onChange={uploadMultipleFiles}
               />
             </Form.Item>
           </Col>
           <Col xxl={13}>
             <Row gutter={[8, 0]}>
               <Col span={11}>
-                <Form.Item name="firstName" className="input-profile">
+                <Form.Item
+                  name="firstName"
+                  className="input-profile"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Họ không được trống",
+                    },
+                  ]}
+                >
                   <Input placeholder="Nhập họ" />
                 </Form.Item>
               </Col>
               <Col span={12}>
-                <Form.Item name="lastName" className="input-profile">
+                <Form.Item
+                  name="lastName"
+                  className="input-profile"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Tên không được trống",
+                    },
+                  ]}
+                >
                   <Input placeholder="Nhập tên" />
                 </Form.Item>
               </Col>
               <Col span={11}>
-                <Form.Item className="input-profile" name="email">
-                  <Input placeholder="Nhập email" />
+                <Form.Item
+                  className="input-profile"
+                  name="email"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Email không được trống",
+                    },
+                  ]}
+                >
+                  <Input placeholder="Nhập email" disabled />
                 </Form.Item>
               </Col>
               <Col span={12}>
-                <Form.Item className="input-profile" name="phoneNumber">
+                <Form.Item
+                  className="input-profile"
+                  name="phoneNumber"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Sđt không được trống",
+                    },
+                  ]}
+                >
                   <Input placeholder="Số điện thoại" />
                 </Form.Item>
               </Col>
@@ -224,15 +337,24 @@ const Profile = () => {
             {isLoaded && (
               <Row>
                 <Col span={23}>
-                  <Form.Item name="address" style={{ width: "100%" }}>
+                  <Form.Item
+                    name="address"
+                    style={{ width: "100%" }}
+                    rules={[
+                      {
+                        required: true,
+                        message: "Địa chỉ không được trống",
+                      },
+                    ]}
+                  >
                     <PlacesAutocomplete
                       setPosition={(position) => {
                         setPosition(position);
                         form.setFieldsValue({ location: position });
                       }}
+                      addressInitial={form.getFieldValue("address")}
                       isShowDetail={false}
                       setAddress={setAddress}
-                      addressInitial={form.getFieldValue("address")}
                     />
                   </Form.Item>
                 </Col>
@@ -250,6 +372,7 @@ const Profile = () => {
                   setPosition(position);
                   form.setFieldsValue({ location: position });
                 }}
+                setAddress={setAddress}
               />
             </Col>
             <Col span={16}>

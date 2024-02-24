@@ -228,6 +228,7 @@ const FormRealEstate = ({ form, setFieldsValue = () => {} }) => {
                           setPosition(position);
                           form.setFieldsValue({ location: position });
                         }}
+                        setAddress={setAddress}
                       />
                     </Row>
                   </Form.Item>

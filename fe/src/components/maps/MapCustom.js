@@ -25,6 +25,7 @@ import {
 const MapCustom = ({
   position = {},
   setPosition = () => {},
+  setAddress = () => {},
   height = "50vh",
   houses = [],
   isModeTravel = false,
@@ -41,6 +42,8 @@ const MapCustom = ({
     })
   );
 
+  var geocoder = new window.google.maps.Geocoder();
+
   const infoWindow = useRef(
     new window.google.maps.InfoWindow({
       content: "Your custom content goes here",
@@ -49,14 +52,22 @@ const MapCustom = ({
   );
   const directionsService = new window.google.maps.DirectionsService();
 
-  const dragMarker = useCallback(
-    (marker) => {
-      const lat = marker?.latLng?.lat();
-      const lng = marker?.latLng?.lng();
-      setPosition({ lat: lat, lng: lng });
-    },
-    [setPosition]
-  );
+  const dragMarker = async (marker) => {
+    const lat = marker?.latLng?.lat();
+    const lng = marker?.latLng?.lng();
+
+    const res = await geocoder.geocode({
+      location: {
+        lat: parseFloat(lat),
+        lng: parseFloat(lng),
+      },
+    });
+    if (res?.results?.length > 0) {
+      const addressFill = res.results[0]?.formatted_address;
+      setAddress(addressFill);
+    }
+    setPosition({ lat: lat, lng: lng });
+  };
 
   const containerStyle = {
     height: height,

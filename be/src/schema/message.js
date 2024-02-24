@@ -4,7 +4,7 @@ export const createMessageSchema = {
   roomChatId: {
     rules: [
       {
-        rule: (input) => !input || validator.isEmpty("input"),
+        rule: (input) => !input || validator.isEmpty(input),
         message: "RoomChatId is required",
       },
     ],
@@ -13,7 +13,7 @@ export const createMessageSchema = {
     optional: true,
     rules: [
       {
-        rule: (input) => !input || validator.isEmpty("input"),
+        rule: (input) => !input || validator.isEmpty(input),
         message: "Content is required",
       },
     ],

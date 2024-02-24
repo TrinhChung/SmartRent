@@ -6,7 +6,7 @@ export const signUpSchema = {
   email: {
     rules: [
       {
-        rule: (input) => !input || validator.isEmpty("input"),
+        rule: (input) => !input || validator.isEmpty(input),
         message: "Email address is required",
       },
       {
@@ -22,7 +22,7 @@ export const signUpSchema = {
   lastName: {
     rules: [
       {
-        rule: (input) => !input || validator.isEmpty("input"),
+        rule: (input) => !input || validator.isEmpty(input),
         message: "LastName is required",
       },
     ],
@@ -30,7 +30,7 @@ export const signUpSchema = {
   firstName: {
     rules: [
       {
-        rule: (input) => !input || validator.isEmpty("input"),
+        rule: (input) => !input || validator.isEmpty(input),
         message: "firstName is required",
       },
     ],
@@ -38,7 +38,7 @@ export const signUpSchema = {
   passwordConfirm: {
     rules: [
       {
-        rule: (input) => !input || validator.isEmpty("input"),
+        rule: (input) => !input || validator.isEmpty(input),
         message: "passwordConfirm is required",
       },
     ],
@@ -46,7 +46,7 @@ export const signUpSchema = {
   password: {
     rules: [
       {
-        rule: (input) => !input || validator.isEmpty("input"),
+        rule: (input) => !input || validator.isEmpty(input),
         message: "password is required",
       },
       {
@@ -65,7 +65,7 @@ export const loginSchema = {
   email: {
     rules: [
       {
-        rule: (input) => !input || validator.isEmpty("input"),
+        rule: (input) => !input || validator.isEmpty(input),
         message: "Email address is required",
       },
       {
@@ -82,7 +82,7 @@ export const loginSchema = {
   password: {
     rules: [
       {
-        rule: (input) => !input || validator.isEmpty("input"),
+        rule: (input) => !input || validator.isEmpty(input),
         message: "password is required",
       },
     ],

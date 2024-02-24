@@ -9,6 +9,7 @@ import { router as message } from "./message";
 import { router as file } from "./file";
 import { router as floor } from "./floor";
 import { router as room } from "./room";
+import { router as user } from "./user";
 
 import { authenticate } from "../middleware/authenticate";
 export const router = Router();
@@ -32,3 +33,5 @@ router.use("/file", authenticate, file);
 router.use("/floor", floor);
 
 router.use("/room", room);
+
+router.use("/user", user);

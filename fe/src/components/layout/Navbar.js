@@ -34,6 +34,13 @@ const Navbar = ({ data }) => {
   const onLogout = async () => {
     try {
       const res = await logoutService();
+
+      //disconnect meta mask
+      await window.ethereum.request({
+        method: "wallet_revokePermissions",
+        params: [{ eth_accounts: {} }],
+      });
+
       if (res.status === 200) {
         toast.success("Đã đăng xuất");
       } else {

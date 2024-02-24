@@ -5,7 +5,7 @@ export const verifyAccountSchema = {
   token: {
     rules: [
       {
-        rule: (input) => !input || validator.isEmpty("input"),
+        rule: (input) => !input || validator.isEmpty(input),
         message: "Token is required",
       },
       {

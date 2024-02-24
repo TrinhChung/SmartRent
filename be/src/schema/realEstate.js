@@ -4,7 +4,7 @@ export const createRealEstateSchema = {
   name: {
     rules: [
       {
-        rule: (input) => !input || validator.isEmpty("input"),
+        rule: (input) => !input || validator.isEmpty(input),
         message: "Name is required",
       },
     ],
@@ -12,7 +12,7 @@ export const createRealEstateSchema = {
   address: {
     rules: [
       {
-        rule: (input) => !input || validator.isEmpty("input"),
+        rule: (input) => !input || validator.isEmpty(input),
         message: "address is required",
       },
     ],
@@ -20,7 +20,7 @@ export const createRealEstateSchema = {
   location: {
     rules: [
       {
-        rule: (input) => !input || validator.isEmpty("input"),
+        rule: (input) => !input || validator.isEmpty(input),
         message: "location is required",
       },
     ],
@@ -30,7 +30,7 @@ export const createRealEstateSchema = {
     rules: [
       {
         rule: (input) =>
-          input === null || input === undefined || validator.isEmpty("input"),
+          input === null || input === undefined || validator.isEmpty(input),
         message: "Cost is required",
       },
     ],
@@ -38,7 +38,7 @@ export const createRealEstateSchema = {
   acreage: {
     rules: [
       {
-        rule: (input) => !input || validator.isEmpty("input"),
+        rule: (input) => !input || validator.isEmpty(input),
         message: "Acreage is required",
       },
     ],
@@ -47,7 +47,7 @@ export const createRealEstateSchema = {
     optional: true,
     rules: [
       {
-        rule: (input) => !input || validator.isEmpty("input"),
+        rule: (input) => !input || validator.isEmpty(input),
         message: "Status is required",
       },
     ],
@@ -74,7 +74,7 @@ export const getRealEstateFullHouseSchema = {
   id: {
     rules: [
       {
-        rule: (input) => !input || validator.isEmpty("input"),
+        rule: (input) => !input || validator.isEmpty(input),
         message: "Id is required",
       },
     ],

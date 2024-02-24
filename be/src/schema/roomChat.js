@@ -4,7 +4,7 @@ export const changeNameRoomChatSchema = {
   name: {
     rules: [
       {
-        rule: (input) => !input || validator.isEmpty("input"),
+        rule: (input) => !input || validator.isEmpty(input),
         message: "Name is required",
       },
     ],
