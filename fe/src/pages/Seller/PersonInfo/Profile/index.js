@@ -1,4 +1,11 @@
-import { memo, useContext, useState, useCallback } from "react";
+import {
+  memo,
+  useContext,
+  useState,
+  useCallback,
+  useEffect,
+  useMemo,
+} from "react";
 import {
   Col,
   Row,
@@ -24,6 +31,8 @@ const Profile = () => {
   });
   const { authUser } = useContext(AuthContext);
   const [form] = Form.useForm();
+  const [wallets, setWallets] = useState([]);
+  const [accounts, setAccounts] = useState([]);
   const [position, setPosition] = useState(
     form.getFieldValue("location")
       ? form.getFieldValue("location")
@@ -46,18 +55,89 @@ const Profile = () => {
         const accounts = await window.ethereum.request({
           method: "eth_requestAccounts",
         });
-        console.log(accounts);
+        if (accounts.length > 0) {
+          form.setFieldValue("wallet", accounts[0]);
+          setWallets(
+            accounts.map((account) => {
+              return { label: account, value: account };
+            })
+          );
+          setAccounts(accounts);
+        }
       } catch (error) {
         alert(error.message);
       }
     }
   };
 
+  const disconnectAccountMetaMask = async () => {
+    try {
+      await window.ethereum.request({
+        method: "wallet_revokePermissions",
+        params: [{ eth_accounts: {} }],
+      });
+
+      const permissions = await window.ethereum.request({
+        method: "wallet_getPermissions",
+      });
+      if (permissions.length === 0) {
+        setAccounts([]);
+        setWallets([]);
+        form.setFieldValue("wallet", null);
+      } else {
+        alert("Chưa có tài khoản nào được kết nối");
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
+  const listWallets = useMemo(() => {
+    return (
+      <Col span={7}>
+        <Row>
+          {wallets.length === 0 ? (
+            <Button
+              onClick={() => {
+                connectAccountSc();
+              }}
+            >
+              Kết nối tới ví Meta Mask
+            </Button>
+          ) : (
+            <Button
+              className="button-error"
+              onClick={disconnectAccountMetaMask}
+            >
+              Xóa liên kết tới Meta mask
+            </Button>
+          )}
+        </Row>
+        <Form.Item name={"wallet"} label="Địa chỉ ví" className="input-profile">
+          <Select options={wallets} style={{ width: "100%" }} />
+        </Form.Item>
+        <Row>Số dư</Row>
+      </Col>
+    );
+  }, [wallets]);
+
   return (
     <Col span={24}>
       <Form
+        layout="vertical"
         form={form}
-        initialValues={{ gender: "1", birthday: dayjs(), maritalStatus: "1" }}
+        initialValues={{
+          gender: "1",
+          birthday: dayjs(),
+          maritalStatus: "1",
+          firstName: authUser?.firstName,
+          lastName: authUser?.lastName,
+          email: authUser?.email,
+          phoneNumber: authUser?.phoneNumber,
+        }}
+        onFinish={() => {
+          console.log(form.getFieldsValue());
+        }}
       >
         <Row className="info-basic" gutter={[8, 8]}>
           <Col>
@@ -88,14 +168,14 @@ const Profile = () => {
               />
             </Form.Item>
           </Col>
-          <Col xxl={16}>
+          <Col xxl={13}>
             <Row gutter={[8, 0]}>
               <Col span={11}>
                 <Form.Item name="firstName" className="input-profile">
                   <Input placeholder="Nhập họ" />
                 </Form.Item>
               </Col>
-              <Col span={11}>
+              <Col span={12}>
                 <Form.Item name="lastName" className="input-profile">
                   <Input placeholder="Nhập tên" />
                 </Form.Item>
@@ -105,7 +185,7 @@ const Profile = () => {
                   <Input placeholder="Nhập email" />
                 </Form.Item>
               </Col>
-              <Col span={11}>
+              <Col span={12}>
                 <Form.Item className="input-profile" name="phoneNumber">
                   <Input placeholder="Số điện thoại" />
                 </Form.Item>
@@ -121,7 +201,7 @@ const Profile = () => {
                   />
                 </Form.Item>
               </Col>
-              <Col span={11}>
+              <Col span={12}>
                 <Form.Item className="input-profile" name="birthday">
                   <DatePicker
                     placeholder="Ngày sinh"
@@ -143,7 +223,7 @@ const Profile = () => {
 
             {isLoaded && (
               <Row>
-                <Col span={22}>
+                <Col span={23}>
                   <Form.Item name="address" style={{ width: "100%" }}>
                     <PlacesAutocomplete
                       setPosition={(position) => {
@@ -159,18 +239,7 @@ const Profile = () => {
               </Row>
             )}
           </Col>
-          <Col>
-            <Row>
-              <Button
-                onClick={() => {
-                  connectAccountSc();
-                }}
-              >
-                Kết nối tới ví MetaMask
-              </Button>
-            </Row>
-            <Row>Số dư</Row>
-          </Col>
+          {listWallets}
         </Row>
         {isLoaded && (
           <Row>
@@ -190,9 +259,8 @@ const Profile = () => {
             </Col>
           </Row>
         )}
-
         <Row style={{ paddingTop: 12 }}>
-          <Button>Save</Button>
+          <Button htmlType="submit">Save</Button>
         </Row>
       </Form>
     </Col>
