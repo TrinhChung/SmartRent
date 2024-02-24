@@ -4,7 +4,7 @@ export const bulkCreateFloorsSchema = {
   floors: {
     rules: [
       {
-        rule: (input) => !input || validator.isEmpty("input"),
+        rule: (input) => !input || validator.isEmpty(input),
         message: "Floors is required",
       },
       {
@@ -60,7 +60,7 @@ export const bulkCreateFloorsSchema = {
   realEstateId: {
     rules: [
       {
-        rule: (input) => !input || validator.isEmpty("input"),
+        rule: (input) => !input || validator.isEmpty(input),
         message: "RealEstateId is required",
       },
     ],

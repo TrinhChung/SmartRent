@@ -47,6 +47,10 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true,
       },
+      wallet: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
       maritalStatus: {
         type: Sequelize.STRING,
         allowNull: true,

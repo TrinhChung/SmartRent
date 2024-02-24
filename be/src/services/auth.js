@@ -36,6 +36,7 @@ export const loginUserService = async (data) => {
         required: false,
         attributes: ["url"],
       },
+      { model: db.Address, required: false },
     ],
   });
 
