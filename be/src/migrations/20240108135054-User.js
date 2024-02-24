@@ -47,6 +47,11 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true,
       },
+      maritalStatus: {
+        type: Sequelize.STRING,
+        allowNull: true,
+        defaultValue: "1",
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
