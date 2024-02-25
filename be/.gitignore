@@ -20,3 +20,5 @@ cache
 artifacts
 
 /media/*
+
+jobNeedRun.sh
