@@ -1,4 +1,5 @@
 const validator = require("validator");
+const moment = require("moment");
 
 export const updateUserInfoSchema = {
   email: {
@@ -57,6 +58,47 @@ export const updateUserInfoSchema = {
       {
         rule: (input) => !validator.isEthereumAddress(input),
         message: "wallet is not ethereum address",
+      },
+    ],
+  },
+  birthday: {
+    rules: [
+      {
+        rule: (input) => !moment(input, moment.ISO_8601, true).isValid(),
+        message: "birthday is invalid",
+      },
+    ],
+    optional: true,
+  },
+  avatar: {
+    optional: true,
+    rules: [
+      {
+        rule: (image) => {
+          if (!image.name || !image.key) {
+            return true;
+          }
+          return false;
+        },
+        message: "Avatar invalid",
+      },
+    ],
+  },
+  gender: {
+    optional: true,
+    rules: [
+      {
+        rule: (input) => input !== "1" && input !== "2",
+        message: "gender is invalid",
+      },
+    ],
+  },
+  maritalStatus: {
+    optional: true,
+    rules: [
+      {
+        rule: (input) => input !== "1" && input !== "2",
+        message: "maritalStatus is invalid",
       },
     ],
   },

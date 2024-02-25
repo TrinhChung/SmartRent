@@ -51,6 +51,10 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true,
       },
+      birthday: {
+        type: Sequelize.DATEONLY,
+        allowNull: true,
+      },
       maritalStatus: {
         type: Sequelize.STRING,
         allowNull: true,

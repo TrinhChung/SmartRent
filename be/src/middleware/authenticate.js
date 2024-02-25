@@ -13,6 +13,17 @@ export const authenticate = async (req, res, next) => {
         attributes: {
           exclude: ["password", "updatedAt", "createdAt"],
         },
+        include: [
+          {
+            model: db.File,
+            where: {
+              typeFk: "5",
+            },
+            required: false,
+            attributes: ["url"],
+          },
+          { model: db.Address, required: false },
+        ],
       });
       if (user) {
         user = user.get({ plain: true });

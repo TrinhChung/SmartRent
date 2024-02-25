@@ -31,9 +31,11 @@ const Profile = () => {
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAP_KEY,
     libraries: libraries,
   });
-  const { authUser } = useContext(AuthContext);
+  const { authUser, setAuthUser } = useContext(AuthContext);
   const [form] = Form.useForm();
-  const [wallets, setWallets] = useState([]);
+  const [wallets, setWallets] = useState([
+    { label: authUser?.wallet, value: authUser?.wallet },
+  ]);
   const [position, setPosition] = useState(
     form.getFieldValue("location")
       ? form.getFieldValue("location")
@@ -53,6 +55,31 @@ const Profile = () => {
     },
     [form, position]
   );
+
+  const initialValuesForm = useMemo(() => {
+    return {
+      gender: authUser?.gender,
+      birthday: dayjs(authUser?.birthday ? authUser?.birthday : null),
+      maritalStatus: authUser?.maritalStatus,
+      firstName: authUser?.firstName,
+      lastName: authUser?.lastName,
+      email: authUser?.email,
+      phoneNumber: authUser?.phoneNumber,
+      location: {
+        lat: parseFloat(authUser?.Address?.lat),
+        lng: parseFloat(authUser?.Address?.lng),
+      },
+      wallet: authUser?.wallet,
+      address: authUser?.Address?.address,
+    };
+  }, [authUser]);
+
+  useEffect(() => {
+    setPosition({
+      lat: parseFloat(authUser?.Address?.lat),
+      lng: parseFloat(authUser?.Address.lng),
+    });
+  }, [authUser]);
 
   const connectAccountSc = useCallback(async () => {
     if (window?.ethereum) {
@@ -98,6 +125,9 @@ const Profile = () => {
   const fetchUpdateUserInfo = useCallback(async (data) => {
     try {
       const res = await updateUserInfoService(data);
+      if (res.status === 200) {
+        setAuthUser(res.data);
+      }
     } catch (error) {
       alert(error.message);
     }
@@ -193,22 +223,8 @@ const Profile = () => {
       <Form
         layout="vertical"
         form={form}
-        initialValues={{
-          gender: authUser?.gender,
-          birthday: dayjs(),
-          maritalStatus: authUser?.maritalStatus,
-          firstName: authUser?.firstName,
-          lastName: authUser?.lastName,
-          email: authUser?.email,
-          phoneNumber: authUser?.phoneNumber,
-          location: {
-            lat: authUser?.Address?.lat,
-            lng: authUser?.Address?.lng,
-          },
-          address: authUser?.Address?.name,
-        }}
+        initialValues={initialValuesForm}
         onFinish={() => {
-          console.log(form.getFieldsValue());
           fetchUpdateUserInfo(form.getFieldsValue());
         }}
       >

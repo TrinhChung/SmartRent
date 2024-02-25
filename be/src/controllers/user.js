@@ -1,7 +1,19 @@
+import { updateInfoUserService } from "../services/user";
+
 export const handleUpdateUserInfo = async (req, res, next) => {
   try {
-    console.log(req.body);
-    return res.status(200).json({ message: "Cập nhật thông tin thành công" });
+    console.log(req.user);
+    const user = await updateInfoUserService({
+      ...req.body,
+      userId: req.user.id,
+      addressId: req.user.addressId,
+      oldLat: req.user?.Address?.lat,
+      oldLng: req.user?.Address?.lng,
+    });
+
+    return res
+      .status(200)
+      .json({ message: "Cập nhật thông tin thành công", data: user });
   } catch (error) {
     console.log(error);
     return res.status(400).json({ message: error.message });
