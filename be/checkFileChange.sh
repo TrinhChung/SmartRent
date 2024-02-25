@@ -34,6 +34,6 @@ fi
 
 if [[ $changeBackend == true ]]; then
       echo "Restart backend"
-      echo "docker compose down" >> "./jobNeedRun.sh"
-      echo "docker compose up -d" >> "./jobNeedRun.sh"      
+      docker compose down
+      docker compose up -d    
 fi
