@@ -103,3 +103,22 @@ export const updateUserInfoSchema = {
     ],
   },
 };
+
+export const changePasswordSchema = {
+  oldPassword: {
+    rules: [
+      {
+        rule: (input) => !input || validator.isEmpty(input),
+        message: "olPassword is required",
+      },
+    ],
+  },
+  password: {
+    rules: [
+      {
+        rule: (input) => !input || validator.isEmpty(input),
+        message: "password is required",
+      },
+    ],
+  },
+};

@@ -5,7 +5,8 @@ import Profile from "./Profile";
 import "./PersonInfo.scss";
 import { AppstoreOutlined } from "@ant-design/icons";
 import PaymentHistory from "./PaymentHistory";
-const { Sider, Footer, Content } = Layout;
+import ChangePassword from "./ChangePassword";
+const { Sider, Content } = Layout;
 
 const PersonInfo = () => {
   const navigate = useNavigate();
@@ -18,7 +19,7 @@ const PersonInfo = () => {
     },
     {
       label: "Thay đổi mật khẩu",
-      key: "reset-password",
+      key: "change-password",
       icon: <AppstoreOutlined />,
     },
   ];
@@ -40,8 +41,9 @@ const PersonInfo = () => {
       </Sider>
       <Content className="content">
         <Routes>
-          <Route path="/profile" element={<Profile />} />
+          <Route path="profile" element={<Profile />} />
           <Route path="payment-history" element={<PaymentHistory />} />
+          <Route path="change-password" element={<ChangePassword />} />
         </Routes>
       </Content>
     </Layout>

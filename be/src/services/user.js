@@ -1,6 +1,7 @@
 import db from "../models/index";
 import { createAddressService } from "./address";
 import { createFileService } from "./file";
+import bcrypt from "bcryptjs";
 
 export const updateInfoUserService = async (data) => {
   const transaction = await db.sequelize.transaction();
@@ -79,6 +80,21 @@ export const updateInfoUserService = async (data) => {
   } catch (error) {
     console.log(error);
     await transaction.rollback();
+    throw new Error(error);
+  }
+};
+
+export const changePasswordService = async (data) => {
+  try {
+    const user = await db.User.findOne({ where: { id: data.userId } });
+    const password = user.dataValues.password;
+    let check = bcrypt.compareSync(data.oldPassword, password);
+    if (check === true) {
+      user.update({ password: data.password });
+    } else {
+      throw new Error("Mật khẩu không chính xác");
+    }
+  } catch (error) {
     throw new Error(error);
   }
 };
