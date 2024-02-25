@@ -29,8 +29,7 @@ export const createRealEstateSchema = {
   cost: {
     rules: [
       {
-        rule: (input) =>
-          input === null || input === undefined || validator.isEmpty(input),
+        rule: (input) => input === null || input === undefined,
         message: "Cost is required",
       },
     ],
@@ -38,7 +37,7 @@ export const createRealEstateSchema = {
   acreage: {
     rules: [
       {
-        rule: (input) => !input || validator.isEmpty(input),
+        rule: (input) => !input,
         message: "Acreage is required",
       },
     ],
@@ -74,7 +73,7 @@ export const getRealEstateFullHouseSchema = {
   id: {
     rules: [
       {
-        rule: (input) => !input || validator.isEmpty(input),
+        rule: (input) => !input,
         message: "Id is required",
       },
     ],

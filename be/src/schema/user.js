@@ -52,7 +52,7 @@ export const updateUserInfoSchema = {
   wallet: {
     rules: [
       {
-        rule: (input) => !input || validator.isEmpty(input),
+        rule: (input) => !input,
         message: "wallet is required",
       },
       {
