@@ -11,6 +11,7 @@ import FullHouseView from "../Seller/NewPost/FullHouseView";
 import FloorView from "../Seller/NewPost/FloorView";
 import RoomView from "../Seller/NewPost/RoomView";
 import Search from "../Guest/search";
+import PersonInfo from "../Seller/PersonInfo";
 
 const Renter = () => {
   const { roomChats } = useContext(SocketContext);
@@ -44,8 +45,9 @@ const Renter = () => {
         <Route path="/full-house-view/:id" element={<FullHouseView />} />
         <Route path="/floor-view/:id" element={<FloorView />} />
         <Route path="/room-view/:id" element={<RoomView />} />
-        <Route path="/*" element={<div>Chua dinh nghia</div>} />
+        <Route path="/person-info/*" element={<PersonInfo />} />
         <Route path="/search" element={<Search />} />
+        <Route path="/*" element={<div>Chua dinh nghia</div>} />
       </Routes>
     </HomeLayout>
   );

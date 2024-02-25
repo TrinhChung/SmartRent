@@ -50,7 +50,6 @@ const Profile = () => {
 
   const setAddress = useCallback(
     (name) => {
-      console.log(name);
       form.setFieldsValue({ address: name });
     },
     [form, position]
@@ -75,10 +74,12 @@ const Profile = () => {
   }, [authUser]);
 
   useEffect(() => {
-    setPosition({
-      lat: parseFloat(authUser?.Address?.lat),
-      lng: parseFloat(authUser?.Address.lng),
-    });
+    if (authUser?.Address) {
+      setPosition({
+        lat: parseFloat(authUser?.Address?.lat),
+        lng: parseFloat(authUser?.Address?.lng),
+      });
+    }
   }, [authUser]);
 
   const connectAccountSc = useCallback(async () => {
@@ -127,6 +128,7 @@ const Profile = () => {
       const res = await updateUserInfoService(data);
       if (res.status === 200) {
         setAuthUser(res.data);
+        localStorage.setItem("authUser", JSON.stringify(res.data));
       }
     } catch (error) {
       alert(error.message);

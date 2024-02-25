@@ -16,7 +16,7 @@ export const dropdownUser = {
   1: [
     {
       label: "Profile",
-      key: "profile",
+      key: "person-info/profile",
       icon: <UserOutlined />,
     },
     {
