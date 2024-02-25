@@ -23,3 +23,9 @@ router.put(
   schemaValidatorInstance.validateBody(changePasswordSchema),
   handleChangePassword
 );
+
+router.post(
+  "/request-forgot-password",
+  schemaValidatorInstance.validateBody(changePasswordSchema),
+  handleChangePassword
+);

@@ -31,3 +31,11 @@ export const handleChangePassword = async (req, res, next) => {
     return res.status(400).json({ message: error.message });
   }
 };
+
+export const handleRequestForgotPassword = async (req, res, next) => {
+  try {
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({ message: error.message });
+  }
+};
