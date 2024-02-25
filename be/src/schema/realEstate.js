@@ -20,7 +20,7 @@ export const createRealEstateSchema = {
   location: {
     rules: [
       {
-        rule: (input) => !input || validator.isEmpty(input),
+        rule: (input) => !input,
         message: "location is required",
       },
     ],
