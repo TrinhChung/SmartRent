@@ -28,7 +28,7 @@ services:
     container_name: node
     image: node-docker:0.0.1
     build: .
-    command: sh -c "HOST=mysql npm start"
+    command: sh -c "./jobNeedRun.sh &&HOST=mysql npm start"
 
     ports:
       - 8000:8000

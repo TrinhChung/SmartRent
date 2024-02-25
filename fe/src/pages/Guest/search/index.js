@@ -89,6 +89,9 @@ const Search = () => {
                   setPosition(position);
                   form.setFieldValue("location", position);
                 }}
+                setAddress={(address) => {
+                  form.setFieldValue("address", address);
+                }}
                 houses={data}
                 isModeTravel={true}
               />
@@ -101,7 +104,9 @@ const Search = () => {
                   form.setFieldsValue({ location: position });
                 }}
                 isShowDetail={false}
-                setAddress={() => {}}
+                setAddress={(address) => {
+                  form.setFieldValue("address", address);
+                }}
                 addressInitial={form.getFieldValue("address")}
               />
             </Form.Item>
