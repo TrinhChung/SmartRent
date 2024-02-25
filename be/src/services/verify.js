@@ -32,7 +32,7 @@ export const verifyAccountService = async (token) => {
         await db.Verify.destroy({ where: { id: verify.id } });
       }
     }
-    transaction.commit();
+    await transaction.commit();
   } catch (error) {
     console.log(error);
     await transaction.rollback();

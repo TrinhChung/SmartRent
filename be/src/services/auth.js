@@ -31,7 +31,7 @@ export const loginUserService = async (data) => {
       {
         model: db.File,
         where: {
-          typeFk: "4",
+          typeFk: "5",
         },
         required: false,
         attributes: ["url"],
