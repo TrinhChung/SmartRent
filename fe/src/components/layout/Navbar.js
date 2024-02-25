@@ -8,10 +8,12 @@ import { toast } from "react-toastify";
 import "./Navbar.scss";
 import { logoutService } from "../../services/Auth";
 import { dropdownUser } from "../../const/index";
+import { SocketContext } from "../../providers/socketProvider";
 
 const { Header } = Layout;
 const Navbar = ({ data }) => {
   const { authUser, setAuthUser } = useContext(AuthContext);
+  const { socket } = useContext(SocketContext);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [current, setCurrent] = useState("home");
   const navigate = useNavigate();
@@ -29,7 +31,20 @@ const Navbar = ({ data }) => {
       }
       setCurrent(pathArr[1]);
     }
-  }, [pathname]);
+
+    socket.on("notification", (data) => {
+      const isRoomChatWithId = `/room-chat/${data}`
+      if (isRoomChatWithId !== pathname) {
+        toast.info("Tin nhắn mới !", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      }
+    });
+    return () => {      
+      socket.off("notification");
+    }
+
+  }, [pathname,socket]);
 
   const onLogout = async () => {
     try {

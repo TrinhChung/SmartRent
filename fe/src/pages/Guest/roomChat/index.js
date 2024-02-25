@@ -50,8 +50,7 @@ const RoomChat = () => {
 
   const addMessageToSender = (message) => {
     try {
-      messages.push(...message.map(item => item));
-      setMessages(messages);
+      setMessages(messages => [...messages, ...message]);
       setTimeout(() => {
         chatWindowRef.current.scrollTo(0, chatWindowRef.current.scrollHeight);
       }, 50);
