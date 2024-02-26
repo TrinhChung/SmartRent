@@ -1,6 +1,8 @@
 import db from "../models/index";
 import { createAddressService } from "./address";
 import { createFileService } from "./file";
+import bcrypt from "bcryptjs";
+import { createVerify } from "./verify";
 
 export const updateInfoUserService = async (data) => {
   const transaction = await db.sequelize.transaction();
@@ -76,6 +78,58 @@ export const updateInfoUserService = async (data) => {
     });
 
     return userRes.get({ plain: true });
+  } catch (error) {
+    console.log(error);
+    await transaction.rollback();
+    throw new Error(error);
+  }
+};
+
+export const changePasswordService = async (data) => {
+  try {
+    const user = await db.User.findOne({ where: { id: data.userId } });
+    const password = user.dataValues.password;
+    let check = bcrypt.compareSync(data.oldPassword, password);
+    if (check === true) {
+      user.update({ password: data.password });
+    } else {
+      throw new Error("Mật khẩu không chính xác");
+    }
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+export const sendEmailForgotPasswordService = async ({ email }) => {
+  try {
+    const user = await db.User.findOne({
+      where: { email: email },
+      attributes: { exclude: ["password"] },
+    });
+
+    if (user) {
+      await createVerify({ type: "2", data: { ...user.get({ plain: true }) } });
+    }
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+export const resetPasswordService = async ({ token, password }) => {
+  const transaction = await db.sequelize.transaction();
+  try {
+    let verify = (verify = await db.Verify.findOne({
+      where: { token: token, type: "2" },
+    }));
+
+    if (verify) {
+      let user = await db.User.findByPk(verify.fkId);
+      if (user) {
+        await user.update({ password: password });
+        await db.Verify.destroy({ where: { id: verify.id } });
+      }
+    }
+    await transaction.commit();
   } catch (error) {
     console.log(error);
     await transaction.rollback();

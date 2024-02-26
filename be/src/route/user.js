@@ -1,7 +1,17 @@
 import { Router } from "express";
-import { handleUpdateUserInfo } from "../controllers/user";
+import {
+  handleChangePassword,
+  handleUpdateUserInfo,
+  handleRequestForgotPassword,
+  handleResetPassword,
+} from "../controllers/user";
 import { authenticate } from "../middleware/authenticate";
-import { updateUserInfoSchema } from "../schema/user";
+import {
+  changePasswordSchema,
+  updateUserInfoSchema,
+  requestForgotPasswordSchema,
+  resetPasswordSchema,
+} from "../schema/user";
 const SchemaValidator = require("nodejs-schema-validator");
 const schemaValidatorInstance = new SchemaValidator();
 
@@ -12,4 +22,23 @@ router.put(
   authenticate,
   schemaValidatorInstance.validateBody(updateUserInfoSchema),
   handleUpdateUserInfo
+);
+
+router.put(
+  "/change-password",
+  authenticate,
+  schemaValidatorInstance.validateBody(changePasswordSchema),
+  handleChangePassword
+);
+
+router.post(
+  "/request-forgot-password",
+  schemaValidatorInstance.validateBody(requestForgotPasswordSchema),
+  handleRequestForgotPassword
+);
+
+router.put(
+  "/reset-password",
+  schemaValidatorInstance.validateBody(resetPasswordSchema),
+  handleResetPassword
 );

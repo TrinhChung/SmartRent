@@ -1,3 +1,4 @@
+import { checkUserEmail } from "../utils/validatorDb";
 const validator = require("validator");
 const moment = require("moment");
 
@@ -99,6 +100,63 @@ export const updateUserInfoSchema = {
       {
         rule: (input) => input !== "1" && input !== "2",
         message: "maritalStatus is invalid",
+      },
+    ],
+  },
+};
+
+export const changePasswordSchema = {
+  oldPassword: {
+    rules: [
+      {
+        rule: (input) => !input || validator.isEmpty(input),
+        message: "olPassword is required",
+      },
+    ],
+  },
+  password: {
+    rules: [
+      {
+        rule: (input) => !input || validator.isEmpty(input),
+        message: "password is required",
+      },
+    ],
+  },
+};
+
+export const requestForgotPasswordSchema = {
+  email: {
+    rules: [
+      {
+        rule: (input) => !input || validator.isEmpty(input),
+        message: "Email address is required",
+      },
+      {
+        rule: (input) => !validator.isEmail(input),
+        message: "This is not a valid email address",
+      },
+      {
+        rule: async (input) => !(await checkUserEmail(input)),
+        message: "Email không tồn tại",
+      },
+    ],
+  },
+};
+
+export const resetPasswordSchema = {
+  token: {
+    rules: [
+      {
+        rule: (input) => !input || validator.isEmpty(input),
+        message: "token is required",
+      },
+    ],
+  },
+  password: {
+    rules: [
+      {
+        rule: (input) => !input || validator.isEmpty(input),
+        message: "password is required",
       },
     ],
   },

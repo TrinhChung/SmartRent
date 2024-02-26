@@ -84,6 +84,16 @@ const Login = () => {
                 placeholder="Password"
               />
             </Form.Item>
+            <Row>
+              <Col
+                className="forgot-password"
+                onClick={() => {
+                  navigate("/auth/request-forgot-password");
+                }}
+              >
+                Quên mật khẩu
+              </Col>
+            </Row>
             <Form.Item>
               <Row style={{ justifyContent: "center" }}>
                 <Button type="primary" htmlType="submit">

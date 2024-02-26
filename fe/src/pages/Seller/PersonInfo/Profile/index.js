@@ -23,6 +23,7 @@ import { useJsApiLoader } from "@react-google-maps/api";
 import dayjs from "dayjs";
 import { uploadFileToSessionService } from "../../../../services/UploadFile/index";
 import { updateUserInfoService } from "../../../../services/User";
+import { toast } from "react-toastify";
 
 const Profile = () => {
   const [libraries] = useState(["drawing", "places"]);
@@ -129,6 +130,7 @@ const Profile = () => {
       if (res.status === 200) {
         setAuthUser(res.data);
         localStorage.setItem("authUser", JSON.stringify(res.data));
+        toast.success("Cập nhật thông tin thành công");
       }
     } catch (error) {
       alert(error.message);

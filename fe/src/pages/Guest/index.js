@@ -10,6 +10,8 @@ import FullHouseView from "../Seller/NewPost/FullHouseView";
 import FloorView from "../Seller/NewPost/FloorView";
 import RoomView from "../Seller/NewPost/RoomView";
 import Search from "./search";
+import RequestForgotPassword from "./auth/ForgotPassword";
+import ResetPassword from "./auth/ResetPassword";
 
 const Guest = () => {
   const items = [
@@ -42,6 +44,11 @@ const Guest = () => {
         <Route path="/new-post/floor-view/:id" element={<FloorView />} />
         <Route path="/new-post/room-view/:id" element={<RoomView />} />
         <Route path="/search" element={<Search />} />
+        <Route
+          path="/auth/request-forgot-password"
+          element={<RequestForgotPassword />}
+        />
+        <Route path="/auth/reset-password/:uuid" element={<ResetPassword />} />
         <Route path="/*" element={<div>Chua dinh nghia</div>} />
       </Routes>
     </HomeLayout>
