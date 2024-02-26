@@ -2,13 +2,17 @@ import React from "react";
 import { Col, Row, Spin } from "antd";
 import "./Auth.scss";
 
-const LayoutAuth = ({ children, loading = false }) => {
+const LayoutAuth = ({
+  children,
+  loading = false,
+  contentLoading = "...Loading",
+}) => {
   const height = "543px";
   const width = "500px";
 
   return (
     <Col span={24} className="login">
-      <Spin spinning={loading}>
+      <Spin spinning={loading} tip={contentLoading}>
         <Row style={{ paddingBottom: 56, justifyContent: "center" }}>
           <Col
             xs={8}

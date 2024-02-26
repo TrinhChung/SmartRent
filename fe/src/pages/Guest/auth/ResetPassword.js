@@ -2,14 +2,24 @@ import React from "react";
 import { Button, Col, Form, Input, Row } from "antd";
 import LayoutAuth from "./LayoutAuth";
 import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import { resetPasswordService } from "../../../services/User";
 
 const ResetPassword = () => {
   const { uuid } = useParams();
   const navigate = useNavigate();
 
-  const handleFinish = (values) => {
-    const data = { token: uuid, ...values };
-    console.log(values);
+  const handleFinish = async (values) => {
+    try {
+      const data = { token: uuid, ...values };
+      const res = await resetPasswordService(data);
+      if (res.status === 200) {
+        toast.success("Thay đổi mật khẩu thành công");
+        navigate("/auth/login");
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   return (

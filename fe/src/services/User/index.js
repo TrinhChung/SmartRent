@@ -11,3 +11,7 @@ export const changePasswordService = (data) => {
 export const requestForgotPasswordService = (data) => {
   return axios.post("/api/user/request-forgot-password", data);
 };
+
+export const resetPasswordService = (data) => {
+  return axios.put("/api/user/reset-password", data);
+};

@@ -1,8 +1,12 @@
-import { changePasswordService, updateInfoUserService } from "../services/user";
+import {
+  changePasswordService,
+  updateInfoUserService,
+  sendEmailForgotPasswordService,
+  resetPasswordService,
+} from "../services/user";
 
 export const handleUpdateUserInfo = async (req, res, next) => {
   try {
-    console.log(req.user);
     const user = await updateInfoUserService({
       ...req.body,
       userId: req.user.id,
@@ -34,6 +38,22 @@ export const handleChangePassword = async (req, res, next) => {
 
 export const handleRequestForgotPassword = async (req, res, next) => {
   try {
+    const data = { email: req.body.email };
+    await sendEmailForgotPasswordService(data);
+
+    return res.status(200).json({ message: "Đã gửi email thay đổi mật khẩu" });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({ message: error.message });
+  }
+};
+
+export const handleResetPassword = async (req, res, next) => {
+  try {
+    const data = { password: req.body.password, token: req.body.token };
+
+    await resetPasswordService(data);
+    return res.status(200).json({ message: "Đổi mật khẩu thành công" });
   } catch (error) {
     console.log(error);
     return res.status(400).json({ message: error.message });

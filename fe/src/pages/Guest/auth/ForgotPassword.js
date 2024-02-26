@@ -1,17 +1,37 @@
 import { Button, Col, Form, Input, Row } from "antd";
-import React from "react";
+import React, { useState } from "react";
 import LayoutAuth from "./LayoutAuth";
 import { useNavigate } from "react-router-dom";
+import { requestForgotPasswordService } from "../../../services/User/index";
+import { toast } from "react-toastify";
 
 const RequestForgotPassword = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [form] = Form.useForm();
 
-  const handleFinish = (values) => {
-    console.log(values);
+  const handleFinish = async (values) => {
+    setLoading(true);
+    try {
+      const res = await requestForgotPasswordService(values);
+      if (res.status === 200) {
+        toast.success("Đã gửi yêu cầu");
+      }
+    } catch (error) {
+      let errors = [];
+      for (let errorMessage of error?.message) {
+        errors.push({
+          name: errorMessage?.field,
+          errors: [errorMessage?.message],
+        });
+      }
+      toast.error("Email không chính xác");
+    }
+    setLoading(false);
   };
 
   return (
-    <LayoutAuth>
+    <LayoutAuth loading={loading} contentLoading="....Kiểm tra email">
       <Row
         style={{
           height: "100%",
@@ -19,7 +39,7 @@ const RequestForgotPassword = () => {
         }}
       >
         <Col span={24}>
-          <Form layout="vertical" onFinish={handleFinish}>
+          <Form form={form} layout="vertical" onFinish={handleFinish}>
             <Row
               className="text_title "
               style={{

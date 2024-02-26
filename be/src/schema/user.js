@@ -136,8 +136,27 @@ export const requestForgotPasswordSchema = {
         message: "This is not a valid email address",
       },
       {
-        rule: async (input) => await checkUserEmail(input),
+        rule: async (input) => !(await checkUserEmail(input)),
         message: "Email không tồn tại",
+      },
+    ],
+  },
+};
+
+export const resetPasswordSchema = {
+  token: {
+    rules: [
+      {
+        rule: (input) => !input || validator.isEmpty(input),
+        message: "token is required",
+      },
+    ],
+  },
+  password: {
+    rules: [
+      {
+        rule: (input) => !input || validator.isEmpty(input),
+        message: "password is required",
       },
     ],
   },

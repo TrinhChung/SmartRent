@@ -23,7 +23,7 @@ const buildHtmlSend = async ({ pathHtml, data }) => {
   return htmlToSend;
 };
 
-const sendMailRegister = async (data) => {
+export const sendMailRegister = async (data) => {
   const content = {
     from: '"SmartRent" <chungtrinh2k2@gmail.com>',
     to: data.email,
@@ -41,6 +41,20 @@ const sendMailRegister = async (data) => {
   }
 };
 
-module.exports = {
-  sendMailRegister: sendMailRegister,
+export const sendMailForgotPassword = async (data) => {
+  const content = {
+    from: '"SmartRent" <chungtrinh2k2@gmail.com>',
+    to: data.email,
+    subject: "Đặt lại mật khẩu",
+    html: await buildHtmlSend({
+      pathHtml: "../templates/forgotPassword.hbs",
+      data: data,
+    }),
+  };
+  try {
+    await transporter.sendMail(content);
+  } catch (error) {
+    console.log(error);
+    throw new Error("Send Mail Error");
+  }
 };
