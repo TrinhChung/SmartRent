@@ -9,21 +9,23 @@ import { toast } from "react-toastify";
 const SignUp = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [form] = Form.useForm();
 
   const onFinish = async (values) => {
     try {
       setLoading(true);
       const res = await signupService(values);
       if (res.status === 200) {
-        toast.success(res.msg);
+        toast.success(res.message);
       } else {
-        toast.error(res.msg);
+        toast.error(res.message);
       }
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      console.log(error);
-      toast.error(error.msg);
+      for (let errorMessage of error?.message) {
+        toast.error(errorMessage?.message);
+      }
     }
   };
 

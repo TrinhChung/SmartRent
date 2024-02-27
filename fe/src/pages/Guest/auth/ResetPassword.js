@@ -18,7 +18,9 @@ const ResetPassword = () => {
         navigate("/auth/login");
       }
     } catch (error) {
-      toast.error(error.message);
+      for (let errorMessage of error?.message) {
+        toast.error(errorMessage?.message);
+      }
     }
   };
 
