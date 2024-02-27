@@ -27,7 +27,9 @@ const Login = () => {
       }
     } catch (error) {
       console.log(error);
-      toast.error("Đăng nhập thất bại");
+      for (let errorMessage of error?.message) {
+        toast.error(errorMessage?.message);
+      }
     }
   };
 

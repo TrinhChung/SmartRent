@@ -18,14 +18,9 @@ const RequestForgotPassword = () => {
         toast.success("Đã gửi yêu cầu");
       }
     } catch (error) {
-      let errors = [];
       for (let errorMessage of error?.message) {
-        errors.push({
-          name: errorMessage?.field,
-          errors: [errorMessage?.message],
-        });
+        toast.error(errorMessage?.message);
       }
-      toast.error("Email không chính xác");
     }
     setLoading(false);
   };
