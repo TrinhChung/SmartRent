@@ -10,6 +10,14 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER.UNSIGNED,
       },
+      userId: {
+        type: Sequelize.INTEGER.UNSIGNED,
+        allowNull: false,
+      },
+      fkId: {
+        type: Sequelize.INTEGER.UNSIGNED,
+        allowNull: false,
+      },
       content: {
         type: Sequelize.STRING(200),
         allowNull: false,
@@ -18,6 +26,10 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         allowNull: false,
         defaultValue: false,
+      },
+      type: {
+        type: Sequelize.STRING(1),
+        allowNull: false,
       },
       createdAt: {
         allowNull: false,
