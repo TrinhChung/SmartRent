@@ -21,7 +21,10 @@ export const getNotifyController = async (req, res, next) => {
 export const handleChangeReadState = async (req, res, next) => {
     try {
         const data = req.body;
-        await changeNotifyReadStateService(data);
+        const notify = await changeNotifyReadStateService(data);
+        return res.status(200).json({
+            data: notify
+        });
     } catch (error) {
         console.log(error);
         res.status(400).json({ message: error.message});
@@ -30,7 +33,8 @@ export const handleChangeReadState = async (req, res, next) => {
 
 export const handleCreatNotify = async (req, res, next) => {
     try {
-      const data = req.body;
+      const data = {...req.body};
+      console.log(data);
       const notify = await creatNotification(data);
       return res
         .status(200)

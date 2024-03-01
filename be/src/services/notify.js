@@ -24,13 +24,15 @@ export const creatNotification = async (data) => {
 
 export const changeNotifyReadStateService = async (data) => {
     try {
-        await db.Notify.update({ isRead: true }, {
-            where : {
-                userId: data.userId,
-                fkId: data.fkId,
-                isRead: false,
-                type: data.type,
-            }});
+        const notify = await db.Notify.update(
+            { isRead: true },
+            { where: 
+                { userId: data.userId,
+                  fkId: data.fkId,
+                  type: data.type,  
+                } }
+          );
+          return notify;
     } catch (error) {
         console.log(error);
         throw new Error("Change read state error", error);
