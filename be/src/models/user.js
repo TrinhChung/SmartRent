@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "fkId",
       });
 
-      User.hasMany(models.ExtraNotify);
+      User.hasMany(models.Notify);
 
       User.hasOne(models.File, { foreignKey: { name: "fkId" } });
     }

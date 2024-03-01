@@ -15,7 +15,7 @@ export const eventSocket = (socket) => {
 export const sendNotification = (data) => {
   // console.log(data);
   // console.log(users[Number(data.userId)]);
-  global.io.emit("notification", data.roomChatId);
+  global.io.emit("notification", data);
 };
 
 export const sendNotifyToRoom = (data,newMessage) => {

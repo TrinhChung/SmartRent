@@ -1,0 +1,12 @@
+.notify-header {
+    background-color: aliceblue;
+    width: 250px;
+    border-radius: 5px;
+    .notify-box {
+        height: 200px;
+        .notify-list {
+            margin: 5px;
+            margin-left: 10px;
+        }
+    }
+}
