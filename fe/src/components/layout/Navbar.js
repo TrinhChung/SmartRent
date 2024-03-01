@@ -8,12 +8,11 @@ import { toast } from "react-toastify";
 import "./Navbar.scss";
 import { logoutService } from "../../services/Auth";
 import { dropdownUser } from "../../const/index";
-import { SocketContext } from "../../providers/socketProvider";
+import NotifyDropDown from "./NotifyDropDown";
 
 const { Header } = Layout;
 const Navbar = ({ data }) => {
   const { authUser, setAuthUser } = useContext(AuthContext);
-  const { socket } = useContext(SocketContext);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [current, setCurrent] = useState("home");
   const navigate = useNavigate();
@@ -31,20 +30,7 @@ const Navbar = ({ data }) => {
       }
       setCurrent(pathArr[1]);
     }
-
-    socket.on("notification", (data) => {
-      const isRoomChatWithId = `/room-chat/${data}`
-      if (isRoomChatWithId !== pathname) {
-        toast.info("Tin nhắn mới !", {
-          position: toast.POSITION.TOP_RIGHT,
-        });
-      }
-    });
-    return () => {      
-      socket.off("notification");
-    }
-
-  }, [pathname,socket]);
+  }, [pathname]);
 
   const onLogout = async () => {
     try {
@@ -121,12 +107,9 @@ const Navbar = ({ data }) => {
                   }}
                 >
                   <Col>
-                    <BellFilled
-                      style={{ fontSize: "20px" }}
-                      className="color-icon"
-                    />
+                    <NotifyDropDown></NotifyDropDown>
                   </Col>
-                  <Col>|</Col>
+                  <Col></Col>
                   <Dropdown menu={menuProps} trigger={["click"]}>
                     <Row style={{ gap: 5, cursor: "pointer" }}>
                       <Col>

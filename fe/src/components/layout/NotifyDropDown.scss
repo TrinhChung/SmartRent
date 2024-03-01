@@ -1,0 +1,44 @@
+.container-notify {
+  border-radius: 0px !important;
+
+  .ant-popover-inner {
+    padding: 0 !important;
+    border-radius: 0 !important;
+  }
+
+  .ant-tabs-nav {
+    margin-bottom: 0px;
+  }
+
+  .list-notify {
+    padding: 4px 8px 16px 8px;
+    height: 100%;
+  }
+
+  .ant-tabs-tab {
+    padding-top: 12px;
+    padding-bottom: 4px;
+    cursor: pointer;
+    margin: 0 !important;
+  }
+
+  .tab-notify {
+    label {
+      width: 120px;
+      text-align: center;
+      cursor: pointer;
+    }
+  }
+
+  .notify-item {
+    cursor: pointer;
+  }
+
+  .ant-tabs-tabpane {
+    height: 300px !important;
+  }
+
+  .notify-item:hover {
+    background-color: #ecf3ff;
+  }
+}

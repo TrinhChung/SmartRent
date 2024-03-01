@@ -6,6 +6,7 @@ import { router as verify } from "./verify";
 import { router as bargain } from "./bargain";
 import { router as realEstate } from "./realEstate";
 import { router as message } from "./message";
+import { router as notify } from "./notify";
 import { router as file } from "./file";
 import { router as floor } from "./floor";
 import { router as room } from "./room";
@@ -27,6 +28,8 @@ router.use("/bargain", bargain);
 router.use("/real-estate", realEstate);
 
 router.use("/message", authenticate, message);
+
+router.use("/notify", notify);
 
 router.use("/file", authenticate, file);
 
