@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import "./Navbar.scss";
 import { logoutService } from "../../services/Auth";
 import { dropdownUser } from "../../const/index";
-import NotifyDropDown from "./Notify";
+import NotifyDropDown from "./NotifyDropDown";
 
 const { Header } = Layout;
 const Navbar = ({ data }) => {
