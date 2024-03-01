@@ -3,7 +3,6 @@
 
   .ant-popover-inner {
     padding: 0 !important;
-    height: 300px !important;
     border-radius: 0 !important;
   }
 
@@ -13,6 +12,7 @@
 
   .list-notify {
     padding: 4px 8px 16px 8px;
+    height: 100%;
   }
 
   .ant-tabs-tab {
@@ -32,6 +32,10 @@
 
   .notify-item {
     cursor: pointer;
+  }
+
+  .ant-tabs-tabpane {
+    height: 300px !important;
   }
 
   .notify-item:hover {
