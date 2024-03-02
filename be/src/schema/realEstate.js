@@ -25,12 +25,11 @@ export const createRealEstateSchema = {
       },
     ],
   },
-
-  cost: {
+  type: {
     rules: [
       {
-        rule: (input) => input === null || input === undefined,
-        message: "Cost is required",
+        rule: (input) => !input || validator.isEmpty(input),
+        message: "type is required",
       },
     ],
   },
@@ -39,6 +38,14 @@ export const createRealEstateSchema = {
       {
         rule: (input) => !input,
         message: "Acreage is required",
+      },
+    ],
+  },
+  cost: {
+    rules: [
+      {
+        rule: (input) => input === null || input === undefined,
+        message: "Cost is required",
       },
     ],
   },
@@ -51,9 +58,58 @@ export const createRealEstateSchema = {
       },
     ],
   },
+  floorTotal: {
+    optional: true,
+    rules: [
+      {
+        rule: (input) => input < 0,
+        message: "floorTotal is invalid",
+      },
+    ],
+  },
+  bedroomTotal: {
+    optional: true,
+    rules: [
+      {
+        rule: (input) => input < 0,
+        message: "bedroomTotal is invalid",
+      },
+    ],
+  },
+  toiletTotal: {
+    optional: true,
+    rules: [
+      {
+        rule: (input) => input < 0,
+        message: "toiletTotal is invalid",
+      },
+    ],
+  },
+  facade: {
+    optional: true,
+    rules: [
+      {
+        rule: (input) => input < 0,
+        message: "facade is invalid",
+      },
+    ],
+  },
+  directionHouse: {
+    optional: true,
+    rules: [
+      {
+        rule: (input) => !input || validator.isEmpty(input),
+        message: "directionHouse is invalid",
+      },
+    ],
+  },
   imgRealEstate: {
     optional: true,
     rules: [
+      {
+        rule: (input) => !input,
+        message: "imgRealEstate is required",
+      },
       {
         rule: (images) => {
           for (var image of images) {

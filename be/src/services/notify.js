@@ -2,37 +2,42 @@ import db from "../models";
 const { Op } = require("sequelize");
 
 export const getUserNotification = async (id) => {
-    const notify = await db.Notify.findAll({
+    const notifyUnRead = await db.Notify.findAll({
         where: {
             userId: {
               [Op.eq]: id
-            }
+            },
+            isRead: false,
           }
     });
-    return notify;
+    const notifyRead = await db.Notify.findAll({
+        where: {
+            userId: {
+              [Op.eq]: id
+            },
+            isRead: true,
+          }
+    });
+    return {notifyUnRead: notifyUnRead, notifyRead: notifyRead};
 };
 
-export const creatNotification = async (data) => {
-    const notify = await db.Notify.create({
-        userId: data.userId,
-        fkId: data.fkId,
-        content: data.content,
-        type: data.type,
-    });
-    return notify;
-}
-
-export const changeNotifyReadStateService = async (data) => {
+export const upsertMessageNotify = async (data) => {
     try {
-        const notify = await db.Notify.update(
-            { isRead: true },
-            { where: 
-                { userId: data.userId,
-                  fkId: data.fkId,
-                  type: data.type,  
-                } }
+        const [instance, created] = await db.Notify.upsert(
+            {
+                userId: data.userId,
+                fkId: data.fkId,
+                isRead: data.isRead,
+                content: data.content,
+                type: data.type,
+            },
+            { 
+                userId: data.userId,
+                fkId: data.fkId,
+                type: data.type,
+            }
           );
-          return notify;
+          return {instance: instance, created: created};
     } catch (error) {
         console.log(error);
         throw new Error("Change read state error", error);

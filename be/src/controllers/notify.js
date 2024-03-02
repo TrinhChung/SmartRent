@@ -1,7 +1,6 @@
 import {
     getUserNotification,
-    creatNotification,
-    changeNotifyReadStateService
+    upsertMessageNotify,
 } from "../services/notify";
 
 export const getNotifyController = async (req, res, next) => {
@@ -10,7 +9,8 @@ export const getNotifyController = async (req, res, next) => {
         console.log(id)
         const notify = await getUserNotification(id);
         return res.status(200).json({
-            data: notify,
+            notifyRead: notify.notifyRead,
+            notifyUnRead: notify.notifyUnRead,
         });
     } catch (error) {
         console.log(error);
@@ -18,10 +18,10 @@ export const getNotifyController = async (req, res, next) => {
     }
 }
 
-export const handleChangeReadState = async (req, res, next) => {
+export const handleUpsertMessageNotify = async (req, res, next) => {
     try {
         const data = req.body;
-        const notify = await changeNotifyReadStateService(data);
+        const notify = await upsertMessageNotify(data);
         return res.status(200).json({
             data: notify
         });
@@ -30,17 +30,3 @@ export const handleChangeReadState = async (req, res, next) => {
         res.status(400).json({ message: error.message});
     }
 }
-
-export const handleCreatNotify = async (req, res, next) => {
-    try {
-      const data = {...req.body};
-      console.log(data);
-      const notify = await creatNotification(data);
-      return res
-        .status(200)
-        .json({ message: "Create notify chat", data: notify });
-    } catch (error) {
-      console.log(error);
-      return res.status(400).json({ error: "Create notify error" });
-    }
-  };

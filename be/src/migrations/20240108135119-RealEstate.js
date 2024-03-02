@@ -38,14 +38,9 @@ module.exports = {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
       },
-      roomTotal: {
+      bedroomTotal: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
-      },
-      isWhole: {
-        type: Sequelize.BOOLEAN,
-        allowNull: true,
-        defaultValue: true,
       },
       isPet: {
         type: Sequelize.BOOLEAN,
@@ -64,6 +59,30 @@ module.exports = {
       status: {
         type: Sequelize.STRING(1),
         allowNull: false,
+      },
+      type: {
+        type: Sequelize.STRING(1),
+        allowNull: false,
+      },
+      facade: {
+        type: Sequelize.INTEGER.UNSIGNED,
+        allowNull: true,
+        defaultValue: 0,
+      },
+      isInterior: {
+        type: Sequelize.BOOLEAN,
+        allowNull: true,
+        defaultValue: false,
+      },
+      toiletTotal: {
+        type: Sequelize.INTEGER.UNSIGNED,
+        allowNull: true,
+        defaultValue: 0,
+      },
+      directionHouse: {
+        type: Sequelize.STRING(100),
+        allowNull: true,
+        defaultValue: "1",
       },
       createdAt: {
         allowNull: false,

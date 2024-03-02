@@ -1,11 +1,21 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Col, Row, Input, Form, Image, Switch, InputNumber } from "antd";
+import {
+  Col,
+  Row,
+  Input,
+  Form,
+  Image,
+  Switch,
+  InputNumber,
+  Select,
+} from "antd";
 import MapCustom from "../../../components/maps/MapCustom";
 import PlacesAutocomplete from "../../../components/maps/PlacesAutocomplete";
 import Upload from "../../../components/pages/Upload";
 import MarkdownEditor from "@uiw/react-markdown-editor";
 import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
 import { useJsApiLoader } from "@react-google-maps/api";
+import { typeRealEstate } from "../../../const/index";
 import "./NewPost.scss";
 
 const FormRealEstate = ({ form, setFieldsValue = () => {} }) => {
@@ -64,11 +74,12 @@ const FormRealEstate = ({ form, setFieldsValue = () => {} }) => {
             paddingTop: 16,
           }}
           initialValues={{
-            isWhole: true,
             cost: 1000000,
             isPaymentCoin: true,
             autoPayment: true,
             isAllowPet: true,
+            isInterior: true,
+            type: "1",
           }}
         >
           <Row>
@@ -77,7 +88,7 @@ const FormRealEstate = ({ form, setFieldsValue = () => {} }) => {
                 <Col
                   style={{ paddingLeft: 10, paddingRight: 10 }}
                   xs={24}
-                  xl={6}
+                  xl={10}
                 >
                   <Row>
                     <Form.Item
@@ -91,54 +102,161 @@ const FormRealEstate = ({ form, setFieldsValue = () => {} }) => {
                         },
                       ]}
                     >
-                      <Input placeholder="Tên tòa nhà" />
+                      <Input placeholder="Tên tòa nhà" allowClear />
                     </Form.Item>
                   </Row>
-                  <Row>
-                    <Form.Item
-                      label={
-                        <div>
-                          Diện tích(m<sup>2</sup>)
-                        </div>
-                      }
-                      name="acreage"
-                      style={{ width: "100%" }}
-                      rules={[
-                        {
-                          required: true,
-                          message: "Diện tích không được trống",
-                        },
-                      ]}
-                    >
-                      <Input placeholder="Diện tích sàn" />
-                    </Form.Item>
-                  </Row>
-                  <Row>
-                    <Form.Item
-                      label="Giá thuê(VNĐ)"
-                      name="cost"
-                      style={{ width: "100%" }}
-                      rules={[
-                        {
-                          required: true,
-                          message: "Giá thuê không được trống",
-                        },
-                      ]}
-                    >
-                      <InputNumber
-                        step={500000}
-                        min={0}
-                        formatter={(value) =>
-                          `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                        }
-                        parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
-                        placeholder="Giá thuê theo tháng"
+                  <Row gutter={[8, 0]}>
+                    <Col xs={24} xxl={12}>
+                      <Form.Item
+                        label={<div>Loại bất động sản</div>}
+                        name="type"
                         style={{ width: "100%" }}
-                      />
-                    </Form.Item>
+                        rules={[
+                          {
+                            required: true,
+                            message: "Loại bất động sản không được trống",
+                          },
+                        ]}
+                      >
+                        <Select options={typeRealEstate} />
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} xxl={12}>
+                      <Form.Item
+                        label={
+                          <div>
+                            Diện tích(m<sup>2</sup>)
+                          </div>
+                        }
+                        name="acreage"
+                        style={{ width: "100%" }}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Diện tích không được trống",
+                          },
+                        ]}
+                      >
+                        <InputNumber
+                          step={5}
+                          min={0}
+                          formatter={(value) =>
+                            `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                          }
+                          parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                          placeholder="Diện tích sàn"
+                          style={{ width: "100%" }}
+                        />
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} xxl={12}>
+                      <Form.Item
+                        label="Giá thuê(VNĐ)"
+                        name="cost"
+                        style={{ width: "100%" }}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Giá thuê không được trống",
+                          },
+                        ]}
+                      >
+                        <InputNumber
+                          step={500000}
+                          min={0}
+                          formatter={(value) =>
+                            `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                          }
+                          parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                          placeholder="Giá thuê theo tháng"
+                          style={{ width: "100%" }}
+                        />
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} xxl={12}>
+                      <Form.Item
+                        label={<div>Số tầng</div>}
+                        name="floorTotal"
+                        style={{ width: "100%" }}
+                      >
+                        <InputNumber
+                          step={1}
+                          min={0}
+                          formatter={(value) =>
+                            `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                          }
+                          parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                          placeholder="Số tầng"
+                          style={{ width: "100%" }}
+                        />
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} xxl={12}>
+                      <Form.Item
+                        label="Số phòng ngủ"
+                        name="bedroomTotal"
+                        style={{ width: "100%" }}
+                      >
+                        <InputNumber
+                          step={1}
+                          min={0}
+                          formatter={(value) =>
+                            `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                          }
+                          parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                          placeholder="Số phòng ngủ"
+                          style={{ width: "100%" }}
+                        />
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} xxl={12}>
+                      <Form.Item
+                        label="Số phòng vệ sinh"
+                        name="toiletTotal"
+                        style={{ width: "100%" }}
+                      >
+                        <InputNumber
+                          step={1}
+                          min={0}
+                          formatter={(value) =>
+                            `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                          }
+                          parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                          placeholder="Số phòng vệ sinh"
+                          style={{ width: "100%" }}
+                        />
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} xxl={12}>
+                      <Form.Item
+                        label={<div>Mặt tiền (m)</div>}
+                        name="facade"
+                        style={{ width: "100%" }}
+                      >
+                        <InputNumber
+                          step={5}
+                          min={0}
+                          formatter={(value) =>
+                            `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                          }
+                          parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                          placeholder="Diện tích mặt tiền"
+                          style={{ width: "100%" }}
+                        />
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} xxl={12}>
+                      <Form.Item
+                        label="Hướng nhà"
+                        name="directionHouse"
+                        style={{ width: "100%" }}
+                      >
+                        <Input placeholder="Hướng nhà" allowClear />
+                      </Form.Item>
+                    </Col>
                   </Row>
                   <Row>
-                    <Col span={24}>
+                    <Col span={12}>
                       <Row>
                         <Col style={{ paddingTop: 5 }}>
                           Thanh toán bằng Etherum
@@ -154,6 +272,22 @@ const FormRealEstate = ({ form, setFieldsValue = () => {} }) => {
                           </Form.Item>
                         </Col>
                       </Row>
+                    </Col>
+                    <Col span={12}>
+                      <Row>
+                        <Col style={{ paddingTop: 5 }}>Nội thất</Col>
+                        <Col style={{ paddingLeft: 8 }}>
+                          <Form.Item name="isInterior" valuePropName="checked">
+                            <Switch
+                              size="small"
+                              checkedChildren={<CheckOutlined />}
+                              unCheckedChildren={<CloseOutlined />}
+                            />
+                          </Form.Item>
+                        </Col>
+                      </Row>
+                    </Col>
+                    <Col span={12}>
                       {isPaymentCoin && (
                         <Row>
                           <Col style={{ paddingTop: 5 }}>
@@ -173,18 +307,8 @@ const FormRealEstate = ({ form, setFieldsValue = () => {} }) => {
                           </Col>
                         </Row>
                       )}
-                      <Row>
-                        <Col style={{ paddingTop: 5 }}>Thuê nguyên căn</Col>
-                        <Col style={{ paddingLeft: 8 }}>
-                          <Form.Item name="isWhole">
-                            <Switch
-                              size="small"
-                              checkedChildren={<CheckOutlined />}
-                              unCheckedChildren={<CloseOutlined />}
-                            />
-                          </Form.Item>
-                        </Col>
-                      </Row>
+                    </Col>
+                    <Col span={12}>
                       <Row>
                         <Col style={{ paddingTop: 5 }}>
                           Cho phép nuôi động vật
@@ -201,11 +325,19 @@ const FormRealEstate = ({ form, setFieldsValue = () => {} }) => {
                       </Row>
                     </Col>
                   </Row>
+                </Col>
+                <Col xs={24} xl={14}>
                   <Row>
                     <Form.Item
                       label="Địa chỉ"
                       name="address"
                       style={{ width: "100%" }}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Địa chỉ không được để trống",
+                        },
+                      ]}
                     >
                       <PlacesAutocomplete
                         setPosition={(position) => {
@@ -218,8 +350,6 @@ const FormRealEstate = ({ form, setFieldsValue = () => {} }) => {
                       />
                     </Form.Item>
                   </Row>
-                </Col>
-                <Col xs={24} xl={18}>
                   <Form.Item name="location" valuePropName="location">
                     <Row style={{ justifyContent: "end" }}>
                       <MapCustom
@@ -241,6 +371,12 @@ const FormRealEstate = ({ form, setFieldsValue = () => {} }) => {
               label="Upload"
               name="imgRealEstate"
               valuePropName="fileList"
+              rules={[
+                {
+                  required: true,
+                  message: "Ảnh không được để trống",
+                },
+              ]}
             >
               <Upload
                 idInput={`upload-img-real-estate`}

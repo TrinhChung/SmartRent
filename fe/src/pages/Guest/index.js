@@ -7,8 +7,6 @@ import LinkCustom from "../../components/layout/LinkCustom";
 import Login from "./auth/Login";
 import SignUp from "./auth/SignUp";
 import FullHouseView from "../Seller/NewPost/FullHouseView";
-import FloorView from "../Seller/NewPost/FloorView";
-import RoomView from "../Seller/NewPost/RoomView";
 import Search from "./search";
 import RequestForgotPassword from "./auth/ForgotPassword";
 import ResetPassword from "./auth/ResetPassword";
@@ -41,8 +39,6 @@ const Guest = () => {
           path="/new-post/full-house-view/:id"
           element={<FullHouseView />}
         />
-        <Route path="/new-post/floor-view/:id" element={<FloorView />} />
-        <Route path="/new-post/room-view/:id" element={<RoomView />} />
         <Route path="/search" element={<Search />} />
         <Route
           path="/auth/request-forgot-password"
