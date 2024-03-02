@@ -6,13 +6,12 @@ import { useLocation } from "react-router-dom";
 import { AuthContext } from "../../providers/authProvider";
 import { SocketContext } from "../../providers/socketProvider";
 import {
-  handleCreateNotify,
-  handleChangeReadState,
+  UpsertMessageNotify,
 } from "../../services/Notify";
 import Notify from "./Notify";
 
 export default function NotifyDropDown() {
-  const { socket, notifies, notifiesUr } = useContext(SocketContext);
+  const { socket, notifies, notifiesUr,fetchNotifyOfUser } = useContext(SocketContext);
   const { pathname } = useLocation();
   const { authUser } = useContext(AuthContext);
 
@@ -72,16 +71,13 @@ export default function NotifyDropDown() {
           content: `New message from ${data.userId}`,
           type: "1",
         };
-        await handleCreateNotify(newNotify);
+        await UpsertMessageNotify(newNotify);
+        await fetchNotifyOfUser();
       }
     });
 
-    socket.on("change-read-state", async (notify) => {
-      await handleChangeReadState(notify);
-    });
     return () => {
       socket.off("notification");
-      socket.off("change-read-state");
     };
   }, [authUser, socket]);
 

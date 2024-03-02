@@ -35,7 +35,8 @@ export const SocketProvider = ({ children }) => {
     try {
       const res = await getNotifyOfUserService(authUser.id);
       if (res.status === 200) {
-        setNotifies(res.data);
+        setNotifies(res.notifyRead);
+        setNotifiesUr(res.notifyUnRead);
       }
     } catch (error) {
       console.log(error);
