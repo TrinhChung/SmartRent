@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.20;
 
 contract SmartContract {
     struct Term {
@@ -115,11 +115,6 @@ contract SmartContract {
     }
 
     //v
-    function getMe() external view returns (address) {
-        return msg.sender;
-    }
-
-    //v
     function getAddressContract() external view returns (address) {
         return address(this);
     }
@@ -136,6 +131,7 @@ contract SmartContract {
         return persons[addressWallet];
     }
 
+    // get all balance when destroy contract
     function close(address _to) public onlyOwner {
         payable(_to).transfer(address(this).balance);
     }

@@ -65,18 +65,6 @@ export const getRealEstateFullHouseService = async (id) => {
           as: "realEstateFiles",
           attributes: ["url"],
         },
-        {
-          model: db.Floor,
-          include: [
-            {
-              model: db.File,
-              where: {
-                typeFk: "3",
-              },
-              attributes: ["url"],
-            },
-          ],
-        },
         { model: db.Address },
       ],
       subQuery: false,

@@ -77,24 +77,11 @@ const FullHouseView = () => {
             className="box-title"
           >
             <Col>
-              <label className="box-title">Tầng</label>
+              <label className="box-title">Gợi ý</label>
             </Col>
-            {data?.userId === authUser?.id && (
-              <Col>
-                <Button
-                  onClick={() => {
-                    navigate(`/new-post/new-floor?house=${id}`);
-                  }}
-                  className="button-border"
-                >
-                  <PlusOutlined />
-                  <label>Thêm mới</label>
-                </Button>
-              </Col>
-            )}
           </Row>
           <Row style={{ gap: 8 }}>
-            {data?.Floors &&
+            {/* {data?.Floors &&
               data?.Floors.length > 0 &&
               data?.Floors.map((floor, index) => {
                 return (
@@ -109,7 +96,7 @@ const FullHouseView = () => {
                     acreage={data?.acreage}
                   />
                 );
-              })}
+              })} */}
           </Row>
         </Col>
       </Row>

@@ -62,3 +62,13 @@ export const typeRooms = [
   { value: "4", label: "Bếp" },
   { value: "5", label: "Phòng khép kín" },
 ];
+
+export const typeRealEstate = [
+  { value: "1", label: "Căn hộ chung cư" },
+  { value: "2", label: "Nhà riêng" },
+  { value: "3", label: "Biệt thự" },
+  { value: "4", label: "Nhà mặt phố" },
+  { value: "5", label: "Nhà trọ phòng trọ" },
+  { value: "6", label: "Shop house" },
+  { value: "7", label: "Văn phòng" },
+];
