@@ -31,6 +31,7 @@ export const getRoomChatForMeService = async (userId) => {
         as: "bargain",
         where: {
           [Op.or]: [{ sellerId: userId }, { renterId: userId }],
+          status: ["1", "2"],
         },
       },
     ],

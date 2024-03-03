@@ -74,7 +74,6 @@ export const getRealEstateFullHouseService = async (id) => {
               "maritalStatus",
               "isActive",
               "birthday",
-              "id",
               "role",
               "AddressId",
             ],

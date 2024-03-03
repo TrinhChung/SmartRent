@@ -1,8 +1,12 @@
-import React, { memo, useEffect } from "react";
+import React, { memo, useContext, useEffect, useState } from "react";
 import { Row, Col, Image, Divider, Avatar, Button } from "antd";
 import Slider from "react-slick";
 import "./FullHouseView.scss";
 import moment from "moment";
+import { createBargainService } from "../../../services/RealEstate/index";
+import { AuthContext } from "../../../providers/authProvider";
+import { useNavigate, useParams } from "react-router-dom";
+import { SocketContext } from "../../../providers/socketProvider";
 
 const Overview = ({
   files = [],
@@ -16,7 +20,12 @@ const Overview = ({
   isPet,
   autoPayment,
   owner = {},
+  setLoading = () => {},
 }) => {
+  const { authUser } = useContext(AuthContext);
+  const { getRoomChatForMe } = useContext(SocketContext);
+  const navigate = useNavigate();
+  const { id } = useParams();
   const settings = {
     className: "center",
     infinite: false,
@@ -27,6 +36,27 @@ const Overview = ({
     pauseHover: false,
     autoplay: true,
     autoplaySpeed: 3000,
+  };
+
+  const fetchCreateBargain = async () => {
+    setLoading(true);
+    try {
+      const data = {
+        sellerId: owner?.id,
+        renterId: authUser?.id,
+        realEstateId: id,
+      };
+      const res = await createBargainService(data);
+      console.log(res);
+      if (res.status === 200 && res?.data?.id) {
+        getRoomChatForMe();
+        navigate(`/room-chat/${res?.data?.id}`);
+      }
+    } catch (error) {
+      alert(error.message);
+      console.error(error);
+    }
+    setLoading(false);
   };
 
   return (
@@ -130,9 +160,12 @@ const Overview = ({
             flex: "1 1 auto",
           }}
         >
-          Chủ sở hữu
+          Được đăng bởi
         </Row>
-        <Row gutter={[8, 8]} style={{ justifyContent: "space-between" }}>
+        <Row
+          gutter={[8, 8]}
+          style={{ justifyContent: "space-between", paddingTop: 10 }}
+        >
           <Col>
             <Row>
               <Col>
@@ -170,11 +203,14 @@ const Overview = ({
           </Col>
 
           <Col>
-            <Row>
-              <Button style={{ minWidth: 150 }}>Tạo hợp đồng</Button>
-            </Row>
-            <Row>
-              <Button style={{ minWidth: 150 }}>Đàm phán</Button>
+            <Row style={{ paddingTop: 10 }}>
+              <Button
+                style={{ minWidth: 150 }}
+                className="button-border"
+                onClick={fetchCreateBargain}
+              >
+                Đàm phán
+              </Button>
             </Row>
           </Col>
         </Row>

@@ -19,3 +19,7 @@ export const getEstateByRecommendService = () => {
 export const searchRealEstateService = (data) => {
   return axios.post(`/api/real-estate/search`, data);
 };
+
+export const createBargainService = (data) => {
+  return axios.post(`/api/bargain/`, data);
+};
