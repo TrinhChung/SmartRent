@@ -9,9 +9,11 @@ import "./Navbar.scss";
 import { logoutService } from "../../services/Auth";
 import { dropdownUser } from "../../const/index";
 import NotifyDropDown from "./NotifyDropDown";
+import { SocketContext } from "../../providers/socketProvider";
 
 const { Header } = Layout;
 const Navbar = ({ data }) => {
+  const { socket } = useContext(SocketContext);
   const { authUser, setAuthUser } = useContext(AuthContext);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [current, setCurrent] = useState("home");
@@ -41,6 +43,7 @@ const Navbar = ({ data }) => {
         method: "wallet_revokePermissions",
         params: [{ eth_accounts: {} }],
       });
+      socket.disconnect();
 
       if (res.status === 200) {
         toast.success("Đã đăng xuất");

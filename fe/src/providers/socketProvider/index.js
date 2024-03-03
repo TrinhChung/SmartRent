@@ -33,7 +33,7 @@ export const SocketProvider = ({ children }) => {
 
   const fetchNotifyOfUser = async () => {
     try {
-      const res = await getNotifyOfUserService(authUser.id);
+      const res = await getNotifyOfUserService();
       if (res.status === 200) {
         setNotifies(res.notifyRead);
         setNotifiesUr(res.notifyUnRead);
@@ -57,6 +57,7 @@ export const SocketProvider = ({ children }) => {
   useEffect(() => {
     if (authUser) {
       getRoomChatForMe();
+      socket.emit("login", authUser.id);
     }
   }, [authUser]);
 

@@ -1,11 +1,18 @@
 import { Router } from "express";
 import {
-    getNotifyController,
-    handleUpsertMessageNotify,
-} from "../controllers/notify"
-import { authenticate } from "../middleware/authenticate";
+  handleGetNotifyForMe,
+  handleReadNotify,
+  handleCreateNotify,
+} from "../controllers/notify";
+import { readNotifySchema } from "../schema/notify";
+const SchemaValidator = require("nodejs-schema-validator");
+const schemaValidatorInstance = new SchemaValidator();
 export const router = Router();
 
-router.get("/infor/", getNotifyController);
+router.get("/infor/", handleGetNotifyForMe);
 
-router.post("/", handleUpsertMessageNotify);
+router.post(
+  "/read",
+  schemaValidatorInstance.validateBody(readNotifySchema),
+  handleReadNotify
+);

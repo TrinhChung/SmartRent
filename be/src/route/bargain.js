@@ -1,7 +1,11 @@
 import { Router } from "express";
-import { handleCreateBargain } from "../controllers/bargain";
+import {
+  handleCreateBargain,
+  handleCloseBargain,
+  handleGetBargainForMe,
+} from "../controllers/bargain";
 import { authenticate } from "../middleware/authenticate";
-import { createBargainSchema } from "../schema/bargain";
+import { closeBargainSchema, createBargainSchema } from "../schema/bargain";
 const SchemaValidator = require("nodejs-schema-validator");
 const schemaValidatorInstance = new SchemaValidator();
 
@@ -13,3 +17,12 @@ router.post(
   schemaValidatorInstance.validateBody(createBargainSchema),
   handleCreateBargain
 );
+
+router.post(
+  "/close",
+  authenticate,
+  schemaValidatorInstance.validateBody(closeBargainSchema),
+  handleCloseBargain
+);
+
+router.get("/me", authenticate, handleGetBargainForMe);

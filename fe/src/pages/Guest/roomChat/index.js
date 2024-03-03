@@ -19,6 +19,7 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../../../providers/authProvider";
 import { uploadFileToSessionService } from "../../../services/UploadFile/index";
+import { closeBargainService } from "../../../services/RealEstate";
 
 const { Footer, Content } = Layout;
 const { TextArea } = Input;
@@ -48,9 +49,8 @@ const RoomChat = () => {
     }
   };
 
-  const addMessageToSender = (message) => {
+  const addMessageToSender = () => {
     try {
-      setMessages(messages => [...messages, ...message]);
       setTimeout(() => {
         chatWindowRef.current.scrollTo(0, chatWindowRef.current.scrollHeight);
       }, 50);
@@ -59,23 +59,27 @@ const RoomChat = () => {
     }
   };
 
+  const checkStatusBargain = (status) => {
+    if (status === "1" || (status === "2") === "3") {
+      return false;
+    }
+    return true;
+  };
+
   useEffect(() => {
     if (id > 0 && authUser?.id > 0) {
       socket.emit("leave-room", id, authUser?.id);
       socket.emit("join-room", id, authUser?.id);
     }
 
-    socket.on("new-message", async (data,message) => {
+    socket.on("new-message", async (data, message) => {
       if (data !== authUser.id) {
         await fetchMessageOfRoom(id);
       }
-      else {
-        addMessageToSender(message);
-      }
     });
-    return () => {      
+    return () => {
       socket.off("new-message");
-    }
+    };
   }, [socket, id, authUser]);
 
   useEffect(() => {
@@ -133,6 +137,17 @@ const RoomChat = () => {
     }
   };
 
+  const fetchCloseBargain = async () => {
+    try {
+      const res = await closeBargainService(roomChat?.bargain?.id);
+      if (res.statusCode === 200) {
+        setRoomChat({ ...roomChat, status: "5" });
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
   const sendMessage = async (data) => {
     try {
       if ((data.content && data.content.length > 0) || files.length > 0) {
@@ -140,10 +155,13 @@ const RoomChat = () => {
         if (res.status === 200) {
           setContent("");
           setFiles([]);
+          fetchMessageOfRoom(id);
+          addMessageToSender();
         }
       }
     } catch (error) {
       console.log(error);
+      alert(error.message);
     }
   };
 
@@ -158,7 +176,11 @@ const RoomChat = () => {
           <Col>
             <Row gutter={[16]}>
               <Col className="text-bold-18 wrap-icon" style={{ color: "red" }}>
-                <DeleteOutlined />
+                <DeleteOutlined
+                  onClick={() => {
+                    fetchCloseBargain();
+                  }}
+                />
               </Col>
               <Col className="text-bold-18 wrap-icon">
                 <FormOutlined />
@@ -190,49 +212,70 @@ const RoomChat = () => {
                 })}
               </Row>
             )}
-            <Row className="wrap-input-message">
-              <Col span={1}>
-                <Row style={{ justifyContent: "center" }}>
-                  <label className="icon-input" for="input-image-message">
-                    <PaperClipOutlined />
-                  </label>
-                  <input
-                    type="file"
-                    id="input-image-message"
-                    multiple
-                    onChange={uploadMultipleFiles}
-                    accept="image/*, application/pdf"
-                  />
-                </Row>
-              </Col>
-              <Col span={22}>
-                <TextArea
-                  placeholder="Gửi đoạn chat"
-                  value={content}
-                  onChange={(value) => {
-                    setContent(value.target.value);
-                  }}
-                  autoSize
-                />
-              </Col>
-              <Col span={1}>
-                <Row
-                  className="icon-input"
-                  style={{ justifyContent: "center" }}
-                >
-                  <SendOutlined
-                    className="send-message-button"
-                    onClick={() => {
-                      sendMessage({
-                        content: content,
-                        roomChatId: id,
-                        files: files,
-                      });
+            {!checkStatusBargain() ? (
+              <Row className="wrap-input-message">
+                <Col span={1}>
+                  <Row style={{ justifyContent: "center" }}>
+                    <label className="icon-input" for="input-image-message">
+                      <PaperClipOutlined />
+                    </label>
+                    <input
+                      type="file"
+                      id="input-image-message"
+                      multiple
+                      disabled={!checkStatusBargain(roomChat?.bargain?.status)}
+                      onChange={uploadMultipleFiles}
+                      accept="image/*, application/pdf"
+                    />
+                  </Row>
+                </Col>
+                <Col span={22}>
+                  <TextArea
+                    placeholder="Gửi đoạn chat"
+                    value={content}
+                    onChange={(value) => {
+                      setContent(value.target.value);
                     }}
+                    autoSize
+                    disabled={!checkStatusBargain(roomChat?.bargain?.status)}
                   />
-                </Row>
-              </Col>
-            </Row>
+                </Col>
+                <Col span={1}>
+                  <Row
+                    className="icon-input"
+                    style={{ justifyContent: "center" }}
+                  >
+                    <SendOutlined
+                      className="send-message-button"
+                      onClick={() => {
+                        sendMessage({
+                          content: content,
+                          roomChatId: id,
+                          files: files,
+                        });
+                      }}
+                    />
+                  </Row>
+                </Col>
+              </Row>
+            ) : (
+              <Row
+                className="wrap-input-message"
+                style={{ justifyContent: "center" }}
+              >
+                <label
+                  style={{
+                    marginTop: 4,
+                    color: "red",
+                    fontSize: 16,
+                    textTransform: "uppercase",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Hợp đồng đã đóng
+                </label>
+              </Row>
+            )}
           </Col>
         </Footer>
       </Layout>

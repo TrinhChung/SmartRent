@@ -1,15 +1,13 @@
 import React, { useContext } from "react";
-import { Row, Col } from "antd";
+import { Row, Col, Typography } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
 import { faMessage } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { SocketContext } from "../../providers/socketProvider";
 import moment from "moment";
 import localization from "moment/locale/vi";
-import {
-  UpsertMessageNotify,
-} from "../../services/Notify";
-
+import { readNotifyService } from "../../services/Notify/index";
+const { Paragraph } = Typography;
 const Notify = ({ notify, key = 1 }) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -22,8 +20,7 @@ const Notify = ({ notify, key = 1 }) => {
     }
 
     if (pathname !== linkNotify) {
-      notify.isRead = true;
-      const res = await UpsertMessageNotify(notify);
+      const res = await readNotifyService(notify.id);
       if (res.status === 200) {
         navigate(`/room-chat/${notify.fkId}`);
         await fetchNotifyOfUser();
@@ -45,10 +42,17 @@ const Notify = ({ notify, key = 1 }) => {
       className="notify-item"
     >
       <Col style={{ fontSize: 26 }}>
-        {mappingIcon[notify?.type?notify.type:1]}
+        {mappingIcon[notify?.type ? notify.type : 1]}
       </Col>
       <Col style={{ alignContent: "center", color: "var(--color-bold)" }}>
-        <Row style={{}}>{notify.content}</Row>
+        <Row>
+          <Paragraph
+            style={{ textWrap: "break-word", maxWidth: 300, marginBottom: 0 }}
+          >
+            {notify.content}
+            111111111111111111111111111111111111111111111111111111111111111111
+          </Paragraph>
+        </Row>
         <Row style={{ paddingTop: 2, fontSize: 12, lineHeight: "12px" }}>
           {moment(notify.createdAt).fromNow()}
         </Row>

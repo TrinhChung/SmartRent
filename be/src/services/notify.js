@@ -1,45 +1,55 @@
 import db from "../models";
-const { Op } = require("sequelize");
+import { sendNotification } from "../controllers/socket";
 
-export const getUserNotification = async (id) => {
-    const notifyUnRead = await db.Notify.findAll({
-        where: {
-            userId: {
-              [Op.eq]: id
-            },
-            isRead: false,
-          }
-    });
-    const notifyRead = await db.Notify.findAll({
-        where: {
-            userId: {
-              [Op.eq]: id
-            },
-            isRead: true,
-          }
-    });
-    return {notifyUnRead: notifyUnRead, notifyRead: notifyRead};
+export const getUserNotification = async (userId) => {
+  const notifyUnRead = await db.Notify.findAll({
+    where: {
+      userId: userId,
+      isRead: false,
+    },
+  });
+  const notifyRead = await db.Notify.findAll({
+    where: {
+      userId: userId,
+      isRead: true,
+    },
+  });
+  return { notifyUnRead: notifyUnRead, notifyRead: notifyRead };
 };
 
-export const upsertMessageNotify = async (data) => {
-    try {
-        const [instance, created] = await db.Notify.upsert(
-            {
-                userId: data.userId,
-                fkId: data.fkId,
-                isRead: data.isRead,
-                content: data.content,
-                type: data.type,
-            },
-            { 
-                userId: data.userId,
-                fkId: data.fkId,
-                type: data.type,
-            }
-          );
-          return {instance: instance, created: created};
-    } catch (error) {
-        console.log(error);
-        throw new Error("Change read state error", error);
+export const createNotifyService = async (
+  { userId, fkId, content, type },
+  transaction
+) => {
+  try {
+    const notify = await db.Notify.create(
+      {
+        userId: userId,
+        fkId: fkId,
+        isRead: false,
+        content: content,
+        type: type,
+      },
+      { transaction: transaction }
+    );
+    sendNotification(userId);
+    return notify.get({ plain: true });
+  } catch (error) {
+    console.log(error);
+    throw new Error("Change read state error", error);
+  }
+};
+
+export const readNotifyService = async (notifyId) => {
+  try {
+    let notify = await db.Notify.findByPk(notifyId);
+    if (!notify) {
+      throw new Error("Thông báo không tồn tại");
     }
-}
+    console.log(notify);
+    await notify.update({ isRead: true });
+  } catch (error) {
+    console.log(error);
+    throw new Error("Change read state error", error);
+  }
+};

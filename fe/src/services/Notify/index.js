@@ -7,3 +7,7 @@ export const getNotifyOfUserService = (id) => {
 export const UpsertMessageNotify = (data) => {
   return axios.post(`api/notify/`, data);
 };
+
+export const readNotifyService = (id) => {
+  return axios.post("api/notify/read", { notifyId: id });
+};

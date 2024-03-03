@@ -27,7 +27,7 @@ router.use("/real-estate", realEstate);
 
 router.use("/message", authenticate, message);
 
-router.use("/notify", notify);
+router.use("/notify", authenticate, notify);
 
 router.use("/file", authenticate, file);
 
