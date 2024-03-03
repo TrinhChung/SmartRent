@@ -1,6 +1,55 @@
 .full-house-view {
+  .icon-real-estate {
+    font-size: 20px;
+  }
+  .detail-info {
+    .info-detail-house {
+      padding-top: 10px !important;
+    }
+
+    .info-item-house {
+      color: var(--color-bold);
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid #c4c4c4;
+      padding-bottom: 12px;
+
+      .icon-real-estate {
+        font-size: 24px;
+      }
+
+      strong {
+        padding-left: 8px;
+        font-size: 18px;
+      }
+      label {
+        font-size: 16px;
+      }
+    }
+  }
+
+  .overview {
+    .ant-divider-horizontal {
+      margin: 12px 0;
+    }
+
+    .info-item .ant-row {
+      color: #999999;
+      line-height: 20px;
+      font-size: 14px;
+    }
+    .info-item label {
+      font-weight: 400px;
+      font-size: 18px;
+      padding-top: 8px;
+      line-height: 28px;
+    }
+  }
+
   .text_title {
     font-size: 26px;
+    color: var(--color-text);
+    text-transform: uppercase;
   }
 
   .slick-arrow::before {
@@ -14,10 +63,6 @@
 
   .slick-next {
     z-index: 10 !important;
-  }
-
-  .icon-real-estate {
-    font-size: 20px;
   }
 
   .box-title {

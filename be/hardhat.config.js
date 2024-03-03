@@ -19,23 +19,16 @@ module.exports = {
   },
   networks: {
     hardhat: {
-      blockGasLimit: 100000000429720 // whatever you want here
+      // blockGasLimit: 100000000429720, // whatever you want here
     },
     localhost: {
       url: process.env.API_URL,
     },
     testnet: {
       url: process.env.API_URL_TESTNET,
-      chainId: 11155111,
+      chainId: 97,
       gasPrice: 20000000000,
       accounts: [process.env.PRIVATE_KEY_METAMASK],
     },
-  },
-  sourcify: {
-    enabled: true,
-    // Optional: specify a different Sourcify server
-    apiUrl: "https://sourcify.dev/server",
-    // Optional: specify a different Sourcify repository
-    browserUrl: "https://repo.sourcify.dev",
   },
 };

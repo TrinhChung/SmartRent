@@ -16,6 +16,8 @@ module.exports = (sequelize, DataTypes) => {
       User.hasMany(models.Notify);
 
       User.hasOne(models.File, { foreignKey: { name: "fkId" } });
+
+      User.hasOne(models.RealEstate, { foreignKey: { name: "userId" } });
     }
   }
   User.init(

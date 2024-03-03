@@ -66,6 +66,29 @@ export const getRealEstateFullHouseService = async (id) => {
           attributes: ["url"],
         },
         { model: db.Address },
+        {
+          model: db.User,
+          attributes: {
+            exclude: [
+              "password",
+              "maritalStatus",
+              "isActive",
+              "birthday",
+              "role",
+              "AddressId",
+            ],
+          },
+          include: [
+            {
+              model: db.File,
+              where: {
+                typeFk: "5",
+              },
+              required: false,
+              attributes: ["url"],
+            },
+          ],
+        },
       ],
       subQuery: false,
     });
