@@ -8,7 +8,9 @@ const hre = require("hardhat");
 const { setEnv } = require("./setEnv.js");
 
 async function main() {
-  const contractApi = await hre.ethers.deployContract("SmartContract");
+  const contractApi = await hre.ethers.deployContract(
+    "contracts/SmartContract.sol:SmartContract"
+  );
 
   await contractApi.waitForDeployment();
 

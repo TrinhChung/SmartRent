@@ -13,6 +13,12 @@ module.exports = (sequelize, DataTypes) => {
         },
         as: "realEstateFiles",
       });
+
+      RealEstate.belongsTo(models.User, {
+        foreignKey: {
+          name: "userId",
+        },
+      });
     }
   }
   RealEstate.init(

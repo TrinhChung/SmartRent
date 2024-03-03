@@ -1,18 +1,8 @@
 import React, { memo, useEffect } from "react";
-import { Row, Col, Image } from "antd";
+import { Row, Col, Image, Divider, Avatar, Button } from "antd";
 import Slider from "react-slick";
-import {
-  DollarOutlined,
-  HomeOutlined,
-  CompressOutlined,
-  ProfileOutlined,
-  CheckOutlined,
-  CloseOutlined,
-} from "@ant-design/icons";
-import MapCustom from "../../../components/maps/MapCustom";
-import { useJsApiLoader } from "@react-google-maps/api";
-import { useState } from "react";
 import "./FullHouseView.scss";
+import moment from "moment";
 
 const Overview = ({
   files = [],
@@ -25,34 +15,8 @@ const Overview = ({
   cost = 0,
   isPet,
   autoPayment,
+  owner = {},
 }) => {
-  const [position, setPosition] = useState(
-    address && address?.lat && address?.lng
-      ? {
-          lat: Number(address?.lat),
-          lng: Number(address?.lng),
-        }
-      : {
-          lat: 21.0469701,
-          lng: 105.8021347,
-        }
-  );
-  const [libraries] = useState(["drawing", "places"]);
-  const { isLoaded } = useJsApiLoader({
-    mapIds: process.env.REACT_APP_MAP_ID,
-    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAP_KEY,
-    libraries: libraries,
-  });
-
-  useEffect(() => {
-    if (address && address?.lat && address?.lng) {
-      setPosition({
-        lat: Number(address?.lat),
-        lng: Number(address?.lng),
-      });
-    }
-  }, [address]);
-
   const settings = {
     className: "center",
     infinite: false,
@@ -66,7 +30,7 @@ const Overview = ({
   };
 
   return (
-    <Row>
+    <Row className="overview">
       {files && files.length > 0 && (
         <Col span={12}>
           <Slider
@@ -92,83 +56,127 @@ const Overview = ({
           </Slider>
         </Col>
       )}
-      <Col span={12} style={{ paddingLeft: 20 }}>
+      <Col span={12} style={{ paddingLeft: 40 }}>
         <Row className="text_title">{name}</Row>
-        <Row style={{ gap: 15 }}>
+        <Row style={{ paddingTop: 4, paddingBottom: 12 }}>
           <Col>
-            <DollarOutlined className="icon-real-estate" />
-            <label style={{ paddingLeft: 4 }}>
+            <Row
+              style={{
+                fontWeight: 400,
+                color: "var(--color-bold)",
+                fontSize: 16,
+              }}
+            >
+              {address?.address}
+            </Row>
+          </Col>
+        </Row>
+        <Divider />
+        <Row style={{ gap: 15 }} gutter={[12, 8]}>
+          <Col className="info-item">
+            <Row>Mức giá</Row>
+            <label>
               {String(cost).replace(/\B(?=(\d{3})+(?!\d))/g, ",")} VNĐ
             </label>
           </Col>
           {roomTotal >= 0 && (
-            <Col>
-              <HomeOutlined className="icon-real-estate" />
-              <label style={{ paddingLeft: 4 }}>
-                {String(roomTotal)} Phòng
-              </label>
+            <Col className="info-item">
+              <Row>Số phòng ngủ</Row>
+              <label>{String(roomTotal)} Phòng</label>
             </Col>
           )}
           {floorTotal >= 0 && (
-            <Col>
-              <HomeOutlined className="icon-real-estate" />
-              <label style={{ paddingLeft: 4 }}>
-                {String(floorTotal)} Tầng
-              </label>
+            <Col className="info-item">
+              <Row>Số tầng</Row>
+              <label>{String(floorTotal)} Tầng</label>
             </Col>
           )}
           {acreage && (
-            <Col>
-              <CompressOutlined className="icon-real-estate" />
+            <Col className="info-item">
+              <Row>Diện tích sàn</Row>
               <label style={{ paddingLeft: 4 }}>
                 {String(acreage)} (m<sup>2</sup>)
               </label>
             </Col>
           )}
         </Row>
+        <Divider />
         {isPaymentCoin && (
           <Row style={{ paddingTop: 10, gap: 15 }}>
-            <Col>
-              <DollarOutlined className="icon-real-estate" />
-              <label style={{ paddingLeft: 4 }}>
-                Thanh toán bằng Etherum: <CheckOutlined />
-              </label>
+            <Col className="info-item">
+              <Row>Phương thức thanh toán</Row>
+              <label>Etherum</label>
             </Col>
             {autoPayment && (
-              <Col>
-                <DollarOutlined className="icon-real-estate" />
-                <label style={{ paddingLeft: 4 }}>
-                  Tự động thanh toán: <CheckOutlined />
-                </label>
+              <Col className="info-item">
+                <Row>Thanh toán tự động</Row>
+                <label>Hàng tháng</label>
               </Col>
             )}
+            <Col className="info-item">
+              <Row>Cho phép nuôi động vật</Row>
+              <label style={{ paddingLeft: 4 }}>{isPet ? "Có" : "Không"}</label>
+            </Col>
           </Row>
         )}
-        <Row style={{ paddingTop: 10, gap: 15 }}>
-          <Col>
-            <DollarOutlined className="icon-real-estate" />
-            <label style={{ paddingLeft: 4 }}>
-              Cho phép nuôi động vật:{" "}
-              {isPet ? <CheckOutlined /> : <CloseOutlined />}
-            </label>
-          </Col>
+        <Divider />
+        <Row
+          style={{
+            fontSize: 18,
+            color: "var(--gray)",
+            fontWeight: 400,
+            paddingBottom: 4,
+            lineHeight: "20px",
+            flex: "1 1 auto",
+          }}
+        >
+          Chủ sở hữu
         </Row>
-        <Row style={{ paddingTop: 10 }}>
+        <Row gutter={[8, 8]} style={{ justifyContent: "space-between" }}>
           <Col>
-            <ProfileOutlined className="icon-real-estate" />
-            <label style={{ paddingLeft: 4 }}>{address?.address}</label>
+            <Row>
+              <Col>
+                <Avatar
+                  style={{
+                    backgroundColor: "#fde3cf",
+                    color: "#f56a00",
+                    cursor: "pointer",
+                  }}
+                  size={60}
+                  src={
+                    owner.File
+                      ? process.env.REACT_APP_HOST_BE + "/" + owner.File?.url
+                      : null
+                  }
+                >
+                  {owner.File ? null : owner?.fullName}
+                </Avatar>
+              </Col>
+              <Col style={{ paddingLeft: 10 }}>
+                <Row
+                  style={{
+                    color: "var(--color-text)",
+                    fontSize: 16,
+                    fontWeight: 500,
+                  }}
+                >
+                  {owner?.fullName}
+                </Row>
+                <Row style={{ color: "var(--gray)" }}>
+                  Tham gia từ {moment(owner?.createdAt).fromNow()}
+                </Row>
+              </Col>
+            </Row>
           </Col>
-        </Row>
-        <Row style={{ justifyContent: "end", paddingTop: 10 }}>
-          {isLoaded && (
-            <MapCustom
-              position={position}
-              setPosition={(position) => {
-                setPosition(position);
-              }}
-              height="240px"
-            />
-          )}
+
+          <Col>
+            <Row>
+              <Button style={{ minWidth: 150 }}>Tạo hợp đồng</Button>
+            </Row>
+            <Row>
+              <Button style={{ minWidth: 150 }}>Đàm phán</Button>
+            </Row>
+          </Col>
         </Row>
       </Col>
     </Row>
