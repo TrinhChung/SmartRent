@@ -23,3 +23,11 @@ export const searchRealEstateService = (data) => {
 export const createBargainService = (data) => {
   return axios.post(`/api/bargain/`, data);
 };
+
+export const closeBargainService = (bargainId) => {
+  return axios.post(`/api/bargain/close`, { bargainId: bargainId });
+};
+
+export const getBargainByMeService = ({ page = 1 }) => {
+  return axios.get(`/api/bargain/me?page=${page}`);
+};

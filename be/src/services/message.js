@@ -45,6 +45,12 @@ export const createMessageService = async (data) => {
   if (!room) {
     throw new Error("Room Chat không tồn tại");
   }
+  if (!room.bargain) {
+    throw new Error("Hợp đồng không tồn tại");
+  }
+  if (room.bargain.status === "5" || room.bargain.status === "4") {
+    throw new Error("Hợp đồng đã đóng");
+  }
 
   try {
     var message = await db.Message.create(

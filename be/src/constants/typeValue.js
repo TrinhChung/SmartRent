@@ -11,6 +11,7 @@ export const statusRent = [
   { key: "2", name: "negotiating" },
   { key: "3", name: "contracted" },
   { key: "4", name: "closed" },
+  { key: "5", name: "cancel" },
 ];
 
 export const typeRooms = [

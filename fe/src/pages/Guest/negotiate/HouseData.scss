@@ -1,17 +1,17 @@
 // styles.scss
 
 .list-data-house_home {
-  margin: 50px;
+  padding-bottom: 20px;
   .data-house_home {
     border: 1px solid black;
     border-radius: 16px;
     padding: 32px;
-  
+
     .image-data_house_home {
       margin-left: 16px;
       width: 100%;
     }
-  
+
     .text_title {
       font-family: Outfit;
       font-size: 24px;
@@ -24,11 +24,11 @@
       font-size: 20px;
       padding: 8px;
       color: black;
-    }  
+    }
 
     .button-column {
       padding: 10px;
-      
+
       .custom-button {
         height: 48px;
         width: 100%;
@@ -36,20 +36,20 @@
         padding-bottom: 4px;
         font-size: 18px;
         border: 1px solid;
-        font-family: 'Inter';
+        font-family: "Inter";
         font-weight: bold;
-  
+
         &.cancel {
           border-color: darkred;
-          color: 	#f83838;
+          color: #f83838;
         }
-  
+
         &.watch-contract {
-          background-color: #ececec;          ;
+          background-color: #ececec;
         }
 
         &.chat {
-          background-color: #ececec;   
+          background-color: #ececec;
         }
       }
     }

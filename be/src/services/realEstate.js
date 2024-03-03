@@ -131,7 +131,7 @@ export const getRealEstateFullHouseByUserIdService = async ({
         order: orders,
         offset: (page - 1) * limit,
         subQuery: false,
-        limit: 10,
+        limit: limit,
       },
       { raw: true }
     );

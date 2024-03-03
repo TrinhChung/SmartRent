@@ -16,3 +16,14 @@ export const createBargainSchema = {
     ],
   },
 };
+
+export const closeBargainSchema = {
+  bargainId: {
+    rules: [
+      {
+        rule: (input) => !input || typeof input !== "number",
+        message: "SellerId address is required",
+      },
+    ],
+  },
+};
