@@ -1,18 +1,14 @@
 import { useContext, useEffect } from "react";
 import { BellTwoTone } from "@ant-design/icons";
-import { Row, Col, Popover, Tabs, Empty } from "antd";
+import { Row, Col, Popover, Tabs, Empty, Badge } from "antd";
 import "./NotifyDropDown.scss";
-import { useLocation } from "react-router-dom";
 import { AuthContext } from "../../providers/authProvider";
 import { SocketContext } from "../../providers/socketProvider";
-import {
-  UpsertMessageNotify,
-} from "../../services/Notify";
 import Notify from "./Notify";
 
 export default function NotifyDropDown() {
-  const { socket, notifies, notifiesUr,fetchNotifyOfUser } = useContext(SocketContext);
-  const { pathname } = useLocation();
+  const { socket, notifies, notifiesUr, fetchNotifyOfUser } =
+    useContext(SocketContext);
   const { authUser } = useContext(AuthContext);
 
   const ListNotify = ({ notifyList }) => {
@@ -63,22 +59,9 @@ export default function NotifyDropDown() {
 
   useEffect(() => {
     socket.on("notification", async (data) => {
-      const isRoomChatWithId = `/room-chat/${data.roomChatId}`;
-      if (isRoomChatWithId !== pathname) {
-        var newNotify = {
-          userId: authUser.id,
-          fkId: Number(data.roomChatId),
-          content: `New message from ${data.userId}`,
-          type: "1",
-        };
-        await UpsertMessageNotify(newNotify);
-        await fetchNotifyOfUser();
-      }
+      console.log(data);
+      await fetchNotifyOfUser();
     });
-
-    return () => {
-      socket.off("notification");
-    };
   }, [authUser, socket]);
 
   const NotifyPlace = () => {
@@ -96,7 +79,12 @@ export default function NotifyDropDown() {
       trigger="click"
       placement="bottomRight"
     >
-      <BellTwoTone style={{ fontSize: "20px" }} className="color-icon" />
+      <Badge count={notifiesUr.length}>
+        <BellTwoTone
+          style={{ fontSize: "20px", cursor: "pointer" }}
+          className="color-icon"
+        />
+      </Badge>
     </Popover>
   );
 }

@@ -4,10 +4,12 @@
   .ant-popover-inner {
     padding: 0 !important;
     border-radius: 0 !important;
+    overflow-y: scroll;
   }
 
   .ant-tabs-nav {
     margin-bottom: 0px;
+    width: 350px;
   }
 
   .list-notify {
@@ -19,12 +21,11 @@
     padding-top: 12px;
     padding-bottom: 4px;
     cursor: pointer;
-    margin: 0 !important;
   }
 
   .tab-notify {
     label {
-      width: 120px;
+      width: 100%;
       text-align: center;
       cursor: pointer;
     }

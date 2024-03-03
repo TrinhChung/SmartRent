@@ -1,13 +1,14 @@
-import { sendNotifyToRoom,sendNotification } from "../controllers/socket";
+import { sendNotifyToRoom, sendNotification } from "../controllers/socket";
 import db from "../models/index";
 import { createFileService } from "./file";
+import { createNotifyService } from "./notify";
 
 const getNewMessages = async (data) => {
   try {
     var message = await db.Message.findAll({
       where: {
         id: data.id,
-        roomChatId: data.roomChatId
+        roomChatId: data.roomChatId,
       },
       include: [
         {
@@ -25,10 +26,25 @@ const getNewMessages = async (data) => {
   } catch (error) {
     console.log("Get new message error");
   }
-}
+};
 
 export const createMessageService = async (data) => {
   const transaction = await db.sequelize.transaction();
+  var room = await db.RoomChat.findOne({
+    where: { id: data.roomChatId },
+    include: [
+      {
+        model: db.Bargain,
+        as: "bargain",
+      },
+    ],
+  });
+
+  room = room.get({ plain: true });
+
+  if (!room) {
+    throw new Error("Room Chat không tồn tại");
+  }
 
   try {
     var message = await db.Message.create(
@@ -53,10 +69,23 @@ export const createMessageService = async (data) => {
     }
 
     const newMessage = await getNewMessages(message);
-    sendNotification(data);
-    sendNotifyToRoom(data,newMessage);
-    await transaction.commit();
+    const receiver =
+      data.userId === room.bargain.renterId
+        ? room.bargain.sellerId
+        : room.bargain.renterId;
+    await createNotifyService(
+      {
+        userId: receiver,
+        fkId: data.roomChatId,
+        content: `Bạn có tin nhắn mới từ ${room.name}`,
+        type: "1",
+      },
+      transaction
+    );
 
+    await transaction.commit();
+    await sendNotification(receiver);
+    await sendNotifyToRoom(data, newMessage);
     return message;
   } catch (error) {
     console.log(error);

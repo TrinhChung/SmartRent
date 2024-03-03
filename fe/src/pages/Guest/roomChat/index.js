@@ -48,9 +48,8 @@ const RoomChat = () => {
     }
   };
 
-  const addMessageToSender = (message) => {
+  const addMessageToSender = () => {
     try {
-      setMessages(messages => [...messages, ...message]);
       setTimeout(() => {
         chatWindowRef.current.scrollTo(0, chatWindowRef.current.scrollHeight);
       }, 50);
@@ -65,17 +64,14 @@ const RoomChat = () => {
       socket.emit("join-room", id, authUser?.id);
     }
 
-    socket.on("new-message", async (data,message) => {
+    socket.on("new-message", async (data, message) => {
       if (data !== authUser.id) {
         await fetchMessageOfRoom(id);
       }
-      else {
-        addMessageToSender(message);
-      }
     });
-    return () => {      
+    return () => {
       socket.off("new-message");
-    }
+    };
   }, [socket, id, authUser]);
 
   useEffect(() => {
@@ -140,10 +136,13 @@ const RoomChat = () => {
         if (res.status === 200) {
           setContent("");
           setFiles([]);
+          fetchMessageOfRoom(id);
+          addMessageToSender();
         }
       }
     } catch (error) {
       console.log(error);
+      alert(error.message);
     }
   };
 
