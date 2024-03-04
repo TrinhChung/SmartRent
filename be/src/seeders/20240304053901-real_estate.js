@@ -65,7 +65,7 @@ module.exports = {
       },
       {
         name: "Cho thuê căn hộ Sunrise City city view giá 1 2 3 4pn penthouse (1pn 12tr) (2pn 15tr) (3pn 20tr)",
-        cost: 0,
+        cost: 1999999999,
         description:
           "- Giá ngày.\n+ 1PN: 1.3tr/ngày.\n+ 2PN: 1.8tr/ngày.\n+ 3PN: 2.3tr/ngày.\n- Giá tháng.\n+ Căn hộ 1PN: Giá 13tr/th (65m²).\n+ Căn hộ 2PN: Giá từ 16tr/th (76m², 99m², 106m²).\n+ Căn hộ 3PN: Giá 17tr - 20 tr/th (129m², 138m², 162m²).\n+ Căn hộ 4PN: Giá 25tr - 30 tr/th (162m²).\n+ Căn hộ penthouse: Giá 60 tr/th - 99 tr/th (300 - 1000m²).\nNhà được trang bị nội thất đầy đủ, cao cấp, tiện nghi.\nHoặc nhà trống, nội thất cơ bản (theo yêu cầu khách hàng).\n\nVới đầy đủ tiện ích 5 sao:\n- Hồ bơi tràn bờ.\n- Phòng tập gym, sân tennis.\n- Spa thư giãn.\n- Trung tâm thương mại.\n- Hệ thống nhà hàng ẩm thực Việt Nam và nước ngoài.\n- Trung tâm giải trí: Karaoke, rạp chiếu phim, sân chơi trẻ em, hệ thống các ngân hàng lớn.\n- Dịch vụ: Spa, nhà trẻ, nhà thuốc.\n- An ninh tuyệt đối.\n- Có khu vui chơi cho trẻ em, công viên thông thoáng, mát mẻ, view đẹp.\n- Khách hàng thoải mái lựa chọn căn hộ phù hợp theo nhu cầu của mình.\n- Tư vấn nhiệt tình dẫn khách đi xem trực tiếp căn hộ, nắm nhiều key nên có thể xem nhà bất cứ lúc nào.\n- Hỗ trợ thương lượng trực tiếp với chủ nhà để có giá tốt nhất.\n- Hỗ trợ nhanh, gọn mọi thủ tục sang nhượng và giấy tờ pháp lý, tạm trú, tạm vắng.\n- Tư vấn nhiệt tình, làm việc uy tín và có trách nhiệm.\n- Nắm nhiều key, xem nhà ngay.\n- Cam kết thông tin cập nhật nhanh nhất, mới nhất, chính xác nhất.",
         acreage: 99,
@@ -145,7 +145,7 @@ module.exports = {
       },
       {
         name: "Nhiều căn hộ Sunrise City giảm giá sock - (1PN 13tr) -(2PN 16tr) -(3PN 21tr)",
-        cost: 0,
+        cost: 1999999999,
         description:
           "* Nội dung.\nĐịa chỉ căn hộ ở 23,25,27,33 Đường Nguyễn Hữu Thọ Phường Tân Hưng Q7 TP. HCM.\nGiá thuê năm.\n+ Căn hộ 1PN: Giá 10 - 13tr/th (50m).\n+ Căn hộ 2PN: Giá 15 - 17 tr/th (99m).\n+ Căn hộ 3PN: Giá 19 - 23 tr/th (120m).\nNhà được trang bị từ nội thất cơ bản, cho đến nội thất đầy đủ, cao cấp, tiện nghi.\nHoặc nhà trống tùy (theo yêu cầu khách hàng). KEY sẵn xem nhanh 24/7.\nVới đầy đủ tất cả những tiện nghi của một khu chung cư cao cấp 5*.\nTiện ích.\n- Hồ bơi tràn bờ.\n- Spa thư giãn.\n- Gần trường học.\n- Phòng tập gym. Sân tennis.\n- Công viên rộng rãi thoáng mát.\n- Phòng tập đánh golf.\n- Gần bệnh viện.\n- Gần siêu thị Lotte Mart.\n- Và có nhiều siêu thị mini tập trung quanh chung cư.\n- Phục vụ khách hàng nhanh chóng 24/7.\n- Trung tâm thương mại.\n- Hệ thống nhà hàng ẩm thực Việt Nam và nước ngoài.\n- Trung tâm giải trí: Karaoke, rạp chiếu phim, sân chơi trẻ em, hệ thống các ngân hàng lớn.\n- Dịch vụ: Spa, nhà trẻ, nhà thuốc.\n- An ninh tuyệt đối.\n- Có khu vui chơi cho trẻ em, công viên thông thoáng, mát mẻ, view đẹp.\n- Khách hàng thoải mái lựa chọn căn hộ phù hợp theo nhu cầu của mình.\n- Tư vấn nhiệt tình dẫn khách đi xem trực tiếp căn hộ, nắm nhiều key nên có thể xem nhà bất cứ lúc nào.\n- Hỗ trợ thương lượng trực tiếp với chủ nhà để có giá tốt nhất.\n- Hỗ trợ nhanh, gọn mọi thủ tục sang nhượng và giấy tờ pháp lý, tạm trú, tạm vắng.\n- Tư vấn nhiệt tình, làm việc uy tín và có trách nhiệm.\n- Nắm nhiều key, xem nhà ngay.\n- Cam kết thông tin cập nhật nhanh nhất, mới nhất, chính xác nhất.",
         acreage: 80,
@@ -285,7 +285,7 @@ module.exports = {
       },
       {
         name: "Cho thuê căn hộ đẹp giá rẻ nhất thị trường chỉ từ 4tr/th(Studio - 1PN - 2PN - 3PN) vào ở được luôn",
-        cost: 0,
+        cost: 1999999999,
         description:
           "Cho thuê căn hộ đẹp giá rẻ nhất thị trường chỉ từ 4tr/th(Studio - 1PN - 2PN - 3PN) vào ở được luôn.\nQuỹ căn hộ đa dạng từ nguyên bản nội thất - đầy đủ nội thất(tuỳ khách hàng lựa chọn).\nĐC: Vinhomes Ocean Park - Gia Lâm - Hà Nội.\n(Cho thuê làm văn phòng, kho hàng giá từ 4tr/tháng).\n* Phân Khu Sapphire (phân khu trung cấp).\nStudio full đồ: 5tr5.\n1PN full đồ: 6tr.\n2N1WC full đồ: 6,5tr.\n2N2WC full đồ: 8tr.\n3N2WC full đồ 10tr.\n\n* Phân khu Ruby (phân khu cao cấp).\nStudio full đồ: 6tr.\n1N full đồ: 7tr.\n2N2WC full đồ: 11tr.\n3N2WC full đồ 14tr.\n\nMiễn phí đi xem nhà - miễn 100% chi phí môi giới - hỗ trợ trong quá trình phát sinh.\nEm nhận tìm thuê căn hộ, cho thuê căn hộ, chuyển nhượng Chung cư, thấp tầng Vinhomes Ocean Park.",
         acreage: 60,
@@ -365,7 +365,7 @@ module.exports = {
       },
       {
         name: "Cho thuê căn hộ cao cấp Akari City 56m2 6,5tr/tháng",
-        cost: 0,
+        cost: 1999999999,
         description:
           "Cho thuê căn hộ cao cấp Akari City mặt tiền Võ Văn Kiệt.\nTiện ích: 2 hồ bơi, phòng gym, yoga, khu tiệc BBQ, vườn Nhật, khu vui chơi trẻ em ngoài trời và trong nhà, nhà cộng đồng tổ chức tiệc.\nCạnh trường liên cấp Ngô Thời Nhiệm: Tiểu học đến THPT.\n56m² - 2PN 1WC giá thuê: 6,5tr - 7,5tr/tháng tùy trang bị.\n75m² - 2PN 2WC giá thuê: 7,5tr - 9tr/tháng tùy trang bị.\n100m² - 3PN 2WC giá thuê: 10tr - 13tr/tháng tùy trang bị.\n121m² - dualkey (1 căn 2PN và 1 căn studio) giá thuê: 13tr - 15tr tùy trang bị.\n\nAnh/chị liên hệ xem nhà trực tiếp: Phạm Vũ Bảo\n0918 664 ***\n.\nBảo cư dân Akari nên hỗ trợ anh/chị 24/7.",
         acreage: 56,
@@ -445,7 +445,7 @@ module.exports = {
       },
       {
         name: "Cho thuê nhà nguyên căn, căn hộ dịch vụ khu Tên Lửa, Bình Tân 5.5tr - 10.5tr/th",
-        cost: 0,
+        cost: 1999999999,
         description:
           "- Nhà mới xây dựng sang trọng, sạch sẽ, đẹp, thoáng mát luôn có ánh nắng mặt trời.\n- Nhà riêng lẻ diện tích sàn 75 - 90m².\n- Kết cấu 1 trệt 2 lầu 3WC.\n- Nội thất tủ bếp, tủ quần áo, giường, kệ tivi.\n- Khuôn viên rộng thoáng, an ninh.\n- Cổng ra vào vân tay.\n- Điện, nước đồng hồ riêng theo giá nhà nước.\n- Căn hộ dịch vụ diện tích 25 - 45m².\n- Luôn thoáng mát 2 - 3 cửa sổ.\n- Có phòng ngủ riêng.\n- Giá từ 5.5tr - 7tr/th.\nĐặt biệt: Có cho thuê ngắn hạn từ 2 tháng trở lên.\n- Rất an toàn cho trẻ nhỏ chơi trong khuôn viên sân nhà.",
         acreage: 75,
@@ -505,7 +505,7 @@ module.exports = {
       },
       {
         name: "Cho thuê nhà chính chủ 4 tầng 9 phòng tổng diện tích 324m2",
-        cost: 0,
+        cost: 1999999999,
         description:
           "Thông tin chi tiết:\nNhà 4 tầng , dt 1 sàn 81m2\ntổng diện tích 324m²\ngồm 9 phòng: 1 phòng khách, 1 phòng bếp, 1 phòng sinh hoạt chung, 5 phòng ngủ khép kín.\nNhà ở trung tâm thành phố, gần trường, chợ, trung tâm văn hoá thành phố, giao thông thuận tiện\nLà khu an ninh cao, dân trí cao\nLiên hệ thuê nhà trực tiếp Chị Hồng:\n0982 474 ***",
         acreage: 324,
@@ -565,7 +565,7 @@ module.exports = {
       },
       {
         name: "Tôi chính chủ cần cho thuê tầng trệt + lầu 1 số 371 Thống Nhất, Phường 11, Gò Vấp",
-        cost: 0,
+        cost: 1999999999,
         description:
           "Cho thuê mặt bằng tầng trệt + lầu 1 - nằm ngay mặt tiền đường!\n- Kích thước 4 x 11,6 = 46,4 m².\n\n- DTSD lầu 1: 61m².\n\n- Tổng DTSD là: 107,4 m².\n\n- Cấu trúc: 1 trệt + 1 lầu.\n\n- Tầng trệt: Trống suốt + wc.\n\n- Lầu 1: 2 phòng rộng + wc.\n\n- Vỉa hè rộng thuận tiện cho việc đậu xe hơi và xe máy.\n\n- Nhà mới sơn sửa.\n\n- Khu vực: Khu trung tâm quận Gò Vấp, nằm đoạn giữa đường Quang Trung và đường Lê Đức Thọ, kinh doanh sầm uất, đối diện UBND phường 16.\n\n- Thích hợp văn phòng công ty, showroom, shop thời trang + mỹ phẩm, nhà thuốc...\n\n- Nhà trống giao ngay.\n\n- Giá cho thuê hấp dẫn: 12.5 triệu/tháng. (Không bao gồm VAT).\n- Địa chỉ: Ngay số 371 Thống Nhất, Phường 11, Quận Gò Vấp, TP. Hồ Chí Minh.\n\nLiên hệ: Chính chủ\n0973 620 ***",
         acreage: 0,
@@ -885,7 +885,7 @@ module.exports = {
       },
       {
         name: "Chuyển nhượng nhà hàng khu BTLK Dương Đình Nghệ sau tòa nhà Mobifone PVI. DT100m2",
-        cost: 0,
+        cost: 1999999999,
         description:
           "Chuyển nhượng nhà hàng khu biệt thự liền kề Dương Đình Nghệ đằng sau tòa nhà Mobifone PVI.\n- Bán kính 300m: Viện huyết học, FPT, Viettel, Tòa án cấp cao, viện kiểm soát tối cao, Tổng cục hải quan, Vinacomin, trụ sở các báo. V.. V.. Và các tòa nhà chung cư. Khu vực rất đông dân văn phòng.\n\nDiện tích sổ đỏ: 10 x 10m, 4 tầng sức chứa 110 chỗ ngồi, có thể ngăn phòng riêng ở tầng 3.\n\nCơ sở vật chất: Toàn bộ hệ thống điều hòa âm trần mua mới, hệ thống bếp công nghiệp công suất 500 suất / bữa rộng 50m², đầy đủ thang tời hàng từ bếp tầng 4 xuống các tầng.\n\nBãi gửi xe ôtô ban ngày cạnh nhà, buổi tối và thứ 7 chủ nhật thì gửi oto miễn phí.\nHợp đồng còn gần 4 năm. Chủ nhà dễ tính.\n\nGiá chuyển nhượng thỏa thuận chính chủ:\n0774 322 ***\n. A Hạnh.",
         acreage: 100,
@@ -905,7 +905,7 @@ module.exports = {
       },
       {
         name: "Chính chủ cho thuê nhà Vân Canh, Hoài Đức",
-        cost: 0,
+        cost: 1999999999,
         description:
           "Cho thuê nhà Vân Canh Hoài Đức.\nDT 170m².\nHoàn thiện nội thất đầy đủ căn góc.\nThích hợp để làm văn phòng.\nGiá: Thỏa thuận.\nLH\n0977 662 ***",
         acreage: 170,
@@ -1165,7 +1165,7 @@ module.exports = {
       },
       {
         name: "Cho thuê biệt thự góc nhiều ánh sáng, vị trí đẹp tại khu T Ciputra",
-        cost: 0,
+        cost: 1999999999,
         description:
           "Căn biệt thự nằm tại vị trí đắc địa, góc 2 mặt thoáng. Phía trước nhà vỉa hè lát đá, view nhìn ra công viên vui chơi.\n- Diện tích đất 219m², xây dựng 120m² x 3 tầng, 2 ban công rộng. Có sân vườn trước, sau, có gara.\n- Nhà có 4PN, 3WC. Toàn bộ các cửa kính đã được thay thế bằng kính chống ồn.\n- Căn biệt thự vừa được sơn sửa lại hoàn toàn mới, chất lượng tốt, khách thuê về sẵn ở ngay.\n- Giá cho thuê: 71,235 triệu/tháng.\n- Liên hệ:\n0988 613 ***",
         acreage: 219,
@@ -1485,7 +1485,7 @@ module.exports = {
       },
       {
         name: "Chính chủ cho thuê nhà mặt phố Lương Ngọc Quyến, Thái Nguyên, phù hợp kinh doanh, làm văn",
-        cost: 0,
+        cost: 1999999999,
         description:
           "Địa chỉ: 677 Đường Lương Ngọc Quyến, Phường Phan Đình Phùng, Thái Nguyên, Thái Nguyên (sát MB bank).\n- Diện tích: 181 m².\n- 6 tầng (tầng 1 để xe).\n- 2 mặt tiền, nở hậu.\n- Mặt tiền 8m đường Lương Ngọc Quyến, mặt đằng sau có bãi để xe ô tô.\n- Có thang máy.\nGiá cả: Thoả thuận.\nLiên hệ:\n0886 607 ***",
         acreage: 181,
@@ -1565,7 +1565,7 @@ module.exports = {
       },
       {
         name: "Chủ nhà cần cho thuê gấp tầng 1, 2 nhà mặt phố Lê Lợi, Nguyễn Trãi, DT 50m2, tiện KD mọi ngành nghề",
-        cost: 0,
+        cost: 1999999999,
         description:
           "Cho thuê tầng 1 và 2 nhà mặt phố: Số 22 phố Lê lợi - Nguyễn Trãi - Hà đông - Hà Nội.\n- DT mỗi tầng = 50 m², mặt tiền rộng 4,8m.\n- Khu vực đông dân cư, buôn bán sầm uất, tiện kinh doanh mọi ngành nghề.\n- Giá thỏa thuận, cho thuê từ tháng 3/2024.\n- LH chủ nhà chị Phương\n0903 429 ***\nngay hôm nay.",
         acreage: 50,
@@ -1625,7 +1625,7 @@ module.exports = {
       },
       {
         name: "Cho thuê phòng đầy đủ: Giường, tủ, ti vi, máy lạnh, bếp từ dt 20m2, giá 1.7 triệu lâu dài.",
-        cost: 0,
+        cost: 1999999999,
         description:
           "Cho thuê phòng đầy đủ: Giường, tủ, ti vi, máy lạnh, bếp từ dt 20m², giá 1.7-1.9 triệu lâu dài.\nDiện tích: 20m², giá 1.7-1.9 triệu/th. Phòng đầy đủ tiện nghi:\n- Máy giặt, tủ lạnh, máy lạnh, máy nước nóng năng lượng mặt trời bếp từ, bàn ghế, tủ quần áo, ti vi.\nChỗ để xe riêng miễn phí.\n- Hệ thống camera, an ninh số 3 lớp cửa.\n- Phòng đầy đủ cây xanh, giếng trời.\n- Có hàng rào bảo vệ, an ninh cao.\n+ Căn hộ dịch vụ có khoảng cách rất gần trung tâm đi Quận 1.3 20 phút.\nQuận 2, Khu công nghệ cao: 5 phút.\n+ Quận Thủ Đức, Bình Thạnh, Q. 4: 20 phút.\n- Phòng cao cấp ngay gần khu biệt thự Khang Điền 990, P. Phú Hữu, Q9. Hình thật 100%.\nGiờ giấc tự do, ưu tiên sinh viên, văn phòng... Và ở lâu dài.",
         acreage: 20,
@@ -1665,7 +1665,7 @@ module.exports = {
       },
       {
         name: "Cho thuê chung cư mini mới, nội thất đầy đủ, khu vực an ninh, vào ở luôn. LH 0903 421 ***",
-        cost: 0,
+        cost: 1999999999,
         description:
           "Cho thuê chung cư mini mới, nội thất đầy đủ, khu vực an ninh, vào ở ngay.\n22p khép kín (17 - 25m/p).\nĐịa chỉ số 185.13 Minh Khai (MK mới là ngõ 211 MK).\nGiá: 4,6tr.\nNội thất: Giường, tủ, điều hoà, nóng lạnh, tủ lạnh, bếp từ, hút mùi, máy giặt, thang máy.\n100% phòng có cửa sổ thoáng sáng.\nĐi bộ ra mặt Minh Khai rất tiện (60m).\nPHÍ DV:\nNgày ở: Vào ở luôn.\nGiá 4,8 tr/th.\nDiện tích: 22m².\nNội thất: Điều hòa, nóng lạnh, giường, tủ quần áo, bếp từ, tủ lạnh.\nDịch vụ:\nĐiện 3.8k/số.\nNước: 35k/khối.\nMạng 100k/phòng.\nVs: 30k/người.\nMáy giặt: 50k/ người.\nThang máy: 50k/ người.\nLưu ý.\n- Hợp đồng 6 tháng.\n- Thanh toán 1 cọc 1.\nLiên hệ xem nhà: Mr Bảo\n0903 421 ***",
         acreage: 22,
@@ -1705,7 +1705,7 @@ module.exports = {
       },
       {
         name: "Phòng trọ tiện ích full nội thất, 1 đến 2 người ở, giá từ 1,5/tháng, 488/19 Lê Trọng Tấn, Tân Phú",
-        cost: 0,
+        cost: 1999999999,
         description:
           "Cho thuê Phòng trọ và Sleep Box tiết kiệm chi phí cho 1 đến 2 người ở, đầy đủ tiện nghi cạnh ĐH Công Thương HCM, CĐ Công Thương, AEON Tân Phú.\n- Địa chỉ: 488/19 Lê Trọng Tấn, P. Tây Thạnh, Quận Tân Phú.\n- Phòng 15m² giá ưu đãi từ 1.5tr - 2.3tr/tháng, có phòng đôi cho 2 người(đã bao hết chi phí DV điện nước, wf, rác,... ).\n- Phòng máy lạnh 24/24, cửa khóa, đầy đủ chăn ga gối nệm, bàn, kệ, tủ đồ,...\n- Có máy giặt máy sấy,...\n- Khu vực vệ sinh rộng rãi, nhiều WC sử dụng thoải mái (không lo kẹt).\n- Khu vực bếp rộng rãi: Đầy đủ bàn ghế, bếp, nồi,...\n- Nhà giữ xe có bảo vệ 24/24.\n- Giờ giấc tự do, khóa vân tay.\nPhát triển bởi hệ thống cho thuê phòng và sleepbox Zbox.\nLiên hệ hoặc nhắn Zalo:\n0907 070 ***\nchủ nhà) để xem phòng và đặt phòng trực tiếp! Có nhiều khu vực để chọn.",
         acreage: 15,
@@ -1725,7 +1725,7 @@ module.exports = {
       },
       {
         name: "Kênh thuê nhà Sài Gòn cho thuê phòng rất rộng ở dài hạn giá rẻ",
-        cost: 0,
+        cost: 1999999999,
         description:
           "Hiện chúng tôi còn trống phòng tại trung tâm của TP, HCM thuận tiện đi lại tất cả các quận huyện trong TP, đường lớn xe lơn ra vào và quay đầu được,\nĐịa chỉ: 540/9 Cách Mạng Tháng 8, P11 Q3.\nPhòng đã trang bị cơ bản: Máy lạnh, máy giặt, tủ quần áo, giường nệm ga gối,\nPhòng có thể ở được 3 - 4 người.\nSân phơi đồ, có chỗ nấu ăn nếu muốn và ban công rộng, thoáng mát.\nKhông qua trung gian và giá chỉ 4tr500/tháng,\nNước 100k/người.\nĐiện: 4k/kw.\nBao gồm: Internet wifi, bảo trì, phí dịch vụ, để xe trong nhà miễn phí tối đa 2xe/phòng.\nLiên hệ chủ nhà Mr Hưng\n0948 222 ***",
         acreage: 45,
@@ -1785,7 +1785,7 @@ module.exports = {
       },
       {
         name: "Chính chủ cho thuê nhà Bà Triệu gần hồ Gươm",
-        cost: 0,
+        cost: 1999999999,
         description:
           "Mình là chính chủ (miễn môi giới): Cho thuê căn hộ studio mới đẹp nhà riêng ở số 15 Bà Triệu (tiêu chuẩn studio 1 bước xuống phố - 2 bước ra Hồ Gươm). Có chỗ để xe máy...\nNhà đầy đủ full nội thất tiêu chuẩn studio sang xịn đẹp - chỉ vác vali đến là ở.\n1 phòng khách + 1 phòng ngủ + 1 nhà tắm + 1 phòng bếp nội thất nhập khẩu full HĐ.\nKhu vực an ninh tốt đảm bảo...\nGiá thuê: 7.5 triệu đ. (bao wifi - điện nước dân sinh thỏa thuận sau mình không cần lãi).\nSĐT anh Hà:\n0834 120 ***",
         acreage: 40,
@@ -1825,7 +1825,7 @@ module.exports = {
       },
       {
         name: "Cho thuê phòng đẹp cao cấp đủ tiện nghi trung tâm Q10, 7A/19/19 và 43/3 đường Thành Thái",
-        cost: 0,
+        cost: 1999999999,
         description:
           "Cho thuê phòng đẹp trung tâm quận 10 tiện nghi:\n\n- Địa chỉ 1: 7A/19/19 đường Thành Thái, Phường 14, Quận 10.\n\n- Địa chỉ 2: 43/3 đường Thành Thái, Phường 14, Quận 10.\n- Địa chỉ 3: 128 Thành Thái phường 12 quận 10.\nPhòng cho thuê gần siêu thị, ngân hàng, gần ngay ngã tư 3/2 - Thành Thái - Nguyễn Tri Phương. Gần đại học Kinh Tế TP HCM, Bách Khoa TP HCM, Y Dược. Giao thông thuận tiện, gần chợ trạm xe bus.\n\nMặt tiền nhà đẹp, hẻm trước nhà 8m xe hơi quay đầu được.\n\nVị trí trung tâm thành phố giáp ngay Quận 1, Quận 3, Tân Bình, Phú Nhuận. Cho bạn thuận tiện trong công việc.\nNhà có thang máy, chỗ để xe rộng rãi.\n\nPhòng rộng từ 22m² - 35m², được trang bị đủ tiện nghi như: (Máy lạnh, tivi, giường nệm, tủ lạnh... ) thiết bị cao cấp mới mua đem lại sự tiện nghi và thoải mái trong căn phòng của bạn, ban chỉ việc xách quần áo đến và ở.\nGiá thuê chỉ từ 4,5 triệu đến 7 triệu/tháng.\n\nChúng tôi cam kết tuyệt đối với bạn rằng! Hình chụp như thế nào thì phòng của bạn như thế đó. Thậm chí có thể đẹp hơn trong thực tế nếu bạn tới xem trực tiếp.\n\nLiên hệ: A. Khang\n0938 297 ***\n.\n\nHẹn gặp lại tại căn phòng của riêng bạn.",
         acreage: 22,
@@ -1845,7 +1845,7 @@ module.exports = {
       },
       {
         name: "Cho thuê căn hộ vip khép kín, nhà mới đầy đủ nội thất tại Lạc Long Quân, Tây Hồ",
-        cost: 0,
+        cost: 1999999999,
         description:
           "Chính chủ tôi có căn hộ vip khép kín có gác xép, nhà mới tinh vừa xây xong tại Lạc Long Quân, Tây Hồ. Diện tích mỗi căn duplex là 35m², đầy đủ nội thất: Điều hoà, nóng lạnh, giường và tủ quần áo, sofa, máy giặt, tủ lạnh riêng từng phòng, phòng nào cũng có ban công thoáng mát.\nGiá thuê là 5.2 triệu/tháng.\nLiên hệ chính chủ:\n0976 118 ***",
         acreage: 35,
@@ -1865,7 +1865,7 @@ module.exports = {
       },
       {
         name: "Cho thuê chung cư mini Tại Hồng Hà, Hoàn Kiếm - đầy đủ nội thất",
-        cost: 0,
+        cost: 1999999999,
         description:
           "Chính chủ cho thuê các căn hộ chung cư mini mới xây đầy đủ tiện nghi và full đồ tại Hồng Hà, Hoàn Kiếm. Toà nhà không chung chủ, toà nhà có camera và đi lại tự do bằng khoá vân tay, được thiết kế hiện đại và trang bị đầy đủ, giường, tủ quần áo, nóng lạnh, điều hoà, tủ lạnh, có bàn bếp và chậu rửa bát, máy giặt chung miễn phí, phòng nào cũng đầy đủ ánh sáng và thoáng.\nDiện tích mỗi phòng 22m².\nGiá thuê từ 4,2tr tới 4,5tr/tháng.\nVị trí trung tâm bậc nhất Hà Nội cách phố hoàn kiếm 800m, cách phố Tây Bùi viện chỉ 500m, gần các chợ lớn, trung tâm thương mại, siêu thị, trường học, đường sá đi lại rất thuận tiện.\nLiên hệ chính chủ:\n0976 118 ***\n.\nĐịa chỉ: 1035 đường Hồng Hà, Quận hoàn kiếm - Hà Nội.",
         acreage: 22,
@@ -1905,7 +1905,7 @@ module.exports = {
       },
       {
         name: "Nhà trọ sạch sẽ - căn hộ tiết kiệm mà giá như phòng trọ",
-        cost: 0,
+        cost: 1999999999,
         description:
           "nhà trọ sạch sẽ - luôn sạch sẽ, luôn gọn gàng.\n- Sát bên khu công nghệ cao thuận tiện cho người lao động.\n- Các bạn sinh viên HUTECH, FPT, UFM đi học cũng gần hơn.\nTiện nghi đầy đủ: Không gian bếp rộng rãi, thang máy, ban công, cổng vân tay...\nNội thất có sẵn: Tủ quần áo xịn sò, máy lạnh, nhà tắm / nhà vệ sinh đều sạch sẽ và trang bị vật dụng cần thiết,...\nVị trí đắc địa: Gần khu công nghệ cao, các trường Đại học Tài chính Marketing, Hutech, FPT,...\nKhông gian xanh mát, thoáng khí.\nĐảm bảo an ninh.\n\nĐịa chỉ: 71/23 Võ Văn Hát, phường Long Trường, TP Thủ Đức - Quận 9 (cũ).\nHotline: 1900 5049.\nZalo:\n0827 372 ***",
         acreage: 25,
@@ -1925,7 +1925,7 @@ module.exports = {
       },
       {
         name: "Chính chủ cho thuê phòng trọ cao cấp 20m2 và 35m2, tại 66/13 và 16/9 Bình Lợi, P. 13, Q. Bình Thạnh",
-        cost: 0,
+        cost: 1999999999,
         description:
           "Chính chủ cho thuê phòng trọ cao cấp tại toà nhà 66/13 Bình Lợi và 16/9 Bình Lợi.\n\n1. Toà nhà 66/13 Bình Lợi.\nDiện tích: 20m². Lầu 1. Phòng trống. Có máy lạnh.\nGiá cho thuê: 3.8tr/tháng. Ở tối đa 3 người. (02 xe máy).\n2. Toà nhà 16/9 Bình Lợi.\nDiện tích: 35m². Lầu 2. Phòng trống. CÓ máy lạnh.\nGiá cho thuê: 4.5tr/tháng. Ở tối đa 4 người. (03 xe máy).\n\nCác phòng đều có cửa sổ phòng thoáng mát, cửa sổ toilet thông thoáng.\nGần chợ, siêu thị, bến xe buýt.\nGần DH Văn Lang, thuận tiện đi lại các hướng.\nMiễn phí wifi, chỗ để xe máy.\nĐiện: 3.5k/kwh.\nNước: 27k/m3.\nKhông nuôi pet.\nHĐ tối thiểu 1 năm.",
         acreage: 20,
@@ -1945,7 +1945,7 @@ module.exports = {
       },
       {
         name: "CHO THUÊ PHÒNG TRONG NHÀ NGUYÊN CĂN CÓ BANCON FULL NỘI THẤT ĐƯỜNG PHẠM VĂN CHIÊU PHƯỜNG 14 GÒ VẤP",
-        cost: 0,
+        cost: 1999999999,
         description:
           "237 Phạm Văn Chiêu\n\nMã 101 : 4tr5 bancon\nMã 202 : bancon :4tr5\nNt: máy lạnh, giương , tủ quần áo , nệm , gra , bep , máy nóng lạnh NLMT\nThêm tủ lạnh : 250k tháng\n\nDiện 3.8kwh\nNước 120k ng\nXe free 2 chiếc\nPhí dv 200k phòng ( có giặt sấy)\n\nCọc 1 tháng",
         acreage: 35,
@@ -1965,7 +1965,7 @@ module.exports = {
       },
       {
         name: "Khai trương phòng trọ giá rẻ cho sinh viên ở được 4 người 4 xe gần ĐH Văn Lang 3 và cầu Bình Lợi",
-        cost: 0,
+        cost: 1999999999,
         description:
           "Tưng bừng khai trương duplex mới 100%.\nĐC: 171 Bình Lợi - Bình Thạnh.\n\nCăn hộ nhiều dạng phòng khác nhau.\nNội thất cơ bản.\nHầm xe bảo vệ, thang máy.\nHệ thống camera an ninh 24/24.\nGiặt sấy chung.\nGiờ giấc tự do.\nKhông chung chủ.\nHệ thống phòng cháy chữa cháy đạt chuẩn.\nGần các trường ĐH như: Ngoại Thương, Hutech, Hồng Bàng, UEF, GTVT, Học Viện Cán Bộ, Đh Văn Lang 3, ĐH Công Nghiệp,...\nGần các trục đường lớn như: Điện Biên Phủ, Ung Văn Khiêm, Nguyễn Gia Trí, Nguyễn Hữu Cảnh, Nguyễn Cửu Vân, Bạch Đằng, Bùi Đình Tuý, Đinh Bộ Lĩnh, Nguyễn Xí, Đặng thuỳ trâm, nơ trang long,...\nGiá 3tr9 và 4tr2.\n\nHIFRIENDZ hỗ trợ cọc.\n\nKhu vực: Bình Thạnh, Trung Tâm TP. HCM.\nPhân khúc từ sinh viên đến cao cấp.\nNhận tư vấn tìm phòng miễn phí.",
         acreage: 35,
@@ -1985,7 +1985,7 @@ module.exports = {
       },
       {
         name: "Cho thuê phòng đẹp thoáng mát gần Lotte Cộng Hòa Tân Bình 35m2 gần công viên khu K300",
-        cost: 0,
+        cost: 1999999999,
         description:
           "Cho thuê phòng đẹp thoáng mát gần Lotte Cộng Hòa Tân Bình 35m² gần công viên khu K300\n\nDiện tích: 35m2\n\nGiờ giấc tự do, an ninh rất tốt, gần chốt dân phòng tự quản, gần công viên K300 thoải mái chạy bộ tập thể dục, gần trung tâm thể dục Cali ngay Lotte Cộng Hòa\n\nPhòng trọ có ban công rộng rãi thoáng mát\nPhòng trọ có thang máy\nPhòng trọ có hầm để xe, lối đi riêng, không chung chủ\nPhòng trọ có nhà vệ sinh riêng, máy lạnh, tủ lạnh, giường nệm, tủ đựng quần áo 3 buồng, nước nóng năng lượng mặt trời.\n\nKhu dân trí cao, không gian thoáng mát, hạ tầng đồng bộ, khu tập trung nhiều người nước ngoài ở\nPhòng trọ gần siêu thị Lotte,\nPhòng trọ gần trung tâm thể dục California đường Cộng Hòa\nPhòng trọ gần công viên nội khu K300\nPhòng trọ gần công viên Hoàng Văn Thụ\nPhòng trọ gần chợ Hoàng Hoa Thám\nPhòng trọ gần sân bay\nPhòng trọ gần sân banh Hoàng Hoa Thám\nPhòng trọ gần SVĐ Quân Khu 7\nPhòng trọ gần cao ốc văn phòng Etown\nPhòng trọ gần học viện hàng không cở sở 2,\nPhòng trọ gần trường cao đẳng kỹ thuật Lý Tự Trọng,\nPhòng trọ gầntrường mầm non Vàng Anh, Bambi.\nPhòng trọ gần bệnh Viện phụ sản Mekong,\nPhòng trọ gầnbệnh viện Thống Nhất,\nInternet (wifi & cáp), truyền hình cáp.\n\nNgoài ra còn phòng không ban công, có cửa sổ nhìn ra giếng trời lớn, rộng thoáng, giá 4.5tr\n\nGiá: 5.500.000VND\n\nMs Dung\n0903 805 ***",
         acreage: 35,
@@ -2025,7 +2025,7 @@ module.exports = {
       },
       {
         name: "Cho thuê nhà phố thương mại, shophouse khối đế tại Gò Vấp - chính chủ Cityland Group",
-        cost: 0,
+        cost: 1999999999,
         description:
           "Chính chủ CityLand Group tung giỏ hàng cho thuê Nhà phố thương mại, shophouse khối đế tại dự án CityLand Park Hills, Gò Vấp.\n\nChi tiết giỏ hàng:\n\nNhà phố thương mại:\n- Số tầng: 5 (1 trệt, 4 lầu).\n- Diện tích: 396 m² - 528 m².\n- Khu vực: Dự án CityLand: Park Hills, Garden Hills, Center Hills quận Gò Vấp.\n- Tổng căn cho thuê: 17 căn.\n- Giá thuê: Liên hệ trực tiếp 1900 56 56 33.\n\nShophouse khối đế:\n- Diện tích: 75m² - 234 m².\n- Khu vực: Khối đế chung cư Cityland Park Hills Gò Vấp.\n- Tổng căn cho thuê: 15.\n- Giá thuê: Liên hệ trực tiếp 1900 56 56 33.\n\nDự án CityLand Park Hills từ lâu đã trở thành biểu tượng của Quận Gò Vấp khi sở hữu vị trí đắc địa trung tâm quận Gò Vấp, nằm tiếp giáp với các trục đường lớn: Phan Văn Trị, Nguyễn Văn Lượng, Thống Nhất - nơi có mật độ cư dân sinh sống, làm việc, giao thương sầm uất.\n\nNằm trong khu dân cư hiện hữu với hơn 2.000 hộ dân và 12.000 cư dân, Nhà Phố Thương Mại và Shophouse khối đế trong dự án CityLand Park Hills luôn nhận được sự săn đón từ các nhà đầu tư, doanh nghiệp lớn nhỏ với mục tiêu mở rộng thị trường tăng doanh thu, thu hút được nhiều thương hiệu lớn đã có mặt tại đây như: Lotte Mart, E - Mart, Winmart, Pharmacity, Bách Hóa Xanh, Ministop, Phuc Long,...\n\nLiên hệ hotline 1900 56 56 33 để xem trực tiếp mặt bằng và nhận chính sách thuê hấp dẫn từ chủ đầu tư CityLand Group.",
         acreage: 75,
@@ -2105,7 +2105,7 @@ module.exports = {
       },
       {
         name: "Cho thuê CC shophouse đa năng mặt trường học làm nhà hàng, cà phê, hiệu sách... Giá tốt nhất",
-        cost: 0,
+        cost: 1999999999,
         description:
           "Đặc biệt với căn shophouse cho thuê tốt nhất vị trí đặc biệt\n0906 633 ***\ngọi ngay để xem nhà + thương lượng.\n\n- Cho thuê shophouse 5 tầng vị trí đẹp đối diện trường học và bệnh viện đa khoa Thường Tín.\n- Mặt đường lớn, ô tô đỗ thoải mái.\n- Vỉa hè thoáng rộng.\n\nLiên hệ ngay\n0906 633 ***\nưu tiên quán cà phê, hiệu sách, office.",
         acreage: 350,
@@ -2125,7 +2125,7 @@ module.exports = {
       },
       {
         name: "Cho thuê TTTM chung cư Vision, khách hàng tương lai hơn 2000 căn hộ",
-        cost: 0,
+        cost: 1999999999,
         description:
           "Chủ đầu tư trực tiếp bán cho thuê trung tâm thương mại chung cư Vision Bình Tân.\nDiện tích: Khoảng 250 m².\nThích hợp làm văn phòng kinh doanh, khu vui chơi...\nNguồn khách hàng có sẵn (hơn 600 căn hộ chung cư), khách hàng tương lai hơn 2000 căn hộ, tiềm năng phát triển tốt.\nKhu dân cư hiện hữu, dân cư đông, văn minh lịch sự, tiện ích hiện hữu (bãi đậu xe tầng hầm, khu vui chơi trẻ em, hồ bơi, công viên, siêu thị), khu dân quản lý tốt.\nMặt tiền Trần Đại Nghĩa, ngay gần nút giao vòng xoay An Lạc (nút giao thông vàng hội tụ 3 tuyến đường Kinh Dương Vương, Võ Văn Kiệt và Quốc Lộ 1A).\nLà vị trí trung tâm, có đầy đủ các tiện ích ngoại khu như siêu thị BigC, Aeon Mall, Metro Bình Phú, chợ Hưng Nhơn, và trường học cấp 1, 2, 3, bệnh viên Nhi Đồng TP, bệnh viện Quốc tế, tiêm chủng VNVC...",
         acreage: 250,
@@ -2285,7 +2285,7 @@ module.exports = {
       },
       {
         name: "Cho thuê shophouse khối đế dự án Celadon City quận Tân Phú",
-        cost: 0,
+        cost: 1999999999,
         description:
           "Là mảnh ghép cuối cùng của hệ sinh thái Celadon City, Celadon Boulevard là chuỗi 68 căn shophouse khối đế cho thuê của chủ đầu tư Gamuda Land.\n\n- Vị trí vàng: Vừa nằm trong nội khu chung cư Celadon City, vừa ngay mặt tiền đường N1 tiếp giáp với các tuyến đường lớn của Tân Phú, kết nối thuận tiện các vị trí trọng điểm nội thành (Cơ Sở Ban Ngành, Tuyến Metro số 2, sân bay Tân Sơn Nhất).\n\n- Dân cư đông: Cơ hội tiếp cận hơn 100.311 khách hàng (trong bán kính 5 phút) và 1.344.207 khách hàng (trong bán kính 15 phút) ở các địa điểm như: TTTM AEON MALL Tân Phú, hệ thống trường học công các cấp (cấp 1, 2, 3), CLB thể thao chuẩn resort lớn nhất TP. HCM - Celadon Sports & Resort Club, trường học quốc tế Asian, mẫu giáo quốc tế Mapple Bear cùng 6 tháp dân cư bao bọc với độ phủ dân cư đạt 80%.\n\n- Diện tích rộng rãi, 2 tầng riêng biệt giúp dễ dàng phân tách thành các khu vực chức năng khác nhau.\n\n- Cơ hội tiếp thị ngoài trời cao: Nhờ các chiến dịch quảng cáo xuyên suốt, cơ hội truyền thông khuyến mãi trên các tuyến xe điện nội khu, cơ hội đặt OOH và banner tại nhiều khu vực đông đúc của Celadon City.\n\n- Cảnh quan đẹp hài hòa: Thiết kế không gian thông minh, vừa linh hoạt vừa hài hòa giữa nhu cầu kinh doanh thương mại với mảng xanh tươi mát đem đến trải nghiệm mới cho khách hàng trong xu hướng môi trường xanh hiện nay.\n\n- Cam kết hỗ trợ tiện ích cho khách thuê:\n+ Ký hợp đồng trực tiếp với chủ đầu tư Gamuda Land.\n+ Đội ngũ bảo vệ 24/7.\n+ Bãi đậu xe thuận tiện.\n+ Đơn vị vận hành chuyên nghiệp.\n+ Hỗ trợ Marketing online và offline.\n+ Trung tâm hỗ trợ hoạt động 24/7.\n\nQuý khách quan tâm thuê mặt bằng kinh doanh vui lòng liên hệ:\nHotline:\n0396 803 ***\n.\nMail: leasing.hcmc@gamudaland.com.my",
         acreage: 300,
@@ -2345,7 +2345,7 @@ module.exports = {
       },
       {
         name: "Miễn phí tiền thuê 2 năm khu K-Town Mega GrandWorld. kinh doanh 24/7",
-        cost: 0,
+        cost: 1999999999,
         description:
           "Tiếp nối thành công của The Venice, hôm nay CĐT Vinhomes đã chính thức mở bảng hàng cho thuê K-Town.\nNgày khai trương 26/4/2024.\n100% các cửa hàng thuê đều mang concept Hàn Quốc và Nhật Bản.\nCác chương trình hỗ trợ.\nHỗ trợ tiền thuê: Từ 18 - 24 tháng.\nHỗ trợ hoàn thiện tầng 1 hoặc nhận capex 1.750/m² xây dựng.\nHỗ trợ voucher: 10 triệu/tháng * 3 tháng.\nNăm thứ 3 bắt đầu tính tiền thuê tuỳ vị trí. Chọn vị trí đẹp nhất để kinh doanh siêu lời ngay hôm nay.\nLH em:\n0911 016 ***",
         acreage: 100,
@@ -2365,7 +2365,7 @@ module.exports = {
       },
       {
         name: "Chính sách cho thuê tốt nhất thị trường, miễn phí 2 năm, tặng gói nội thất và voucher mua sắm",
-        cost: 0,
+        cost: 1999999999,
         description:
           'Chính sách tốt nhất thị trường.\n- Phân khu duy nhất được doanh 24/7.\n- Miễn phí tiền thuê lên đến 24 tháng.\n- Miễn phí hoàn thiện tầng 1.\n- Tặng 30 triệu doanh thu bằng E - voucher / 3 tháng.\n- Thiết kế theo ý thích, thủ tục xét duyệt nhanh - gọn - lẹ.\nBooking ngay:\n0911 016 ***\n.\nCam kết sinh lời ngay, cùng với đó là tiềm năng phát triển và quảng bá thương hiệu rộng rãi.\n\nVị trí kim cương: Tọa lạc tại trái tim sôi động Ocean City.\n- Nằm 2 bên đường vành đai 3.5 - Tuyến đường huyết mạch mới phía Đông Hà nội.\n- Tiếp giáp điểm giao cao tốc Hà Nội - Hải Phòng, kiến tạo nên một " Giao Lộ Quốc Tế " mới.\n- Tương lai là khu thương mại và ẩm thực, nhà hàng lớn nhất miền Bắc.\n-----------------------------------------------\nQuỹ căn hiện có 54m - 69m - 78m - 114m - 153m ưu tiên các loại hình kinh doanh.\n- Ẩm thực phong cách Hàn Quốc.\n- Thời Trang, làm đẹp.\n- Đồ lưu niệm, Đặc sản.\n- Siêu thị, cửa hàng tiện lợi.',
         acreage: 100,
@@ -2385,7 +2385,7 @@ module.exports = {
       },
       {
         name: "KTown Mega Grand Word - ưu đãi khủng cho khách thuê sớm",
-        cost: 0,
+        cost: 1999999999,
         description:
           "Cho thuê shop K-Town Grand Wolrd Vin2-3: Miễn phí tiền thuê 24 tháng, hoàn thiện sẵn nhà, tặng 10 triệu/1 tháng.\n- Được chủ đầu tư tổ chức sự kiện kéo khách về cực đông.\n- Được hỗ trợ tiền hoàn thiện nhà.\n- Hợp đồng thuê 3 năm miễn phí 2 năm đầu.\n- Đặt cọc 3 tháng.\n- Liên hệ em Trà\n0911 016 ***",
         acreage: 100,
@@ -2405,7 +2405,7 @@ module.exports = {
       },
       {
         name: "02/03/2024 Cao ốc văn phòng Quận 1 (50m2 - 5.000m2) giá (250 - 950 nghìn/m2/th) 0918 333 ***zalo)",
-        cost: 0,
+        cost: 1999999999,
         description:
           "* Diện tích: 50m² - 70m² - 100m² - 150m² - 200m² - 300m² - 500m² - 700m² - 1.000m² - 2.000m² - 3.000m² - 5.000m².\n\n* Đường: Nguyễn Huệ, Lê Duẩn, Tôn Đức Thắng, Hàm Nghi, Nam Kỳ Khởi Nghĩa, Hai Bà Trưng,...\n* Giá thuê: 250 - 950 nghìn/m²/tháng.\n* Dịch vụ và tiện ích.\n- Máy lạnh.\n- Thang máy.\n- Quản lý và vận hành tòa nhà.\n- Bảo vệ 24/24.\n- Vệ sinh.\n- Máy phát điện.\n- Hầm giữ xe.\n- Sảnh lễ tân.\n- Hệ thống mạng điện thoại và internet.\n- Gần ngân hàng, khu văn phòng công ty.\n- Cơm trưa, cafe văn phòng 20m.\n- Đầy đủ các dịch vụ của 1 cao ốc văn phòng.\n\nLiên hệ để nhận được báo giá giảm của các toà nhà:\n\n* Mr. Thành\n0918 333 ***\n- Zalo, Viber.\n\nSố 68 Nguyễn Huệ, Quận 1, TP. HCM.\n\n* Website minh bạch giá, diện tích thuê cao ốc theo thời gian thực đầu tiên và duy nhất tại TP. HCM.\n\nWebsite: https://bestoffice.vn/cho-thue-van-phong-quan-1 hoặc http://www.vanphongchothuequan1.net.vn/\n\n* Chúng tôi còn 2000 cao ốc, 15m² đến 5.000m², giá giảm từ 10% đến 50% đang trống sẵn tại 24 quận, huyện TP. HCM.\n\n* Ghi chú: Hình ảnh đang xem đại diện vào tòa nhà trên 300 tòa nhà tại Quận 1, chúng tôi sẽ gửi chi tiết diện tích - giá thuê - địa chỉ - hình ảnh cụ thể theo yêu cầu riêng của quý khách.",
         acreage: 50,
@@ -2425,7 +2425,7 @@ module.exports = {
       },
       {
         name: "Văn phòng cho thuê - tại Thi Sách Q1 - ưu đãi giá thuê hấp dẫn chỉ từ 500.000đ/m2",
-        cost: 0,
+        cost: 1999999999,
         description:
           "Văn phòng, mặt bằng trống cho thuê - tại Thi Sách Q1 - giá thuê chỉ từ 500.000đ/m².\n--------------------------------------------\nVị trí đắc địa tại khu trung tâm kinh tế, tài chính của Q. 1 - Phường Bến Nghé .\n* Khu vực tập trung nhiều cao ốc văn phòng, khách sạn, nhà hàng, ngân hàng lớn,...\n* Cách quảng trường Mê Linh, Bến Bạch Đằng Sông Sài Gòn chỉ vài bước chân.\n* Mỗi tầng được thiết kế không gian mở, vách kính, ánh sáng tự nhiên, view Sông Sài Gòn rất đẹp.\n\nQui mô: Trệt - 5 tầng + sân thượng.\nDiện tích sàn: từ 600 m.\n- PDV: 55.000đ/m.\nLiên Hệ:\n0969 899 ***\nĐể biết thêm thông tin & xem văn phòng.\n- Bàn giao trống hoặc có sẵn.\n- Có toilet, tiện nghi.\n- Hệ thống thang máy và điều hòa.\n- Hệ thống PCCC tiêu chuẩn an toàn.\n- Bảo vệ tòa nhà, Camera quan sát an ninh 24/7.\n\nĐịa chỉ: Số 2, Phố Thi Sách, Phường Bến Nghé, Quận 1, Hồ Chí Minh.",
         acreage: 3.058,
@@ -2445,7 +2445,7 @@ module.exports = {
       },
       {
         name: "Văn phòng siêu phẩm mới xây diện tích lên đến ~ 1.000m2",
-        cost: 0,
+        cost: 1999999999,
         description:
           "Nhà mới xây cho thuê 4 tầng 1 hầm, diện tích 1 sàn 240m², có thang máy và hệ thống phòng cháy chữa cháy an toàn.\nNhà có 2 mặt thoáng, phía trước là vườn hoa, nhà nằm trong khu đấu giá nên phân ô bàn cờ vô cùng tiện lợi, chỗ đỗ xe thoải mái chưa kể có 1 hầm.\nNhà cách trường mầm non, trường cấp 1,2,3 của phường Phúc Diễn 50m, cách Trung tâm văn hóa quận Bắc Từ Liêm 500m.",
         acreage: 960,
@@ -2525,7 +2525,7 @@ module.exports = {
       },
       {
         name: "SGR building - văn phòng cho thuê Quận 1 - view đẹp - giá ưu đãi",
-        cost: 0,
+        cost: 1999999999,
         description:
           "SGR Building - cho thuê kí gửi văn phòng.\n\nTòa nhà SGR Building 167 - 169 Điện Biên Phủ, P. Đa Kao, Quận 1 có vị trí đắc địa:\nNằm trên trục đường chính, đối diện công viên Lê Văn Tám rộng rãi, thoáng mát.\nVị trí giao thông thuận tiện.\nGiao với các tuyến đường lớn ngay trung tâm Quận 1 cũng như các điểm tham quan thành phố như: Nhà Thờ Đức Bà, Bưu điện Thành Phố, Bảo Tàng Chứng Tích Chiến Tranh, hồ Con Rùa... Cùng rất nhiều các trung tâm thương mại, khách sạn, cửa hàng tiện ích và khu dân cư cao cấp.\nTiện ích:\nHệ thống chiếu sáng, PCCC hiện đại, đạt chuẩn, view đẹp, toilet nam nữ riêng biệt. Dịch vụ dọn vệ sinh, lễ tân đón tiếp nhận thư và bưu phẩm, bảo vệ 24/24, bảo trì máy móc, thang máy vận hành. Vệ sinh khu vực chung hàng ngày.\n\nCập nhật diện tích trống:\n\n115m² - Lầu 2 - 17.5usd/m² - 432.000vnd/m²/th.\n(Giá thuê đã bao gồm phí quản lý).\nĐiện: 4000đ.\nNước: Free.\n\nĐể biết thêm thông tin chi tiết, vui lòng truy cập vào website: http://www.sgr.com.vn\nHoặc liên hệ số hotline:\n0901 242 ***\n- Quản lý tòa nhà.",
         acreage: 115,
@@ -2545,7 +2545,7 @@ module.exports = {
       },
       {
         name: "Cho thuê văn phòng giá rẻ Quận 1",
-        cost: 0,
+        cost: 1999999999,
         description:
           "Diện tích trống: 270m², 150m², 80m², 40m2\n- Kết cấu tòa nhà: Trệt 10 lầu, diện tích 50m x 50m.\n- Tòa nhà văn phòng hiện đại, nhiều công ty nước ngoài chuyên nghiệp lịch sự, 2 thang máy lớn, 2 thang thoát hiểm rộng rãi, PCCC đạt chuẩn.\n- Vị trí: Số 85 Đường CMT8, Bến Thành, Quận 1. Ngay góc ngã 3 đường CMT8 và Bùi Thị Xuân, đối diện công viên Tao Đàn.\n- Giá siêu rẻ chỉ: 400k/m².\nThưởng ngay 2 chỉ vàng 9999 cho khách chốt trong tháng 12 này!\nLH:\n0902 374 ***\nMs Phượng.\n(Có hỗ trợ môi giới).",
         acreage: 270,
@@ -2645,7 +2645,7 @@ module.exports = {
       },
       {
         name: "Cho thuê văn phòng 141m2 giá rẻ tại tòa Mỹ Đình Plaza - phố Trần Bình",
-        cost: 0,
+        cost: 1999999999,
         description:
           "Cho thuê văn phòng tầng 3A, sẵn nội thất, đầy đủ đồ\nDiện tích cho thuê: 141 mét vuông\nGiá thuê: 200.000 đồng/m²\nMiễn phí làm thêm ngoài giờ.\nVăn phòng đã set up đầy đủ cửa kính, phòng cháy chữa cháy,...\nThang máy: 8 thang máy hiệu Mit\nVị trí: Số 138 Đường Trần Bình, tiện ích siêu thị, cửa hàng đầy đủ, đối diện Dolphin Plaza, gần BV 19 - 8, chợ Mỹ Đình, Đại học Thương Mại dễ dàng kết nối với các tuyến đường trung tâm Phạm Hùng, Duy Tân, Xuân Thủy, Trần Thái Tông.\nQuy mô: Tòa nhà gồm 25 tầng nổi, 2 tầng hầm để xe.\nThang máy: 8 thang máy hiệu Mitsubishi tốc độ cao.\nMáy phát điện dự phòng: Có máy phát điện dự phòng phục vụ cho vận hành thang máy, chiếu sáng. Công suất dự phòng 100% khi xảy ra mất điện.\nBàn giao mặt bằng: Trần, sàn gạch Ceramic, hệ thống đèn chiếu sáng tiêu chuẩn, thiết bị điện, internet.\nTiện ích: Tầng 1 tòa nhà là khu thương mại có: Nhà hàng cà phê, ăn uống, siêu thị\nem gửi thông tin đăng nhé",
         acreage: 141,
@@ -2665,7 +2665,7 @@ module.exports = {
       },
       {
         name: "CC cho thuê tòa văn phòng mới 100% hiện đại tại 752 Quang Trung, Phường 8, Quận Gò Vấp",
-        cost: 0,
+        cost: 1999999999,
         description:
           "Chính chủ cho thuê toà văn phòng tại 752 Quang Trung, Phường 8, Quận Gò Vấp.\n- Vị trí thuận lợi, khu dân cư đông đúc, phù hợp nhiều ngành nghề kinh doanh.\n- Diện tích đất là 7.3m * 34m.\n- Diện tích xây dựng: 7.3m * 22m bao gồm hầm + trệt + lửng + 5 lầu.\n- Sẵn có thang máy tải 750 kg, cầu thang bộ, cầu thang thoát hiểm.\n- Phía em chịu toàn bộ chi phí làm hệ thống pccc.\n- Các tầng đều để trống, Có sẵn 2 nhà vệ sinh.\n- Giá thuê năm đầu là 146,7 triệu/tháng, 2 năm sau: 183,375 triệu/tháng; 2 năm tiếp là 207,825 triệu/tháng. Giá trên chưa bao gồm lầu 5 được setup full nội thất cao cấp.\n- Ưu tiên khách thuê lâu dài và thương lượng với khách thiện chí.\n- Không cho thuê kinh doanh các dịch vụ: Massage, karaoke, căn hộ, khách sạn.\n- Hỗ trợ cho 01 tháng cho khách thuê.\nAi có nhu cầu vui lòng liên hệ qua zalo hoặc gọi trực tiếp cho em Ngân:\n0901 170 ***\nChỉ cần báo trước em 30 phút là em chạy lên mở cửa cho ạ).",
         acreage: 0,
@@ -2685,7 +2685,7 @@ module.exports = {
       },
       {
         name: "02/03/2024 VP cho thuê Quận Bình Thạnh (50m2 - 5000m2) (220 - 800 nghìn/m2/th) 0918 333 *** zalo)",
-        cost: 0,
+        cost: 1999999999,
         description:
           "* Hơn 299 cao ốc trống diện tích: 50m² - 70m² - 100m² - 150m² - 200m² - 300m² - 500m² - 700m² - 1.000m² - 2.000m² - 3.000m² - 5.000m².\n\n* Giá thuê từ: 220 - 800 nghìn/m²/tháng.\n\n* Đường: Điện Biên Phủ, Nguyễn Hữu Cảnh, Ung Văn Khiêm, D1, D2, D3, D5...\n\n- Dịch vụ và tiện ích:\n* Máy lạnh.\n* Thang máy.\n* Quản lý và vận hành tòa nhà.\n* Bảo vệ 24/24.\n* Vệ sinh.\n* Máy phát điện.\n* Hầm giữ xe.\n* Sảnh lễ tân.\n* Hệ thống mạng điện thoại và internet.\n* Gần ngân hàng, khu văn phòng công ty.\n* Cơm trưa, cafe văn phòng 20m.\n* Đầy đủ các dịch vụ của 1 cao ốc văn phòng.\n\n+ Dịch vụ best office hoàn toàn miễn phí.\n\n+ Hãy gọi cho chúng tôi để có cơ hội phục vụ quý khách một cách tốt nhất.\n\n* Chuyên văn phòng cho thuê quận Bình Thạnh - Best office.\n\n* Mr. Thành\n0918 333 ***\n- Zalo.\n\n* 561A Điện Biên Phủ, quận Bình Thạnh, TP. HCM.\n\n* Website minh bạch giá, diện tích thuê cao ốc theo thời gian thực đầu tiên và duy nhất tại TP. HCM.\n\nhttps://bestoffice.vn/cho-thue-van-phong-quan-binh-thanh\n\n* Chúng tôi còn (hơn 2000 cao ốc), (15m² đến 5.000m²), (giá từ 170 nghìn/m²/th - 900 nghìn/m²/th). Đang trống sẵn tại 24 quận huyện TP. HCM.\n\n* Ghi chú: Địa chỉ - hình ảnh đang xem đại diện khu vực quận Bình Thạnh.",
         acreage: 50,
@@ -2705,7 +2705,7 @@ module.exports = {
       },
       {
         name: "02/03/2024 văn phòng cho thuê Tân Bình từ 50m2 - 5000m2 giá (200 - 700 nghìn/m2/th) 0918 333 *** Zalo",
-        cost: 0,
+        cost: 1999999999,
         description:
           "* Diện tích: 50m² - 70m² - 100m² - 150m² - 200m² - 300m² - 500m² - 700m² - 1.000m² - 2.000m² - 3.000m² - 5.000m².\n\n* Giá thuê từ: 200.000 đ/m²/tháng.\n\n* Đường: Cộng Hoà, Trường Sơn, Bạch Đằng, Phổ Quang, K300, khu sân bay...\n* Liên hệ: 270 Cộng Hòa, Phường 13, Quận Tân Bình, TP. HCM.\n\n* Dịch vụ và tiện ích:\n- Máy lạnh.\n- Thang máy.\n- Quản lý và vận hành tòa nhà.\n- Bảo vệ 24/24.\n- Vệ sinh.\n- Máy phát điện.\n- Hầm giữ xe.\n- Sảnh lễ tân.\n- Hệ thống mạng điện thoại và internet.\n- Gần ngân hàng, khu văn phòng công ty.\n- Cơm trưa, cafe văn phòng 20m.\n\n+ Dịch vụ Best Office hoàn toàn miễn phí.\n\n+ Hãy gọi cho chúng tôi để có cơ hội phục vụ quý khách một cách tốt nhất.\n\nChuyên văn phòng cho thuê quận Tân Bình - best office.\n\n* Mr. Thành\n0918 333 ***\n- Zalo, Viber.\n* 270 Cộng Hòa, Tân Bình, TP. HCM.\n\nhttps://bestoffice.vn/cho-thue-van-phong-quan-tan-binh hoặc vanphongchothuequantanbinh. Vn.\n\n* Ghi chú: Hình ảnh đang xem đại diện khu vực quận Tân Bình.",
         acreage: 50,
@@ -2725,7 +2725,7 @@ module.exports = {
       },
       {
         name: "Chính chủ cho thuê văn phòng 95m2/sàn. Mặt phố Trần Quý Kiên, Cầu Giấy",
-        cost: 0,
+        cost: 1999999999,
         description:
           "Phù hợp làm văn phòng, spa, gym, yoga, trung tâm đào tạo, showroom trưng bày.\nTòa nhà 7.5 tầng mới xây, nằm ngay trên mặt phố Trần Quý Kiên, Cầu Giấy đông vui, sầm uất tập trung nhiều khu văn phòng, nhà hàng, quán ăn.\nDiện tích: 95m²/sàn (thông sàn) - 2 vệ sinh/tầng. Còn duy nhất tầng 4,5.\nTiện ích: Thang máy tốc độ cao, điều hòa âm trần, rèm cửa, có chỗ để xe máy và ô tô thoải mái.\nGiá: 18.5tr/sàn.\nHợp đồng dài hạn. Liên hệ trực tiếp chủ nhà (không phí môi giới) a Tuấn\n0987 371 ***\n.\nĐịa chỉ: 11/1 Trần Quý Kiên - Cầu Giấy - Hà Nội.",
         acreage: 95,
@@ -2765,7 +2765,7 @@ module.exports = {
       },
       {
         name: "Cho thuê văn phòng full nội thất tiện ích giá rẻ view đẹp tại tòa nhà Viaệt Á, Cầu Giấy, Hà Nội",
-        cost: 0,
+        cost: 1999999999,
         description:
           "Full nội thất, miễn phí dịch vụ tại CCB Office. Khách hàng chỉ cần mang máy tính đến làm việc, không phải đầu tư bất kỳ chi phí đi thuê văn phòng.\n\nKhách hàng được sử dụng miễn phí, không giới hạn toàn bộ dịch vụ sau:\n\n1. Điện điều hòa, điện chiếu sáng, điện ổ cắm.\n\n2. Nội thất văn phòng làm việc: Bàn ghế, tủ tài liệu.\n\n3. Hệ thống mạng Lan, Wifi, thoại tốc độ cao.\n\n4. Sảnh văn phòng tiếp khách rộng 150m² sang trọng, chuyên nghiệp.\n\n5. Phòng họp sức chứa 10 - 15 người, đầu đủ máy chiếu, bảng viết.\n\n6. Lễ tân tiếp đón khách, hỗ trợ nhận thư từ bưu phẩm và công việc phát sinh trong hệ thống văn phòng.\n\n7. Máy photo copy, in ấn kết nối trực tiếp với máy tính của khách hàng tại văn phòng làm việc, không giới hạn trang in.\n\n8. Trà, cafe, nước lọc nóng lạnh miễn phí.\n\n9. Mỗi văn phòng làm việc KH được miễn phí hút thảm trong văn phòng 1 lần/tháng.\n\n10. Khách hàng được sử dụng địa chỉ đăng ký kinh doanh tại tòa nhà.\n\n11. Biển tên công ty được đặt tại khu vực sảnh chung.\n\n12. Hỗ trợ thủ tục dịch vụ thành lập doanh nghiệp, khai báo thuế, dịch vụ du lịch, nhà hàng,...\n\n* Vị trí tòa nhà: Tòa nhà Việt Á tọa lạc tại số mặt phố số 09 Duy Tân, thuộc cụm TTCN và CNN Cầu Giấy - một trong những tuyến phố được đánh giá phát triển nhất tại phía Tây Hà Nội. Phố Duy Tân cũng là tuyến phố có khả năng kết nối giao thông rất thuận tiện, dễ dàng di chuyển đến các tuyến phố trọng điểm của trục giao thông chính thành phố như: Phạm Hùng, Cầu Giấy, Phạm văn Đồng,...\n\nChúng tôi cam kết chất lượng dịch vụ tốt nhất, đảm bảo cho khách hàng cảm thấy hài lòng nhất khi thuê văn phòng của chúng tôi.\n\nĐể biết chi tiết diện tích và giá thuê, quý khách liên hệ trực tiếp chủ đầu tư:\n\nCông ty Cổ Phần Đầu Tư CCB.\n\nHotline:\n0904 920 ***\ncall/sms/zalo).",
         acreage: 50,
@@ -2785,7 +2785,7 @@ module.exports = {
       },
       {
         name: "Văn phòng cho thuê Quận 7, nhiều diện tích đẹp",
-        cost: 0,
+        cost: 1999999999,
         description:
           "Toà nhà Green Country Group cho thuê văn phòng tại Quận 7.\nDiện tích cho thuê 80m² + 150m² + 75m².\nGiá: Tiền thuê văn phòng 267.410đ/m²/tháng + phí quản lý 48.620đ/m²/tháng (chưa VAT).\nToà nhà nằm ngay góc đường 34/81 đường nhựa rộng xe ô tô đậu thoải mái (miễn phí).\nXe máy đậu dưới hầm không giới hạn xe.\nBảo vệ 24/24 khách hàng có thể làm việc xuyên suốt các ngày Lễ Tết mà không bị tính phí ngoài giờ.\nVệ sinh lau dọn hàng ngày khu vực công cộng.\nLễ Tân vui vẻ nhiệt tình hỗ trợ khách hàng.\nThang máy đời mới tốc độ cao.\nTòa Nhà khá yên tĩnh và view đẹp.\nCó nhu cầu vui lòng liên hệ trực tiếp hoặc qua số phone gặp Ms Dương.",
         acreage: 80,

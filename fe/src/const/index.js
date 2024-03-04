@@ -48,12 +48,13 @@ export const typeFile = [
   { key: "4", name: "real-estate" },
 ];
 
-export const statusRent = [
-  { key: "1", name: "rent" },
-  { key: "2", name: "negotiating" },
-  { key: "3", name: "contracted" },
-  { key: "4", name: "closed" },
-];
+export const statusRent = {
+  1: { value: "Đã thuê", color: "blue" },
+  2: { value: "Đang đàm phán", color: "yellow" },
+  3: { value: "Đã ký kết", color: "green" },
+  4: { value: "Đang thực thi", color: "orange" },
+  5: { value: "Đã hủy bỏ", color: "red" },
+};
 
 export const typeRooms = [
   { value: "1", label: "Phòng ngủ" },

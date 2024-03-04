@@ -187,12 +187,16 @@ export const searchRealEstateService = async ({
     if (queries?.costMin) {
       whereCondition["cost"] = { [Op.gte]: queries.costMin };
     }
-    if (queries?.isWhole === true) {
-      whereCondition["isWhole"] = queries?.isWhole;
+    if (queries?.isInterior !== null && queries?.isInterior !== undefined) {
+      whereCondition["isInterior"] = queries?.isInterior;
     }
 
     if (queries?.isAllowPet === true) {
       whereCondition["isPet"] = queries?.isAllowPet;
+    }
+
+    if (queries?.type) {
+      whereCondition["type"] = queries?.type;
     }
 
     if (queries?.costMax) {
@@ -212,7 +216,7 @@ export const searchRealEstateService = async ({
       };
     }
 
-    const total = await db.RealEstate.count({});
+    const total = await db.RealEstate.count({ where: whereCondition });
 
     const list = await db.RealEstate.findAll(
       {

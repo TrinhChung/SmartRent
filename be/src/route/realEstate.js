@@ -26,7 +26,6 @@ router.post(
 
 router.get(
   "/full-house/:id",
-  authenticate,
   schemaValidatorInstance.validateParams(getRealEstateFullHouseSchema),
   handleGetRealEstate
 );

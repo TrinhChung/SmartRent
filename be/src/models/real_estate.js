@@ -14,6 +14,8 @@ module.exports = (sequelize, DataTypes) => {
         as: "realEstateFiles",
       });
 
+      RealEstate.hasOne(models.Bargain);
+
       RealEstate.belongsTo(models.User, {
         foreignKey: {
           name: "userId",

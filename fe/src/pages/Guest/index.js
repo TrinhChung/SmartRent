@@ -18,11 +18,6 @@ const Guest = () => {
       key: "home",
     },
     {
-      label: <LinkCustom to={"/negotiating"} label="Đàm phán" />,
-      key: "negotiating",
-    },
-
-    {
       label: <LinkCustom to={"/search"} label="Tìm kiếm" />,
       key: "search",
     },
@@ -33,17 +28,13 @@ const Guest = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/auth/login" element={<Login />} />
-        <Route path="/negotiating" element={<Negotiate />} />
         <Route path="/auth/signup" element={<SignUp />} />
-        <Route
-          path="/new-post/full-house-view/:id"
-          element={<FullHouseView />}
-        />
         <Route path="/search" element={<Search />} />
         <Route
           path="/auth/request-forgot-password"
           element={<RequestForgotPassword />}
         />
+        <Route path="/full-house-view/:id" element={<FullHouseView />} />
         <Route path="/auth/reset-password/:uuid" element={<ResetPassword />} />
         <Route path="/*" element={<div>Chua dinh nghia</div>} />
       </Routes>
