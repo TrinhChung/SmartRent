@@ -1,7 +1,6 @@
 version: "3"
 volumes:
   static_volume:
-  media_volume:
 
 services:
   my-mysql:
@@ -37,7 +36,6 @@ services:
       - /tmp/app/mysqld:/var/run/mysqld
       - .:/app
       - static_volume:/app/staticfiles/
-      - media_volume:/app/media/
     depends_on:
       my-mysql:
         condition: service_healthy
