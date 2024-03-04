@@ -19,6 +19,7 @@ for file in $files; do
 done
 
 echo -n > "./jobNeedRun.sh"
+echo "#!/bin/sh" >> "./jobNeedRun.sh"
 
 if [[ $checkChangeSc == true ]]; then
      echo "Deploy and verify smart contract" 
