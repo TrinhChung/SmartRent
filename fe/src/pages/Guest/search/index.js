@@ -225,9 +225,9 @@ const Search = () => {
                     </Col>
                     <Col>
                       <Row>
-                        <Col style={{ paddingTop: 5 }}>Thuê nguyên căn</Col>
+                        <Col style={{ paddingTop: 5 }}>Full nội thất</Col>
                         <Col style={{ paddingLeft: 8 }}>
-                          <Form.Item name="isWhole">
+                          <Form.Item name="isInterior">
                             <Switch
                               size="small"
                               checkedChildren={<CheckOutlined />}
