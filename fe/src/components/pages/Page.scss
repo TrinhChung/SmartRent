@@ -1,5 +1,6 @@
 .card-house_home {
   position: relative;
+  display: flex;
 
   .image-card_house_home {
     border-radius: 16px;
@@ -7,20 +8,30 @@
     height: calc(
       ((100vw - 2 * var(--margin-side)) / 4 - 15px) * 2 / 3
     ) !important;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    position: absolute;
+    top: 0;
+    left: 0;
   }
 
   label {
     text-shadow: 1px 1px 2px black;
   }
   .house-info_card {
-    position: absolute;
-    bottom: 20px;
-    left: 40px;
     color: var(--color-text-light);
-
+    width: calc((100vw - 2 * var(--margin-side)) / 4 - 15px) !important;
+    height: calc(
+      ((100vw - 2 * var(--margin-side)) / 4 - 15px) * 2 / 3
+    ) !important;
     .name_house:hover {
       text-decoration: underline;
     }
+    display: flex;
+    align-items: end;
+    padding-left: 4px;
+    padding-bottom: 12px;
   }
 
   .open-link-house {

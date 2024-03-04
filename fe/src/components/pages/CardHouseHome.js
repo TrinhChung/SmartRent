@@ -35,7 +35,9 @@ const CardHouseHome = ({
               navigate(url);
             }}
           >
-            <label style={{ cursor: "pointer" }}>{name}</label>
+            <label style={{ cursor: "pointer" }}>
+              {name?.length > 40 ? name.substring(0, 40) + "..." : name}
+            </label>
           </Row>
           <Row style={{ alignItems: "center" }}>
             <Col className="text-shadow" xs={24} xl={24}>

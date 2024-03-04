@@ -62,6 +62,7 @@ export const getRealEstateFullHouseService = async (id) => {
           where: {
             typeFk: "2",
           },
+          required: false,
           as: "realEstateFiles",
           attributes: ["url"],
         },
@@ -123,6 +124,7 @@ export const getRealEstateFullHouseByUserIdService = async ({
               typeFk: "2",
             },
             limit: 1,
+            required: false,
             as: "realEstateFiles",
             attributes: ["url"],
           },
@@ -154,6 +156,7 @@ export const getRealEstateByRecommendService = async ({ userId }) => {
               typeFk: "2",
             },
             limit: 1,
+            required: false,
             as: "realEstateFiles",
             attributes: ["url"],
           },
