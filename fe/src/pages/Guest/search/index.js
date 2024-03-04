@@ -80,7 +80,6 @@ const Search = () => {
                 lat: 21.0469701,
                 lng: 105.8021347,
               },
-              isWhole: true,
               isAllowPet: true,
               isInterior: true,
             }}

@@ -60,7 +60,7 @@ const Overview = ({
   };
 
   return (
-    <Row className="overview">
+    <Row className="overview" gutter={[40, 20]}>
       {files && files.length > 0 && (
         <Col span={12}>
           <Slider
@@ -86,7 +86,7 @@ const Overview = ({
           </Slider>
         </Col>
       )}
-      <Col span={12} style={{ paddingLeft: 40 }}>
+      <Col span={12}>
         <Row className="text_title">{name}</Row>
         <Row style={{ paddingTop: 4, paddingBottom: 12 }}>
           <Col>

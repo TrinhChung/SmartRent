@@ -25,10 +25,6 @@ const Renter = () => {
       key: "negotiating",
     },
     {
-      label: <LinkCustom to={`/room-chat/${roomChatId}`} label="Room chat" />,
-      key: "room-chat",
-    },
-    {
       label: <LinkCustom to={"/search"} label="Tìm kiếm" />,
       key: "search",
     },

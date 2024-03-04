@@ -32,10 +32,6 @@ const Seller = () => {
       key: "list-post",
     },
     {
-      label: <LinkCustom to={`/room-chat/${roomChatId}`} label="Room chat" />,
-      key: "room-chat",
-    },
-    {
       label: <LinkCustom to={"/search"} label="Tìm kiếm" />,
       key: "search",
     },

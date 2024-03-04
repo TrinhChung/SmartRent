@@ -48,14 +48,20 @@ const CardHouseHome = ({
             <Col>
               <Row>
                 <label>
-                  Diện tích: {acreage} m<sup>2</sup>
+                  Diện tích:{" "}
+                  <label style={{ fontWeight: "bold", color: "#34b8ff" }}>
+                    {acreage} m<sup>2</sup>
+                  </label>
                 </label>
               </Row>
             </Col>
             <Col style={{ display: "flex", alignItems: "end" }}>
               <Row>
                 <label>
-                  Giá: {String(cost).replace(/\B(?=(\d{3})+(?!\d))/g, ",")} VNĐ
+                  Giá:{" "}
+                  <label style={{ fontWeight: "bold", color: "#D00" }}>
+                    {String(cost).replace(/\B(?=(\d{3})+(?!\d))/g, ",")} VNĐ
+                  </label>
                 </label>
               </Row>
             </Col>

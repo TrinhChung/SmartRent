@@ -81,8 +81,6 @@ export const handleSearchRealEstate = async (req, res) => {
     const page = req.body.page;
     const limit = 10;
 
-    console.log(queries);
-
     const orderByList = [];
     for (let order in orders) {
       if (orders[order]) {
