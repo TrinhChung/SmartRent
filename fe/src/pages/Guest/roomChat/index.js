@@ -27,7 +27,7 @@ const { TextArea } = Input;
 const RoomChat = () => {
   const { authUser } = useContext(AuthContext);
   const { id } = useParams();
-  const { socket, roomChats } = useContext(SocketContext);
+  const { socket, roomChats, getRoomChatForMe } = useContext(SocketContext);
   const [roomChat, setRoomChat] = useState();
   const [messages, setMessages] = useState([]);
   const [files, setFiles] = useState([]);
@@ -60,10 +60,10 @@ const RoomChat = () => {
   };
 
   const checkStatusBargain = (status) => {
-    if (status === "1" || (status === "2") === "3") {
-      return false;
+    if (status === "1" || status === "2" || status === "3") {
+      return true;
     }
-    return true;
+    return false;
   };
 
   useEffect(() => {
@@ -141,7 +141,7 @@ const RoomChat = () => {
     try {
       const res = await closeBargainService(roomChat?.bargain?.id);
       if (res.statusCode === 200) {
-        setRoomChat({ ...roomChat, status: "5" });
+        getRoomChatForMe();
       }
     } catch (error) {
       alert(error.message);
@@ -212,7 +212,7 @@ const RoomChat = () => {
                 })}
               </Row>
             )}
-            {!checkStatusBargain() ? (
+            {checkStatusBargain(roomChat?.bargain?.status) ? (
               <Row className="wrap-input-message">
                 <Col span={1}>
                   <Row style={{ justifyContent: "center" }}>

@@ -24,19 +24,42 @@ export const createRoomChatService = async (data) => {
 };
 
 export const getRoomChatForMeService = async (userId) => {
-  const roomChats = await db.RoomChat.findAll({
-    include: [
-      {
-        model: db.Bargain,
-        as: "bargain",
-        where: {
-          [Op.or]: [{ sellerId: userId }, { renterId: userId }],
-          status: ["1", "2", "3", "4"],
+  try {
+    const roomChats = await db.RoomChat.findAll({
+      include: [
+        {
+          model: db.Bargain,
+          where: {
+            [Op.or]: [{ sellerId: userId }, { renterId: userId }],
+          },
+          include: [
+            {
+              model: db.RealEstate,
+              attributes: ["name"],
+              include: [
+                {
+                  model: db.File,
+                  where: {
+                    typeFk: "2",
+                  },
+                  required: false,
+                  as: "realEstateFiles",
+                  attributes: ["url"],
+                },
+              ],
+              required: true,
+            },
+          ],
+          as: "bargain",
         },
-      },
-    ],
-  });
-  return roomChats;
+      ],
+      subQuery: false,
+    });
+    return roomChats;
+  } catch (error) {
+    console.log(error);
+    throw new Error(error);
+  }
 };
 
 export const changeNameRoomChatService = async ({ roomChatId, name }) => {

@@ -28,7 +28,20 @@ const ChatList = ({ chatList = [], switchRoomChat = () => {} }) => {
                 }}
               >
                 <Col>
-                  <Avatar size={56} icon={<UserOutlined />} />
+                  <Avatar
+                    size={56}
+                    src={
+                      roomChat?.bargain?.RealEstate?.realEstateFiles.length > 0
+                        ? process.env.HOST_BE +
+                          roomChat?.bargain?.RealEstate?.realEstateFiles[0]
+                        : undefined
+                    }
+                  >
+                    {roomChat?.bargain?.RealEstate?.realEstateFiles.length >
+                    0 ? null : (
+                      <UserOutlined />
+                    )}
+                  </Avatar>
                 </Col>
                 <Col
                   style={{

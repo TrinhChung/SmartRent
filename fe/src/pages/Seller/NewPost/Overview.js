@@ -103,7 +103,10 @@ const Overview = ({
         </Row>
         <Divider />
         <Row style={{ gap: 15 }} gutter={[12, 8]}>
-          <Col className="info-item">
+          <Col
+            className="info-item"
+            style={{ fontWeight: "bold", color: "#F00" }}
+          >
             <Row>Mức giá</Row>
             <label>
               {String(cost).replace(/\B(?=(\d{3})+(?!\d))/g, ",")} VNĐ

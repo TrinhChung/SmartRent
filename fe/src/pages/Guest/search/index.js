@@ -10,6 +10,8 @@ import {
   Button,
   InputNumber,
   Radio,
+  Select,
+  Popover,
 } from "antd";
 import { useState, useEffect } from "react";
 import { useJsApiLoader } from "@react-google-maps/api";
@@ -18,6 +20,7 @@ import { searchRealEstateService } from "../../../services/RealEstate/index";
 import CardHouseHome from "../../../components/pages/CardHouseHome";
 import PlacesAutocomplete from "../../../components/maps/PlacesAutocomplete";
 import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
+import { typeRealEstate } from "../../../const/index";
 import "./Search.scss";
 
 const { Sider, Content, Footer } = Layout;
@@ -79,6 +82,7 @@ const Search = () => {
               },
               isWhole: true,
               isAllowPet: true,
+              isInterior: true,
             }}
             id="order-form"
           >
@@ -110,98 +114,123 @@ const Search = () => {
                 addressInitial={form.getFieldValue("address")}
               />
             </Form.Item>
-            <Form.Item>
-              <Row style={{ gap: 24 }}>
-                <Form.Item label="Giá(VNĐ)">
-                  <Row style={{ gap: 8 }}>
-                    <Form.Item name="costMin">
-                      <InputNumber
-                        step={500000}
-                        min={0}
-                        formatter={(value) =>
-                          `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                        }
-                        parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
-                        placeholder="Tối thiểu"
-                        style={{ minWidth: 180 }}
-                      />
-                    </Form.Item>
-
-                    <Form.Item name="costMax">
-                      <InputNumber
-                        step={500000}
-                        min={0}
-                        formatter={(value) =>
-                          `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                        }
-                        parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
-                        placeholder="Tối đa"
-                        style={{ minWidth: 180 }}
-                        dependencies={["costMin"]}
-                        rules={[
-                          ({ getFieldValue }) => ({
-                            validator(_, value) {
-                              if (
-                                value &&
-                                getFieldValue("costMin") &&
-                                value < getFieldValue("costMin")
-                              ) {
-                                return Promise.resolve();
-                              }
-                              return Promise.reject(
-                                new Error("Giá trị không hợp lệ!")
-                              );
-                            },
-                          }),
-                        ]}
-                      />
-                    </Form.Item>
-                  </Row>
+            <Row gutter={[24, 8]}>
+              <Col span={12} className="wrap-input-search">
+                <Form.Item name="type">
+                  <Select
+                    placeholder="Loại bất động sản"
+                    options={typeRealEstate}
+                  />
                 </Form.Item>
-                <Form.Item
-                  label={
-                    <div>
-                      Diện tích(m<sup>2</sup>)
-                    </div>
+              </Col>
+              <Col span={6} className="wrap-input-search">
+                <Popover
+                  content={
+                    <Row gutter={[8, 8]}>
+                      <Col span={12}>
+                        <Form.Item name="costMin">
+                          <InputNumber
+                            step={500000}
+                            min={0}
+                            formatter={(value) =>
+                              `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                            }
+                            parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                            placeholder="Tối thiểu"
+                            style={{ minWidth: "150px" }}
+                          />
+                        </Form.Item>
+                      </Col>
+                      <Col span={12}>
+                        <Form.Item name="costMax">
+                          <InputNumber
+                            step={500000}
+                            min={0}
+                            formatter={(value) =>
+                              `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                            }
+                            parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                            placeholder="Tối đa"
+                            style={{ minWidth: "150px" }}
+                            dependencies={["costMin"]}
+                            rules={[
+                              ({ getFieldValue }) => ({
+                                validator(_, value) {
+                                  if (
+                                    value &&
+                                    getFieldValue("costMin") &&
+                                    value < getFieldValue("costMin")
+                                  ) {
+                                    return Promise.resolve();
+                                  }
+                                  return Promise.reject(
+                                    new Error("Giá trị không hợp lệ!")
+                                  );
+                                },
+                              }),
+                            ]}
+                          />
+                        </Form.Item>
+                      </Col>
+                    </Row>
+                  }
+                  trigger="click"
+                >
+                  <Button>Giá(VNĐ)</Button>
+                </Popover>
+              </Col>
+              <Col span={6} className="wrap-input-search">
+                <Popover
+                  trigger="click"
+                  content={
+                    <Row gutter={[8, 8]}>
+                      <Col span={12}>
+                        <Form.Item name="acreageMin">
+                          <InputNumber
+                            placeholder="Tối thiểu"
+                            min={0}
+                            style={{ minWidth: "150px" }}
+                          />
+                        </Form.Item>
+                      </Col>
+                      <Col span={12}>
+                        <Form.Item
+                          name="acreageMax"
+                          style={{ marginBottom: 0 }}
+                        >
+                          <InputNumber
+                            placeholder="Tối đa"
+                            min={1}
+                            style={{ minWidth: "150px" }}
+                            dependencies={["acreageMin"]}
+                            rules={[
+                              ({ getFieldValue }) => ({
+                                validator(_, value) {
+                                  if (
+                                    value &&
+                                    getFieldValue("acreageMin") &&
+                                    value < getFieldValue("acreageMin")
+                                  ) {
+                                    return Promise.resolve();
+                                  }
+                                  return Promise.reject(
+                                    new Error("Giá trị không hợp lệ!")
+                                  );
+                                },
+                              }),
+                            ]}
+                          />
+                        </Form.Item>
+                      </Col>
+                    </Row>
                   }
                 >
-                  <Row style={{ gap: 8 }}>
-                    <Form.Item name="acreageMin">
-                      <InputNumber
-                        placeholder="Tối thiểu"
-                        min={0}
-                        style={{ minWidth: 180 }}
-                      />
-                    </Form.Item>
-
-                    <Form.Item name="acreageMax">
-                      <InputNumber
-                        placeholder="Tối đa"
-                        min={1}
-                        style={{ minWidth: 180 }}
-                        dependencies={["acreageMin"]}
-                        rules={[
-                          ({ getFieldValue }) => ({
-                            validator(_, value) {
-                              if (
-                                value &&
-                                getFieldValue("acreageMin") &&
-                                value < getFieldValue("acreageMin")
-                              ) {
-                                return Promise.resolve();
-                              }
-                              return Promise.reject(
-                                new Error("Giá trị không hợp lệ!")
-                              );
-                            },
-                          }),
-                        ]}
-                      />
-                    </Form.Item>
-                  </Row>
-                </Form.Item>
-              </Row>
-            </Form.Item>
+                  <Button>
+                    Diện tích(m<sup>2</sup>)
+                  </Button>
+                </Popover>
+              </Col>
+            </Row>
 
             <Form.Item>
               <Row>
