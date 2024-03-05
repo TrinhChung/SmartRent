@@ -24,7 +24,7 @@ jobs:
           PORT: ${{ secrets.PORT }}
           KEY: ${{ secrets.SSH_KEY }}
           script: |
-            cd SmartRent
+            cd /home/SmartRent
             git pull
             cd be
             ./checkFileChange.sh

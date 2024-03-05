@@ -161,3 +161,15 @@ export const resetPasswordSchema = {
     ],
   },
 };
+
+export const updateWalletSchema = {
+  wallet: {
+    optional: true,
+    rules: [
+      {
+        rule: (input) => !validator.isEthereumAddress(input),
+        message: "wallet is not ethereum address",
+      },
+    ],
+  },
+};

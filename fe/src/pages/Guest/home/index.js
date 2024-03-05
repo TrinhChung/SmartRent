@@ -7,6 +7,7 @@ import Suggest from "./Suggest";
 import MapCustom from "../../../components/maps/MapCustom";
 import { useJsApiLoader } from "@react-google-maps/api";
 import { getEstateByRecommendService } from "../../../services/RealEstate/index";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const [libraries] = useState(["drawing", "places"]);
@@ -15,6 +16,7 @@ const Home = () => {
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAP_KEY,
     libraries: libraries,
   });
+  const navigate = useNavigate();
 
   const [position, setPosition] = useState({
     lat: 21.0469701,
@@ -124,7 +126,10 @@ const Home = () => {
                 <Col xxl={12}>
                   <button
                     className="button-view"
-                    style={{ height: 38, fontSize: 16 }}
+                    style={{ height: 38, fontSize: 16, cursor: "pointer" }}
+                    onClick={() => {
+                      navigate("/search/");
+                    }}
                   >
                     Tìm kiếm ngay
                   </button>

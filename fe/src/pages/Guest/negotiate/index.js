@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import HouseData from "./HouseData";
-import { Col, Row, Pagination } from "antd";
+import { Col, Row, Pagination, Empty } from "antd";
 import { getBargainByMeService } from "../../../services/RealEstate";
 
 const Negotiate = () => {
@@ -29,20 +29,39 @@ const Negotiate = () => {
       <Row style={{ fontSize: "30px", fontWeight: "bold", paddingBottom: 20 }}>
         LIST OF NEGOTIATING ROOMS
       </Row>
-      {bargains.map((house, index) => (
-        <HouseData key={index} house={house} />
-      ))}
-      <Row
-        style={{ paddingTop: 10, justifyContent: "center", paddingBottom: 20 }}
-      >
-        <Pagination
-          current={page}
-          onChange={(value) => {
-            setPage(value);
-          }}
-          total={totalPage}
-        />
-      </Row>
+      {bargains.length > 0 ? (
+        <Row>
+          <Col span={24}>
+            {bargains.map((house, index) => (
+              <HouseData key={index} house={house} />
+            ))}
+            <Row
+              style={{
+                paddingTop: 10,
+                justifyContent: "center",
+                paddingBottom: 20,
+              }}
+            >
+              <Pagination
+                current={page}
+                onChange={(value) => {
+                  setPage(value);
+                }}
+                total={totalPage}
+              />
+            </Row>
+          </Col>
+        </Row>
+      ) : (
+        <Row style={{ justifyContent: "center" }}>
+          <Empty
+            image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
+            imageStyle={{
+              height: 200,
+            }}
+          ></Empty>
+        </Row>
+      )}
     </Col>
   );
 };

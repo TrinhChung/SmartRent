@@ -120,6 +120,8 @@ const Profile = () => {
         alert("Chưa có tài khoản nào được kết nối");
       }
     } catch (error) {
+      setWallets([]);
+      form.setFieldValue("wallet", null);
       alert(error.message);
     }
   }, [window.ethereum]);
