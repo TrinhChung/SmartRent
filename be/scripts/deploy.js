@@ -23,6 +23,25 @@ async function main() {
   }
 }
 
+export const deployRealEstate = async () => {
+  try {
+    const contractApi = await hre.ethers.deployContract(
+      "contracts/SmartContract.sol:SmartContract"
+    );
+
+    await contractApi.waitForDeployment();
+
+    if (contractApi.target) {
+      // shell.env["CONTRACT_ADDRESS"] = contractApi.target;
+      setEnv("CONTRACT_ADDRESS", contractApi.target);
+      console.log("Contract address: ", contractApi.target);
+    } else {
+      console.log("Contract address is not available");
+    }
+  } catch (error) {
+    console.log("Error: ", error);
+  }
+};
 // We recommend this pattern to be able to use async/await everywhere
 // and properly handle errors.
 main().catch((error) => {

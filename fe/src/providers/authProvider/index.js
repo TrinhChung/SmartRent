@@ -1,10 +1,11 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState, useCallback } from "react";
 import { loginMe } from "../../services/Auth";
+import { updateWalletService } from "../../services/User/index";
 
 export const AuthContext = createContext();
 
 export default function AuthProvider({ children }) {
-  const [authUser, setAuthUser] = useState(null);
+  const [authUser, setUpdateAuthUser] = useState(null);
 
   const handlerLogin = async () => {
     try {
@@ -15,6 +16,13 @@ export default function AuthProvider({ children }) {
       }
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  const setAuthUser = async (user) => {
+    setUpdateAuthUser(user);
+    if (user) {
+      connectAccountSc(user);
     }
   };
 
@@ -31,11 +39,44 @@ export default function AuthProvider({ children }) {
     }
   }, []);
 
+  const fetchUpdateWallet = async (address) => {
+    try {
+      const res = await updateWalletService({ wallet: address });
+      if (res.status === 200) {
+        const user = { ...authUser, wallet: address };
+        setAuthUser(user);
+        localStorage.setItem("authUser", JSON.stringify(user));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const connectAccountSc = useCallback(
+    async (user) => {
+      if (window?.ethereum) {
+        try {
+          const accounts = await window.ethereum.request({
+            method: "eth_requestAccounts",
+          });
+          const address = accounts?.length > 0 ? accounts[0] : null;
+          if (String(user.wallet) !== String(address)) {
+            fetchUpdateWallet(address);
+          }
+        } catch (error) {
+          alert(error.message);
+        }
+      }
+    },
+    [window.ethereum]
+  );
+
   return (
     <AuthContext.Provider
       value={{
         authUser,
         setAuthUser,
+        connectAccountSc,
       }}
     >
       {children}

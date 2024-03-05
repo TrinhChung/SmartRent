@@ -115,24 +115,15 @@ export const sendEmailForgotPasswordService = async ({ email }) => {
   }
 };
 
-export const resetPasswordService = async ({ token, password }) => {
-  const transaction = await db.sequelize.transaction();
+export const resetPasswordService = async ({ wallet, userId }) => {
   try {
-    let verify = (verify = await db.Verify.findOne({
-      where: { token: token, type: "2" },
-    }));
+    const user = await db.User.findOne({
+      where: { id: userId },
+    });
 
-    if (verify) {
-      let user = await db.User.findByPk(verify.fkId);
-      if (user) {
-        await user.update({ password: password });
-        await db.Verify.destroy({ where: { id: verify.id } });
-      }
-    }
-    await transaction.commit();
+    user.update({ wallet: wallet });
   } catch (error) {
     console.log(error);
-    await transaction.rollback();
     throw new Error(error);
   }
 };

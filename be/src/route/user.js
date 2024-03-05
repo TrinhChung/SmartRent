@@ -4,6 +4,7 @@ import {
   handleUpdateUserInfo,
   handleRequestForgotPassword,
   handleResetPassword,
+  handleUpdateWallet,
 } from "../controllers/user";
 import { authenticate } from "../middleware/authenticate";
 import {
@@ -11,6 +12,7 @@ import {
   updateUserInfoSchema,
   requestForgotPasswordSchema,
   resetPasswordSchema,
+  updateWalletSchema,
 } from "../schema/user";
 const SchemaValidator = require("nodejs-schema-validator");
 const schemaValidatorInstance = new SchemaValidator();
@@ -22,6 +24,13 @@ router.put(
   authenticate,
   schemaValidatorInstance.validateBody(updateUserInfoSchema),
   handleUpdateUserInfo
+);
+
+router.put(
+  "/update-wallet",
+  authenticate,
+  schemaValidatorInstance.validateBody(updateWalletSchema),
+  handleUpdateWallet
 );
 
 router.put(

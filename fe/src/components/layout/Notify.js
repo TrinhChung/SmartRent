@@ -50,7 +50,6 @@ const Notify = ({ notify, key = 1 }) => {
             style={{ textWrap: "break-word", maxWidth: 300, marginBottom: 0 }}
           >
             {notify.content}
-            111111111111111111111111111111111111111111111111111111111111111111
           </Paragraph>
         </Row>
         <Row style={{ paddingTop: 2, fontSize: 12, lineHeight: "12px" }}>

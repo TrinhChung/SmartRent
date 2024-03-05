@@ -59,3 +59,15 @@ export const handleResetPassword = async (req, res, next) => {
     return res.status(400).json({ message: error.message });
   }
 };
+
+export const handleUpdateWallet = async (req, res, next) => {
+  try {
+    const data = { wallet: req.body.wallet, userId: req.user.id };
+
+    await resetPasswordService(data);
+    return res.status(200).json({ message: "Cập nhật địa chỉ ví thành công" });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({ message: error.message });
+  }
+};

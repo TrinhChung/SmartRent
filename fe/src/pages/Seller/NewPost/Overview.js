@@ -39,24 +39,28 @@ const Overview = ({
   };
 
   const fetchCreateBargain = async () => {
-    setLoading(true);
-    try {
-      const data = {
-        sellerId: owner?.id,
-        renterId: authUser?.id,
-        realEstateId: id,
-      };
-      const res = await createBargainService(data);
-      console.log(res);
-      if (res.status === 200 && res?.data?.id) {
-        getRoomChatForMe();
-        navigate(`/room-chat/${res?.data?.id}`);
+    if (authUser) {
+      setLoading(true);
+      try {
+        const data = {
+          sellerId: owner?.id,
+          renterId: authUser?.id,
+          realEstateId: id,
+        };
+        const res = await createBargainService(data);
+        console.log(res);
+        if (res.status === 200 && res?.data?.id) {
+          getRoomChatForMe();
+          navigate(`/room-chat/${res?.data?.id}`);
+        }
+      } catch (error) {
+        alert(error.message);
+        console.error(error);
       }
-    } catch (error) {
-      alert(error.message);
-      console.error(error);
+      setLoading(false);
+    } else {
+      alert("Bạn chưa đăng nhập vui lòng đăng nhập để sử dụng chức năng này");
     }
-    setLoading(false);
   };
 
   return (
