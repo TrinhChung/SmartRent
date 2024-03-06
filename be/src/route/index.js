@@ -13,7 +13,7 @@ import { router as user } from "./user";
 import { authenticate } from "../middleware/authenticate";
 export const router = Router();
 
-router.use("/smc", authenticate, smartContract);
+router.use("/smc", smartContract);
 
 router.use("/room-chat", authenticate, roomChat);
 

@@ -1,16 +1,36 @@
 import { Router } from "express";
 import { vndToWei } from "../utils/convertMoney";
 import { createContractInstanceSMC } from "../config/connectSMC";
-export const router = Router();
+import {
+  handleCreateRealEstate,
+  handleGetRealEstateSc,
+  handleGetOwnerOfRealEstateSc,
+  handleGetReAddressSc,
+  handleGetAbiReSc,
+} from "../controllers/smartcontract";
+import { authenticate } from "../middleware/authenticate";
 require("dotenv").config();
 
-// const contractInstance = createContractInstanceSMC();
-const contractInstance = null;
+export const router = Router();
+const contractInstance = createContractInstanceSMC(
+  process.env.CONTRACT_ADDRESS
+);
+
 BigInt.prototype.toJSON = function () {
   return this.toString();
 };
 
-router.post("/smart-contract", async (req, res, next) => {
+router.post("/real-estate/", authenticate, handleCreateRealEstate);
+
+router.get("/real-estate/:id", handleGetRealEstateSc);
+
+router.get("/owner-of-re/:id", handleGetOwnerOfRealEstateSc);
+
+router.get("/re-address", handleGetReAddressSc);
+
+router.get("/re-abi", handleGetAbiReSc);
+
+router.post("/smart-contract", authenticate, async (req, res, next) => {
   try {
     const {
       id,

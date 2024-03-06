@@ -1,4 +1,3 @@
-#!/bin/sh
 source .env
 
 if [ -z "$network" ]; then
@@ -8,3 +7,4 @@ else
 fi
 
 npx hardhat  verify --network $network ${CONTRACT_ADDRESS}
+npx hardhat  verify --network $network ${RE_ADDRESS}
