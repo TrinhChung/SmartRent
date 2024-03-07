@@ -1,4 +1,10 @@
-import { createContext, useEffect, useState, useCallback } from "react";
+import {
+  createContext,
+  useEffect,
+  useState,
+  useCallback,
+  useMemo,
+} from "react";
 import { loginMe } from "../../services/Auth";
 import { updateWalletService } from "../../services/User/index";
 import { getReAbiService } from "../../services/SC";
@@ -10,7 +16,13 @@ export default function AuthProvider({ children }) {
   const [authUser, setUpdateAuthUser] = useState(null);
   const [reAbi, setReAbi] = useState("");
   const [signer, setSigner] = useState(null);
-  const provider = new ethers.BrowserProvider(window.ethereum);
+  const provider = useMemo(() => {
+    if (window?.ethereum) {
+      return new ethers.BrowserProvider(window.ethereum);
+    } else {
+      return null;
+    }
+  }, [window?.ethereum]);
 
   const handlerLogin = async () => {
     try {
@@ -84,8 +96,10 @@ export default function AuthProvider({ children }) {
             fetchUpdateWallet(address);
           }
         } catch (error) {
-          alert(error.message);
+          console.log(error);
         }
+      } else {
+        alert("Hãy cài đặt Meta Mask extension để sử dụng dịch vụ");
       }
     },
     [window.ethereum]
