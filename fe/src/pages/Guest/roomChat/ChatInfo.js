@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from "react";
 import { ContainerOutlined, EditOutlined } from "@ant-design/icons";
 import { Layout, Row, Col } from "antd";
+import {} from "@fortawesome/free-solid-svg-icons";
 import "./ChatList.scss";
 import EditNameRoom from "./EditNameRoom";
 
@@ -31,6 +32,17 @@ const ChatInfo = () => {
           <EditOutlined />
         </Col>
         <Col className="item-chat-info">Đổi tên phòng</Col>
+      </Row>
+      <Row
+        className="box-chat-info"
+        onClick={() => {
+          setIsOpenModelEditName(true);
+        }}
+      >
+        <Col>
+          <EditOutlined />
+        </Col>
+        <Col className="item-chat-info">Thêm điều khoản</Col>
       </Row>
       <EditNameRoom isOpen={isOpenModelEditName} close={closeModal} />
     </Sider>

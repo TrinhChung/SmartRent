@@ -9,7 +9,7 @@ export const createBargainService = async (data) => {
         sellerId: data.sellerId,
         renterId: data.renterId,
         realEstateId: data.realEstateId,
-        status: "2",
+        status: "1",
       },
       { transaction: transaction }
     );
@@ -41,7 +41,7 @@ export const checkBargainIsExistService = async ({ userId, realEstateId }) => {
   try {
     var bargains = await db.Bargain.findAll({
       where: {
-        status: ["1", "2", "3"],
+        status: ["1", "3", "4"],
         renterId: userId,
         realEstateId: realEstateId,
       },

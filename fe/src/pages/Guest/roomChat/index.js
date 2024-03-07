@@ -60,7 +60,7 @@ const RoomChat = () => {
   };
 
   const checkStatusBargain = (status) => {
-    if (status === "1" || status === "2" || status === "3") {
+    if (status === "1" || status === "3" || status === "4") {
       return true;
     }
     return false;

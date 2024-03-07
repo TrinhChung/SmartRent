@@ -48,7 +48,7 @@ export const createMessageService = async (data) => {
   if (!room.bargain) {
     throw new Error("Hợp đồng không tồn tại");
   }
-  if (room.bargain.status === "5" || room.bargain.status === "4") {
+  if (room.bargain.status === "2" || room.bargain.status === "5") {
     throw new Error("Hợp đồng đã đóng");
   }
 
