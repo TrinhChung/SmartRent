@@ -53,6 +53,7 @@ export const getRoomChatForMeService = async (userId) => {
           as: "bargain",
         },
       ],
+      order: [["createdAt", "DESC"]],
       subQuery: false,
     });
     return roomChats;

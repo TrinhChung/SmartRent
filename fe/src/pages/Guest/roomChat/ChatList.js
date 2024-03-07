@@ -1,7 +1,8 @@
 import React from "react";
-import { Row, Col, Layout, Avatar } from "antd";
+import { Row, Col, Layout, Avatar, Badge } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { useParams } from "react-router-dom";
+import { statusRent } from "../../../const/index";
 import "./ChatList.scss";
 
 const { Sider } = Layout;
@@ -55,12 +56,27 @@ const ChatList = ({ chatList = [], switchRoomChat = () => {} }) => {
                 >
                   <Row>
                     {roomChat?.name
-                      ? roomChat?.name.length > 70
-                        ? roomChat?.name.substring(0, 70) + "..."
+                      ? roomChat?.name.length > 60
+                        ? roomChat?.name.substring(0, 60) + "..."
                         : roomChat.name
                       : "RoomChat"}
                   </Row>
-                  <Row>{roomChat?.lastMessage?.content}</Row>
+                  <Row className="text-shadow" style={{ paddingTop: 4 }}>
+                    <Badge
+                      status="processing"
+                      color={
+                        roomChat?.bargain?.status
+                          ? statusRent[roomChat?.bargain?.status].color
+                          : "black"
+                      }
+                      text={<label className="text-shadow">Trạng thái:</label>}
+                    />
+                    <div style={{ paddingLeft: 8 }}>
+                      {roomChat?.bargain?.status
+                        ? statusRent[roomChat?.bargain?.status].value
+                        : "Không tồn tại"}
+                    </div>
+                  </Row>
                 </Col>
                 <Col
                   style={{

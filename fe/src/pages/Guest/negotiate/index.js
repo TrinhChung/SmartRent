@@ -31,7 +31,7 @@ const Negotiate = () => {
       </Row>
       {bargains.length > 0 ? (
         <>
-          <Row gutter={[24, 24]}>
+          <Row gutter={[24, 24]} style={{ paddingBottom: 20 }}>
             {bargains.map((house, index) => (
               <HouseData key={index} house={house} />
             ))}

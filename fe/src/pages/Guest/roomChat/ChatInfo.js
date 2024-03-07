@@ -33,12 +33,7 @@ const ChatInfo = () => {
         </Col>
         <Col className="item-chat-info">Đổi tên phòng</Col>
       </Row>
-      <Row
-        className="box-chat-info"
-        onClick={() => {
-          setIsOpenModelEditName(true);
-        }}
-      >
+      <Row className="box-chat-info" onClick={() => {}}>
         <Col>
           <EditOutlined />
         </Col>
