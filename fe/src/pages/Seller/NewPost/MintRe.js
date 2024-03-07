@@ -5,7 +5,7 @@ import { AuthContext } from "../../../providers/authProvider";
 import { ethers } from "ethers";
 
 const MintRealEstate = ({ setLoading = () => {} }) => {
-  const { reAbi, authUser, provider, signer } = useContext(AuthContext);
+  const { reAbi, signer } = useContext(AuthContext);
   const [reAddress, setReAddress] = useState("");
 
   const fetchReAddressService = async () => {
@@ -24,7 +24,7 @@ const MintRealEstate = ({ setLoading = () => {} }) => {
   }, []);
 
   const reInstance = useMemo(() => {
-    if (signer) {
+    if (signer && reAbi && reAddress) {
       return new ethers.Contract(reAddress, reAbi, signer);
     } else return null;
   }, [reAddress, reAbi, signer]);
@@ -32,8 +32,7 @@ const MintRealEstate = ({ setLoading = () => {} }) => {
   const handleCreateRealEstateNft = async () => {
     setLoading(true);
     try {
-      if (reAbi && reInstance && reAddress.length > 10) {
-        console.log(reInstance);
+      if (reInstance) {
         const totalSupply = await reInstance.mint(window.location.href);
         console.log(totalSupply);
       } else {
