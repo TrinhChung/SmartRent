@@ -49,7 +49,6 @@ const Overview = ({
           realEstateId: id,
         };
         const res = await createBargainService(data);
-        console.log(res);
         if (res.status === 200 && res?.data?.id) {
           getRoomChatForMe();
           navigate(`/room-chat/${res?.data?.id}`);

@@ -15,6 +15,7 @@ const ChatList = ({ chatList = [], switchRoomChat = () => {} }) => {
       <Row>
         <Col span={24}>
           {chatList.map((roomChat, index) => {
+            console.log(roomChat);
             return (
               <Row
                 className={`box-room-chat-list ${
@@ -32,8 +33,9 @@ const ChatList = ({ chatList = [], switchRoomChat = () => {} }) => {
                     size={56}
                     src={
                       roomChat?.bargain?.RealEstate?.realEstateFiles.length > 0
-                        ? process.env.HOST_BE +
-                          roomChat?.bargain?.RealEstate?.realEstateFiles[0]
+                        ? process.env.REACT_APP_HOST_BE +
+                          "/" +
+                          roomChat?.bargain?.RealEstate?.realEstateFiles[0].url
                         : undefined
                     }
                   >
@@ -48,11 +50,16 @@ const ChatList = ({ chatList = [], switchRoomChat = () => {} }) => {
                     flex: 1,
                     display: "flex",
                     flexDirection: "column",
-                    justifyContent: "center",
                     paddingLeft: 4,
                   }}
                 >
-                  <Row>{roomChat?.name ? roomChat?.name : "RoomChat"}</Row>
+                  <Row>
+                    {roomChat?.name
+                      ? roomChat?.name.length > 70
+                        ? roomChat?.name.substring(0, 70) + "..."
+                        : roomChat.name
+                      : "RoomChat"}
+                  </Row>
                   <Row>{roomChat?.lastMessage?.content}</Row>
                 </Col>
                 <Col

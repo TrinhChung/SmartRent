@@ -5,12 +5,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import {
-  GoogleMap,
-  MarkerF,
-  OverlayView,
-  InfoWindowF,
-} from "@react-google-maps/api";
+import { GoogleMap, MarkerF, OverlayView } from "@react-google-maps/api";
 import spriteLocation from "../../public/images/mylocation-sprite-2x.png";
 import HouseInfo from "./HouseInfo";
 import { Col, Row, Select } from "antd";

@@ -25,16 +25,18 @@ const Negotiate = () => {
   }, []);
 
   return (
-    <Col className="home-container" span={24}>
-      <Row style={{ fontSize: "30px", fontWeight: "bold", paddingBottom: 20 }}>
+    <Col className="home-container" style={{ paddingTop: 20 }} span={24}>
+      <Row style={{ fontSize: "20px", fontWeight: "bold", paddingBottom: 10 }}>
         LIST OF NEGOTIATING ROOMS
       </Row>
       {bargains.length > 0 ? (
-        <Row>
-          <Col span={24}>
+        <>
+          <Row gutter={[24, 24]}>
             {bargains.map((house, index) => (
               <HouseData key={index} house={house} />
             ))}
+          </Row>
+          {totalPage > 10 && (
             <Row
               style={{
                 paddingTop: 10,
@@ -50,8 +52,8 @@ const Negotiate = () => {
                 total={totalPage}
               />
             </Row>
-          </Col>
-        </Row>
+          )}
+        </>
       ) : (
         <Row style={{ justifyContent: "center" }}>
           <Empty
