@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import { Button, Col, Row } from "antd";
 import { getReAddressService } from "../../../services/SC/index";
 import { AuthContext } from "../../../providers/authProvider";
-import Web3 from "web3";
 import { ethers } from "ethers";
 
 const web3 = new Web3(window.web3.currentProvider);
