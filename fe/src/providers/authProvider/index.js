@@ -1,11 +1,13 @@
 import { createContext, useEffect, useState, useCallback } from "react";
 import { loginMe } from "../../services/Auth";
 import { updateWalletService } from "../../services/User/index";
+import { getReAbiService } from "../../services/SC";
 
 export const AuthContext = createContext();
 
 export default function AuthProvider({ children }) {
   const [authUser, setUpdateAuthUser] = useState(null);
+  const [reAbi, setReAbi] = useState("");
 
   const handlerLogin = async () => {
     try {
@@ -26,6 +28,18 @@ export default function AuthProvider({ children }) {
     }
   };
 
+  const fetchReAbi = async () => {
+    try {
+      const res = await getReAbiService();
+      if (res.status === 200) {
+        console.log(res.data);
+        setReAbi(res.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
     const userLocal = JSON.parse(localStorage.getItem("authUser"));
@@ -37,6 +51,7 @@ export default function AuthProvider({ children }) {
       console.log("Fetch info user");
       handlerLogin();
     }
+    fetchReAbi();
   }, []);
 
   const fetchUpdateWallet = async (address) => {
@@ -75,6 +90,7 @@ export default function AuthProvider({ children }) {
     <AuthContext.Provider
       value={{
         authUser,
+        reAbi,
         setAuthUser,
         connectAccountSc,
       }}

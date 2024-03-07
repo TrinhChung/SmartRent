@@ -7,6 +7,7 @@ import { createBargainService } from "../../../services/RealEstate/index";
 import { AuthContext } from "../../../providers/authProvider";
 import { useNavigate, useParams } from "react-router-dom";
 import { SocketContext } from "../../../providers/socketProvider";
+import MintRealEstate from "./MintRe";
 
 const Overview = ({
   files = [],
@@ -221,6 +222,7 @@ const Overview = ({
             </Row>
           </Col>
         </Row>
+        {authUser?.id === owner?.id && <MintRealEstate />}
       </Col>
     </Row>
   );
