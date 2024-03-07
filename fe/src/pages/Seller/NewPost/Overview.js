@@ -222,7 +222,9 @@ const Overview = ({
             </Row>
           </Col>
         </Row>
-        {authUser?.id === owner?.id && <MintRealEstate />}
+        {authUser?.id === owner?.id && (
+          <MintRealEstate setLoading={setLoading} />
+        )}
       </Col>
     </Row>
   );

@@ -2,12 +2,15 @@ import { createContext, useEffect, useState, useCallback } from "react";
 import { loginMe } from "../../services/Auth";
 import { updateWalletService } from "../../services/User/index";
 import { getReAbiService } from "../../services/SC";
+import { ethers } from "ethers";
 
 export const AuthContext = createContext();
 
 export default function AuthProvider({ children }) {
   const [authUser, setUpdateAuthUser] = useState(null);
   const [reAbi, setReAbi] = useState("");
+  const [signer, setSigner] = useState(null);
+  const provider = new ethers.BrowserProvider(window.ethereum);
 
   const handlerLogin = async () => {
     try {
@@ -74,6 +77,8 @@ export default function AuthProvider({ children }) {
           const accounts = await window.ethereum.request({
             method: "eth_requestAccounts",
           });
+          const s = await provider.getSigner();
+          setSigner(s);
           const address = accounts?.length > 0 ? accounts[0] : null;
           if (String(user.wallet) !== String(address)) {
             fetchUpdateWallet(address);
@@ -91,6 +96,8 @@ export default function AuthProvider({ children }) {
       value={{
         authUser,
         reAbi,
+        signer,
+        provider,
         setAuthUser,
         connectAccountSc,
       }}

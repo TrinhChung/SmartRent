@@ -56,7 +56,7 @@ const FullHouseView = () => {
 
   return (
     <Col span={24} className="home-container new-post full-house-view">
-      <Spin spinning={loading}>
+      <Spin spinning={loading} tip="Đang xử lý">
         <Overview
           files={data?.realEstateFiles}
           name={data?.name}
