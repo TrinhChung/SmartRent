@@ -4,8 +4,6 @@ import { getReAddressService } from "../../../services/SC/index";
 import { AuthContext } from "../../../providers/authProvider";
 import { ethers } from "ethers";
 
-const web3 = new Web3(window.web3.currentProvider);
-
 const MintRealEstate = () => {
   const { reAbi } = useContext(AuthContext);
   const [reAddress, setReAddress] = useState("");
