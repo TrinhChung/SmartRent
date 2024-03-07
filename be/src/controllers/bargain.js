@@ -13,13 +13,12 @@ export const handleCreateBargain = async (req, res, next) => {
         .status(400)
         .json({ message: "Bạn không thể tạo phòng đàm phán với chính mình" });
     }
+    const check = await checkBargainIsExistService({
+      userId: req.user.id,
+      realEstateId: req.body.realEstateId,
+    });
 
-    if (
-      checkBargainIsExistService({
-        userId: req.user.id,
-        realEstateId: req.body.realEstateId,
-      }) === true
-    ) {
+    if (check === true) {
       return res
         .status(400)
         .json({ message: "Bạn đang có hợp đồng của dự án này" });

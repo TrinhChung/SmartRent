@@ -49,11 +49,11 @@ export const typeFile = [
 ];
 
 export const statusRent = {
-  1: { value: "Đã thuê", color: "blue" },
-  2: { value: "Đang đàm phán", color: "yellow" },
+  1: { value: "Đang đàm phán", color: "yellow" },
+  2: { value: "Đã hủy bỏ", color: "red" },
   3: { value: "Đã ký kết", color: "green" },
   4: { value: "Đang thực thi", color: "orange" },
-  5: { value: "Đã hủy bỏ", color: "red" },
+  5: { value: "Kết thúc hợp đồng", color: "blue" },
 };
 
 export const typeRooms = [
@@ -73,3 +73,5 @@ export const typeRealEstate = [
   { value: "6", label: "Shop house" },
   { value: "7", label: "Văn phòng" },
 ];
+
+export const maxCost = 19999999999;

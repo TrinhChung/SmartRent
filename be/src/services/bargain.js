@@ -9,15 +9,20 @@ export const createBargainService = async (data) => {
         sellerId: data.sellerId,
         renterId: data.renterId,
         realEstateId: data.realEstateId,
-        status: data.status,
+        status: "2",
       },
       { transaction: transaction }
     );
 
+    var realEstate = await db.RealEstate.findOne({
+      where: { id: data.realEstateId },
+    });
+    realEstate = realEstate.get({ plain: true });
+
     const roomChat = await db.RoomChat.create(
       {
         bargainId: bargain.id,
-        name: "Phòng đàm phán",
+        name: realEstate.name,
       },
       { transaction: transaction }
     );
@@ -40,19 +45,13 @@ export const checkBargainIsExistService = async ({ userId, realEstateId }) => {
         renterId: userId,
         realEstateId: realEstateId,
       },
-      include: [
-        {
-          model: db.RealEstate,
-          required: true,
-          attributes: ["id"],
-        },
-      ],
+      subQuery: false,
     });
-
     if (bargains?.length > 0) {
       return true;
     }
 
+    console.log(bargains);
     return false;
   } catch (error) {
     console.log(error);
