@@ -54,8 +54,8 @@ const HouseData = ({
               />
             </Col>
             <Col className="text-shadow" style={{ fontStyle: "italic" }}>
-              {house?.RealEstate?.Address?.address?.length > 55
-                ? house?.RealEstate?.Address?.address.substring(0, 55) + "..."
+              {house?.RealEstate?.Address?.address?.length > 50
+                ? house?.RealEstate?.Address?.address.substring(0, 50) + "..."
                 : house?.RealEstate?.Address?.address}
             </Col>
           </Row>

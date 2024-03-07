@@ -1,4 +1,4 @@
-import { Col, Row, Layout, Input, Image } from "antd";
+import { Col, Row, Layout, Input, Image, Empty } from "antd";
 import React, { useContext, useEffect, useState, useRef } from "react";
 import "./RoomChat.scss";
 import {
@@ -192,9 +192,21 @@ const RoomChat = () => {
           </Col>
         </Row>
         <Content className="msg-body" ref={chatWindowRef}>
-          {messages.map((message, index) => {
-            return <Message message={message} key={`chat${index}`} />;
-          })}
+          {messages?.length > 0 ? (
+            messages.map((message, index) => {
+              return <Message message={message} key={`chat${index}`} />;
+            })
+          ) : (
+            <Row style={{ justifyContent: "center" }}>
+              <Empty
+                image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
+                imageStyle={{
+                  height: 200,
+                }}
+                description="Chưa có tin nhắn nào!"
+              ></Empty>
+            </Row>
+          )}
         </Content>
         <Footer className="input-message">
           <Col span={24}>
