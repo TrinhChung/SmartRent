@@ -12,20 +12,7 @@ export const SocketProvider = ({ children }) => {
   const { authUser } = useContext(AuthContext);
   const [roomChats, setRoomChats] = useState([]);
   const [notifiesUr, setNotifiesUr] = useState([]);
-  const [notifies, setNotifies] = useState([
-    {
-      content: "Có tin nhắn mới từ phòng 1",
-      type: "1",
-      time: new Date(),
-      fkId: 1,
-    },
-    {
-      content: "Có tin nhắn mới từ phòng 1",
-      type: "1",
-      time: new Date(),
-      fkId: 2,
-    },
-  ]);
+  const [notifies, setNotifies] = useState([]);
 
   useEffect(() => {
     fetchNotifyOfUser();
