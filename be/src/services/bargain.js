@@ -27,6 +27,8 @@ export const createBargainService = async (data) => {
       { transaction: transaction }
     );
 
+    const sm = await db.SmartContract.create({}, { transaction: transaction });
+
     transaction.commit();
 
     return roomChat.get({ plain: true });

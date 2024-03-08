@@ -1,6 +1,6 @@
 "use strict";
 const { Model } = require("sequelize");
-const bargain = require("./bargain");
+
 module.exports = (sequelize, DataTypes) => {
   class Contract extends Model {
     static associate(models) {
