@@ -1,8 +1,4 @@
-import {
-  getUserNotification,
-  createNotifyService,
-  readNotifyService,
-} from "../services/notify";
+import { getUserNotification, readNotifyService } from "../services/notify";
 
 export const handleGetNotifyForMe = async (req, res, next) => {
   try {
@@ -12,20 +8,6 @@ export const handleGetNotifyForMe = async (req, res, next) => {
       message: "get notification successfully",
       notifyRead: notify.notifyRead,
       notifyUnRead: notify.notifyUnRead,
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(400).json({ message: error.message });
-  }
-};
-
-export const handleCreateNotify = async (req, res, next) => {
-  try {
-    const data = req.body;
-    const notify = await createNotifyService(data);
-    return res.status(200).json({
-      message: "update successful",
-      data: notify,
     });
   } catch (error) {
     console.log(error);

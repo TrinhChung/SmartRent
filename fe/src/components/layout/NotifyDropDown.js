@@ -7,7 +7,7 @@ import { SocketContext } from "../../providers/socketProvider";
 import Notify from "./Notify";
 
 export default function NotifyDropDown() {
-  const { socket, notifies, notifiesUr, fetchNotifyOfUser } =
+  const { socket, notifies, notifiesUr, fetchNotifyOfUser, getRoomChatForMe } =
     useContext(SocketContext);
   const { authUser } = useContext(AuthContext);
 
@@ -58,9 +58,13 @@ export default function NotifyDropDown() {
   ];
 
   useEffect(() => {
-    socket.on("notification", async (data) => {
-      console.log(data);
+    socket.on("notify-message", async (data) => {
       await fetchNotifyOfUser();
+    });
+
+    socket.on("close-contract", async (data) => {
+      await fetchNotifyOfUser();
+      await getRoomChatForMe();
     });
   }, [authUser, socket]);
 

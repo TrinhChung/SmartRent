@@ -20,14 +20,14 @@ export const searchRealEstateService = (data) => {
   return axios.post(`/api/real-estate/search`, data);
 };
 
-export const createBargainService = (data) => {
-  return axios.post(`/api/bargain/`, data);
+export const createContractService = (data) => {
+  return axios.post(`/api/contract/`, data);
 };
 
-export const closeBargainService = (bargainId) => {
-  return axios.post(`/api/bargain/close`, { bargainId: bargainId });
+export const closeContractService = (contractId) => {
+  return axios.post(`/api/contract/close`, { contractId: contractId });
 };
 
-export const getBargainByMeService = ({ page = 1 }) => {
-  return axios.get(`/api/bargain/me?page=${page}`);
+export const getContractByMeService = ({ page = 1 }) => {
+  return axios.get(`/api/contract/me?page=${page}`);
 };

@@ -1,17 +1,27 @@
 "use strict";
 const { Model } = require("sequelize");
-const bargain = require("./bargain");
+
 module.exports = (sequelize, DataTypes) => {
   class Contract extends Model {
     static associate(models) {
-      Contract.belongsTo(models.Bargain, { foreignKey: { name: "bargainId" } });
+      Contract.hasOne(models.RoomChat);
+      Contract.belongsTo(models.RealEstate, {
+        foreignKey: {
+          name: "realEstateId",
+        },
+      });
     }
   }
   Contract.init(
     {
-      bargainId: {
+      realEstateId: {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
+      },
+      status: {
+        type: DataTypes.STRING(1),
+        allowNull: false,
+        defaultValue: "1",
       },
       renterId: {
         type: DataTypes.INTEGER.UNSIGNED,
@@ -23,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       renterCost: {
         type: DataTypes.FLOAT.UNSIGNED,
-        allowNull: false,
+        allowNull: true,
       },
       duration: {
         type: DataTypes.INTEGER.UNSIGNED,
@@ -31,19 +41,19 @@ module.exports = (sequelize, DataTypes) => {
       },
       timeStart: {
         type: DataTypes.DATE,
-        allowNull: false,
+        allowNull: true,
       },
       paymentDeadline: {
         type: DataTypes.STRING(100),
-        allowNull: false,
+        allowNull: true,
       },
       paymentType: {
         type: DataTypes.STRING(1),
-        allowNull: false,
+        allowNull: true,
       },
       deposit: {
         type: DataTypes.FLOAT.UNSIGNED,
-        allowNull: false,
+        allowNull: true,
       },
     },
     {

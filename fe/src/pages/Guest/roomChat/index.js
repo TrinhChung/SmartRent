@@ -19,7 +19,7 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../../../providers/authProvider";
 import { uploadFileToSessionService } from "../../../services/UploadFile/index";
-import { closeBargainService } from "../../../services/RealEstate";
+import { closeContractService } from "../../../services/RealEstate";
 
 const { Footer, Content } = Layout;
 const { TextArea } = Input;
@@ -59,8 +59,8 @@ const RoomChat = () => {
     }
   };
 
-  const checkStatusBargain = (status) => {
-    if (status === "1" || status === "3" || status === "4") {
+  const checkStatusContract = (status) => {
+    if (status === "1" || status === "2" || status === "3" || status === "4") {
       return true;
     }
     return false;
@@ -137,10 +137,10 @@ const RoomChat = () => {
     }
   };
 
-  const fetchCloseBargain = async () => {
+  const fetchCloseContract = async () => {
     try {
-      const res = await closeBargainService(roomChat?.bargain?.id);
-      if (res.statusCode === 200) {
+      const res = await closeContractService(roomChat?.contract?.id);
+      if (res.status === 200) {
         getRoomChatForMe();
       }
     } catch (error) {
@@ -178,7 +178,7 @@ const RoomChat = () => {
               <Col className="text-bold-18 wrap-icon" style={{ color: "red" }}>
                 <DeleteOutlined
                   onClick={() => {
-                    fetchCloseBargain();
+                    fetchCloseContract();
                   }}
                 />
               </Col>
@@ -224,7 +224,7 @@ const RoomChat = () => {
                 })}
               </Row>
             )}
-            {checkStatusBargain(roomChat?.bargain?.status) ? (
+            {checkStatusContract(roomChat?.contract?.status) ? (
               <Row className="wrap-input-message">
                 <Col span={1}>
                   <Row style={{ justifyContent: "center" }}>
@@ -235,7 +235,9 @@ const RoomChat = () => {
                       type="file"
                       id="input-image-message"
                       multiple
-                      disabled={!checkStatusBargain(roomChat?.bargain?.status)}
+                      disabled={
+                        !checkStatusContract(roomChat?.contract?.status)
+                      }
                       onChange={uploadMultipleFiles}
                       accept="image/*, application/pdf"
                     />
@@ -249,7 +251,7 @@ const RoomChat = () => {
                       setContent(value.target.value);
                     }}
                     autoSize
-                    disabled={!checkStatusBargain(roomChat?.bargain?.status)}
+                    disabled={!checkStatusContract(roomChat?.contract?.status)}
                   />
                 </Col>
                 <Col span={1}>

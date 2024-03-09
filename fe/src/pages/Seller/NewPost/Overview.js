@@ -3,7 +3,7 @@ import { Row, Col, Image, Divider, Avatar, Button } from "antd";
 import Slider from "react-slick";
 import "./FullHouseView.scss";
 import moment from "moment";
-import { createBargainService } from "../../../services/RealEstate/index";
+import { createContractService } from "../../../services/RealEstate/index";
 import { AuthContext } from "../../../providers/authProvider";
 import { useNavigate, useParams } from "react-router-dom";
 import { SocketContext } from "../../../providers/socketProvider";
@@ -39,16 +39,15 @@ const Overview = ({
     autoplaySpeed: 3000,
   };
 
-  const fetchCreateBargain = async () => {
+  const fetchCreateContract = async () => {
     if (authUser) {
       setLoading(true);
       try {
         const data = {
           sellerId: owner?.id,
-          renterId: authUser?.id,
           realEstateId: id,
         };
-        const res = await createBargainService(data);
+        const res = await createContractService(data);
         if (res.status === 200 && res?.data?.id) {
           getRoomChatForMe();
           navigate(`/room-chat/${res?.data?.id}`);
@@ -214,7 +213,7 @@ const Overview = ({
               <Button
                 style={{ minWidth: 150 }}
                 className="button-border"
-                onClick={fetchCreateBargain}
+                onClick={fetchCreateContract}
               >
                 Đàm phán
               </Button>

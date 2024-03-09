@@ -7,8 +7,8 @@ export const roomPermission = async (req, res, next) => {
       return res.status(404).json({ message: "Room không tồn tại" });
     }
     if (
-      req.user.id !== room.bargain.renterId &&
-      req.user.id !== room.bargain.sellerId
+      req.user.id !== room.contract.renterId &&
+      req.user.id !== room.contract.sellerId
     ) {
       return res.status(403).json({ message: "Không có quyền vào room này" });
     }

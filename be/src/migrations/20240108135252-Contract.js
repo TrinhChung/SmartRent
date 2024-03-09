@@ -10,10 +10,6 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER.UNSIGNED,
       },
-      bargainId: {
-        type: Sequelize.INTEGER.UNSIGNED,
-        allowNull: false,
-      },
       renterId: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
@@ -22,9 +18,17 @@ module.exports = {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
       },
+      realEstateId: {
+        type: Sequelize.INTEGER.UNSIGNED,
+        allowNull: false,
+      },
+      status: {
+        type: Sequelize.STRING(1),
+        allowNull: false,
+      },
       renterCost: {
         type: Sequelize.FLOAT.UNSIGNED,
-        allowNull: false,
+        allowNull: true,
       },
       duration: {
         type: Sequelize.INTEGER.UNSIGNED,
@@ -32,19 +36,19 @@ module.exports = {
       },
       timeStart: {
         type: Sequelize.DATE,
-        allowNull: false,
+        allowNull: true,
       },
       paymentDeadline: {
         type: Sequelize.STRING(100),
-        allowNull: false,
+        allowNull: true,
       },
       paymentType: {
         type: Sequelize.STRING(1),
-        allowNull: false,
+        allowNull: true,
       },
       deposit: {
         type: Sequelize.FLOAT.UNSIGNED,
-        allowNull: false,
+        allowNull: true,
       },
       createdAt: {
         allowNull: false,

@@ -64,5 +64,8 @@
   },
   "devDependencies": {
     "gh-pages": "^6.1.0"
+  },
+  "overrides": {
+    "react-refresh": "0.11.0"
   }
 }
