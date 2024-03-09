@@ -8,10 +8,11 @@ export const typeFile = [
 
 export const statusRent = [
   { key: "1", name: "negotiating" },
-  { key: "2", name: "cancel" },
-  { key: "3", name: "contracted" },
+  { key: "2", name: "contracted" },
+  { key: "3", name: "paid" },
   { key: "4", name: "rent" },
-  { key: "5", name: "closed" },
+  { key: "5", name: "cancel" },
+  { key: "6", name: "closed" },
 ];
 
 export const typeRooms = [

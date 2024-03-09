@@ -1,9 +1,5 @@
 import { Router } from "express";
-import {
-  handleGetNotifyForMe,
-  handleReadNotify,
-  handleCreateNotify,
-} from "../controllers/notify";
+import { handleGetNotifyForMe, handleReadNotify } from "../controllers/notify";
 import { readNotifySchema } from "../schema/notify";
 const SchemaValidator = require("nodejs-schema-validator");
 const schemaValidatorInstance = new SchemaValidator();

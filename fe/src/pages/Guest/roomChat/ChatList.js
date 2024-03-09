@@ -33,14 +33,14 @@ const ChatList = ({ chatList = [], switchRoomChat = () => {} }) => {
                   <Avatar
                     size={56}
                     src={
-                      roomChat?.bargain?.RealEstate?.realEstateFiles.length > 0
+                      roomChat?.contract?.RealEstate?.realEstateFiles.length > 0
                         ? process.env.REACT_APP_HOST_BE +
                           "/" +
-                          roomChat?.bargain?.RealEstate?.realEstateFiles[0].url
+                          roomChat?.contract?.RealEstate?.realEstateFiles[0].url
                         : undefined
                     }
                   >
-                    {roomChat?.bargain?.RealEstate?.realEstateFiles.length >
+                    {roomChat?.contract?.RealEstate?.realEstateFiles.length >
                     0 ? null : (
                       <UserOutlined />
                     )}
@@ -65,15 +65,15 @@ const ChatList = ({ chatList = [], switchRoomChat = () => {} }) => {
                     <Badge
                       status="processing"
                       color={
-                        roomChat?.bargain?.status
-                          ? statusRent[roomChat?.bargain?.status].color
+                        roomChat?.contract?.status
+                          ? statusRent[roomChat?.contract?.status].color
                           : "black"
                       }
                       text={<label className="text-shadow">Trạng thái:</label>}
                     />
                     <div style={{ paddingLeft: 8 }}>
-                      {roomChat?.bargain?.status
-                        ? statusRent[roomChat?.bargain?.status].value
+                      {roomChat?.contract?.status
+                        ? statusRent[roomChat?.contract?.status].value
                         : "Không tồn tại"}
                     </div>
                   </Row>

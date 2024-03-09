@@ -18,7 +18,7 @@ export const getUserNotification = async (userId) => {
 };
 
 export const createNotifyService = async (
-  { userId, fkId, content, type },
+  { userId, fkId, content, type, eventNotify },
   transaction
 ) => {
   try {
@@ -32,7 +32,7 @@ export const createNotifyService = async (
       },
       { transaction: transaction }
     );
-    sendNotification(userId);
+    sendNotification(userId, eventNotify);
     return notify.get({ plain: true });
   } catch (error) {
     console.log(error);

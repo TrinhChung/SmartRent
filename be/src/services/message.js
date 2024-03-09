@@ -34,8 +34,8 @@ export const createMessageService = async (data) => {
     where: { id: data.roomChatId },
     include: [
       {
-        model: db.Bargain,
-        as: "bargain",
+        model: db.Contract,
+        as: "contract",
       },
     ],
   });
@@ -45,10 +45,10 @@ export const createMessageService = async (data) => {
   if (!room) {
     throw new Error("Room Chat không tồn tại");
   }
-  if (!room.bargain) {
+  if (!room.contract) {
     throw new Error("Hợp đồng không tồn tại");
   }
-  if (room.bargain.status === "2" || room.bargain.status === "5") {
+  if (room.contract.status === "5" || room.contract.status === "6") {
     throw new Error("Hợp đồng đã đóng");
   }
 
@@ -76,21 +76,22 @@ export const createMessageService = async (data) => {
 
     const newMessage = await getNewMessages(message);
     const receiver =
-      data.userId === room.bargain.renterId
-        ? room.bargain.sellerId
-        : room.bargain.renterId;
+      data.userId === room.contract.renterId
+        ? room.contract.sellerId
+        : room.contract.renterId;
     await createNotifyService(
       {
         userId: receiver,
         fkId: data.roomChatId,
         content: `Bạn có tin nhắn mới từ ${room.name}`,
         type: "1",
+        eventNotify: "notify-message",
       },
       transaction
     );
 
     await transaction.commit();
-    await sendNotification(receiver);
+    await sendNotification(receiver, "new-message");
     await sendNotifyToRoom(data, newMessage);
     return message;
   } catch (error) {

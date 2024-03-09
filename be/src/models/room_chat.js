@@ -7,15 +7,15 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "roomChatId",
         as: "messages",
       });
-      RoomChat.belongsTo(models.Bargain, {
-        foreignKey: { name: "bargainId" },
-        as: "bargain",
+      RoomChat.belongsTo(models.Contract, {
+        foreignKey: { name: "contractId" },
+        as: "contract",
       });
     }
   }
   RoomChat.init(
     {
-      bargainId: {
+      contractId: {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
       },

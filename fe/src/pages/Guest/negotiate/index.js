@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
 import HouseData from "./HouseData";
 import { Col, Row, Pagination, Empty } from "antd";
-import { getBargainByMeService } from "../../../services/RealEstate";
+import { getContractByMeService } from "../../../services/RealEstate";
 
 const Negotiate = () => {
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(50);
-  const [bargains, setBargains] = useState([]);
+  const [contracts, setContracts] = useState([]);
 
-  const fetchBargainForMe = async () => {
+  const fetchContractForMe = async () => {
     try {
-      const res = await getBargainByMeService({ page: page });
+      const res = await getContractByMeService({ page: page });
       if (res.status === 200) {
-        setBargains(res?.data?.bargains);
+        setContracts(res?.data?.contracts);
         setTotalPage(res?.data?.totalPages);
       }
     } catch (error) {
@@ -21,7 +21,7 @@ const Negotiate = () => {
   };
 
   useEffect(() => {
-    fetchBargainForMe();
+    fetchContractForMe();
   }, []);
 
   return (
@@ -29,10 +29,10 @@ const Negotiate = () => {
       <Row style={{ fontSize: "20px", fontWeight: "bold", paddingBottom: 10 }}>
         LIST OF NEGOTIATING ROOMS
       </Row>
-      {bargains.length > 0 ? (
+      {contracts.length > 0 ? (
         <>
           <Row gutter={[24, 24]} style={{ paddingBottom: 20 }}>
-            {bargains.map((house, index) => (
+            {contracts.map((house, index) => (
               <HouseData key={index} house={house} />
             ))}
           </Row>

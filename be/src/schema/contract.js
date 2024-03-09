@@ -1,4 +1,4 @@
-export const createBargainSchema = {
+export const initContractSchema = {
   sellerId: {
     rules: [
       {
@@ -17,12 +17,12 @@ export const createBargainSchema = {
   },
 };
 
-export const closeBargainSchema = {
-  bargainId: {
+export const cancelContractSchema = {
+  contractId: {
     rules: [
       {
         rule: (input) => !input || typeof input !== "number",
-        message: "SellerId address is required",
+        message: "contractId is required",
       },
     ],
   },
