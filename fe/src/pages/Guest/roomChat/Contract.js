@@ -1,29 +1,26 @@
-import { Button, Col, Modal, Row } from "antd";
-import React, { memo, useEffect, useRef, useState } from "react";
+import { Button, Col, Image, Modal, Row } from "antd";
+import React, { memo, useEffect, useMemo, useRef, useState } from "react";
 import moment from "moment";
-import SignaturePad from "react-signature-pad-wrapper";
+import generatePDF from "react-to-pdf";
 import "./Contract.scss";
 import { getContractByIdService } from "../../../services/RealEstate";
 
-const Contract = ({ id, open = false, handleCancel = () => {} }) => {
-  const [contract, setContract] = useState({});
+const Contract = ({ contract, open = false, handleCancel = () => {} }) => {
+  const targetRef = useRef();
   const signatureSeller = useRef(null);
   const signatureRenter = useRef(null);
 
-  const fetchContractById = async (id) => {
-    try {
-      const res = await getContractByIdService({ id: id });
-      if (res.status === 200) {
-        setContract(res.data);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   useEffect(() => {
-    fetchContractById(id);
-  }, [id]);
+    if (!signatureRenter.current || !signatureSeller.current) {
+      return;
+    }
+    if (contract?.renter?.SignatureId) {
+      signatureRenter.current.fromDataURL(contract?.renter?.Signature?.sign);
+    }
+    if (contract?.seller?.SignatureId) {
+      signatureSeller.current.fromDataURL(contract?.seller?.Signature?.sign);
+    }
+  }, [contract]);
 
   return (
     <Modal
@@ -35,7 +32,20 @@ const Contract = ({ id, open = false, handleCancel = () => {} }) => {
       width={1175}
       style={{ top: 20, height: 900, overflowY: "scroll" }}
     >
-      <Row className="contract-container">
+      <Row>
+        <button
+          onClick={async () => {
+            const time = moment(new Date()).valueOf();
+            const pdf = await generatePDF(targetRef, {
+              filename: time + "_contract.pdf",
+            });
+            console.log(pdf.output("arraybuffer"));
+          }}
+        >
+          Download PDF
+        </button>
+      </Row>
+      <Row className="contract-container" ref={targetRef}>
         <Col span={24}>
           <Row className="national-title">
             <Col>
@@ -105,16 +115,26 @@ const Contract = ({ id, open = false, handleCancel = () => {} }) => {
                   <Row>
                     - Bên A cho bên B thuê nhà tại địa chỉ{" "}
                     {contract?.RealEstate?.Address?.address} diện tích{" "}
-                    {contract?.RealEstate?.acreage} (m2) với mức giá {10000000}{" "}
+                    {contract?.RealEstate?.acreage} (m2) với mức giá{" "}
+                    {String(contract?.Cost?.value).replace(
+                      /\B(?=(\d{3})+(?!\d))/g,
+                      ","
+                    )}{" "}
                     VNĐ / tháng. Tiền sẽ được thanh toán vào ngày{" "}
-                    {moment(new Date()).format("DD")} hàng tháng.
+                    {moment(contract?.TimeStart?.value).format("DD")} hàng
+                    tháng.Hợp đồng sẽ được bắt đầu từ ngày{" "}
+                    {moment(contract?.TimeStart?.value).format("DD-MM-YYYY")}
                   </Row>
                   <Row>
-                    - Tiền cọc khi thuê nhà của bên B sẽ là: {1000000} VNĐ. Số
-                    tiền này sẽ lưu trữ trong hợp đồng thông minh và sẽ được
-                    hoàn trả cho bên B sau khi chấm dứt hợp đồng đúng kì hạn.
-                    Nếu bên B chấm dứt hợp đồng trước thời hạn số tiền này sẽ
-                    được bồi thường cho bên A.
+                    - Tiền cọc khi thuê nhà của bên B sẽ là:{" "}
+                    {String(contract?.Cost?.value).replace(
+                      /\B(?=(\d{3})+(?!\d))/g,
+                      ","
+                    )}{" "}
+                    VNĐ. Số tiền này sẽ lưu trữ trong hợp đồng thông minh và sẽ
+                    được hoàn trả cho bên B sau khi chấm dứt hợp đồng đúng kì
+                    hạn. Nếu bên B chấm dứt hợp đồng trước thời hạn số tiền này
+                    sẽ được bồi thường cho bên A.
                   </Row>
                   <Row className="rule">※ Điều 2</Row>
                   <Row>
@@ -143,59 +163,31 @@ const Contract = ({ id, open = false, handleCancel = () => {} }) => {
               <Row className="partner-title">III. Chữ ký 2 bên</Row>
               <Row style={{ paddingLeft: 20 }}>
                 <Col span={12}>
-                  <Row>Chữ ký bên A</Row>
+                  <Row style={{ justifyContent: "center" }}>Chữ ký bên A</Row>
                   <Row>
-                    <SignaturePad
-                      options={{
-                        minWidth: 1,
-                        maxWidth: 1,
-                        penColor: "rgb(66, 133, 244)",
-                      }}
-                      ref={signatureSeller}
+                    <Image
+                      preview={false}
+                      src={contract?.seller?.Signature?.sign}
                     />
-                  </Row>
-                  <Row>
-                    <Button
-                      onClick={() => {
-                        signatureSeller.current.clear();
-                      }}
-                    >
-                      Clear
-                    </Button>
                   </Row>
                 </Col>
                 <Col span={12}>
-                  <Row>Chữ ký bên B</Row>
-                  <Row>
-                    <SignaturePad
-                      options={{
-                        minWidth: 1,
-                        maxWidth: 1,
-                        penColor: "rgb(66, 133, 244)",
-                      }}
-                      ref={signatureRenter}
-                    />
-                  </Row>
-                  <Row>
-                    <Button
-                      onClick={() => {
-                        signatureRenter.current.clear();
-                      }}
-                    >
-                      Clear
-                    </Button>
-                  </Row>
-                  <Row
-                    onClick={() => {
-                      signatureRenter.current.toDataURL();
-                    }}
-                  >
-                    <Button>Save</Button>
-                  </Row>
+                  <Row style={{ justifyContent: "center" }}>Chữ ký bên B</Row>
+                  <Image
+                    preview={false}
+                    src={contract?.renter?.Signature?.sign}
+                  />
                 </Col>
               </Row>
             </Col>
           </Row>
+        </Col>
+      </Row>
+      <Row style={{ justifyContent: "end" }} gutter={[8, 8]}>
+        <Col>
+          <Button className="button-border" style={{ minWidth: 150 }}>
+            Ký kết
+          </Button>
         </Col>
       </Row>
     </Modal>

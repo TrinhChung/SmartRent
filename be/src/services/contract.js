@@ -10,15 +10,32 @@ export const createContractService = async (data) => {
     });
     realEstate = realEstate.get({ plain: true });
 
+    const cost = await db.Cost.create(
+      {
+        value: realEstate.cost,
+        accept: false,
+        userId: data.sellerId,
+      },
+      { transaction: transaction }
+    );
+
+    const timeStart = await db.TimeStart.create(
+      {
+        value: new Date(),
+        accept: false,
+        userId: data.sellerId,
+      },
+      { transaction: transaction }
+    );
+
     const contract = await db.Contract.create(
       {
         realEstateId: data.realEstateId,
         renterId: data.renterId,
         sellerId: data.sellerId,
-        renterCost: realEstate.cost,
-        timeStart: realEstate.timeStart,
+        costId: cost.id,
+        timeStartId: timeStart.id,
         paymentType: realEstate.paymentType,
-        renterCost: realEstate.cost,
         status: "1",
       },
       { transaction: transaction }
@@ -177,16 +194,34 @@ export const getContractByIdService = async ({ id }) => {
           required: true,
         },
         {
+          model: db.Cost,
+          required: true,
+        },
+        {
+          model: db.TimeStart,
+          required: true,
+        },
+        {
+          model: db.Term,
+          required: false,
+        },
+        {
           model: db.User,
           required: true,
-          include: [{ model: db.Address, required: false }],
+          include: [
+            { model: db.Address, required: false },
+            { model: db.Signature, required: false },
+          ],
           attributes: { exclude: ["password"] },
           as: "renter",
         },
         {
           model: db.User,
           required: true,
-          include: [{ model: db.Address, required: false }],
+          include: [
+            { model: db.Address, required: false },
+            { model: db.Signature, required: false },
+          ],
           attributes: { exclude: ["password"] },
           as: "seller",
         },

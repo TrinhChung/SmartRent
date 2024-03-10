@@ -26,17 +26,17 @@ module.exports = {
         type: Sequelize.STRING(1),
         allowNull: false,
       },
-      renterCost: {
+      costId: {
         type: Sequelize.FLOAT.UNSIGNED,
-        allowNull: true,
+        allowNull: false,
       },
       duration: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: true,
       },
-      timeStart: {
-        type: Sequelize.DATE,
-        allowNull: true,
+      timeStartId: {
+        type: Sequelize.INTEGER.UNSIGNED,
+        allowNull: false,
       },
       paymentDeadline: {
         type: Sequelize.STRING(100),

@@ -22,6 +22,21 @@ module.exports = (sequelize, DataTypes) => {
         },
         as: "seller",
       });
+      Contract.belongsTo(models.Cost, {
+        foreignKey: {
+          name: "costId",
+        },
+      });
+      Contract.belongsTo(models.TimeStart, {
+        foreignKey: {
+          name: "timeStartId",
+        },
+      });
+      Contract.hasMany(models.Term, {
+        foreignKey: {
+          name: "contractId",
+        },
+      });
     }
   }
   Contract.init(
@@ -43,17 +58,17 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
       },
-      renterCost: {
-        type: DataTypes.FLOAT.UNSIGNED,
-        allowNull: true,
+      costId: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: false,
       },
       duration: {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: true,
       },
-      timeStart: {
-        type: DataTypes.DATE,
-        allowNull: true,
+      timeStartId: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: false,
       },
       paymentDeadline: {
         type: DataTypes.STRING(100),

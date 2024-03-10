@@ -1,0 +1,18 @@
+.list-term-container {
+  .term-item {
+    justify-content: space-between;
+    align-items: end;
+    padding-top: 12px;
+
+    label {
+      font-size: 14px;
+      padding: 4px 0 4px 4px;
+    }
+  }
+
+  .add-rule {
+    font-size: 18px;
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+}
