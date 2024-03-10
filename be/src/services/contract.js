@@ -33,6 +33,17 @@ export const createContractService = async (data) => {
       { transaction: transaction }
     );
 
+    await createNotifyService(
+      {
+        userId: data.sellerId,
+        fkId: roomChat.id,
+        content: `Bạn có phòng đàm phán mới ${roomChat.name}`,
+        type: "3",
+        eventNotify: "new-contract",
+      },
+      transaction
+    );
+
     await transaction.commit();
 
     return roomChat.get({ plain: true });
