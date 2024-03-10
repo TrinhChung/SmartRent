@@ -10,6 +10,18 @@ module.exports = (sequelize, DataTypes) => {
           name: "realEstateId",
         },
       });
+      Contract.belongsTo(models.User, {
+        foreignKey: {
+          name: "renterId",
+        },
+        as: "renter",
+      });
+      Contract.belongsTo(models.User, {
+        foreignKey: {
+          name: "sellerId",
+        },
+        as: "seller",
+      });
     }
   }
   Contract.init(

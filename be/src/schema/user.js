@@ -103,6 +103,14 @@ export const updateUserInfoSchema = {
       },
     ],
   },
+  signData: {
+    rules: [
+      {
+        rule: (input) => !input,
+        message: "Chữ ký không được trống",
+      },
+    ],
+  },
 };
 
 export const changePasswordSchema = {

@@ -3,32 +3,15 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("Terms", {
+    await queryInterface.createTable("Signatures", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER.UNSIGNED,
       },
-      contractId: {
-        type: Sequelize.INTEGER.UNSIGNED,
-        allowNull: false,
-      },
-      name: {
-        type: Sequelize.STRING(200),
-        allowNull: false,
-      },
-      content: {
-        type: Sequelize.STRING(400),
-        allowNull: false,
-      },
-      accept: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false,
-        defaultValue: false,
-      },
-      userId: {
-        type: Sequelize.INTEGER.UNSIGNED,
+      sign: {
+        type: Sequelize.TEXT("long"),
         allowNull: false,
       },
       createdAt: {
@@ -45,6 +28,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("Terms");
+    await queryInterface.dropTable("Signatures");
   },
 };

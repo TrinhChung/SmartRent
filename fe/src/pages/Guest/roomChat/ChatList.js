@@ -16,7 +16,6 @@ const ChatList = ({ chatList = [], switchRoomChat = () => {} }) => {
       <Row>
         <Col span={24}>
           {chatList.map((roomChat, index) => {
-            console.log(roomChat);
             return (
               <Row
                 className={`box-room-chat-list ${

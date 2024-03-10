@@ -3,6 +3,7 @@ import {
   checkContractIsExistService,
   closeContractService,
   getContractService,
+  getContractByIdService,
 } from "../services/contract";
 
 export const handleInitContract = async (req, res, next) => {
@@ -57,5 +58,17 @@ export const handleGetContractForMe = async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.status(400).json({ message: "Server error get contract" });
+  }
+};
+
+export const handleGetContractById = async (req, res) => {
+  try {
+    const data = await getContractByIdService({ id: req.params.id });
+    return res
+      .status(200)
+      .json({ message: "Get contract success ", data: data });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({ message: "Server error get contract by id" });
   }
 };

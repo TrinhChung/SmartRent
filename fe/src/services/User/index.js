@@ -19,3 +19,7 @@ export const resetPasswordService = (data) => {
 export const updateWalletService = (data) => {
   return axios.put("/api/user/update-wallet", data);
 };
+
+export const getSignByIdService = (id) => {
+  return axios.get(`/api/user/sign/${id}`);
+};

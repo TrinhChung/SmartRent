@@ -3,6 +3,7 @@ import {
   updateInfoUserService,
   sendEmailForgotPasswordService,
   resetPasswordService,
+  getSignByIdService,
 } from "../services/user";
 
 export const handleUpdateUserInfo = async (req, res, next) => {
@@ -69,5 +70,25 @@ export const handleUpdateWallet = async (req, res, next) => {
   } catch (error) {
     console.log(error);
     return res.status(400).json({ message: error.message });
+  }
+};
+
+export const handleGetSignById = async (req, res, next) => {
+  try {
+    const signatureId = req.params.id;
+    if (
+      !signatureId ||
+      !req.user.signatureId ||
+      Number(signatureId) !== Number(req.user.signatureId)
+    ) {
+      return res
+        .status(403)
+        .json({ message: "Bạn không có quyền truy cập chữ ký này" });
+    }
+    const data = await getSignByIdService(req.params.id);
+    return res.status(200).json({ message: "Get sign success ", data: data });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({ message: "Server error get sign by id" });
   }
 };

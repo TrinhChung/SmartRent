@@ -1,5 +1,4 @@
 import db from "../models/index";
-import { sendNotifyCloseContractToRoom } from "../controllers/socket";
 import { createNotifyService } from "./notify";
 const { Op } = require("sequelize");
 
@@ -161,6 +160,42 @@ export const getContractService = async ({ userId, page = 1, limit = 10 }) => {
     );
 
     return { total: total, contracts: contracts };
+  } catch (error) {
+    console.log(error);
+    throw new Error("Get contract id fail", error);
+  }
+};
+
+export const getContractByIdService = async ({ id }) => {
+  try {
+    var contract = await db.Contract.findOne({
+      where: { id: id },
+      include: [
+        {
+          model: db.RealEstate,
+          include: [{ model: db.Address, required: false }],
+          required: true,
+        },
+        {
+          model: db.User,
+          required: true,
+          include: [{ model: db.Address, required: false }],
+          attributes: { exclude: ["password"] },
+          as: "renter",
+        },
+        {
+          model: db.User,
+          required: true,
+          include: [{ model: db.Address, required: false }],
+          attributes: { exclude: ["password"] },
+          as: "seller",
+        },
+      ],
+    });
+    if (!contract) {
+      throw new Error("Hợp đồng không tồn tại");
+    }
+    return contract.get({ plain: true });
   } catch (error) {
     console.log(error);
     throw new Error("Get contract id fail", error);
