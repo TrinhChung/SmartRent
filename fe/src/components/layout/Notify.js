@@ -15,13 +15,16 @@ const Notify = ({ notify, key = 1 }) => {
 
   const switchToLink = async (notify) => {
     var linkNotify;
-    if (notify.type === "1" || notify.type === "2") {
+    if (notify.type === "1" || notify.type === "2" || notify.type === "3") {
       linkNotify = `/room-chat/${notify.fkId}`;
     }
 
     if (pathname !== linkNotify) {
       const res = await readNotifyService(notify.id);
-      if (res.status === 200 && (notify.type === "1" || notify.type === "2")) {
+      if (
+        res.status === 200 &&
+        (notify.type === "1" || notify.type === "2" || notify.type === "3")
+      ) {
         navigate(`/room-chat/${notify.fkId}`);
         await fetchNotifyOfUser();
       }
