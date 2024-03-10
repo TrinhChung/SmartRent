@@ -5,6 +5,7 @@ import {
   handleRequestForgotPassword,
   handleResetPassword,
   handleUpdateWallet,
+  handleGetSignById,
 } from "../controllers/user";
 import { authenticate } from "../middleware/authenticate";
 import {
@@ -51,3 +52,5 @@ router.put(
   schemaValidatorInstance.validateBody(resetPasswordSchema),
   handleResetPassword
 );
+
+router.get("/sign/:id", authenticate, handleGetSignById);

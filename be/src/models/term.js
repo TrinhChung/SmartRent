@@ -18,6 +18,15 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(400),
         allowNull: false,
       },
+      accept: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+      },
+      userId: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: false,
+      },
     },
     {
       sequelize,

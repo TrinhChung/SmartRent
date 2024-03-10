@@ -34,19 +34,40 @@ export const updateInfoUserService = async (data) => {
     }
 
     var user = await db.User.findOne({ where: { id: data.userId } });
-    await user.update(
-      {
-        firstName: data.firstName,
-        lastName: data.lastName,
-        birthday: data?.birthday,
-        gender: data?.gender,
-        maritalStatus: data?.maritalStatus,
-        phoneNumber: data?.phoneNumber,
-        addressId: address?.id,
-        wallet: data.wallet,
-      },
-      { transaction: transaction }
-    );
+    var signature = null;
+
+    if (data.signData) {
+      if (user.signatureId) {
+        signature = await db.Signature.findOne({ id: user.signatureId });
+        await signature.update(
+          {
+            sign: data.signData,
+          },
+          { transaction: transaction }
+        );
+        signature = signature.get({ plain: true });
+      } else {
+        signature = await db.Signature.create(
+          { sign: data.signData },
+          { transaction: transaction }
+        );
+      }
+    }
+    const dataUpdate = {
+      firstName: data.firstName,
+      lastName: data.lastName,
+      birthday: data?.birthday,
+      gender: data?.gender,
+      maritalStatus: data?.maritalStatus,
+      phoneNumber: data?.phoneNumber,
+      addressId: address?.id,
+      wallet: data.wallet,
+    };
+    if (signature?.id) {
+      dataUpdate["signatureId"] = signature.id;
+    }
+
+    await user.update(dataUpdate, { transaction: transaction });
 
     if (data.avatar) {
       await createFileService(
@@ -122,6 +143,24 @@ export const resetPasswordService = async ({ wallet, userId }) => {
     });
 
     user.update({ wallet: wallet });
+  } catch (error) {
+    console.log(error);
+    throw new Error(error);
+  }
+};
+
+export const getSignByIdService = async (id) => {
+  try {
+    console.log(id);
+    const sign = await db.Signature.findOne({
+      where: { id: id },
+    });
+
+    if (!sign) {
+      throw new Error("Không tìm thấy chữ ký");
+    }
+
+    return sign.get({ plain: true });
   } catch (error) {
     console.log(error);
     throw new Error(error);

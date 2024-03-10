@@ -1,12 +1,29 @@
 import { Button, Col, Modal, Row } from "antd";
-import React, { useRef } from "react";
+import React, { memo, useEffect, useRef, useState } from "react";
 import moment from "moment";
 import SignaturePad from "react-signature-pad-wrapper";
 import "./Contract.scss";
+import { getContractByIdService } from "../../../services/RealEstate";
 
-const Contract = ({ open = false, handleCancel = () => {} }) => {
+const Contract = ({ id, open = false, handleCancel = () => {} }) => {
+  const [contract, setContract] = useState({});
   const signatureSeller = useRef(null);
   const signatureRenter = useRef(null);
+
+  const fetchContractById = async (id) => {
+    try {
+      const res = await getContractByIdService({ id: id });
+      if (res.status === 200) {
+        setContract(res.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchContractById(id);
+  }, [id]);
 
   return (
     <Modal
@@ -47,11 +64,15 @@ const Contract = ({ open = false, handleCancel = () => {} }) => {
             <Col span={24}>
               <Row className="partner-title">I. Chủ nhà (Bên A)</Row>
               <Row style={{ paddingLeft: 20 }}>
-                <Col span={24}>Ông (bà): </Col>
-                <Col span={4}>Sinh năm: {moment(new Date()).year()}</Col>
-                <Col span={8}>Điện thoại: </Col>
-                <Col span={12}>Email: </Col>
-                <Col span={24}>Địa chỉ: </Col>
+                <Col span={24}>Ông (bà): {contract?.seller?.fullName}</Col>
+                <Col span={4}>
+                  Sinh năm: {moment(contract?.seller?.birthday).year()}
+                </Col>
+                <Col span={8}>Điện thoại: {contract?.seller?.phoneNumber}</Col>
+                <Col span={12}>Email: {contract?.seller?.email}</Col>
+                <Col span={24}>
+                  Địa chỉ: {contract?.seller?.Address?.address}
+                </Col>
               </Row>
             </Col>
           </Row>
@@ -59,11 +80,15 @@ const Contract = ({ open = false, handleCancel = () => {} }) => {
             <Col span={24}>
               <Row className="partner-title">II. Bên thuê nhà (Bên B)</Row>
               <Row style={{ paddingLeft: 20 }}>
-                <Col span={24}>Ông (bà): </Col>
-                <Col span={4}>Sinh năm: {moment(new Date()).year()}</Col>
-                <Col span={8}>Điện thoại: </Col>
-                <Col span={12}>Email: </Col>
-                <Col span={24}>Địa chỉ: </Col>
+                <Col span={24}>Ông (bà): {contract?.renter?.fullName}</Col>
+                <Col span={4}>
+                  Sinh năm: {moment(contract?.renter?.birthday).year()}
+                </Col>
+                <Col span={8}>Điện thoại: {contract?.renter?.phoneNumber}</Col>
+                <Col span={12}>Email: {contract?.renter?.email}</Col>
+                <Col span={24}>
+                  Địa chỉ: {contract?.renter?.Address?.address}
+                </Col>
               </Row>
             </Col>
           </Row>
@@ -78,8 +103,10 @@ const Contract = ({ open = false, handleCancel = () => {} }) => {
                   </Row>
                   <Row className="rule">※ Điều 1</Row>
                   <Row>
-                    - Bên A cho bên B thuê {1} tháng với số tiền {10000000} VNĐ
-                    / tháng. Tiền sẽ được thanh toán vào ngày{" "}
+                    - Bên A cho bên B thuê nhà tại địa chỉ{" "}
+                    {contract?.RealEstate?.Address?.address} diện tích{" "}
+                    {contract?.RealEstate?.acreage} (m2) với mức giá {10000000}{" "}
+                    VNĐ / tháng. Tiền sẽ được thanh toán vào ngày{" "}
                     {moment(new Date()).format("DD")} hàng tháng.
                   </Row>
                   <Row>
@@ -95,7 +122,8 @@ const Contract = ({ open = false, handleCancel = () => {} }) => {
                     B.
                   </Row>
                   <Row>
-                    - Bên B có trách nhiệm tuân thủ các quy định bên B đã đặt ra
+                    - Cả bên A và B có trách nhiệm tuân thủ các quy định bên B
+                    đã đặt ra
                   </Row>
                   <Row>
                     Sau khi hết thời hạn {12} tháng hai bên có thể tiếp tục đàm
@@ -157,6 +185,13 @@ const Contract = ({ open = false, handleCancel = () => {} }) => {
                       Clear
                     </Button>
                   </Row>
+                  <Row
+                    onClick={() => {
+                      signatureRenter.current.toDataURL();
+                    }}
+                  >
+                    <Button>Save</Button>
+                  </Row>
                 </Col>
               </Row>
             </Col>
@@ -167,4 +202,4 @@ const Contract = ({ open = false, handleCancel = () => {} }) => {
   );
 };
 
-export default Contract;
+export default memo(Contract);

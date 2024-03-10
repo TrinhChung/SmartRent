@@ -3,6 +3,7 @@ import { authenticate } from "../middleware/authenticate";
 import { cancelContractSchema, initContractSchema } from "../schema/contract";
 import {
   handleCloseContract,
+  handleGetContractById,
   handleGetContractForMe,
   handleInitContract,
 } from "../controllers/contract";
@@ -26,3 +27,5 @@ router.post(
 );
 
 router.get("/me", authenticate, handleGetContractForMe);
+
+router.get("/detail/:id", authenticate, handleGetContractById);

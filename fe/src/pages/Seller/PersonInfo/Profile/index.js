@@ -5,6 +5,7 @@ import {
   useCallback,
   useEffect,
   useMemo,
+  useRef,
 } from "react";
 import {
   Col,
@@ -24,6 +25,8 @@ import dayjs from "dayjs";
 import { uploadFileToSessionService } from "../../../../services/UploadFile/index";
 import { updateUserInfoService } from "../../../../services/User";
 import { toast } from "react-toastify";
+import SignaturePad from "react-signature-pad-wrapper";
+import { getSignByIdService } from "../../../../services/User/index";
 
 const Profile = () => {
   const [libraries] = useState(["drawing", "places"]);
@@ -48,6 +51,7 @@ const Profile = () => {
   const [filesView, setFilesView] = useState([]);
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(false);
+  const signature = useRef(null);
 
   const setAddress = useCallback(
     (name) => {
@@ -74,12 +78,27 @@ const Profile = () => {
     };
   }, [authUser]);
 
+  const fetchSignatureById = async (id) => {
+    try {
+      const res = await getSignByIdService(id);
+      if (res?.data?.sign) {
+        signature.current.clear();
+        signature.current.fromDataURL(res.data?.sign);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     if (authUser?.Address) {
       setPosition({
         lat: parseFloat(authUser?.Address?.lat),
         lng: parseFloat(authUser?.Address?.lng),
       });
+    }
+    if (authUser?.signatureId) {
+      fetchSignatureById(authUser?.signatureId);
     }
   }, [authUser]);
 
@@ -231,7 +250,13 @@ const Profile = () => {
         form={form}
         initialValues={initialValuesForm}
         onFinish={() => {
-          fetchUpdateUserInfo(form.getFieldsValue());
+          const signData = signature?.current?.toDataURL();
+          if (signature.current.toData().length === 0) {
+            alert("Chữ ký không được trống");
+            return;
+          }
+          const data = { ...form.getFieldsValue(), signData: signData };
+          fetchUpdateUserInfo(data);
         }}
       >
         <Row className="info-basic" gutter={[8, 8]}>
@@ -385,25 +410,44 @@ const Profile = () => {
           </Col>
           {listWallets}
         </Row>
-        {isLoaded && (
-          <Row>
-            <Col span={8}>
-              <MapCustom
-                position={position}
-                setPosition={(position) => {
-                  setPosition(position);
-                  form.setFieldsValue({ location: position });
-                }}
-                setAddress={setAddress}
-              />
-            </Col>
-            <Col span={16}>
+        <Row gutter={[24, 24]}>
+          {isLoaded && (
+            <Col span={12}>
               <Form.Item name="location" valuePropName="location">
-                <Row style={{ justifyContent: "end" }}></Row>
+                <MapCustom
+                  position={position}
+                  setPosition={(position) => {
+                    setPosition(position);
+                    form.setFieldsValue({ location: position });
+                  }}
+                  setAddress={setAddress}
+                />
               </Form.Item>
             </Col>
-          </Row>
-        )}
+          )}
+          <Col span={12}>
+            <Row>Chữ ký</Row>
+            <Row style={{ border: "1px solid black" }}>
+              <SignaturePad
+                options={{
+                  minWidth: 1,
+                  maxWidth: 1,
+                  penColor: "#000000",
+                }}
+                ref={signature}
+              />
+            </Row>
+            <Row style={{ paddingTop: 10 }}>
+              <Button
+                onClick={() => {
+                  signature.current.clear();
+                }}
+              >
+                Xóa chữ ký
+              </Button>
+            </Row>
+          </Col>
+        </Row>
         <Row style={{ paddingTop: 12 }}>
           <Button htmlType="submit">Save</Button>
         </Row>

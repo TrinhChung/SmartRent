@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { memo, useCallback, useMemo, useState } from "react";
 import { ContainerOutlined, EditOutlined } from "@ant-design/icons";
 import { Layout, Row, Col } from "antd";
 import {} from "@fortawesome/free-solid-svg-icons";
@@ -8,7 +8,7 @@ import Contract from "./Contract";
 
 const { Sider } = Layout;
 
-const ChatInfo = () => {
+const ChatInfo = ({ roomChat }) => {
   const [isOpenModelEditName, setIsOpenModelEditName] = useState(false);
   const [isOpenModalContract, setIsOpenModalContract] = useState(false);
 
@@ -51,10 +51,14 @@ const ChatInfo = () => {
         </Col>
         <Col className="item-chat-info">Thêm điều khoản</Col>
       </Row>
-      <Contract open={isOpenModalContract} handleCancel={closeModalContract} />
+      <Contract
+        id={roomChat?.contract?.id}
+        open={isOpenModalContract}
+        handleCancel={closeModalContract}
+      />
       <EditNameRoom isOpen={isOpenModelEditName} close={closeModal} />
     </Sider>
   );
 };
 
-export default ChatInfo;
+export default memo(ChatInfo);

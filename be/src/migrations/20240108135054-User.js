@@ -30,6 +30,10 @@ module.exports = {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: true,
       },
+      signatureId: {
+        type: Sequelize.INTEGER.UNSIGNED,
+        allowNull: true,
+      },
       password: {
         type: Sequelize.STRING,
         allowNull: false,

@@ -47,7 +47,6 @@ export default function AuthProvider({ children }) {
     try {
       const res = await getReAbiService();
       if (res.status === 200) {
-        console.log(res.data);
         setReAbi(res.data);
       }
     } catch (error) {

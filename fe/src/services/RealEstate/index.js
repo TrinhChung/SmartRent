@@ -31,3 +31,7 @@ export const closeContractService = (contractId) => {
 export const getContractByMeService = ({ page = 1 }) => {
   return axios.get(`/api/contract/me?page=${page}`);
 };
+
+export const getContractByIdService = ({ id }) => {
+  return axios.get(`/api/contract/detail/${id}`);
+};

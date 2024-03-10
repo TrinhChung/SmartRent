@@ -9,6 +9,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: { name: "addressId" },
       });
 
+      User.belongsTo(models.Signature, {
+        foreignKey: { name: "signatureId" },
+      });
+
       User.hasMany(models.Verify, {
         foreignKey: "fkId",
       });
@@ -18,6 +22,16 @@ module.exports = (sequelize, DataTypes) => {
       User.hasOne(models.File, { foreignKey: { name: "fkId" } });
 
       User.hasOne(models.RealEstate, { foreignKey: { name: "userId" } });
+
+      User.hasOne(models.Contract, {
+        foreignKey: { name: "renterId" },
+        as: "renter",
+      });
+
+      User.hasOne(models.Contract, {
+        foreignKey: { name: "sellerId" },
+        as: "seller",
+      });
     }
   }
   User.init(
@@ -87,6 +101,10 @@ module.exports = (sequelize, DataTypes) => {
       },
       birthday: {
         type: DataTypes.DATEONLY,
+        allowNull: true,
+      },
+      signatureId: {
+        type: DataTypes.INTEGER.UNSIGNED,
         allowNull: true,
       },
     },

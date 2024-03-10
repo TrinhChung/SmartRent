@@ -293,7 +293,7 @@ const RoomChat = () => {
           </Col>
         </Footer>
       </Layout>
-      <ChatInfo />
+      <ChatInfo roomChat={roomChat} />
     </Layout>
   );
 };
