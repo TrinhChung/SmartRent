@@ -3,7 +3,6 @@ import React, { memo, useEffect, useMemo, useRef, useState } from "react";
 import moment from "moment";
 import generatePDF from "react-to-pdf";
 import "./Contract.scss";
-import { getContractByIdService } from "../../../services/RealEstate";
 
 const Contract = ({ contract, open = false, handleCancel = () => {} }) => {
   const targetRef = useRef();
@@ -154,6 +153,12 @@ const Contract = ({ contract, open = false, handleCancel = () => {} }) => {
                   <Row>
                     - Bên B có thể thanh toán tiền hàng tháng bằng Etherum
                   </Row>
+                  {contract?.Terms?.length > 0 &&
+                    contract?.Terms?.map((term, index) => {
+                      if (term.accept === "1") {
+                        return <Row key={index}>{"- " + term.content}</Row>;
+                      }
+                    })}
                 </Col>
               </Row>
             </Col>

@@ -9,6 +9,7 @@ import { router as message } from "./message";
 import { router as notify } from "./notify";
 import { router as file } from "./file";
 import { router as user } from "./user";
+import { router as term } from "./term";
 
 import { authenticate } from "../middleware/authenticate";
 export const router = Router();
@@ -32,3 +33,5 @@ router.use("/notify", authenticate, notify);
 router.use("/file", authenticate, file);
 
 router.use("/user", user);
+
+router.use("/term", authenticate, term);

@@ -1,19 +1,278 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Button, Col, DatePicker, Input, InputNumber, Modal, Row } from "antd";
+import React, {
+  memo,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
+import {
+  Button,
+  Col,
+  DatePicker,
+  Form,
+  Input,
+  InputNumber,
+  Modal,
+  Row,
+} from "antd";
 import "./ListTerm.scss";
 import dayjs from "dayjs";
 import moment from "moment";
 import { AuthContext } from "../../../providers/authProvider";
+import {
+  createTermContractService,
+  updateAcceptCostTermService,
+  updateAcceptTimeStartTermService,
+  updateTermContractService,
+  updateValueCostTermService,
+  updateValueTimeStartTermService,
+} from "../../../services/RoomChat/index";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faCircleCheck,
+  faPaperPlane,
+  faXmarkCircle,
+} from "@fortawesome/free-regular-svg-icons";
 
-const ListTerm = ({ contract, open, close = () => {} }) => {
+const ListTerm = ({
+  contract,
+  open,
+  close = () => {},
+  fetchContractById = () => {},
+}) => {
   const { authUser } = useContext(AuthContext);
+  const [formTerm] = Form.useForm();
   const [cost, setCost] = useState(contract?.Cost?.value);
   const [timeStart, setTimeStart] = useState(contract?.TimeStart?.value);
+  const [isOpenModalCreateTerm, setIsOpenModalCreateTerm] = useState(false);
+
+  const fetchUpdateTerm = useCallback(async ({ termId, accept }) => {
+    try {
+      const res = await updateTermContractService({
+        termId: termId,
+        accept: accept,
+      });
+      if (res.status === 200) {
+        fetchContractById(contract?.id);
+      }
+    } catch (error) {
+      if (accept === "1") {
+        alert("Không thể chấp thuận!Vui lòng thử lại sau");
+      }
+      if (accept === "2") {
+        alert("Không thể từ chối !Vui lòng thử lại sau");
+      }
+    }
+  }, []);
+
+  const fetchUpdateAcceptCostTerm = useCallback(
+    async ({ costId, accept }) => {
+      try {
+        const res = await updateAcceptCostTermService({
+          costId: costId,
+          accept: accept,
+        });
+        if (res.status === 200) {
+          fetchContractById(contract?.id);
+        }
+      } catch (error) {
+        if (accept === "1") {
+          alert("Không thể chấp thuận!Vui lòng thử lại sau");
+        }
+        if (accept === "2") {
+          alert("Không thể từ chối !Vui lòng thử lại sau");
+        }
+      }
+    },
+    [contract]
+  );
+
+  const fetchUpdateValueCostTerm = useCallback(async ({ costId, value }) => {
+    try {
+      const res = await updateValueCostTermService({
+        costId: costId,
+        value: value,
+      });
+      if (res.status === 200) {
+        fetchContractById(contract?.id);
+      }
+    } catch (error) {
+      alert("Không thể cập nhật giá");
+    }
+  }, []);
+
+  const fetchUpdateAcceptTimeStartTerm = useCallback(
+    async ({ timeStartId, accept }) => {
+      try {
+        const res = await updateAcceptTimeStartTermService({
+          timeStartId: timeStartId,
+          accept: accept,
+        });
+        if (res.status === 200) {
+          fetchContractById(contract?.id);
+        }
+      } catch (error) {
+        if (accept === "1") {
+          alert("Không thể chấp thuận!Vui lòng thử lại sau");
+        }
+        if (accept === "2") {
+          alert("Không thể từ chối !Vui lòng thử lại sau");
+        }
+      }
+    },
+    [contract]
+  );
+
+  const fetchUpdateValueTimeStartTerm = useCallback(
+    async ({ timeStartId, value }) => {
+      try {
+        const res = await updateValueTimeStartTermService({
+          timeStartId: timeStartId,
+          value: value,
+        });
+        if (res.status === 200) {
+          fetchContractById(contract?.id);
+        }
+      } catch (error) {
+        alert("Không thể cập nhật giá");
+      }
+    },
+    []
+  );
 
   useEffect(() => {
     setCost(contract?.Cost?.value);
     setTimeStart(contract?.TimeStart?.value);
   }, [contract]);
+
+  const CostElement = useMemo(() => {
+    return (
+      <Row gutter={[8, 8]}>
+        <Col>
+          <label>Giá (VNĐ)</label>
+        </Col>
+
+        {contract?.Cost?.accept === false &&
+          contract?.Cost?.value === cost &&
+          contract?.Cost?.userId !== authUser.id && (
+            <Col>
+              <Row
+                style={{
+                  alignItems: "center",
+                  justifyContent: "end",
+                }}
+                gutter={[2, 2]}
+                className="accept-term-button"
+                onClick={() => {
+                  fetchUpdateAcceptCostTerm({
+                    costId: contract?.Cost?.id,
+                    accept: true,
+                  });
+                }}
+              >
+                <Col>
+                  <FontAwesomeIcon icon={faCircleCheck} />
+                </Col>
+                <Col>
+                  <label>Chấp thuận</label>
+                </Col>
+              </Row>
+            </Col>
+          )}
+
+        {contract?.Cost?.value !== cost && (
+          <Col>
+            <Row
+              style={{
+                alignItems: "center",
+                justifyContent: "end",
+              }}
+              gutter={[2, 2]}
+              className="request-term-button"
+              onClick={() => {
+                fetchUpdateValueCostTerm({
+                  costId: contract?.Cost?.id,
+                  value: cost,
+                });
+              }}
+            >
+              <Col>
+                <FontAwesomeIcon icon={faPaperPlane} />
+              </Col>
+              <Col>
+                <label>Yêu cầu thay đổi</label>
+              </Col>
+            </Row>
+          </Col>
+        )}
+      </Row>
+    );
+  }, [contract, cost]);
+
+  const TimeStartElement = useMemo(() => {
+    return (
+      <Row gutter={[8, 8]}>
+        <Col>
+          <label>Ngày bắt đầu thuê</label>
+        </Col>
+        {contract?.TimeStart?.accept === false &&
+          moment(contract?.TimeStart?.value).format("DD-MM-YYYY") ==
+            moment(timeStart).format("DD-MM-YYYY") &&
+          contract?.TimeStart?.userId !== authUser.id && (
+            <Col>
+              <Row
+                style={{
+                  alignItems: "center",
+                  justifyContent: "end",
+                }}
+                gutter={[2, 2]}
+                className="accept-term-button"
+                onClick={() => {
+                  fetchUpdateAcceptTimeStartTerm({
+                    timeStartId: contract?.TimeStart?.id,
+                    accept: true,
+                  });
+                }}
+              >
+                <Col>
+                  <FontAwesomeIcon icon={faCircleCheck} />
+                </Col>
+                <Col>
+                  <label>Chấp thuận</label>
+                </Col>
+              </Row>
+            </Col>
+          )}
+        {moment(contract?.TimeStart?.value).format("DD-MM-YYYY") !==
+          moment(timeStart).format("DD-MM-YYYY") && (
+          <Col>
+            <Row
+              style={{
+                alignItems: "center",
+                justifyContent: "end",
+              }}
+              gutter={[2, 2]}
+              className="request-term-button"
+              onClick={() => {
+                fetchUpdateValueTimeStartTerm({
+                  timeStartId: contract?.TimeStart?.id,
+                  value: timeStart,
+                });
+              }}
+            >
+              <Col>
+                <FontAwesomeIcon icon={faPaperPlane} />
+              </Col>
+              <Col>
+                <label>Yêu cầu thay đổi</label>
+              </Col>
+            </Row>
+          </Col>
+        )}
+      </Row>
+    );
+  }, [contract, timeStart]);
 
   return (
     <Modal
@@ -23,7 +282,7 @@ const ListTerm = ({ contract, open, close = () => {} }) => {
           Danh sách điều khoản
         </label>
       }
-      onOk={() => {}}
+      onOk={close}
       onCancel={close}
       width={1175}
       style={{ top: 20 }}
@@ -32,7 +291,7 @@ const ListTerm = ({ contract, open, close = () => {} }) => {
       <Col style={{ height: 800 }}>
         <Row className="term-item">
           <Col span={12}>
-            <label>Giá (VNĐ)</label>
+            {CostElement}
             <Row>
               <InputNumber
                 step={500000}
@@ -50,53 +309,23 @@ const ListTerm = ({ contract, open, close = () => {} }) => {
               />
             </Row>
           </Col>
-          <Col style={{ alignItems: "center" }}>
-            <Row gutter={[8, 8]}>
-              {contract?.Cost?.accept === false &&
-                contract?.Cost?.userId !== authUser.id && (
-                  <Col>
-                    <Button>Chấp thuận</Button>
-                  </Col>
-                )}
-
-              {contract?.Cost?.value !== cost && (
-                <Col>
-                  <Button>Yêu cầu thay đổi</Button>
-                </Col>
-              )}
-            </Row>
-          </Col>
         </Row>
         <Row className="term-item">
           <Col span={12}>
-            <label>Ngày bắt đầu thuê</label>
+            {TimeStartElement}
             <Row>
               <DatePicker
                 value={dayjs(timeStart)}
                 onChange={(value) => {
-                  setTimeStart(value);
+                  if (value) {
+                    setTimeStart(new Date(value));
+                  } else {
+                    setTimeStart(new Date());
+                  }
                 }}
                 style={{ width: "100%" }}
               />
             </Row>
-          </Col>
-          <Col style={{ alignItems: "center" }}>
-            <Col style={{ alignItems: "center" }}>
-              <Row gutter={[8, 8]}>
-                {contract?.TimeStart?.accept === false &&
-                  contract?.TimeStart?.userId !== authUser.id && (
-                    <Col>
-                      <Button>Chấp thuận</Button>
-                    </Col>
-                  )}
-                {moment(contract?.TimeStart?.value).format("DD-MM-YYYY") !==
-                  moment(timeStart).format("DD-MM-YYYY") && (
-                  <Col>
-                    <Button>Yêu cầu thay đổi</Button>
-                  </Col>
-                )}
-              </Row>
-            </Col>
           </Col>
         </Row>
         <Row
@@ -104,16 +333,114 @@ const ListTerm = ({ contract, open, close = () => {} }) => {
             justifyContent: "space-between",
             alignItems: "center",
             paddingTop: 20,
+            paddingBottom: 10,
           }}
         >
           <Col className="add-rule">Điều khoản bổ sung</Col>
           <Col>
-            <Button>Thêm điều khoản mới</Button>
+            <Button
+              onClick={() => {
+                setIsOpenModalCreateTerm(true);
+              }}
+            >
+              Thêm điều khoản mới
+            </Button>
           </Col>
         </Row>
+        {contract?.Terms?.length > 0 &&
+          contract?.Terms.map((term, index) => {
+            return (
+              <Row
+                style={{ alignItems: "center", padding: "4px 0" }}
+                id={"term" + index}
+              >
+                <Col span={24}>
+                  {term?.accept === "0" && term?.userId !== authUser.id && (
+                    <Row gutter={[8, 8]}>
+                      <Col>Điều khoản mới</Col>
+                      <Col>
+                        <Row
+                          style={{
+                            alignItems: "center",
+                            justifyContent: "end",
+                          }}
+                          gutter={[4, 4]}
+                          className="accept-term-button"
+                          onClick={() => {
+                            fetchUpdateTerm({ termId: term.id, accept: "1" });
+                          }}
+                        >
+                          <Col>
+                            <FontAwesomeIcon icon={faCircleCheck} />
+                          </Col>
+                          <Col>
+                            <label>Chấp thuận</label>
+                          </Col>
+                        </Row>
+                      </Col>
+                      <Col>
+                        <Row
+                          style={{
+                            alignItems: "center",
+                            justifyContent: "end",
+                          }}
+                          gutter={[4, 4]}
+                          className="reject-term-button"
+                          onClick={() => {
+                            fetchUpdateTerm({ term: term.id, accept: "2" });
+                          }}
+                        >
+                          <Col>
+                            <FontAwesomeIcon icon={faXmarkCircle} />
+                          </Col>
+                          <Col>
+                            <label>Từ chối</label>
+                          </Col>
+                        </Row>
+                      </Col>
+                    </Row>
+                  )}
+                  {["0", "1"].includes(term?.accept) && (
+                    <Row>{"- " + term.content}</Row>
+                  )}
+                </Col>
+              </Row>
+            );
+          })}
       </Col>
+      <Modal
+        open={isOpenModalCreateTerm}
+        title={
+          <label style={{ fontSize: 18, textTransform: "uppercase" }}>
+            Thêm điều khoản mới
+          </label>
+        }
+        onOk={async () => {
+          const termValue = formTerm.getFieldValue("name-term");
+          if (termValue?.length > 0) {
+            const data = { value: termValue, contractId: contract.id };
+            const res = await createTermContractService(data);
+            if (res.status === 200) {
+              setIsOpenModalCreateTerm(false);
+              formTerm.resetFields();
+              fetchContractById(contract?.id);
+            }
+          }
+        }}
+        onCancel={() => {
+          formTerm.resetFields();
+          setIsOpenModalCreateTerm(false);
+        }}
+        className="list-term-container"
+      >
+        <Form form={formTerm}>
+          <Form.Item name="name-term">
+            <Input.TextArea placeholder="Thêm điều khoản mới" />
+          </Form.Item>
+        </Form>
+      </Modal>
     </Modal>
   );
 };
 
-export default ListTerm;
+export default memo(ListTerm);

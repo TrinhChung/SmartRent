@@ -93,6 +93,7 @@ const ChatInfo = ({ roomChat }) => {
         contract={contract}
         open={isOpenModalListTerm}
         close={closeModalListTerm}
+        fetchContractById={fetchContractById}
       />
     </Sider>
   );
