@@ -1,23 +1,20 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Term extends Model {
+  class Cost extends Model {
     static associate(models) {
-      Term.belongsTo(models.Contract, {
+      Cost.hasOne(models.Contract, {
         foreignKey: {
-          name: "contractId",
+          name: "costId",
         },
       });
     }
   }
-  Term.init(
+
+  Cost.init(
     {
-      contractId: {
+      value: {
         type: DataTypes.INTEGER.UNSIGNED,
-        allowNull: false,
-      },
-      content: {
-        type: DataTypes.STRING(400),
         allowNull: false,
       },
       accept: {
@@ -32,10 +29,10 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "Term",
+      modelName: "Cost",
       paranoid: false,
     }
   );
 
-  return Term;
+  return Cost;
 };

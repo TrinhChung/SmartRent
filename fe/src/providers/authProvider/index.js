@@ -93,6 +93,7 @@ export default function AuthProvider({ children }) {
           const address = accounts?.length > 0 ? accounts[0] : null;
           if (String(user.wallet) !== String(address)) {
             fetchUpdateWallet(address);
+            // TODO xử lý chưa đúng chưa set lại storage
           }
         } catch (error) {
           console.log(error);

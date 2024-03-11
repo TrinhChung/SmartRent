@@ -1,4 +1,3 @@
-#!/bin/bash
 files=`git diff --name-only -r HEAD^1 HEAD `
 checkChangeDb=false
 checkChangeSc=false
