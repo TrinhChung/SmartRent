@@ -57,7 +57,7 @@ const ListTerm = ({
           accept: accept,
         });
         if (res.status === 200) {
-          fetchContractById();
+          fetchContractById(contract?.id);
         }
       } catch (error) {
         if (accept === "1") {
@@ -79,7 +79,7 @@ const ListTerm = ({
           accept: accept,
         });
         if (res.status === 200) {
-          fetchContractById();
+          fetchContractById(contract?.id);
         }
       } catch (error) {
         if (accept === "1") {
@@ -101,7 +101,7 @@ const ListTerm = ({
           value: value,
         });
         if (res.status === 200) {
-          fetchContractById();
+          fetchContractById(contract?.id);
         }
       } catch (error) {
         alert("Không thể cập nhật giá");
@@ -118,7 +118,7 @@ const ListTerm = ({
           accept: accept,
         });
         if (res.status === 200) {
-          fetchContractById();
+          fetchContractById(contract?.id);
         }
       } catch (error) {
         if (accept === "1") {
@@ -140,7 +140,7 @@ const ListTerm = ({
           value: value,
         });
         if (res.status === 200) {
-          fetchContractById();
+          fetchContractById(contract?.id);
         }
       } catch (error) {
         alert("Không thể cập nhật giá");
@@ -158,9 +158,13 @@ const ListTerm = ({
   useEffect(() => {
     socket.on("update-term", async (data) => {
       await fetchNotifyOfUser();
-      await fetchContractById();
+      console.log(contract);
+      fetchContractById(contract?.id);
     });
-  }, [socket, fetchContractById]);
+    return () => {
+      socket.off("update-term");
+    };
+  }, [socket, contract, fetchContractById]);
 
   const CostElement = useMemo(() => {
     return (
@@ -440,7 +444,7 @@ const ListTerm = ({
             if (res.status === 200) {
               setIsOpenModalCreateTerm(false);
               formTerm.resetFields();
-              fetchContractById();
+              fetchContractById(contract?.id);
             }
           }
         }}

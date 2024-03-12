@@ -16,14 +16,13 @@ const ChatInfo = ({ roomChat }) => {
   const [isOpenModalContract, setIsOpenModalContract] = useState(false);
   const [isOpenModalListTerm, setIsOpenModalListTerm] = useState(false);
 
-  const fetchContractById = async () => {
+  const fetchContractById = async (id) => {
     try {
-      if (roomChat?.contract?.id) {
+      console.log("contract id " + id);
+      if (id) {
         const res = await getContractByIdService({
-          id: roomChat?.contract?.id,
+          id: id,
         });
-        console.log("Fetch contract");
-        console.log(res);
         if (res.status === 200) {
           setContract(res.data);
         }
@@ -48,11 +47,6 @@ const ChatInfo = ({ roomChat }) => {
   const closeModalListTerm = useCallback(() => {
     return setIsOpenModalListTerm(false);
   }, []);
-
-  const fetchPassListTerm = async () => {
-    console.log("Fetch Contract by fetch pass list term");
-    fetchContractById();
-  };
 
   return (
     <Sider className="chat-info" width={360}>
@@ -100,7 +94,7 @@ const ChatInfo = ({ roomChat }) => {
         contract={contract}
         open={isOpenModalListTerm}
         close={closeModalListTerm}
-        fetchContractById={fetchPassListTerm}
+        fetchContractById={fetchContractById}
       />
     </Sider>
   );
