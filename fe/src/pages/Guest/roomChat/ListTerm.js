@@ -34,6 +34,7 @@ import {
   faPaperPlane,
   faXmarkCircle,
 } from "@fortawesome/free-regular-svg-icons";
+import { SocketContext } from "../../../providers/socketProvider";
 
 const ListTerm = ({
   contract,
@@ -42,39 +43,21 @@ const ListTerm = ({
   fetchContractById = () => {},
 }) => {
   const { authUser } = useContext(AuthContext);
+  const { socket, fetchNotifyOfUser } = useContext(SocketContext);
   const [formTerm] = Form.useForm();
   const [cost, setCost] = useState(contract?.Cost?.value);
   const [timeStart, setTimeStart] = useState(contract?.TimeStart?.value);
   const [isOpenModalCreateTerm, setIsOpenModalCreateTerm] = useState(false);
 
-  const fetchUpdateTerm = useCallback(async ({ termId, accept }) => {
-    try {
-      const res = await updateTermContractService({
-        termId: termId,
-        accept: accept,
-      });
-      if (res.status === 200) {
-        fetchContractById(contract?.id);
-      }
-    } catch (error) {
-      if (accept === "1") {
-        alert("Không thể chấp thuận!Vui lòng thử lại sau");
-      }
-      if (accept === "2") {
-        alert("Không thể từ chối !Vui lòng thử lại sau");
-      }
-    }
-  }, []);
-
-  const fetchUpdateAcceptCostTerm = useCallback(
-    async ({ costId, accept }) => {
+  const fetchUpdateTerm = useCallback(
+    async ({ termId, accept }) => {
       try {
-        const res = await updateAcceptCostTermService({
-          costId: costId,
+        const res = await updateTermContractService({
+          termId: termId,
           accept: accept,
         });
         if (res.status === 200) {
-          fetchContractById(contract?.id);
+          fetchContractById();
         }
       } catch (error) {
         if (accept === "1") {
@@ -88,19 +71,44 @@ const ListTerm = ({
     [contract]
   );
 
-  const fetchUpdateValueCostTerm = useCallback(async ({ costId, value }) => {
-    try {
-      const res = await updateValueCostTermService({
-        costId: costId,
-        value: value,
-      });
-      if (res.status === 200) {
-        fetchContractById(contract?.id);
+  const fetchUpdateAcceptCostTerm = useCallback(
+    async ({ costId, accept }) => {
+      try {
+        const res = await updateAcceptCostTermService({
+          costId: costId,
+          accept: accept,
+        });
+        if (res.status === 200) {
+          fetchContractById();
+        }
+      } catch (error) {
+        if (accept === "1") {
+          alert("Không thể chấp thuận!Vui lòng thử lại sau");
+        }
+        if (accept === "2") {
+          alert("Không thể từ chối !Vui lòng thử lại sau");
+        }
       }
-    } catch (error) {
-      alert("Không thể cập nhật giá");
-    }
-  }, []);
+    },
+    [contract]
+  );
+
+  const fetchUpdateValueCostTerm = useCallback(
+    async ({ costId, value }) => {
+      try {
+        const res = await updateValueCostTermService({
+          costId: costId,
+          value: value,
+        });
+        if (res.status === 200) {
+          fetchContractById();
+        }
+      } catch (error) {
+        alert("Không thể cập nhật giá");
+      }
+    },
+    [contract]
+  );
 
   const fetchUpdateAcceptTimeStartTerm = useCallback(
     async ({ timeStartId, accept }) => {
@@ -110,7 +118,7 @@ const ListTerm = ({
           accept: accept,
         });
         if (res.status === 200) {
-          fetchContractById(contract?.id);
+          fetchContractById();
         }
       } catch (error) {
         if (accept === "1") {
@@ -132,19 +140,27 @@ const ListTerm = ({
           value: value,
         });
         if (res.status === 200) {
-          fetchContractById(contract?.id);
+          fetchContractById();
         }
       } catch (error) {
         alert("Không thể cập nhật giá");
       }
     },
-    []
+    [contract]
   );
 
   useEffect(() => {
     setCost(contract?.Cost?.value);
     setTimeStart(contract?.TimeStart?.value);
+    console.log(contract);
   }, [contract]);
+
+  useEffect(() => {
+    socket.on("update-term", async (data) => {
+      await fetchNotifyOfUser();
+      await fetchContractById();
+    });
+  }, [socket, fetchContractById]);
 
   const CostElement = useMemo(() => {
     return (
@@ -349,63 +365,64 @@ const ListTerm = ({
         </Row>
         {contract?.Terms?.length > 0 &&
           contract?.Terms.map((term, index) => {
-            return (
-              <Row
-                style={{ alignItems: "center", padding: "4px 0" }}
-                id={"term" + index}
-              >
-                <Col span={24}>
-                  {term?.accept === "0" && term?.userId !== authUser.id && (
-                    <Row gutter={[8, 8]}>
-                      <Col>Điều khoản mới</Col>
-                      <Col>
-                        <Row
-                          style={{
-                            alignItems: "center",
-                            justifyContent: "end",
-                          }}
-                          gutter={[4, 4]}
-                          className="accept-term-button"
-                          onClick={() => {
-                            fetchUpdateTerm({ termId: term.id, accept: "1" });
-                          }}
-                        >
-                          <Col>
-                            <FontAwesomeIcon icon={faCircleCheck} />
-                          </Col>
-                          <Col>
-                            <label>Chấp thuận</label>
-                          </Col>
-                        </Row>
-                      </Col>
-                      <Col>
-                        <Row
-                          style={{
-                            alignItems: "center",
-                            justifyContent: "end",
-                          }}
-                          gutter={[4, 4]}
-                          className="reject-term-button"
-                          onClick={() => {
-                            fetchUpdateTerm({ term: term.id, accept: "2" });
-                          }}
-                        >
-                          <Col>
-                            <FontAwesomeIcon icon={faXmarkCircle} />
-                          </Col>
-                          <Col>
-                            <label>Từ chối</label>
-                          </Col>
-                        </Row>
-                      </Col>
-                    </Row>
-                  )}
-                  {["0", "1"].includes(term?.accept) && (
+            if (["0", "1"].includes(term?.accept)) {
+              return (
+                <Row
+                  style={{ alignItems: "center", padding: "4px 0" }}
+                  id={"term" + index}
+                >
+                  <Col span={24}>
+                    {term?.accept === "0" && term?.userId !== authUser.id && (
+                      <Row gutter={[8, 8]}>
+                        <Col>Điều khoản mới</Col>
+                        <Col>
+                          <Row
+                            style={{
+                              alignItems: "center",
+                              justifyContent: "end",
+                            }}
+                            gutter={[4, 4]}
+                            className="accept-term-button"
+                            onClick={() => {
+                              fetchUpdateTerm({ termId: term.id, accept: "1" });
+                            }}
+                          >
+                            <Col>
+                              <FontAwesomeIcon icon={faCircleCheck} />
+                            </Col>
+                            <Col>
+                              <label>Chấp thuận</label>
+                            </Col>
+                          </Row>
+                        </Col>
+                        <Col>
+                          <Row
+                            style={{
+                              alignItems: "center",
+                              justifyContent: "end",
+                            }}
+                            gutter={[4, 4]}
+                            className="reject-term-button"
+                            onClick={() => {
+                              fetchUpdateTerm({ termId: term.id, accept: "2" });
+                            }}
+                          >
+                            <Col>
+                              <FontAwesomeIcon icon={faXmarkCircle} />
+                            </Col>
+                            <Col>
+                              <label>Từ chối</label>
+                            </Col>
+                          </Row>
+                        </Col>
+                      </Row>
+                    )}
+
                     <Row>{"- " + term.content}</Row>
-                  )}
-                </Col>
-              </Row>
-            );
+                  </Col>
+                </Row>
+              );
+            }
           })}
       </Col>
       <Modal
@@ -423,7 +440,7 @@ const ListTerm = ({
             if (res.status === 200) {
               setIsOpenModalCreateTerm(false);
               formTerm.resetFields();
-              fetchContractById(contract?.id);
+              fetchContractById();
             }
           }
         }}
@@ -443,4 +460,4 @@ const ListTerm = ({
   );
 };
 
-export default memo(ListTerm);
+export default ListTerm;

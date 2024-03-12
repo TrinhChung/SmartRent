@@ -16,10 +16,14 @@ const ChatInfo = ({ roomChat }) => {
   const [isOpenModalContract, setIsOpenModalContract] = useState(false);
   const [isOpenModalListTerm, setIsOpenModalListTerm] = useState(false);
 
-  const fetchContractById = async (id) => {
+  const fetchContractById = async () => {
     try {
-      if (id) {
-        const res = await getContractByIdService({ id: id });
+      if (roomChat?.contract?.id) {
+        const res = await getContractByIdService({
+          id: roomChat?.contract?.id,
+        });
+        console.log("Fetch contract");
+        console.log(res);
         if (res.status === 200) {
           setContract(res.data);
         }
@@ -30,10 +34,8 @@ const ChatInfo = ({ roomChat }) => {
   };
 
   useEffect(() => {
-    if (roomChat?.contract?.id) {
-      fetchContractById(roomChat?.contract?.id);
-    }
-  }, [roomChat]);
+    fetchContractById(roomChat?.contract?.id);
+  }, [roomChat?.contract?.id]);
 
   const closeModal = useCallback(() => {
     return setIsOpenModelEditName(false);
@@ -46,6 +48,11 @@ const ChatInfo = ({ roomChat }) => {
   const closeModalListTerm = useCallback(() => {
     return setIsOpenModalListTerm(false);
   }, []);
+
+  const fetchPassListTerm = async () => {
+    console.log("Fetch Contract by fetch pass list term");
+    fetchContractById();
+  };
 
   return (
     <Sider className="chat-info" width={360}>
@@ -93,10 +100,10 @@ const ChatInfo = ({ roomChat }) => {
         contract={contract}
         open={isOpenModalListTerm}
         close={closeModalListTerm}
-        fetchContractById={fetchContractById}
+        fetchContractById={fetchPassListTerm}
       />
     </Sider>
   );
 };
 
-export default memo(ChatInfo);
+export default ChatInfo;

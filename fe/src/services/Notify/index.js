@@ -1,7 +1,7 @@
 import axios from "../../config/axios";
 
-export const getNotifyOfUserService = (id) => {
-  return axios.get(`api/notify/infor?id=${id}`);
+export const getNotifyOfUserService = () => {
+  return axios.get(`api/notify/infor`);
 };
 
 export const UpsertMessageNotify = (data) => {
