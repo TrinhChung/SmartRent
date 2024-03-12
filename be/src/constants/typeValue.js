@@ -22,3 +22,14 @@ export const typeRooms = [
   { value: "4", label: "Bếp" },
   { value: "5", label: "Phòng khép kín" },
 ];
+
+export const typeNotifys = [
+  { value: "1", label: "New message" },
+  { value: "2", label: "Cancel contract" },
+  { value: "3", label: "New contract" },
+  { value: "4", label: "New term" },
+  { value: "5", label: "accept-term" },
+  { value: "6", label: "change renter cost" },
+  { value: "7", label: "accept renter cost" },
+  { value: "8", label: "change time start" },
+];

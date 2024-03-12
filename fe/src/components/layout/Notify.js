@@ -1,7 +1,12 @@
 import React, { useContext } from "react";
 import { Row, Col, Typography } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
-import { faMessage } from "@fortawesome/free-solid-svg-icons";
+import {
+  faMessage,
+  faHandshakeSlash,
+  faFileContract,
+  faPenToSquare,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { SocketContext } from "../../providers/socketProvider";
 import moment from "moment";
@@ -15,16 +20,14 @@ const Notify = ({ notify, key = 1 }) => {
 
   const switchToLink = async (notify) => {
     var linkNotify;
-    if (notify.type === "1" || notify.type === "2" || notify.type === "3") {
+    const idRedirectRoomChat = ["1", "2", "3", "4", "5", "6", "7", "8"];
+    if (idRedirectRoomChat.includes(notify.type)) {
       linkNotify = `/room-chat/${notify.fkId}`;
     }
 
     if (pathname !== linkNotify) {
       const res = await readNotifyService(notify.id);
-      if (
-        res.status === 200 &&
-        (notify.type === "1" || notify.type === "2" || notify.type === "3")
-      ) {
+      if (res.status === 200 && idRedirectRoomChat.includes(notify.type)) {
         navigate(`/room-chat/${notify.fkId}`);
         await fetchNotifyOfUser();
       }
@@ -33,6 +36,9 @@ const Notify = ({ notify, key = 1 }) => {
 
   const mappingIcon = {
     1: <FontAwesomeIcon icon={faMessage} />,
+    2: <FontAwesomeIcon icon={faHandshakeSlash} />,
+    3: <FontAwesomeIcon icon={faFileContract} />,
+    4: <FontAwesomeIcon icon={faPenToSquare} />,
   };
 
   return (

@@ -18,8 +18,11 @@ const ChatInfo = ({ roomChat }) => {
 
   const fetchContractById = async (id) => {
     try {
+      console.log("contract id " + id);
       if (id) {
-        const res = await getContractByIdService({ id: id });
+        const res = await getContractByIdService({
+          id: id,
+        });
         if (res.status === 200) {
           setContract(res.data);
         }
@@ -30,10 +33,8 @@ const ChatInfo = ({ roomChat }) => {
   };
 
   useEffect(() => {
-    if (roomChat?.contract?.id) {
-      fetchContractById(roomChat?.contract?.id);
-    }
-  }, [roomChat]);
+    fetchContractById(roomChat?.contract?.id);
+  }, [roomChat?.contract?.id]);
 
   const closeModal = useCallback(() => {
     return setIsOpenModelEditName(false);
@@ -99,4 +100,4 @@ const ChatInfo = ({ roomChat }) => {
   );
 };
 
-export default memo(ChatInfo);
+export default ChatInfo;
