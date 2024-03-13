@@ -4,6 +4,7 @@ import {
   closeContractService,
   getContractService,
   getContractByIdService,
+  signContractService,
 } from "../services/contract";
 
 export const handleInitContract = async (req, res, next) => {
@@ -70,5 +71,17 @@ export const handleGetContractById = async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.status(400).json({ message: "Server error get contract by id" });
+  }
+};
+
+export const handleSignContract = async (req, res) => {
+  try {
+    const data = { ...req.body, userId: res.user.id };
+    await signContractService(data);
+
+    return res.status(200).json({ message: "Sign contract successfully" });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({ message: "Server error sign contract" });
   }
 };

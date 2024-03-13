@@ -6,20 +6,6 @@ import "./Contract.scss";
 
 const Contract = ({ contract, open = false, handleCancel = () => {} }) => {
   const targetRef = useRef();
-  const signatureSeller = useRef(null);
-  const signatureRenter = useRef(null);
-
-  useEffect(() => {
-    if (!signatureRenter.current || !signatureSeller.current) {
-      return;
-    }
-    if (contract?.renter?.SignatureId) {
-      signatureRenter.current.fromDataURL(contract?.renter?.Signature?.sign);
-    }
-    if (contract?.seller?.SignatureId) {
-      signatureSeller.current.fromDataURL(contract?.seller?.Signature?.sign);
-    }
-  }, [contract]);
 
   return (
     <Modal

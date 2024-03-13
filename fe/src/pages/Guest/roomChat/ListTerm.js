@@ -35,6 +35,8 @@ import {
   faXmarkCircle,
 } from "@fortawesome/free-regular-svg-icons";
 import { SocketContext } from "../../../providers/socketProvider";
+import { checkListTermAccept } from "../../../util/commonFunc";
+import { useParams } from "react-router-dom";
 
 const ListTerm = ({
   contract,
@@ -43,11 +45,18 @@ const ListTerm = ({
   fetchContractById = () => {},
 }) => {
   const { authUser } = useContext(AuthContext);
-  const { socket, fetchNotifyOfUser } = useContext(SocketContext);
+  const { socket } = useContext(SocketContext);
   const [formTerm] = Form.useForm();
   const [cost, setCost] = useState(contract?.Cost?.value);
   const [timeStart, setTimeStart] = useState(contract?.TimeStart?.value);
   const [isOpenModalCreateTerm, setIsOpenModalCreateTerm] = useState(false);
+  const { id } = useParams();
+
+  const [groupButton, setGroupButton] = useState([
+    <Button key="back" onClick={close}>
+      Đóng
+    </Button>,
+  ]);
 
   const fetchUpdateTerm = useCallback(
     async ({ termId, accept }) => {
@@ -68,7 +77,7 @@ const ListTerm = ({
         }
       }
     },
-    [contract]
+    [contract, fetchContractById]
   );
 
   const fetchUpdateAcceptCostTerm = useCallback(
@@ -90,7 +99,7 @@ const ListTerm = ({
         }
       }
     },
-    [contract]
+    [contract, fetchContractById]
   );
 
   const fetchUpdateValueCostTerm = useCallback(
@@ -107,7 +116,7 @@ const ListTerm = ({
         alert("Không thể cập nhật giá");
       }
     },
-    [contract]
+    [contract, fetchContractById]
   );
 
   const fetchUpdateAcceptTimeStartTerm = useCallback(
@@ -129,7 +138,7 @@ const ListTerm = ({
         }
       }
     },
-    [contract]
+    [contract, fetchContractById]
   );
 
   const fetchUpdateValueTimeStartTerm = useCallback(
@@ -146,31 +155,51 @@ const ListTerm = ({
         alert("Không thể cập nhật giá");
       }
     },
-    [contract]
+    [contract, fetchContractById]
   );
 
   useEffect(() => {
     setCost(contract?.Cost?.value);
     setTimeStart(contract?.TimeStart?.value);
-    console.log(contract);
+    if (authUser?.role === "2" && contract.status === "7") {
+      const buttonGr = [
+        <Button key="back" onClick={close}>
+          Đóng
+        </Button>,
+        <Button key="back">Tạo hợp đồng</Button>,
+      ];
+
+      setGroupButton(buttonGr);
+    } else if (
+      authUser?.role === "1" &&
+      contract?.TimeStart?.accept === true &&
+      contract?.Cost?.accept === true &&
+      checkListTermAccept(contract?.Term)
+    ) {
+      const buttonGr = [
+        <Button key="back" onClick={close}>
+          Đóng
+        </Button>,
+        <Button key="back">Ký kết</Button>,
+      ];
+
+      setGroupButton(buttonGr);
+    }
   }, [contract]);
 
+  const updateStateWhenUpdateTerm = useCallback(async () => {
+    fetchContractById(id);
+  }, [fetchContractById, id]);
+
   useEffect(() => {
-    socket.on("update-term", async (data) => {
-      await fetchNotifyOfUser();
-      console.log(contract);
-      fetchContractById(contract?.id);
-    });
-    return () => {
-      socket.off("update-term");
-    };
-  }, [socket, contract, fetchContractById]);
+    socket.on("update-term", updateStateWhenUpdateTerm);
+  }, [socket]);
 
   const CostElement = useMemo(() => {
     return (
       <Row gutter={[8, 8]}>
         <Col>
-          <label>Giá (VNĐ)</label>
+          <label>Với mức giá (VNĐ)/ Tháng</label>
         </Col>
 
         {contract?.Cost?.accept === false &&
@@ -234,7 +263,7 @@ const ListTerm = ({
     return (
       <Row gutter={[8, 8]}>
         <Col>
-          <label>Ngày bắt đầu thuê</label>
+          <label>Hợp đồng có hiệu lực từ ngày</label>
         </Col>
         {contract?.TimeStart?.accept === false &&
           moment(contract?.TimeStart?.value).format("DD-MM-YYYY") ==
@@ -305,11 +334,22 @@ const ListTerm = ({
       onOk={close}
       onCancel={close}
       width={1175}
+      footer={groupButton}
       style={{ top: 20 }}
       className="list-term-container"
     >
       <Col style={{ height: 800 }}>
-        <Row className="term-item">
+        <Row>
+          Sau khi thống nhất, hai bên quyết định các điều khoản hợp đồng thuê
+          nhà như sau.
+        </Row>
+        <Row className="add-rule">※ Điều 1</Row>
+        <Row>
+          - Bên A cho bên B thuê nhà tại địa chỉ{" "}
+          {contract?.RealEstate?.Address?.address} diện tích{" "}
+          {contract?.RealEstate?.acreage} (m2)
+        </Row>
+        <Row className="term-item" style={{ paddingBottom: 5, paddingTop: 4 }}>
           <Col span={12}>
             {CostElement}
             <Row>
@@ -330,7 +370,11 @@ const ListTerm = ({
             </Row>
           </Col>
         </Row>
-        <Row className="term-item">
+        <Row>
+          Tiền thuê sẽ được thanh toán vào ngày{" "}
+          {moment(timeStart?.value).format("DD")} hàng tháng.
+        </Row>
+        <Row className="term-item" style={{ padding: "4px 0" }}>
           <Col span={12}>
             {TimeStartElement}
             <Row>
@@ -348,15 +392,32 @@ const ListTerm = ({
             </Row>
           </Col>
         </Row>
+        <Row>
+          - Tiền cọc khi thuê nhà của bên B sẽ là
+          {" " + String(cost).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+          VNĐ. Số tiền này sẽ lưu trữ trong hợp đồng thông minh và sẽ được hoàn
+          trả cho bên B sau khi chấm dứt hợp đồng đúng kì hạn. Nếu bên B chấm
+          dứt hợp đồng trước thời hạn số tiền này sẽ được bồi thường cho bên A.
+        </Row>
+        <Row className="add-rule">※ Điều 2</Row>
+        <Row>
+          - Bên A có trách nhiệm bàn giao đầy đủ bất động sản cho bên B.
+        </Row>
+        <Row>
+          - Cả bên A và B có trách nhiệm tuân thủ các quy định bên B đã đặt ra
+        </Row>
+        <Row>
+          Sau khi hết thời hạn {12} tháng hai bên có thể tiếp tục đàm phán ký
+          lại hợp đồng để có thể phù hợp với thị trường.
+        </Row>
         <Row
           style={{
             justifyContent: "space-between",
             alignItems: "center",
-            paddingTop: 20,
             paddingBottom: 10,
           }}
         >
-          <Col className="add-rule">Điều khoản bổ sung</Col>
+          <Col className="add-rule">※ Điều khoản bổ sung</Col>
           <Col>
             <Button
               onClick={() => {
@@ -367,6 +428,8 @@ const ListTerm = ({
             </Button>
           </Col>
         </Row>
+        <Row>- Bên A cho phép bên B nuôi động vật</Row>
+        <Row>- Bên B có thể thanh toán tiền hàng tháng bằng Etherum</Row>
         {contract?.Terms?.length > 0 &&
           contract?.Terms.map((term, index) => {
             if (["0", "1"].includes(term?.accept)) {
