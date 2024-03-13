@@ -13,12 +13,10 @@ export const eventSocket = (socket) => {
   });
 };
 
-export const sendNotification = async (userId, eventNotify) => {
+export const sendNotification = async (userId, eventNotify, data) => {
   console.log(users[Number(userId)]);
   console.log("send notification " + userId);
-  await global.io
-    .to(users[Number(userId)])
-    .emit(eventNotify, { data: eventNotify });
+  await global.io.to(users[Number(userId)]).emit(eventNotify, { data: data });
 };
 
 export const sendNotifyToRoom = async (data, newMessage) => {

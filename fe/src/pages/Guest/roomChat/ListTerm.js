@@ -187,13 +187,19 @@ const ListTerm = ({
     }
   }, [contract]);
 
-  const updateStateWhenUpdateTerm = useCallback(async () => {
-    fetchContractById(id);
-  }, [fetchContractById, id]);
+  const updateStateWhenUpdateTerm = useCallback(
+    async (data) => {
+      console.log(data);
+      if (Number(data) === Number(id)) {
+        fetchContractById(id);
+      }
+    },
+    [fetchContractById, id]
+  );
 
   useEffect(() => {
     socket.on("update-term", updateStateWhenUpdateTerm);
-  }, [socket]);
+  }, [socket, id]);
 
   const CostElement = useMemo(() => {
     return (

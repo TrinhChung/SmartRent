@@ -32,7 +32,7 @@ export const createNotifyService = async (
       },
       { transaction: transaction }
     );
-    sendNotification(userId, eventNotify);
+    sendNotification(userId, eventNotify, fkId);
     return notify.get({ plain: true });
   } catch (error) {
     console.log(error);
