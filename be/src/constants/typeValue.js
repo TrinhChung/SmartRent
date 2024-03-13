@@ -7,12 +7,12 @@ export const typeFile = [
 ];
 
 export const statusRent = [
-  { key: "1", name: "negotiating" },
-  { key: "2", name: "contracted" },
-  { key: "3", name: "paid" },
-  { key: "4", name: "rent" },
-  { key: "5", name: "cancel" },
-  { key: "6", name: "closed" },
+  { key: "1", name: "cancel" },
+  { key: "2", name: "closed" },
+  { key: "3", name: "negotiating" },
+  { key: "4", name: "contracted" },
+  { key: "5", name: "paid" },
+  { key: "6", name: "rent" },
 ];
 
 export const typeRooms = [

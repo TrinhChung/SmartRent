@@ -71,6 +71,10 @@ export default function NotifyDropDown() {
       await fetchNotifyOfUser();
       await getRoomChatForMe();
     });
+
+    socket.on("update-term", async (data) => {
+      await fetchNotifyOfUser();
+    });
   }, [authUser, socket]);
 
   const NotifyPlace = () => {

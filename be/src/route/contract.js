@@ -6,6 +6,7 @@ import {
   handleGetContractById,
   handleGetContractForMe,
   handleInitContract,
+  handleSignContract,
 } from "../controllers/contract";
 const SchemaValidator = require("nodejs-schema-validator");
 const schemaValidatorInstance = new SchemaValidator();
@@ -29,3 +30,5 @@ router.post(
 router.get("/me", authenticate, handleGetContractForMe);
 
 router.get("/detail/:id", authenticate, handleGetContractById);
+
+router.put("/sign", authenticate, handleSignContract);

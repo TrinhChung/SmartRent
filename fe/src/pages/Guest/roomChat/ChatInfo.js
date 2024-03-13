@@ -18,7 +18,6 @@ const ChatInfo = ({ roomChat }) => {
 
   const fetchContractById = async (id) => {
     try {
-      console.log("contract id " + id);
       if (id) {
         const res = await getContractByIdService({
           id: id,

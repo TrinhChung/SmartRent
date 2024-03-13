@@ -60,7 +60,7 @@ const RoomChat = () => {
   };
 
   const checkStatusContract = (status) => {
-    if (status === "1" || status === "2" || status === "3" || status === "4") {
+    if (!["1", "2"].includes(status)) {
       return true;
     }
     return false;

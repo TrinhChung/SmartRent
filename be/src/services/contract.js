@@ -36,7 +36,7 @@ export const createContractService = async (data) => {
         costId: cost.id,
         timeStartId: timeStart.id,
         paymentType: realEstate.paymentType,
-        status: "1",
+        status: "3",
       },
       { transaction: transaction }
     );
@@ -74,7 +74,9 @@ export const checkContractIsExistService = async ({ userId, realEstateId }) => {
   try {
     var contracts = await db.Contract.findAll({
       where: {
-        status: ["1", "2", "3", "4"],
+        status: {
+          [Op.notIn]: ["1", "2"],
+        },
         renterId: userId,
         realEstateId: realEstateId,
       },
@@ -112,7 +114,7 @@ export const closeContractService = async (userId, contractId) => {
     ) {
       throw new Error("Bạn không có quyền thay đổi trạng thái hợp đồng");
     }
-    await contract.update({ status: "5" });
+    await contract.update({ status: "1" });
 
     const room = await db.RoomChat.findOne({ contractId: contract.id });
     const receiver =
@@ -234,5 +236,13 @@ export const getContractByIdService = async ({ id }) => {
   } catch (error) {
     console.log(error);
     throw new Error("Get contract id fail", error);
+  }
+};
+
+export const signContractService = async () => {
+  try {
+  } catch (error) {
+    console.log(error);
+    throw new Error("sign contract fail", error);
   }
 };

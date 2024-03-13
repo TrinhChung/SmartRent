@@ -152,7 +152,7 @@ const HouseData = ({
                 Chat
               </Button>
             </Col>
-            {["2", "3", "4"].includes(house?.status) && (
+            {["1", "3", "4"].includes(house?.status) && (
               <Col span={8}>
                 <Button
                   type="default"
@@ -162,7 +162,7 @@ const HouseData = ({
                 </Button>
               </Col>
             )}
-            {["1", "2", "3", "4"].includes(house?.status) && (
+            {["3", "4", "5"].includes(house?.status) && (
               <Col span={8}>
                 <Button
                   type="danger"

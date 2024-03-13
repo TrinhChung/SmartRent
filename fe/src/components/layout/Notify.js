@@ -6,6 +6,7 @@ import {
   faHandshakeSlash,
   faFileContract,
   faPenToSquare,
+  faCircleDollarToSlot,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { SocketContext } from "../../providers/socketProvider";
@@ -13,6 +14,7 @@ import moment from "moment";
 import localization from "moment/locale/vi";
 import { readNotifyService } from "../../services/Notify/index";
 const { Paragraph } = Typography;
+
 const Notify = ({ notify, key = 1 }) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -20,7 +22,7 @@ const Notify = ({ notify, key = 1 }) => {
 
   const switchToLink = async (notify) => {
     var linkNotify;
-    const idRedirectRoomChat = ["1", "2", "3", "4", "5", "6", "7", "8"];
+    const idRedirectRoomChat = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
     if (idRedirectRoomChat.includes(notify.type)) {
       linkNotify = `/room-chat/${notify.fkId}`;
     }
@@ -39,6 +41,11 @@ const Notify = ({ notify, key = 1 }) => {
     2: <FontAwesomeIcon icon={faHandshakeSlash} />,
     3: <FontAwesomeIcon icon={faFileContract} />,
     4: <FontAwesomeIcon icon={faPenToSquare} />,
+    5: <FontAwesomeIcon icon={faMessage} />,
+    6: <FontAwesomeIcon icon={faCircleDollarToSlot} />,
+    7: <FontAwesomeIcon icon={faFileContract} />,
+    8: <FontAwesomeIcon icon={faPenToSquare} />,
+    9: <FontAwesomeIcon icon={faPenToSquare} />,
   };
 
   return (

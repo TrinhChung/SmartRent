@@ -49,12 +49,13 @@ export const typeFile = [
 ];
 
 export const statusRent = {
-  1: { value: "Đang đàm phán", color: "yellow" },
-  2: { value: "Đã ký kết", color: "green" },
-  3: { value: "Đã thanh toán", color: "pink" },
-  4: { value: "Đang thực thi", color: "orange" },
-  5: { value: "Đã hủy bỏ", color: "red" },
-  6: { value: "Kết thúc hợp đồng", color: "blue" },
+  1: { value: "Đã hủy bỏ", color: "red" },
+  2: { value: "Kết thúc hợp đồng", color: "blue" },
+  3: { value: "Đang đàm phán", color: "yellow" },
+  4: { value: "Đã ký kết", color: "green" },
+  5: { value: "Đã thanh toán", color: "pink" },
+  6: { value: "Đang thực thi", color: "orange" },
+  7: { value: "Người thuê đã đặt cọc", color: "blue" },
 };
 
 export const typeRooms = [
