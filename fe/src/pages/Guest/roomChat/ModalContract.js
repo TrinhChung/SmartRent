@@ -6,6 +6,7 @@ import "./Contract.scss";
 import Contract from "./Contract";
 
 const ModalContract = ({ contract, open = false, handleCancel = () => {} }) => {
+  const targetRef = useRef();
   return (
     <Modal
       open={open}
@@ -16,7 +17,7 @@ const ModalContract = ({ contract, open = false, handleCancel = () => {} }) => {
       width={1175}
       style={{ top: 20, height: 900, overflowY: "scroll" }}
     >
-      <Contract contract={contract} />
+      <Contract contract={contract} refContract={targetRef} />
     </Modal>
   );
 };

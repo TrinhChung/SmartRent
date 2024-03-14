@@ -4,6 +4,7 @@ export const typeFile = [
   { key: "3", name: "floor" },
   { key: "4", name: "real-estate" },
   { key: "5", name: "user" },
+  { key: "6", name: "contract" },
 ];
 
 export const statusRent = [

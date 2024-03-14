@@ -4,11 +4,10 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 
 contract SmartContract is ERC721URIStorage {
 
-struct ContractEntity { 
-        uint256 id;
+    struct ContractEntity { 
         address payable renter;
         address payable seller;
-        address reAddress;
+        uint256 reId;
         uint256 rentCost;
         uint256 duration;
         uint256 timeStart;
@@ -45,7 +44,7 @@ struct ContractEntity {
     function mint(uint256 _newItemId,
         address _renterAddress,
         address _sellerAdsress,
-        address  _reAddress,
+        uint256  _reId,
         uint256 _rentCost,
         uint256 _duration,
         uint256 _timeStart,
@@ -59,10 +58,9 @@ struct ContractEntity {
         _setTokenURI(newItemId, uri);
 
         ContractEntity storage newSmartContract = contracts[_newItemId];
-        newSmartContract.id = newItemId;
         newSmartContract.renter = payable(_renterAddress);
         newSmartContract.seller = payable(_sellerAdsress);
-        newSmartContract.reAddress = _reAddress;
+        newSmartContract.reId = _reId;
         newSmartContract.rentCost = _rentCost;
         newSmartContract.duration = _duration;
         newSmartContract.timeStart = _timeStart;

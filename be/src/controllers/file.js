@@ -1,5 +1,6 @@
 import { client } from "../config/connectRedis";
 import { checkFileExistInSession } from "../utils/fileProcess";
+import { writePdfContract } from "../services/file";
 
 export const handleUploadImage = async (req, res, next) => {
   try {
@@ -35,6 +36,20 @@ export const handleUploadImage = async (req, res, next) => {
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Error uploading image" });
+  }
+};
+
+export const handleUploadContact = async (req, res) => {
+  try {
+    const { file, contractId } = req.body;
+
+    const url = await writePdfContract({ file: file, contractId: contractId });
+    return res
+      .status(200)
+      .json({ message: "Upload contact successfully", data: url });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Error upload contact" });
   }
 };
 
