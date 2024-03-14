@@ -239,10 +239,41 @@ export const getContractByIdService = async ({ id }) => {
   }
 };
 
-export const signContractService = async () => {
+export const signContractService = async ({ contractId, userId }) => {
+  const transaction = await db.sequelize.transaction();
   try {
+    var contract = await db.Contract.findOne({
+      where: { id: contractId },
+      include: [
+        {
+          model: db.RoomChat,
+          required: true,
+        },
+      ],
+    });
+
+    const contractData = contract.get({ plain: true });
+    if (userId !== contractData.renterId) {
+      throw new Error("Bạn không có quyền thay đổi trạng thái ký kết");
+    }
+    await contract.update({ status: "7" });
+
+    await createNotifyService(
+      {
+        userId: contractData.sellerId,
+        fkId: contractData?.RoomChat?.id,
+        content: `Người thuê đã ký hợp đồng vui lòng tạo hợp đồng`,
+        type: "2",
+        eventNotify: "sign-contract",
+      },
+      transaction
+    );
+
+    console.log();
+    await transaction.commit();
   } catch (error) {
     console.log(error);
+    await transaction.rollback();
     throw new Error("sign contract fail", error);
   }
 };

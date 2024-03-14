@@ -1,5 +1,6 @@
 import { createReInstanceSMC } from "../config/connectSMC";
 import { abi as abiRe } from "../../artifacts/contracts/RealEstate.sol/RealEstate.json";
+import { abi as abiSc } from "../../artifacts/contracts/SmartContract.sol/SmartContract.json";
 const hre = require("hardhat");
 require("dotenv").config();
 
@@ -84,6 +85,40 @@ export const handleGetAbiReSc = async (req, res, next) => {
     return res
       .status(200)
       .json({ message: "Get abi real estate successfully", data: abi });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({
+      message: error.message,
+    });
+  }
+};
+
+export const handleGetScAddressSc = async (req, res, next) => {
+  try {
+    const scAddress = process.env.RE_ADDRESS;
+    if (!scAddress) {
+      return res.status(404).json({ message: "Chưa deploy smart contract" });
+    }
+    return res
+      .status(200)
+      .json({ message: "Get smart contract successfully", data: scAddress });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({
+      message: error.message,
+    });
+  }
+};
+
+export const handleGetAbiSc = async (req, res, next) => {
+  try {
+    const abi = abiRe;
+    if (!abi) {
+      return res.status(404).json({ message: "Chưa deploy code" });
+    }
+    return res
+      .status(200)
+      .json({ message: "Get abi smart contract successfully", data: abi });
   } catch (error) {
     console.log(error);
     return res.status(400).json({

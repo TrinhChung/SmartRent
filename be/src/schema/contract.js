@@ -27,3 +27,14 @@ export const cancelContractSchema = {
     ],
   },
 };
+
+export const signContractSchema = {
+  contractId: {
+    rules: [
+      {
+        rule: (input) => !input || typeof input !== "number",
+        message: "contractId is required",
+      },
+    ],
+  },
+};

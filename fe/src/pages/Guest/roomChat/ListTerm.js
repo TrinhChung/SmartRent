@@ -4,6 +4,7 @@ import React, {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 import {
@@ -37,26 +38,29 @@ import {
 import { SocketContext } from "../../../providers/socketProvider";
 import { checkListTermAccept } from "../../../util/commonFunc";
 import { useParams } from "react-router-dom";
+import { signContractService } from "../../../services/SC";
+import { toast } from "react-toastify";
 
-const ListTerm = ({
-  contract,
-  open,
-  close = () => {},
-  fetchContractById = () => {},
-}) => {
+const ListTerm = ({ contract, fetchContractById = () => {} }) => {
+  const { id } = useParams();
   const { authUser } = useContext(AuthContext);
   const { socket } = useContext(SocketContext);
   const [formTerm] = Form.useForm();
   const [cost, setCost] = useState(contract?.Cost?.value);
   const [timeStart, setTimeStart] = useState(contract?.TimeStart?.value);
   const [isOpenModalCreateTerm, setIsOpenModalCreateTerm] = useState(false);
-  const { id } = useParams();
 
-  const [groupButton, setGroupButton] = useState([
-    <Button key="back" onClick={close}>
-      Đóng
-    </Button>,
-  ]);
+  useEffect(() => {
+    socket.on("update-term", async (data) => {
+      if (Number(data?.data) === Number(id)) {
+        fetchContractById(id);
+      }
+    });
+
+    return () => {
+      socket.off("update-term");
+    };
+  }, [id]);
 
   const fetchUpdateTerm = useCallback(
     async ({ termId, accept }) => {
@@ -161,45 +165,7 @@ const ListTerm = ({
   useEffect(() => {
     setCost(contract?.Cost?.value);
     setTimeStart(contract?.TimeStart?.value);
-    if (authUser?.role === "2" && contract.status === "7") {
-      const buttonGr = [
-        <Button key="back" onClick={close}>
-          Đóng
-        </Button>,
-        <Button key="back">Tạo hợp đồng</Button>,
-      ];
-
-      setGroupButton(buttonGr);
-    } else if (
-      authUser?.role === "1" &&
-      contract?.TimeStart?.accept === true &&
-      contract?.Cost?.accept === true &&
-      checkListTermAccept(contract?.Term)
-    ) {
-      const buttonGr = [
-        <Button key="back" onClick={close}>
-          Đóng
-        </Button>,
-        <Button key="back">Ký kết</Button>,
-      ];
-
-      setGroupButton(buttonGr);
-    }
   }, [contract]);
-
-  const updateStateWhenUpdateTerm = useCallback(
-    async (data) => {
-      console.log(data);
-      if (Number(data) === Number(id)) {
-        fetchContractById(id);
-      }
-    },
-    [fetchContractById, id]
-  );
-
-  useEffect(() => {
-    socket.on("update-term", updateStateWhenUpdateTerm);
-  }, [socket, id]);
 
   const CostElement = useMemo(() => {
     return (
@@ -330,174 +296,157 @@ const ListTerm = ({
   }, [contract, timeStart]);
 
   return (
-    <Modal
-      open={open}
-      title={
-        <label style={{ fontSize: 18, textTransform: "uppercase" }}>
-          Danh sách điều khoản
-        </label>
-      }
-      onOk={close}
-      onCancel={close}
-      width={1175}
-      footer={groupButton}
-      style={{ top: 20 }}
-      className="list-term-container"
-    >
-      <Col style={{ height: 800 }}>
-        <Row>
-          Sau khi thống nhất, hai bên quyết định các điều khoản hợp đồng thuê
-          nhà như sau.
-        </Row>
-        <Row className="add-rule">※ Điều 1</Row>
-        <Row>
-          - Bên A cho bên B thuê nhà tại địa chỉ{" "}
-          {contract?.RealEstate?.Address?.address} diện tích{" "}
-          {contract?.RealEstate?.acreage} (m2)
-        </Row>
-        <Row className="term-item" style={{ paddingBottom: 5, paddingTop: 4 }}>
-          <Col span={12}>
-            {CostElement}
-            <Row>
-              <InputNumber
-                step={500000}
-                min={0}
-                value={cost}
-                formatter={(value) =>
-                  `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                }
-                parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
-                placeholder="Giá thuê theo tháng"
-                style={{ width: "100%" }}
-                onChange={(value) => {
-                  setCost(value);
-                }}
-              />
-            </Row>
-          </Col>
-        </Row>
-        <Row>
-          Tiền thuê sẽ được thanh toán vào ngày{" "}
-          {moment(timeStart?.value).format("DD")} hàng tháng.
-        </Row>
-        <Row className="term-item" style={{ padding: "4px 0" }}>
-          <Col span={12}>
-            {TimeStartElement}
-            <Row>
-              <DatePicker
-                value={dayjs(timeStart)}
-                onChange={(value) => {
-                  if (value) {
-                    setTimeStart(new Date(value));
-                  } else {
-                    setTimeStart(new Date());
-                  }
-                }}
-                style={{ width: "100%" }}
-              />
-            </Row>
-          </Col>
-        </Row>
-        <Row>
-          - Tiền cọc khi thuê nhà của bên B sẽ là
-          {" " + String(cost).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-          VNĐ. Số tiền này sẽ lưu trữ trong hợp đồng thông minh và sẽ được hoàn
-          trả cho bên B sau khi chấm dứt hợp đồng đúng kì hạn. Nếu bên B chấm
-          dứt hợp đồng trước thời hạn số tiền này sẽ được bồi thường cho bên A.
-        </Row>
-        <Row className="add-rule">※ Điều 2</Row>
-        <Row>
-          - Bên A có trách nhiệm bàn giao đầy đủ bất động sản cho bên B.
-        </Row>
-        <Row>
-          - Cả bên A và B có trách nhiệm tuân thủ các quy định bên B đã đặt ra
-        </Row>
-        <Row>
-          Sau khi hết thời hạn {12} tháng hai bên có thể tiếp tục đàm phán ký
-          lại hợp đồng để có thể phù hợp với thị trường.
-        </Row>
-        <Row
-          style={{
-            justifyContent: "space-between",
-            alignItems: "center",
-            paddingBottom: 10,
-          }}
-        >
-          <Col className="add-rule">※ Điều khoản bổ sung</Col>
-          <Col>
-            <Button
-              onClick={() => {
-                setIsOpenModalCreateTerm(true);
+    <Col style={{ height: 800 }}>
+      <Row>
+        Sau khi thống nhất, hai bên quyết định các điều khoản hợp đồng thuê nhà
+        như sau.
+      </Row>
+      <Row className="add-rule">※ Điều 1</Row>
+      <Row>
+        - Bên A cho bên B thuê nhà tại địa chỉ{" "}
+        {contract?.RealEstate?.Address?.address} diện tích{" "}
+        {contract?.RealEstate?.acreage} (m2)
+      </Row>
+      <Row className="term-item" style={{ paddingBottom: 5, paddingTop: 4 }}>
+        <Col span={12}>
+          {CostElement}
+          <Row>
+            <InputNumber
+              step={500000}
+              min={0}
+              value={cost}
+              formatter={(value) =>
+                `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+              }
+              parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+              placeholder="Giá thuê theo tháng"
+              style={{ width: "100%" }}
+              onChange={(value) => {
+                setCost(value);
               }}
-            >
-              Thêm điều khoản mới
-            </Button>
-          </Col>
-        </Row>
-        <Row>- Bên A cho phép bên B nuôi động vật</Row>
-        <Row>- Bên B có thể thanh toán tiền hàng tháng bằng Etherum</Row>
-        {contract?.Terms?.length > 0 &&
-          contract?.Terms.map((term, index) => {
-            if (["0", "1"].includes(term?.accept)) {
-              return (
-                <Row
-                  style={{ alignItems: "center", padding: "4px 0" }}
-                  id={"term" + index}
-                >
-                  <Col span={24}>
-                    {term?.accept === "0" && term?.userId !== authUser.id && (
-                      <Row gutter={[8, 8]}>
-                        <Col>Điều khoản mới</Col>
-                        <Col>
-                          <Row
-                            style={{
-                              alignItems: "center",
-                              justifyContent: "end",
-                            }}
-                            gutter={[4, 4]}
-                            className="accept-term-button"
-                            onClick={() => {
-                              fetchUpdateTerm({ termId: term.id, accept: "1" });
-                            }}
-                          >
-                            <Col>
-                              <FontAwesomeIcon icon={faCircleCheck} />
-                            </Col>
-                            <Col>
-                              <label>Chấp thuận</label>
-                            </Col>
-                          </Row>
-                        </Col>
-                        <Col>
-                          <Row
-                            style={{
-                              alignItems: "center",
-                              justifyContent: "end",
-                            }}
-                            gutter={[4, 4]}
-                            className="reject-term-button"
-                            onClick={() => {
-                              fetchUpdateTerm({ termId: term.id, accept: "2" });
-                            }}
-                          >
-                            <Col>
-                              <FontAwesomeIcon icon={faXmarkCircle} />
-                            </Col>
-                            <Col>
-                              <label>Từ chối</label>
-                            </Col>
-                          </Row>
-                        </Col>
-                      </Row>
-                    )}
+            />
+          </Row>
+        </Col>
+      </Row>
+      <Row>
+        Tiền thuê sẽ được thanh toán vào ngày {moment(timeStart).format("DD")}{" "}
+        hàng tháng.
+      </Row>
+      <Row className="term-item" style={{ padding: "4px 0" }}>
+        <Col span={12}>
+          {TimeStartElement}
+          <Row>
+            <DatePicker
+              value={dayjs(timeStart)}
+              onChange={(value) => {
+                if (value) {
+                  setTimeStart(new Date(value));
+                } else {
+                  setTimeStart(new Date());
+                }
+              }}
+              style={{ width: "100%" }}
+            />
+          </Row>
+        </Col>
+      </Row>
+      <Row>
+        - Tiền cọc khi thuê nhà của bên B sẽ là
+        {" " + String(cost).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+        VNĐ. Số tiền này sẽ lưu trữ trong hợp đồng thông minh và sẽ được hoàn
+        trả cho bên B sau khi chấm dứt hợp đồng đúng kì hạn. Nếu bên B chấm dứt
+        hợp đồng trước thời hạn số tiền này sẽ được bồi thường cho bên A.
+      </Row>
+      <Row className="add-rule">※ Điều 2</Row>
+      <Row>- Bên A có trách nhiệm bàn giao đầy đủ bất động sản cho bên B.</Row>
+      <Row>
+        - Cả bên A và B có trách nhiệm tuân thủ các quy định bên B đã đặt ra
+      </Row>
+      <Row>
+        Sau khi hết thời hạn {12} tháng hai bên có thể tiếp tục đàm phán ký lại
+        hợp đồng để có thể phù hợp với thị trường.
+      </Row>
+      <Row
+        style={{
+          justifyContent: "space-between",
+          alignItems: "center",
+          paddingBottom: 10,
+        }}
+      >
+        <Col className="add-rule">※ Điều khoản bổ sung</Col>
+        <Col>
+          <Button
+            onClick={() => {
+              setIsOpenModalCreateTerm(true);
+            }}
+          >
+            Thêm điều khoản mới
+          </Button>
+        </Col>
+      </Row>
+      <Row>- Bên A cho phép bên B nuôi động vật</Row>
+      <Row>- Bên B có thể thanh toán tiền hàng tháng bằng Etherum</Row>
+      {contract?.Terms?.length > 0 &&
+        contract?.Terms.map((term, index) => {
+          if (["0", "1"].includes(term?.accept)) {
+            return (
+              <Row
+                style={{ alignItems: "center", padding: "4px 0" }}
+                id={"term" + index}
+              >
+                <Col span={24}>
+                  {term?.accept === "0" && term?.userId !== authUser.id && (
+                    <Row gutter={[8, 8]}>
+                      <Col>Điều khoản mới</Col>
+                      <Col>
+                        <Row
+                          style={{
+                            alignItems: "center",
+                            justifyContent: "end",
+                          }}
+                          gutter={[4, 4]}
+                          className="accept-term-button"
+                          onClick={() => {
+                            fetchUpdateTerm({ termId: term.id, accept: "1" });
+                          }}
+                        >
+                          <Col>
+                            <FontAwesomeIcon icon={faCircleCheck} />
+                          </Col>
+                          <Col>
+                            <label>Chấp thuận</label>
+                          </Col>
+                        </Row>
+                      </Col>
+                      <Col>
+                        <Row
+                          style={{
+                            alignItems: "center",
+                            justifyContent: "end",
+                          }}
+                          gutter={[4, 4]}
+                          className="reject-term-button"
+                          onClick={() => {
+                            fetchUpdateTerm({ termId: term.id, accept: "2" });
+                          }}
+                        >
+                          <Col>
+                            <FontAwesomeIcon icon={faXmarkCircle} />
+                          </Col>
+                          <Col>
+                            <label>Từ chối</label>
+                          </Col>
+                        </Row>
+                      </Col>
+                    </Row>
+                  )}
 
-                    <Row>{"- " + term.content}</Row>
-                  </Col>
-                </Row>
-              );
-            }
-          })}
-      </Col>
+                  <Row>{"- " + term.content}</Row>
+                </Col>
+              </Row>
+            );
+          }
+        })}
       <Modal
         open={isOpenModalCreateTerm}
         title={
@@ -529,7 +478,7 @@ const ListTerm = ({
           </Form.Item>
         </Form>
       </Modal>
-    </Modal>
+    </Col>
   );
 };
 

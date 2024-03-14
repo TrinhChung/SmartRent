@@ -7,6 +7,8 @@ import EditNameRoom from "./EditNameRoom";
 import Contract from "./Contract";
 import { getContractByIdService } from "../../../services/RealEstate";
 import ListTerm from "./ListTerm";
+import StepSign from "./StepSign";
+import ModalContract from "./ModalContract";
 
 const { Sider } = Layout;
 
@@ -81,15 +83,16 @@ const ChatInfo = ({ roomChat }) => {
         <Col>
           <EditOutlined />
         </Col>
-        <Col className="item-chat-info">Danh sách điều khoản</Col>
+        <Col className="item-chat-info">Tiến hành ký kết</Col>
       </Row>
-      <Contract
+      <ModalContract
         contract={contract}
         open={isOpenModalContract}
         handleCancel={closeModalContract}
       />
       <EditNameRoom isOpen={isOpenModelEditName} close={closeModal} />
-      <ListTerm
+
+      <StepSign
         contract={contract}
         open={isOpenModalListTerm}
         close={closeModalListTerm}

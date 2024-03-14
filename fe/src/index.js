@@ -5,14 +5,17 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import AuthProvider from "./providers/authProvider";
 import { SocketProvider } from "./providers/socketProvider";
+import { SmartContractProvider } from "./providers/scProvider";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <AuthProvider>
-      <SocketProvider>
-        <App />
-      </SocketProvider>
+      <SmartContractProvider>
+        <SocketProvider>
+          <App />
+        </SocketProvider>
+      </SmartContractProvider>
     </AuthProvider>
   </React.StrictMode>
 );
