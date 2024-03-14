@@ -76,7 +76,7 @@ export const handleGetContractById = async (req, res) => {
 
 export const handleSignContract = async (req, res) => {
   try {
-    const data = { ...req.body, userId: res.user.id };
+    const data = { ...req.body, userId: req.user.id };
     await signContractService(data);
 
     return res.status(200).json({ message: "Sign contract successfully" });

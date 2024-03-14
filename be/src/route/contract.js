@@ -1,6 +1,10 @@
 import { Router } from "express";
 import { authenticate } from "../middleware/authenticate";
-import { cancelContractSchema, initContractSchema } from "../schema/contract";
+import {
+  cancelContractSchema,
+  initContractSchema,
+  signContractSchema,
+} from "../schema/contract";
 import {
   handleCloseContract,
   handleGetContractById,
@@ -31,4 +35,9 @@ router.get("/me", authenticate, handleGetContractForMe);
 
 router.get("/detail/:id", authenticate, handleGetContractById);
 
-router.put("/sign", authenticate, handleSignContract);
+router.put(
+  "/sign",
+  authenticate,
+  schemaValidatorInstance.validateBody(signContractSchema),
+  handleSignContract
+);

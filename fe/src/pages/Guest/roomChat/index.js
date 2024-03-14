@@ -20,6 +20,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../../../providers/authProvider";
 import { uploadFileToSessionService } from "../../../services/UploadFile/index";
 import { closeContractService } from "../../../services/RealEstate";
+import { toast } from "react-toastify";
 
 const { Footer, Content } = Layout;
 const { TextArea } = Input;
@@ -73,6 +74,7 @@ const RoomChat = () => {
     }
 
     socket.on("new-message", async (data, message) => {
+      console.log(id);
       if (data !== authUser.id) {
         await fetchMessageOfRoom(id);
       }
@@ -80,7 +82,7 @@ const RoomChat = () => {
     return () => {
       socket.off("new-message");
     };
-  }, [socket, id, authUser]);
+  }, [id, authUser]);
 
   useEffect(() => {
     if (id > 0) {

@@ -2,32 +2,10 @@ import React, { useContext, useEffect, useMemo, useState } from "react";
 import { Button, Col, Row } from "antd";
 import { getReAddressService } from "../../../services/SC/index";
 import { AuthContext } from "../../../providers/authProvider";
-import { ethers } from "ethers";
+import { SmartContractContext } from "../../../providers/scProvider";
 
 const MintRealEstate = ({ setLoading = () => {} }) => {
-  const { reAbi, signer } = useContext(AuthContext);
-  const [reAddress, setReAddress] = useState("");
-
-  const fetchReAddressService = async () => {
-    try {
-      const res = await getReAddressService();
-      if (res.status === 200) {
-        setReAddress(res.data);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    fetchReAddressService();
-  }, []);
-
-  const reInstance = useMemo(() => {
-    if (signer && reAbi && reAddress) {
-      return new ethers.Contract(reAddress, reAbi, signer);
-    } else return null;
-  }, [reAddress, reAbi, signer]);
+  const { reInstance } = useContext(SmartContractContext);
 
   const handleCreateRealEstateNft = async () => {
     setLoading(true);

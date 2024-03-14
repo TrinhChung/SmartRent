@@ -8,15 +8,7 @@ const Contract = ({ contract, open = false, handleCancel = () => {} }) => {
   const targetRef = useRef();
 
   return (
-    <Modal
-      open={open}
-      footer={false}
-      onCancel={() => {
-        handleCancel();
-      }}
-      width={1175}
-      style={{ top: 20, height: 900, overflowY: "scroll" }}
-    >
+    <Col span={24} style={{ paddingTop: 16 }}>
       <Row>
         <button
           onClick={async () => {
@@ -174,14 +166,7 @@ const Contract = ({ contract, open = false, handleCancel = () => {} }) => {
           </Row>
         </Col>
       </Row>
-      <Row style={{ justifyContent: "end" }} gutter={[8, 8]}>
-        <Col>
-          <Button className="button-border" style={{ minWidth: 150 }}>
-            Ký kết
-          </Button>
-        </Col>
-      </Row>
-    </Modal>
+    </Col>
   );
 };
 
