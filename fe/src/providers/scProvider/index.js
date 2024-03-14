@@ -128,13 +128,13 @@ export const SmartContractProvider = ({ children }) => {
     }
   }, [authUser]);
 
-  const reInstance = useMemo(() => {
+  const reInstance = useCallback(() => {
     if (signer && reAbi && reAddress) {
       return new ethers.Contract(reAddress, reAbi, signer);
     } else return null;
   }, [reAddress, reAbi, signer]);
 
-  const scInstance = useMemo(() => {
+  const scInstance = useCallback(() => {
     if (signer && scAbi && scAddress) {
       return new ethers.Contract(scAddress, scAbi, signer);
     } else return null;

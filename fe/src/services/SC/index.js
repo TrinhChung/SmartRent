@@ -19,3 +19,7 @@ export const signContractService = (data) => {
 export const getScAbiService = () => {
   return axios.get("/api/smc/sc-abi");
 };
+
+export const uploadContractService = (data) => {
+  return axios.post("/api/file/upload/contract", data);
+};

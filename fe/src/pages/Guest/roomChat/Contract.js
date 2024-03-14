@@ -4,25 +4,22 @@ import moment from "moment";
 import generatePDF from "react-to-pdf";
 import "./Contract.scss";
 
-const Contract = ({ contract, open = false, handleCancel = () => {} }) => {
-  const targetRef = useRef();
-
+const Contract = ({ contract, refContract }) => {
   return (
     <Col span={24} style={{ paddingTop: 16 }}>
       <Row>
         <button
           onClick={async () => {
             const time = moment(new Date()).valueOf();
-            const pdf = await generatePDF(targetRef, {
+            await generatePDF(refContract, {
               filename: time + "_contract.pdf",
             });
-            console.log(pdf.output("arraybuffer"));
           }}
         >
           Download PDF
         </button>
       </Row>
-      <Row className="contract-container" ref={targetRef}>
+      <Row className="contract-container" ref={refContract}>
         <Col span={24}>
           <Row className="national-title">
             <Col>

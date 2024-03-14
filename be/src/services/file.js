@@ -1,5 +1,6 @@
 import { client } from "../config/connectRedis";
 import db from "../models/index";
+import moment from "moment";
 const path = require("path");
 const fs = require("fs");
 
@@ -31,5 +32,26 @@ export const createFileService = async (data, typeFk = "1", transaction) => {
     if (!fileEntity) {
       throw new Error("Couldn't create file");
     }
+  }
+};
+
+export const writePdfContract = async ({ contractId, file }) => {
+  try {
+    const time = moment(new Date()).valueOf();
+    const fileName = time + "_contract.pdf";
+    const pathWrite = path.join(path.resolve("./media/"), fileName);
+    fs.writeFileSync(pathWrite, file, { encoding: "base64" });
+
+    await db.File.create({
+      typeFk: "6",
+      fkId: contractId,
+      typeFile: "pdf",
+      url: fileName,
+    });
+
+    return fileName;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Couldn't create contract");
   }
 };
