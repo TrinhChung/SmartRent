@@ -4,7 +4,6 @@ import React, {
   useContext,
   useEffect,
   useMemo,
-  useRef,
   useState,
 } from "react";
 import {
@@ -36,9 +35,7 @@ import {
   faXmarkCircle,
 } from "@fortawesome/free-regular-svg-icons";
 import { SocketContext } from "../../../providers/socketProvider";
-import { checkListTermAccept } from "../../../util/commonFunc";
 import { useParams } from "react-router-dom";
-import { signContractService } from "../../../services/SC";
 import { toast } from "react-toastify";
 
 const ListTerm = ({ contract, fetchContractById = () => {} }) => {
