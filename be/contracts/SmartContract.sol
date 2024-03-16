@@ -41,17 +41,19 @@ contract SmartContract is ERC721URIStorage {
 
     constructor() ERC721("Smart Contract", "SC") {}
 
-    function mint(uint256 _newItemId,
-        address _renterAddress,
-        address _sellerAdsress,
-        uint256  _reId,
-        uint256 _rentCost,
-        uint256 _duration,
-        uint256 _timeStart,
-        uint256 _paymentDeadline,
-        string memory _payment_type,
-        string memory uri,
-        string[] memory _termArray) public returns (uint256) {
+    function mint(
+        uint256 _newItemId
+        ,address _renterAddress
+        ,address _sellerAdsress
+        ,uint256  _reId
+        ,uint256 _rentCost
+        ,uint256 _duration
+        ,uint256 _timeStart
+        ,uint256 _paymentDeadline
+        ,string memory _payment_type
+        ,string memory uri
+        ,string[] memory _termArray
+        ) public returns (uint256) {
 
         uint256 newItemId = _newItemId;
         _mint(msg.sender , newItemId);

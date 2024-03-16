@@ -35,7 +35,7 @@ export const createContractService = async (data) => {
         sellerId: data.sellerId,
         costId: cost.id,
         timeStartId: timeStart.id,
-        paymentType: realEstate.paymentType,
+        paymentType: "Etherum",
         status: "3",
       },
       { transaction: transaction }

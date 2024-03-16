@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { vndToWei } from "../utils/convertMoney";
 import { createContractInstanceSMC } from "../config/connectSMC";
 import {
   handleCreateRealEstate,
