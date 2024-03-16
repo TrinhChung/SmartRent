@@ -5,6 +5,7 @@ import { statusRent, steps } from "../../../const/index";
 import {
   checkListTermAccept,
   convertBlobToBase64Async,
+  convertVndToEth,
 } from "../../../util/commonFunc";
 import { AuthContext } from "../../../providers/authProvider";
 import {
@@ -32,10 +33,14 @@ const StepSign = ({
   const renterSignContract = useCallback(async () => {
     try {
       if (contract?.id) {
-        const res = await signContractService({ contractId: contract.id });
-        if (res.status === 200) {
-          fetchContractById(contract?.id);
-          toast.success("Ký hợp đồng thành công");
+        if (authUser?.SignatureId > 0 && authUser?.wallet) {
+          const res = await signContractService({ contractId: contract.id });
+          if (res.status === 200) {
+            fetchContractById(contract?.id);
+            toast.success("Ký hợp đồng thành công");
+          }
+        } else {
+          alert("Hãy cập nhật hồ sơ để tiếp tục");
         }
       }
     } catch (error) {
@@ -55,23 +60,78 @@ const StepSign = ({
           filePdf,
           "application/pdf"
         );
+        var urlContract = process.env.REACT_APP_HOST_BE + "/";
         const res = await uploadContractService({
           file: base64,
           contractId: contract?.id,
         });
-        if (res.statusCode === 200) {
-          console.log(res.message);
+
+        if (res.status === 200) {
+          urlContract += res.data;
         }
 
-        // const scNft = await scInstance.mint();
-        console.log(base64);
+        const input = buildParamsCreateSc();
+        console.log(input);
+
+        const scNft = await scInstance.mint(
+          input.id,
+          input.renterAddress,
+          input.sellerAddress,
+          input.reId,
+          input.rentCost,
+          input.duration,
+          input.timeStart,
+          input.paymentDeadline,
+          input.paymentType,
+          urlContract,
+          input.terms
+        );
+
+        console.log(scNft);
       } else {
         alert("Không tồn tại SC nft");
       }
     } catch (error) {
+      console.log(error);
       toast.error("Lỗi hệ thống");
     }
   }, [contract, scInstance]);
+
+  const buildParamsCreateSc = () => {
+    const dlDate = new Date(contract.TimeStart?.value);
+
+    const renterAddress = contract?.renter?.wallet;
+    const sellerAddress = contract?.seller?.wallet;
+    const reId = contract?.RealEstate?.id;
+    const rentCost = convertVndToEth(contract?.Cost.value);
+
+    const timeStart = dlDate.valueOf();
+    const paymentDeadline = dlDate.getDate();
+    const duration = dlDate.setFullYear(dlDate.getFullYear() + 1) - timeStart;
+    const paymentType = "Etherum";
+
+    const terms =
+      contract?.Terms?.length > 0
+        ? contract?.Terms.map((term) => {
+            if (term.accept === "1") {
+              return term.content;
+            }
+          })
+        : [];
+
+    return {
+      id: contract?.id,
+      renterAddress: renterAddress,
+      sellerAddress: sellerAddress,
+      reId: reId,
+      rentCost: rentCost,
+      duration: duration,
+      timeStart: timeStart,
+      paymentDeadline: paymentDeadline,
+      paymentType: paymentType,
+      terms: terms,
+    };
+  };
 
   const groupButton = useMemo(() => {
     if (authUser?.role === "2") {
@@ -83,7 +143,11 @@ const StepSign = ({
           <Button
             key="back"
             onClick={() => {
-              sellerCreateSmartContract();
+              if (authUser?.SignatureId > 0 && authUser?.wallet) {
+                sellerCreateSmartContract();
+              } else {
+                alert("Vui lòng cập nhật đầy đủ thông tin để ký kết");
+              }
             }}
           >
             Tạo hợp đồng
@@ -106,7 +170,11 @@ const StepSign = ({
           <Button
             key="back"
             onClick={async () => {
-              await renterSignContract();
+              if (authUser?.SignatureId > 0 && authUser.wallet) {
+                await renterSignContract();
+              } else {
+                alert("Vui lòng cập nhật đầy đủ thông tin để ký kết");
+              }
             }}
           >
             Ký kết
