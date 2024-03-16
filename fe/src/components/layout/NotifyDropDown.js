@@ -72,14 +72,11 @@ export default function NotifyDropDown() {
       await getRoomChatForMe();
     });
 
-    socket.on("update-term", async (data) => {
+    socket.on("notify-term", async (data) => {
       await fetchNotifyOfUser();
     });
 
     return () => {
-      socket.off("update-term", async (data) => {
-        await fetchNotifyOfUser();
-      });
       socket.off("notify-message", async (data) => {
         await fetchNotifyOfUser();
       });
@@ -94,7 +91,7 @@ export default function NotifyDropDown() {
         await getRoomChatForMe();
       });
 
-      socket.off("update-term", async (data) => {
+      socket.off("notify-term", async (data) => {
         await fetchNotifyOfUser();
       });
     };

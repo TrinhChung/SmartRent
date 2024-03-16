@@ -1,5 +1,6 @@
 import db from "../models/index";
 import { createNotifyService } from "./notify";
+import { senNotifyUpdateTerm } from "../controllers/socket";
 
 export const createTermService = async ({ value, contractId, userId }) => {
   const transaction = await db.sequelize.transaction();
@@ -34,12 +35,20 @@ export const createTermService = async ({ value, contractId, userId }) => {
         fkId: contract?.RoomChat?.id,
         content: "Đối tác của bạn vừa thêm 1 điều khoản mới vào hợp đồng",
         type: "4",
-        eventNotify: "update-term",
+        eventNotify: "notify-term",
       },
       transaction
     );
 
     await transaction.commit();
+
+    await senNotifyUpdateTerm(
+      {
+        roomChatId: contract?.RoomChat?.id,
+        userId: receiver,
+      },
+      "update-term"
+    );
   } catch (error) {
     console.log(error);
     await transaction.rollback();
@@ -82,9 +91,17 @@ export const updateTermService = async ({ accept, termId, userId }) => {
           fkId: term?.Contract?.RoomChat?.id,
           content: "Đối tác đã chấp nhận điều khoản của bạn",
           type: "5",
-          eventNotify: "update-term",
+          eventNotify: "notify-term",
         },
         transaction
+      );
+
+      await senNotifyUpdateTerm(
+        {
+          roomChatId: term?.Contract?.RoomChat?.id,
+          userId: term.userId,
+        },
+        "update-term"
       );
 
       await transaction.commit();
@@ -140,12 +157,20 @@ export const updateValueCostTermService = async ({ value, costId, userId }) => {
           fkId: costData?.Contract?.RoomChat?.id,
           content: "Đối tác của bạn đã chỉnh lại giá thuê",
           type: "6",
-          eventNotify: "update-term",
+          eventNotify: "notify-term",
         },
         transaction
       );
 
       await transaction.commit();
+
+      await senNotifyUpdateTerm(
+        {
+          roomChatId: costData?.Contract?.RoomChat?.id,
+          userId: ownerId,
+        },
+        "update-term"
+      );
     } else {
       throw new Error("Không tìm thấy hợp đồng");
     }
@@ -195,12 +220,20 @@ export const updateAcceptCostTermService = async ({
           fkId: costData?.Contract?.RoomChat?.id,
           content: "Đối tác của bạn đã chấp thuận giá mới",
           type: "7",
-          eventNotify: "update-term",
+          eventNotify: "notify-term",
         },
         transaction
       );
 
       await transaction.commit();
+
+      await senNotifyUpdateTerm(
+        {
+          roomChatId: costData?.Contract?.RoomChat?.id,
+          userId: costData.userId,
+        },
+        "update-term"
+      );
     } else {
       throw new Error("Không tìm thấy hợp đồng");
     }
@@ -257,12 +290,20 @@ export const updateValueTimeStartTermService = async ({
           fkId: timeStartData?.Contract?.RoomChat?.id,
           content: "Đối tác của bạn đã chỉnh lại thời gian hợp đồng bắt đầu",
           type: "8",
-          eventNotify: "update-term",
+          eventNotify: "notify-term",
         },
         transaction
       );
 
       await transaction.commit();
+
+      await senNotifyUpdateTerm(
+        {
+          roomChatId: timeStartData?.Contract?.RoomChat?.id,
+          userId: ownerId,
+        },
+        "update-term"
+      );
     } else {
       throw new Error("Không tìm thấy hợp đồng");
     }
@@ -312,11 +353,19 @@ export const updateAcceptTimeStartTermService = async ({
           fkId: timeStartData?.Contract?.RoomChat?.id,
           content: "Đối tác của bạn đã chỉnh lại thời gian hợp đồng bắt đầu",
           type: "9",
-          eventNotify: "update-term",
+          eventNotify: "notify-term",
         },
         transaction
       );
       await transaction.commit();
+
+      await senNotifyUpdateTerm(
+        {
+          roomChatId: timeStartData?.Contract?.RoomChat?.id,
+          userId: timeStartData.userId,
+        },
+        "update-term"
+      );
     } else {
       throw new Error("Không tìm thấy hợp đồng");
     }

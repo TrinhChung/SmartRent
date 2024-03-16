@@ -34,30 +34,14 @@ import {
   faPaperPlane,
   faXmarkCircle,
 } from "@fortawesome/free-regular-svg-icons";
-import { SocketContext } from "../../../providers/socketProvider";
-import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const ListTerm = ({ contract, fetchContractById = () => {} }) => {
-  const { id } = useParams();
   const { authUser } = useContext(AuthContext);
-  const { socket } = useContext(SocketContext);
   const [formTerm] = Form.useForm();
   const [cost, setCost] = useState(contract?.Cost?.value);
   const [timeStart, setTimeStart] = useState(contract?.TimeStart?.value);
   const [isOpenModalCreateTerm, setIsOpenModalCreateTerm] = useState(false);
-
-  useEffect(() => {
-    socket.on("update-term", async (data) => {
-      if (Number(data?.data) === Number(id)) {
-        fetchContractById(id);
-      }
-    });
-
-    return () => {
-      socket.off("update-term");
-    };
-  }, [id]);
 
   const fetchUpdateTerm = useCallback(
     async ({ termId, accept }) => {

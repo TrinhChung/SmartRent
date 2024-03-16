@@ -14,13 +14,18 @@ export const eventSocket = (socket) => {
 };
 
 export const sendNotification = async (userId, eventNotify, data) => {
-  console.log(users[Number(userId)]);
-  console.log("send notification " + userId);
   await global.io.to(users[Number(userId)]).emit(eventNotify, { data: data });
 };
 
 export const sendNotifyToRoom = async (data, newMessage) => {
   await global.io.to(data.roomChatId).emit("new-message", data.userId);
+};
+
+export const senNotifyUpdateTerm = async (data, eventNotify) => {
+  // console.log("update-term");
+  // const dataSend = { roomChatId: data.roomChatId, userId: data.userId };
+  // console.log(dataSend);
+  await global.io.to(5).emit("update-term");
 };
 
 const disconnect = (socket, userId, roomId) => {
