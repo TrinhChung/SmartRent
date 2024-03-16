@@ -1,3 +1,5 @@
+import db from "../models/index";
+
 export const initContractSchema = {
   sellerId: {
     rules: [
@@ -17,23 +19,22 @@ export const initContractSchema = {
   },
 };
 
-export const cancelContractSchema = {
-  contractId: {
-    rules: [
-      {
-        rule: (input) => !input || typeof input !== "number",
-        message: "contractId is required",
-      },
-    ],
-  },
-};
-
 export const signContractSchema = {
   contractId: {
     rules: [
       {
         rule: (input) => !input || typeof input !== "number",
         message: "contractId is required",
+      },
+      {
+        rule: async (input) => {
+          const contract = await db.Contract.findOne({ where: { id: input } });
+          if (!contract) {
+            return true;
+          }
+          return false;
+        },
+        message: "contractId is not exist",
       },
     ],
   },

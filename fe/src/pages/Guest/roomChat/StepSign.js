@@ -18,6 +18,7 @@ import CreateSC from "./CreateSC";
 import { SmartContractContext } from "../../../providers/scProvider";
 import moment from "moment";
 import generatePDF from "react-to-pdf";
+import { createScService } from "../../../services/SC/index";
 
 const StepSign = ({
   contract,
@@ -48,6 +49,20 @@ const StepSign = ({
     }
   }, [contract]);
 
+  const fetchCreateSmartContract = async () => {
+    try {
+      if (contract?.id) {
+        const res = await createScService({ contractId: contract.id });
+        if (res.status === 200) {
+          toast.success("Tạo hợp đồng thông minh thành công");
+          fetchContractById(contract?.id);
+        }
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   const sellerCreateSmartContract = useCallback(async () => {
     try {
       if (scInstance) {
@@ -71,7 +86,6 @@ const StepSign = ({
         }
 
         const input = buildParamsCreateSc();
-        console.log(input);
 
         const scNft = await scInstance.mint(
           input.id,
@@ -87,7 +101,7 @@ const StepSign = ({
           input.terms
         );
 
-        console.log(scNft);
+        fetchCreateSmartContract();
       } else {
         alert("Không tồn tại SC nft");
       }

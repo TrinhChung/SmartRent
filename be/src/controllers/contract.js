@@ -5,6 +5,7 @@ import {
   getContractService,
   getContractByIdService,
   signContractService,
+  createSmartContractService,
 } from "../services/contract";
 
 export const handleInitContract = async (req, res, next) => {
@@ -88,6 +89,13 @@ export const handleSignContract = async (req, res) => {
 
 export const handleCreateSc = async (req, res) => {
   try {
+    const contractId = req.body.contractId;
+    const userId = req.user.id;
+    await createSmartContractService({
+      contractId: contractId,
+      userId: userId,
+    });
+
     return res.status(200).json({ message: "Create smart contract" });
   } catch (error) {
     console.log(error);

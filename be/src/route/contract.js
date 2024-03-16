@@ -28,7 +28,7 @@ router.post(
 router.post(
   "/close",
   authenticate,
-  schemaValidatorInstance.validateBody(cancelContractSchema),
+  schemaValidatorInstance.validateBody(signContractSchema),
   handleCloseContract
 );
 
@@ -43,4 +43,9 @@ router.put(
   handleSignContract
 );
 
-router.post("/create/smart-contract", authenticate, handleCreateSc);
+router.post(
+  "/create/smart-contract",
+  authenticate,
+  schemaValidatorInstance.validateBody(signContractSchema),
+  handleCreateSc
+);
