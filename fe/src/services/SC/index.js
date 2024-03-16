@@ -23,3 +23,7 @@ export const getScAbiService = () => {
 export const uploadContractService = (data) => {
   return axios.post("/api/file/upload/contract", data);
 };
+
+export const createScService = (data) => {
+  return axios.post("/api/contract/create/smart-contract", data);
+};
