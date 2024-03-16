@@ -19,7 +19,10 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../../../providers/authProvider";
 import { uploadFileToSessionService } from "../../../services/UploadFile/index";
-import { closeContractService } from "../../../services/RealEstate";
+import {
+  closeContractService,
+  getContractByIdService,
+} from "../../../services/RealEstate";
 import { toast } from "react-toastify";
 
 const { Footer, Content } = Layout;
@@ -31,6 +34,7 @@ const RoomChat = () => {
   const { socket, roomChats, getRoomChatForMe } = useContext(SocketContext);
   const [roomChat, setRoomChat] = useState();
   const [messages, setMessages] = useState([]);
+  const [contract, setContract] = useState({});
   const [files, setFiles] = useState([]);
   const [content, setContent] = useState("");
   const navigate = useNavigate();
@@ -99,6 +103,25 @@ const RoomChat = () => {
       }
     }
   }, [roomChats, id]);
+
+  const fetchContractById = async (id) => {
+    try {
+      if (id) {
+        const res = await getContractByIdService({
+          id: id,
+        });
+        if (res.status === 200) {
+          setContract(res.data);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchContractById(roomChat?.contract?.id);
+  }, [roomChat?.contract?.id]);
 
   const switchRoomChat = (chatId) => {
     navigate(`/room-chat/${chatId}`);
@@ -295,7 +318,7 @@ const RoomChat = () => {
           </Col>
         </Footer>
       </Layout>
-      <ChatInfo roomChat={roomChat} />
+      <ChatInfo contract={contract} fetchContractById={fetchContractById} />
     </Layout>
   );
 };

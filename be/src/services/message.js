@@ -91,7 +91,6 @@ export const createMessageService = async (data) => {
     );
 
     await transaction.commit();
-    await sendNotification(receiver, "new-message");
     await sendNotifyToRoom(data, newMessage);
     return message;
   } catch (error) {
