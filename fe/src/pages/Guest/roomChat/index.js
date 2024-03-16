@@ -79,11 +79,12 @@ const RoomChat = () => {
 
     socket.on("update-term", async (data, message) => {
       console.log("update term", data);
+      console.log(`userID : ${authUser.id}`)
       if (
-        Number(data?.userId) === Number(contract.id) &&
-        data?.roomChatId === id
+        Number(data?.userId) === Number(authUser.id) &&
+        Number(data?.roomChatId) === Number(id)
       ) {
-        fetchContractById(id);
+        await fetchContractById(id);
       }
     });
 
@@ -97,7 +98,7 @@ const RoomChat = () => {
     return () => {
       socket.off("new-message");
 
-      // socket.off("update-term");
+      socket.off("update-term");
     };
   }, [id, authUser]);
 
