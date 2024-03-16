@@ -77,14 +77,27 @@ const RoomChat = () => {
       socket.emit("join-room", id, authUser?.id);
     }
 
+    socket.on("update-term", async (data, message) => {
+      console.log("update term", data);
+      if (
+        Number(data?.userId) === Number(contract.id) &&
+        data?.roomChatId === id
+      ) {
+        fetchContractById(id);
+      }
+    });
+
     socket.on("new-message", async (data, message) => {
-      console.log(id);
+      console.log(data);
       if (data !== authUser.id) {
         await fetchMessageOfRoom(id);
       }
     });
+
     return () => {
       socket.off("new-message");
+
+      // socket.off("update-term");
     };
   }, [id, authUser]);
 
@@ -99,6 +112,7 @@ const RoomChat = () => {
       for (var room of roomChats) {
         if (String(room.id) === String(id)) {
           setRoomChat(room);
+          fetchContractById(room?.contract?.id);
         }
       }
     }
@@ -119,9 +133,7 @@ const RoomChat = () => {
     }
   };
 
-  useEffect(() => {
-    fetchContractById(roomChat?.contract?.id);
-  }, [roomChat?.contract?.id]);
+  useEffect(() => {}, [socket, contract]);
 
   const switchRoomChat = (chatId) => {
     navigate(`/room-chat/${chatId}`);

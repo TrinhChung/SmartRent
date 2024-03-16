@@ -8,7 +8,7 @@ module.exports = {
     host: process.env.HOST,
     port: process.env.PORT_DB,
     dialect: "mysql",
-    logging: true,
+    logging: false,
     timezone: "+07:00",
   },
   testnet: {
@@ -18,7 +18,7 @@ module.exports = {
     host: process.env.HOST,
     port: process.env.PORT_DB,
     dialect: "mysql",
-    logging: true,
+    logging: false,
     timezone: "+07:00",
   },
   test: {
