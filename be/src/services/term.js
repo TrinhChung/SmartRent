@@ -16,6 +16,10 @@ export const createTermService = async ({ value, contractId, userId }) => {
     });
     contract = contract.get({ plain: true });
 
+    if (contract.status !== "3") {
+      throw new Error("Đã kết thúc giai đoạn đàm phán");
+    }
+
     await db.Term.create(
       {
         content: value,
@@ -74,8 +78,14 @@ export const updateTermService = async ({ accept, termId, userId }) => {
         },
       ],
     });
+
     if (term?.dataValues && term?.dataValues.Contract) {
       const termData = term.get({ plain: true });
+
+      if (termData.Contract.status !== "3") {
+        throw new Error("Đã kết thúc giai đoạn đàm phán");
+      }
+
       const ownerId =
         termData.Contract.sellerId === term.userId
           ? termData.Contract.renterId
@@ -142,6 +152,11 @@ export const updateValueCostTermService = async ({ value, costId, userId }) => {
       ) {
         throw new Error("Không thể chỉnh sửa điều khoản của người khác");
       }
+
+      if (costData.Contract.status !== "3") {
+        throw new Error("Đã kết thúc giai đoạn đàm phán");
+      }
+
       await cost.update(
         { value: value, accept: false, userId: userId },
         { transaction: transaction }
@@ -205,6 +220,7 @@ export const updateAcceptCostTermService = async ({
     });
     if (cost?.dataValues && cost?.dataValues.Contract) {
       const costData = cost.get({ plain: true });
+
       const ownerId =
         costData.Contract.sellerId === costData.userId
           ? costData.Contract.renterId
@@ -212,6 +228,11 @@ export const updateAcceptCostTermService = async ({
       if (ownerId !== userId) {
         throw new Error("Không thể chỉnh sửa điều khoản của người khác");
       }
+
+      if (costData.Contract.status !== "3") {
+        throw new Error("Đã kết thúc giai đoạn đàm phán");
+      }
+
       await cost.update({ accept: accept }, { transaction: transaction });
 
       await createNotifyService(
@@ -274,6 +295,11 @@ export const updateValueTimeStartTermService = async ({
       ) {
         throw new Error("Không thể chỉnh sửa điều khoản của người khác");
       }
+
+      if (timeStartData.Contract.status !== "3") {
+        throw new Error("Đã kết thúc giai đoạn đàm phán");
+      }
+
       await timeStart.update(
         { value: value, accept: false, userId: userId },
         { transaction: transaction }
@@ -342,8 +368,13 @@ export const updateAcceptTimeStartTermService = async ({
         timeStartData.Contract.sellerId === timeStartData.userId
           ? timeStartData.Contract.renterId
           : timeStartData.Contract.sellerId;
+
       if (ownerId !== userId) {
         throw new Error("Không thể chỉnh sửa điều khoản của người khác");
+      }
+
+      if (timeStartData.Contract.status !== "3") {
+        throw new Error("Đã kết thúc giai đoạn đàm phán");
       }
       await timeStart.update({ accept: accept }, { transaction: transaction });
 

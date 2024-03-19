@@ -3,6 +3,9 @@ import {
   SmileOutlined,
   SolutionOutlined,
 } from "@ant-design/icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSignature } from "@fortawesome/free-solid-svg-icons";
+import { faCreditCard } from "@fortawesome/free-regular-svg-icons";
 
 export const settingSlider = {
   className: "center",
@@ -91,7 +94,7 @@ export const statusRent = {
   },
   8: {
     value: "Người bán đã tạo hợp đồng",
-    color: "blue",
+    color: "pink",
     title: "Vui lòng chờ người cho thuê thanh toán",
     step: 3,
   },
@@ -124,7 +127,7 @@ export const steps = [
   },
   {
     title: "Ký kết",
-    icon: <SolutionOutlined />,
+    icon: <FontAwesomeIcon icon={faSignature} />,
   },
   {
     title: "Tạo hợp đồng thông minh",
@@ -132,7 +135,7 @@ export const steps = [
   },
   {
     title: "Thanh toán tiền thuê",
-    icon: <SolutionOutlined />,
+    icon: <FontAwesomeIcon icon={faCreditCard} />,
   },
   {
     title: "Done",

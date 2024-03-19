@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.20;
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
 contract SmartContract is ERC721URIStorage {
 
@@ -18,7 +19,8 @@ contract SmartContract is ERC721URIStorage {
 
     mapping(uint256 => ContractEntity) contracts;
 
-    mapping(address => uint256) positRenter;
+    mapping(address => mapping (uint256 => uint256)) positRenter;
+    mapping(address => uint256) balanceRenter;
 
 
     modifier onlyRenter(uint256 id) {
@@ -56,7 +58,7 @@ contract SmartContract is ERC721URIStorage {
         ) public returns (uint256) {
 
         uint256 newItemId = _newItemId;
-        _mint(msg.sender , newItemId);
+        _mint(address(this) , newItemId);
         _setTokenURI(newItemId, uri);
 
         ContractEntity storage newSmartContract = contracts[_newItemId];
@@ -76,9 +78,15 @@ contract SmartContract is ERC721URIStorage {
         return newItemId;
     }
 
-    function depositContract(uint256 id) public payable {
-        require(msg.value >= contracts[id].rentCost, "Deposit not enough");
-        positRenter[msg.sender] += msg.value;
+    function depositContract(uint256 id) public payable onlyRenter(id) {
+        if (positRenter[msg.sender][id] <= 0) {
+          require(msg.value >= contracts[id].rentCost, "Deposit not enough");
+          positRenter[msg.sender][id] += contracts[id].rentCost;
+          balanceRenter[msg.sender] += (msg.value - contracts[id].rentCost);
+          ERC721(address(this)).transferFrom(address(this), contracts[id].renter, id);
+        } else {
+            balanceRenter[msg.sender] += (msg.value);
+        }
     }
 
     function renewal(uint256 _time, uint256 id) public payable onlyRenter(id) {
@@ -86,8 +94,14 @@ contract SmartContract is ERC721URIStorage {
         contracts[id].duration += _time;
     }
 
-    function getPositRenter(address _renter) public view returns (uint256) {
-        return positRenter[_renter];
+    function withdrawPositRenter(uint256 value) public {
+        require(value <= balanceRenter[msg.sender], "Balance not enough");
+        payable(msg.sender).transfer(value);
+        balanceRenter[msg.sender] -= value;
+    }
+
+    function getBalanceRenterETH() public view returns (uint256) {
+        return balanceRenter[msg.sender];
     }
 
     function getContract(uint256 id) public view returns (ContractEntity memory) {
@@ -96,7 +110,7 @@ contract SmartContract is ERC721URIStorage {
     }
 
     // get all balance when destroy contract
-    function close(address _to, uint256 id) public onlyOwner(id) {
+    function close(address _to) public {
         payable(_to).transfer(address(this).balance);
     }
 }

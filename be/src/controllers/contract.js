@@ -83,7 +83,7 @@ export const handleSignContract = async (req, res) => {
     return res.status(200).json({ message: "Sign contract successfully" });
   } catch (error) {
     console.log(error);
-    return res.status(400).json({ message: "Server error sign contract" });
+    return res.status(400).json({ message: error.message });
   }
 };
 
@@ -99,8 +99,6 @@ export const handleCreateSc = async (req, res) => {
     return res.status(200).json({ message: "Create smart contract" });
   } catch (error) {
     console.log(error);
-    return res
-      .status(400)
-      .json({ message: "Server error create smart contract" });
+    return res.status(400).json({ message: error.message });
   }
 };

@@ -265,6 +265,10 @@ export const signContractService = async ({ contractId, userId }) => {
     if (userId !== contractData.renterId) {
       throw new Error("Bạn không có quyền thay đổi trạng thái ký kết");
     }
+    if (contractData.status !== "3") {
+      throw new Error("Thao tác không hợp lệ");
+    }
+
     await contract.update({ status: "7" });
 
     await createNotifyService(
@@ -290,7 +294,7 @@ export const signContractService = async ({ contractId, userId }) => {
   } catch (error) {
     console.log(error);
     await transaction.rollback();
-    throw new Error("sign contract fail", error);
+    throw new Error(error.message, error);
   }
 };
 
@@ -312,13 +316,17 @@ export const createSmartContractService = async ({ contractId, userId }) => {
       throw new Error("Bạn không có quyền thay đổi trạng thái ký kết");
     }
 
+    if (contractData.status !== "7") {
+      throw new Error("Thao tác không hợp lệ");
+    }
+
     await contract.update({ status: "8" }, { transaction: transaction });
 
     await createNotifyService(
       {
-        userId: contractData.sellerId,
+        userId: contractData.renterId,
         fkId: contractData?.RoomChat?.id,
-        content: `Người thuê đã ký hợp đồng vui lòng tạo hợp đồng`,
+        content: `Người bán đã tạo hợp đồng thông minh`,
         type: "2",
         eventNotify: "sign-contract",
       },
@@ -330,7 +338,7 @@ export const createSmartContractService = async ({ contractId, userId }) => {
     await senNotifyUpdateTerm(
       {
         roomChatId: contractData?.RoomChat?.id,
-        userId: contractData.sellerId,
+        userId: contractData.renterId,
       },
       "update-term"
     );
