@@ -23,18 +23,18 @@ async function main() {
     console.log("Real Estate address is not available");
   }
 
-  const contractApi = await hre.ethers.deployContract(
-    "contracts/contractApi.sol:SmartContract"
+  const smartContract = await hre.ethers.deployContract(
+    "contracts/SmartContract.sol:SmartContract"
   );
 
   await contractApi.waitForDeployment();
   let tokenUris;
   tokenUris = await handleTokenUris()
 
-  if (contractApi.target) {
+  if (smartContract.target) {
     // shell.env["CONTRACT_ADDRESS"] = contractApi.target;
-    setEnv("CONTRACT_ADDRESS", contractApi.target);
-    console.log("Contract address: ", contractApi.target);
+    setEnv("CONTRACT_ADDRESS", smartContract.target);
+    console.log("Smart Contract address: ", smartContract.target);
   } else {
     console.log("Contract address is not available");
   }

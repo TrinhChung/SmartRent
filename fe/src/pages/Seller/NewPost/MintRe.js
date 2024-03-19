@@ -1,17 +1,17 @@
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { useContext } from "react";
 import { Button, Col, Row } from "antd";
-import { getReAddressService } from "../../../services/SC/index";
-import { AuthContext } from "../../../providers/authProvider";
 import { SmartContractContext } from "../../../providers/scProvider";
+import { useParams } from "react-router-dom";
 
 const MintRealEstate = ({ setLoading = () => {} }) => {
+  const { id } = useParams();
   const { reInstance } = useContext(SmartContractContext);
 
   const handleCreateRealEstateNft = async () => {
     setLoading(true);
     try {
       if (reInstance) {
-        const totalSupply = await reInstance.mint(window.location.href);
+        const totalSupply = await reInstance.mint(id, window.location.href);
         console.log(totalSupply);
       } else {
         alert("Không tồn tại SC nft");

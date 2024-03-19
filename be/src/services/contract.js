@@ -1,5 +1,6 @@
 import db from "../models/index";
 import { createNotifyService } from "./notify";
+import { senNotifyUpdateTerm } from "../controllers/socket";
 const { Op } = require("sequelize");
 
 export const createContractService = async (data) => {
@@ -35,7 +36,7 @@ export const createContractService = async (data) => {
         sellerId: data.sellerId,
         costId: cost.id,
         timeStartId: timeStart.id,
-        paymentType: realEstate.paymentType,
+        paymentType: "Etherum",
         status: "3",
       },
       { transaction: transaction }
@@ -129,6 +130,14 @@ export const closeContractService = async (userId, contractId) => {
         eventNotify: "close-contract",
       },
       transaction
+    );
+
+    await senNotifyUpdateTerm(
+      {
+        roomChatId: room.id,
+        userId: receiver,
+      },
+      "update-term"
     );
 
     await transaction.commit();
@@ -269,8 +278,62 @@ export const signContractService = async ({ contractId, userId }) => {
       transaction
     );
 
-    console.log();
+    await senNotifyUpdateTerm(
+      {
+        roomChatId: contractData?.RoomChat?.id,
+        userId: contractData.sellerId,
+      },
+      "update-term"
+    );
+
     await transaction.commit();
+  } catch (error) {
+    console.log(error);
+    await transaction.rollback();
+    throw new Error("sign contract fail", error);
+  }
+};
+
+export const createSmartContractService = async ({ contractId, userId }) => {
+  const transaction = await db.sequelize.transaction();
+  try {
+    var contract = await db.Contract.findOne({
+      where: { id: contractId },
+      include: [
+        {
+          model: db.RoomChat,
+          required: true,
+        },
+      ],
+    });
+    var contractData = contract.get({ plain: true });
+
+    if (userId !== contractData.sellerId) {
+      throw new Error("Bạn không có quyền thay đổi trạng thái ký kết");
+    }
+
+    await contract.update({ status: "8" }, { transaction: transaction });
+
+    await createNotifyService(
+      {
+        userId: contractData.sellerId,
+        fkId: contractData?.RoomChat?.id,
+        content: `Người thuê đã ký hợp đồng vui lòng tạo hợp đồng`,
+        type: "2",
+        eventNotify: "sign-contract",
+      },
+      transaction
+    );
+
+    await transaction.commit();
+
+    await senNotifyUpdateTerm(
+      {
+        roomChatId: contractData?.RoomChat?.id,
+        userId: contractData.sellerId,
+      },
+      "update-term"
+    );
   } catch (error) {
     console.log(error);
     await transaction.rollback();

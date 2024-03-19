@@ -5,6 +5,7 @@ import {
   useMemo,
   useCallback,
   useEffect,
+  memo,
 } from "react";
 import {
   getScAddressService,
@@ -25,6 +26,8 @@ export const SmartContractProvider = ({ children }) => {
   const [reAbi, setReAbi] = useState("");
   const [scAbi, setScAbi] = useState("");
   const [signer, setSigner] = useState(null);
+  const [scInstance, setScInstance] = useState(null);
+  const [reInstance, setReInstance] = useState(null);
 
   const fetchReAddressService = async () => {
     try {
@@ -128,17 +131,25 @@ export const SmartContractProvider = ({ children }) => {
     }
   }, [authUser]);
 
-  const reInstance = useCallback(() => {
+  useEffect(() => {
     if (signer && reAbi && reAddress) {
-      return new ethers.Contract(reAddress, reAbi, signer);
-    } else return null;
+      const instance = new ethers.Contract(reAddress, reAbi, signer);
+      console.log(instance);
+      setReInstance(instance);
+    } else {
+      setReInstance(null);
+    }
   }, [reAddress, reAbi, signer]);
 
-  const scInstance = useCallback(() => {
+  useEffect(() => {
     if (signer && scAbi && scAddress) {
-      return new ethers.Contract(scAddress, scAbi, signer);
-    } else return null;
-  }, [reAddress, scAbi, signer]);
+      const instance = new ethers.Contract(scAddress, scAbi, signer);
+      console.log(instance);
+      setScInstance(instance);
+    } else {
+      setScInstance(null);
+    }
+  }, [scAddress, scAbi, signer]);
 
   return (
     <SmartContractContext.Provider

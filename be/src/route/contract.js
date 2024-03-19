@@ -11,6 +11,7 @@ import {
   handleGetContractForMe,
   handleInitContract,
   handleSignContract,
+  handleCreateSc,
 } from "../controllers/contract";
 const SchemaValidator = require("nodejs-schema-validator");
 const schemaValidatorInstance = new SchemaValidator();
@@ -27,7 +28,7 @@ router.post(
 router.post(
   "/close",
   authenticate,
-  schemaValidatorInstance.validateBody(cancelContractSchema),
+  schemaValidatorInstance.validateBody(signContractSchema),
   handleCloseContract
 );
 
@@ -40,4 +41,11 @@ router.put(
   authenticate,
   schemaValidatorInstance.validateBody(signContractSchema),
   handleSignContract
+);
+
+router.post(
+  "/create/smart-contract",
+  authenticate,
+  schemaValidatorInstance.validateBody(signContractSchema),
+  handleCreateSc
 );

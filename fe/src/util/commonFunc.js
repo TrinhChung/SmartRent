@@ -23,3 +23,7 @@ export const convertBlobToBase64Async = (blob, mimeType) => {
     reader.readAsDataURL(blob);
   });
 };
+
+export const convertVndToEth = (value) => {
+  return value * 100;
+};
