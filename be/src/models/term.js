@@ -25,6 +25,15 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         defaultValue: false,
       },
+      type: {
+        type: DataTypes.STRING(20),
+        allowNull: false,
+        defaultValue: "other",
+      },
+      value: {
+        type: DataTypes.STRING(100),
+        allowNull: true,
+      },
       userId: {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,

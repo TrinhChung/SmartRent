@@ -116,8 +116,9 @@ const StepSign = ({
 
   const renterDepositContract = useCallback(async () => {
     try {
+      const deposit = contract.Terms.find((term) => (term.type = "deposit"));
       const tx = {
-        value: String(convertVndToEth(contract?.Cost?.value)),
+        value: String(convertVndToEth(Number(deposit?.value))),
       };
       const paymentInfo = await scInstance.depositContract(contract?.id, tx);
       console.log(paymentInfo);
@@ -151,12 +152,7 @@ const StepSign = ({
       }
     }
     if (authUser?.role === "1") {
-      if (
-        contract?.status === "3" &&
-        contract?.TimeStart?.accept === true &&
-        contract?.Cost?.accept === true &&
-        checkListTermAccept(contract?.Term)
-      ) {
+      if (contract?.status === "3" && checkListTermAccept(contract?.Term)) {
         const buttonGr = [
           <Button key="back" onClick={close}>
             Đóng

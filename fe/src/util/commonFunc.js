@@ -25,7 +25,7 @@ export const convertBlobToBase64Async = (blob, mimeType) => {
 };
 
 export const convertVndToEth = (value) => {
-  return value * 12.5e9;
+  return value * 12.5e3;
 };
 
 export const buildParamsCreateSc = (contract) => {

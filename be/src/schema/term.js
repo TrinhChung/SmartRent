@@ -1,8 +1,9 @@
+import db from "../models/index";
 const validator = require("validator");
 const moment = require("moment");
 
-export const createTermSchema = {
-  value: {
+export const createTermOtherSchema = {
+  content: {
     rules: [
       {
         rule: (input) => !input || validator.isEmpty(input),
@@ -33,99 +34,42 @@ export const updateTermSchema = {
     rules: [
       {
         rule: (input) => !input || validator.isEmpty(input),
-        message: "contractId is required",
+        message: "accept is required",
       },
       {
-        rule: (input) => input != "1" && input != "2",
+        rule: (input) => input != "0" && input != "1" && input != "2",
+        message: "accept of contractId is valid",
+      },
+    ],
+  },
+  value: {
+    optional: true,
+    rules: [
+      {
+        rule: async (input, { termId }) => {
+          if (termId) {
+            const term = await db.Term.findOne({
+              where: { id: termId },
+              include: [
+                {
+                  model: db.Contract,
+                },
+              ],
+            });
+
+            const termData = term.get({ plain: true });
+
+            if (termData.type === "cost") {
+              return !validator.isAlphanumeric(String(input));
+            }
+            if (termData.type === "timeStart") {
+              return !moment(String(input), moment.ISO_8601, true).isValid();
+            }
+          }
+
+          return false;
+        },
         message: "value of contractId is valid",
-      },
-    ],
-  },
-};
-
-export const updateValueCostTermSchema = {
-  costId: {
-    rules: [
-      {
-        rule: (input) => !input,
-        message: "costId is required",
-      },
-    ],
-  },
-  value: {
-    rules: [
-      {
-        rule: (input) => !input && input < 0,
-        message: "contractId is required",
-      },
-    ],
-  },
-};
-
-export const acceptCostTermSchema = {
-  costId: {
-    rules: [
-      {
-        rule: (input) => !input,
-        message: "costId is required",
-      },
-    ],
-  },
-  accept: {
-    rules: [
-      {
-        rule: (input) => !input,
-        message: "contractId is required",
-      },
-      {
-        rule: (input) => input != true && input != false,
-        message: "value of cost is valid",
-      },
-    ],
-  },
-};
-
-export const updateValueTimeStartTermSchema = {
-  timeStartId: {
-    rules: [
-      {
-        rule: (input) => !input,
-        message: "timeStartId is required",
-      },
-    ],
-  },
-  value: {
-    rules: [
-      {
-        rule: (input) => !input && validator.isDate,
-        message: "contractId is required",
-      },
-      {
-        rule: (input) => !moment(input, moment.ISO_8601, true).isValid(),
-        message: "value of time start is valid",
-      },
-    ],
-  },
-};
-
-export const acceptTimeStartTermSchema = {
-  timeStartId: {
-    rules: [
-      {
-        rule: (input) => !input,
-        message: "timeStartId is required",
-      },
-    ],
-  },
-  accept: {
-    rules: [
-      {
-        rule: (input) => !input,
-        message: "contractId is required",
-      },
-      {
-        rule: (input) => input != true && input != false,
-        message: "value of cost is valid",
       },
     ],
   },

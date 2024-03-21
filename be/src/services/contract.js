@@ -1,6 +1,7 @@
 import db from "../models/index";
 import { createNotifyService } from "./notify";
 import { senNotifyUpdateTerm } from "../controllers/socket";
+import { createTermCost, createTermTimeStart } from "./term";
 const { Op } = require("sequelize");
 
 export const createContractService = async (data) => {
@@ -8,39 +9,37 @@ export const createContractService = async (data) => {
   try {
     var realEstate = await db.RealEstate.findOne({
       where: { id: data.realEstateId },
+      include: [{ model: db.Address, required: true }],
     });
     realEstate = realEstate.get({ plain: true });
-
-    const cost = await db.Cost.create(
-      {
-        value: realEstate.cost,
-        accept: false,
-        userId: data.sellerId,
-      },
-      { transaction: transaction }
-    );
-
-    const timeStart = await db.TimeStart.create(
-      {
-        value: new Date(),
-        accept: false,
-        userId: data.sellerId,
-      },
-      { transaction: transaction }
-    );
 
     const contract = await db.Contract.create(
       {
         realEstateId: data.realEstateId,
         renterId: data.renterId,
         sellerId: data.sellerId,
-        costId: cost.id,
-        timeStartId: timeStart.id,
         paymentType: "Etherum",
         status: "3",
       },
       { transaction: transaction }
     );
+
+    // create term cost and deposit
+    await createTermCost({
+      contractId: contract.id,
+      value: realEstate.cost,
+      addressRe: realEstate.Address.address,
+      transaction: transaction,
+      userId: data.sellerId,
+    });
+
+    // create term time start and deadline
+    await createTermTimeStart({
+      contractId: contract.id,
+      value: new Date(),
+      transaction: transaction,
+      userId: data.sellerId,
+    });
 
     const roomChat = await db.RoomChat.create(
       {
@@ -202,14 +201,6 @@ export const getContractByIdService = async ({ id }) => {
         {
           model: db.RealEstate,
           include: [{ model: db.Address, required: false }],
-          required: true,
-        },
-        {
-          model: db.Cost,
-          required: true,
-        },
-        {
-          model: db.TimeStart,
           required: true,
         },
         {
