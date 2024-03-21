@@ -81,35 +81,17 @@ const Contract = ({ contract, refContract }) => {
               <Row className="partner-title">III. Điều khoản</Row>
               <Row style={{ paddingLeft: 20 }}>
                 <Col span={24}>
-                  <Row>
-                    Sau khi thống nhất, hai bên quyết định các điều khoản hợp
-                    đồng thuê nhà như sau.
-                  </Row>
-                  <Row className="rule">※ Điều 1</Row>
-                  <Row>
-                    - Bên A cho bên B thuê nhà tại địa chỉ{" "}
-                    {contract?.RealEstate?.Address?.address} diện tích{" "}
-                    {contract?.RealEstate?.acreage} (m2) với mức giá{" "}
-                    {String(contract?.Cost?.value).replace(
-                      /\B(?=(\d{3})+(?!\d))/g,
-                      ","
-                    )}{" "}
-                    VNĐ / tháng. Tiền sẽ được thanh toán vào ngày{" "}
-                    {moment(contract?.TimeStart?.value).format("DD")} hàng
-                    tháng.Hợp đồng sẽ được bắt đầu từ ngày{" "}
-                    {moment(contract?.TimeStart?.value).format("DD-MM-YYYY")}
-                  </Row>
-                  <Row>
-                    - Tiền cọc khi thuê nhà của bên B sẽ là:{" "}
-                    {String(contract?.Cost?.value).replace(
-                      /\B(?=(\d{3})+(?!\d))/g,
-                      ","
-                    )}{" "}
-                    VNĐ. Số tiền này sẽ lưu trữ trong hợp đồng thông minh và sẽ
-                    được hoàn trả cho bên B sau khi chấm dứt hợp đồng đúng kì
-                    hạn. Nếu bên B chấm dứt hợp đồng trước thời hạn số tiền này
-                    sẽ được bồi thường cho bên A.
-                  </Row>
+                  {contract?.Terms?.length > 0 &&
+                    contract?.Terms?.map((term, index) => {
+                      if (
+                        term.accept === "1" &&
+                        ["cost", "deposit", "timeStart", "deadline"].includes(
+                          term.type
+                        )
+                      ) {
+                        return <Row key={index}>{"- " + term.content}</Row>;
+                      }
+                    })}
                   <Row className="rule">※ Điều 2</Row>
                   <Row>
                     - Bên A có trách nhiệm bàn giao đầy đủ bất động sản cho bên
@@ -130,7 +112,7 @@ const Contract = ({ contract, refContract }) => {
                   </Row>
                   {contract?.Terms?.length > 0 &&
                     contract?.Terms?.map((term, index) => {
-                      if (term.accept === "1") {
+                      if (term.accept === "1" && term.type === "other") {
                         return <Row key={index}>{"- " + term.content}</Row>;
                       }
                     })}

@@ -3,25 +3,21 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("Costs", {
+    await queryInterface.createTable("Contradictions", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER.UNSIGNED,
       },
-      value: {
+      termId: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
       },
-      accept: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false,
-        defaultValue: false,
-      },
-      userId: {
+      level: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
+        defaultValue: 1,
       },
       createdAt: {
         allowNull: false,
@@ -37,6 +33,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("Costs");
+    await queryInterface.dropTable("Contradictions");
   },
 };

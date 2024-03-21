@@ -1,26 +1,20 @@
 "use strict";
+
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Cost extends Model {
-    static associate(models) {
-      Cost.hasOne(models.Contract, {
-        foreignKey: {
-          name: "costId",
-        },
-      });
-    }
+  class ViewHistory extends Model {
+    static associate(models) {}
   }
-
-  Cost.init(
+  ViewHistory.init(
     {
-      value: {
+      realEstateId: {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
       },
-      accept: {
-        type: DataTypes.BOOLEAN,
+      viewCount: {
+        type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
-        defaultValue: false,
+        defaultValue: 0,
       },
       userId: {
         type: DataTypes.INTEGER.UNSIGNED,
@@ -29,10 +23,10 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "Cost",
+      modelName: "ViewHistory",
       paranoid: false,
+      timestamps: true,
     }
   );
-
-  return Cost;
+  return ViewHistory;
 };

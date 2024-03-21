@@ -134,7 +134,6 @@ export const SmartContractProvider = ({ children }) => {
   useEffect(() => {
     if (signer && reAbi && reAddress) {
       const instance = new ethers.Contract(reAddress, reAbi, signer);
-      console.log(instance);
       setReInstance(instance);
     } else {
       setReInstance(null);
@@ -144,7 +143,6 @@ export const SmartContractProvider = ({ children }) => {
   useEffect(() => {
     if (signer && scAbi && scAddress) {
       const instance = new ethers.Contract(scAddress, scAbi, signer);
-      console.log(instance);
       setScInstance(instance);
     } else {
       setScInstance(null);

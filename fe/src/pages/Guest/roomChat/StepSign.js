@@ -6,6 +6,7 @@ import {
   checkListTermAccept,
   convertBlobToBase64Async,
   convertVndToEth,
+  buildParamsCreateSc,
 } from "../../../util/commonFunc";
 import { AuthContext } from "../../../providers/authProvider";
 import {
@@ -19,6 +20,8 @@ import { SmartContractContext } from "../../../providers/scProvider";
 import moment from "moment";
 import generatePDF from "react-to-pdf";
 import { createScService } from "../../../services/SC/index";
+import Deposit from "./Deposit";
+import { ethers } from "ethers";
 
 const StepSign = ({
   contract,
@@ -85,7 +88,7 @@ const StepSign = ({
           urlContract += res.data;
         }
 
-        const input = buildParamsCreateSc();
+        const input = buildParamsCreateSc(contract);
 
         const scNft = await scInstance.mint(
           input.id,
@@ -111,41 +114,19 @@ const StepSign = ({
     }
   }, [contract, scInstance]);
 
-  const buildParamsCreateSc = () => {
-    const dlDate = new Date(contract.TimeStart?.value);
-
-    const renterAddress = contract?.renter?.wallet;
-    const sellerAddress = contract?.seller?.wallet;
-    const reId = contract?.RealEstate?.id;
-    const rentCost = convertVndToEth(contract?.Cost.value);
-
-    const timeStart = dlDate.valueOf();
-    const paymentDeadline = dlDate.getDate();
-    const duration = dlDate.setFullYear(dlDate.getFullYear() + 1) - timeStart;
-    const paymentType = "Etherum";
-
-    const terms =
-      contract?.Terms?.length > 0
-        ? contract?.Terms.map((term) => {
-            if (term.accept === "1") {
-              return term.content;
-            }
-          })
-        : [];
-
-    return {
-      id: contract?.id,
-      renterAddress: renterAddress,
-      sellerAddress: sellerAddress,
-      reId: reId,
-      rentCost: rentCost,
-      duration: duration,
-      timeStart: timeStart,
-      paymentDeadline: paymentDeadline,
-      paymentType: paymentType,
-      terms: terms,
-    };
-  };
+  const renterDepositContract = useCallback(async () => {
+    try {
+      const deposit = contract.Terms.find((term) => (term.type = "deposit"));
+      const tx = {
+        value: String(convertVndToEth(Number(deposit?.value))),
+      };
+      const paymentInfo = await scInstance.depositContract(contract?.id, tx);
+      console.log(paymentInfo);
+    } catch (error) {
+      console.log(error);
+      toast.error("Lỗi hệ thống");
+    }
+  }, [contract, scInstance]);
 
   const groupButton = useMemo(() => {
     if (authUser?.role === "2") {
@@ -171,12 +152,7 @@ const StepSign = ({
       }
     }
     if (authUser?.role === "1") {
-      if (
-        contract?.status === "3" &&
-        contract?.TimeStart?.accept === true &&
-        contract?.Cost?.accept === true &&
-        checkListTermAccept(contract?.Term)
-      ) {
+      if (contract?.status === "3" && checkListTermAccept(contract?.Term)) {
         const buttonGr = [
           <Button key="back" onClick={close}>
             Đóng
@@ -204,10 +180,10 @@ const StepSign = ({
           <Button
             key="back"
             onClick={async () => {
-              await renterSignContract();
+              await renterDepositContract();
             }}
           >
-            Ký kết hợp đồng
+            Thanh toán
           </Button>,
         ];
         return buttonGr;
@@ -250,7 +226,7 @@ const StepSign = ({
           {contract?.status === "7" && (
             <CreateSC contract={contract} refContract={refContract} />
           )}
-          {contract?.status === "5" && <div>Tạo điều khoản</div>}
+          {contract?.status === "8" && <Deposit contract={contract} />}
         </>
       </Spin>
     </Modal>

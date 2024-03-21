@@ -72,26 +72,34 @@ const RoomChat = () => {
   };
 
   useEffect(() => {
+    if (roomChats.length > 0) {
+      for (var room of roomChats) {
+        if (String(room.id) === String(id)) {
+          setRoomChat(room);
+          fetchContractById(room?.contract?.id);
+        }
+      }
+    }
+  }, [roomChats, id]);
+
+  useEffect(() => {
     if (id > 0 && authUser?.id > 0) {
       socket.emit("leave-room", id, authUser?.id);
       socket.emit("join-room", id, authUser?.id);
     }
 
-    socket.on("update-term", async (data, message) => {
-      console.log("update term", data);
-      console.log(`userID : ${authUser.id}`)
-      if (
-        Number(data?.userId) === Number(authUser.id) &&
-        Number(data?.roomChatId) === Number(id)
-      ) {
-        await fetchContractById(id);
-      }
-    });
-
     socket.on("new-message", async (data, message) => {
       console.log(data);
       if (data !== authUser.id) {
         await fetchMessageOfRoom(id);
+      }
+    });
+
+    socket.on("update-term", async (data) => {
+      console.log("update term", data);
+      console.log(`userID : ${authUser?.id}`);
+      if (Number(data?.roomChatId) === Number(id)) {
+        await fetchContractById(id);
       }
     });
 
@@ -107,17 +115,6 @@ const RoomChat = () => {
       fetchMessageOfRoom(id);
     }
   }, [id]);
-
-  useEffect(() => {
-    if (roomChats.length > 0) {
-      for (var room of roomChats) {
-        if (String(room.id) === String(id)) {
-          setRoomChat(room);
-          fetchContractById(room?.contract?.id);
-        }
-      }
-    }
-  }, [roomChats, id]);
 
   const fetchContractById = async (id) => {
     try {

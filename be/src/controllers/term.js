@@ -14,7 +14,6 @@ const checkContradiction = async (data) => {
 export const handleCreateTerm = async (req, res, next) => {
   try {
     const data = { ...req.body, userId: req.user.id };
-    console.log(data);
 
     if (!checkContradiction(data)) {
       return res.status(400).json({ message: "Các điều khoản bị xung đột" });
@@ -30,6 +29,8 @@ export const handleCreateTerm = async (req, res, next) => {
 export const handleUpdateTerm = async (req, res, next) => {
   try {
     const data = { ...req.body, userId: req.user.id };
+
+    console.log(data);
 
     await updateTermService(data);
     return res.status(200).json({ message: "Update term successfully" });

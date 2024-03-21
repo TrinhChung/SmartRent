@@ -27,6 +27,15 @@ module.exports = {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
       },
+      type: {
+        type: Sequelize.STRING(20),
+        allowNull: false,
+        defaultValue: "other",
+      },
+      value: {
+        type: Sequelize.STRING(100),
+        allowNull: true,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

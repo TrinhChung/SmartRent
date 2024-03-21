@@ -72,28 +72,25 @@ export default function NotifyDropDown() {
       await getRoomChatForMe();
     });
 
+    socket.on("sign-contract", async (data) => {
+      await fetchNotifyOfUser();
+      await getRoomChatForMe();
+    });
+
     socket.on("notify-term", async (data) => {
       await fetchNotifyOfUser();
     });
 
     return () => {
-      socket.off("notify-message", async (data) => {
-        await fetchNotifyOfUser();
-      });
+      socket.off("notify-message");
 
-      socket.off("close-contract", async (data) => {
-        await fetchNotifyOfUser();
-        await getRoomChatForMe();
-      });
+      socket.off("close-contract");
 
-      socket.off("new-contract", async (data) => {
-        await fetchNotifyOfUser();
-        await getRoomChatForMe();
-      });
+      socket.off("new-contract");
 
-      socket.off("notify-term", async (data) => {
-        await fetchNotifyOfUser();
-      });
+      socket.off("sign-contract");
+
+      socket.off("notify-term");
     };
   }, [authUser]);
 

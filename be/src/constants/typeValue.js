@@ -2,7 +2,6 @@ export const typeFile = [
   { key: "1", name: "message" },
   { key: "2", name: "real-estate" },
   { key: "3", name: "floor" },
-  { key: "4", name: "real-estate" },
   { key: "5", name: "user" },
   { key: "6", name: "contract" },
 ];
@@ -36,3 +35,24 @@ export const typeNotifys = [
   { value: "7", label: "accept renter cost" },
   { value: "8", label: "change time start" },
 ];
+
+export const messageCreateTermNotify = {
+  otherCreate: "Đối tác của bạn vừa thêm 1 điều khoản mới vào hợp đồng",
+  costCreate: "Đối tác của bạn đã chỉnh lại giá thuê",
+  timeStartCreate:
+    "Đối tác của bạn đã chỉnh lại thời gian hợp đồng có hiệu lực",
+  otherAccept: "Đối tác đã chấp nhận điều khoản của bạn",
+  costAccept: "Đối tác đã chấp nhận giá mà bạn đề xuất",
+  timeStartAccept:
+    "Đối tác đã chấp nhận thời gian hợp đồng có hiệu lực mà bạn đề xuất",
+  otherReject: "Đối tác đã từ chối điều khoản của bạn",
+  costReject: "Đối tác đã từ chối giá mà bạn đề xuất",
+  timeStartReject:
+    "Đối tác đã từ chối thời gian hợp đồng có hiệu lực mà bạn đề xuất",
+};
+
+export const statusTerm = {
+  0: "Create",
+  1: "Accept",
+  2: "Reject",
+};

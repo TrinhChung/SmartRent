@@ -1,6 +1,7 @@
 import db from "../models/index";
 import { createNotifyService } from "./notify";
 import { senNotifyUpdateTerm } from "../controllers/socket";
+import { createTermCost, createTermTimeStart } from "./term";
 const { Op } = require("sequelize");
 
 export const createContractService = async (data) => {
@@ -8,39 +9,37 @@ export const createContractService = async (data) => {
   try {
     var realEstate = await db.RealEstate.findOne({
       where: { id: data.realEstateId },
+      include: [{ model: db.Address, required: true }],
     });
     realEstate = realEstate.get({ plain: true });
-
-    const cost = await db.Cost.create(
-      {
-        value: realEstate.cost,
-        accept: false,
-        userId: data.sellerId,
-      },
-      { transaction: transaction }
-    );
-
-    const timeStart = await db.TimeStart.create(
-      {
-        value: new Date(),
-        accept: false,
-        userId: data.sellerId,
-      },
-      { transaction: transaction }
-    );
 
     const contract = await db.Contract.create(
       {
         realEstateId: data.realEstateId,
         renterId: data.renterId,
         sellerId: data.sellerId,
-        costId: cost.id,
-        timeStartId: timeStart.id,
         paymentType: "Etherum",
         status: "3",
       },
       { transaction: transaction }
     );
+
+    // create term cost and deposit
+    await createTermCost({
+      contractId: contract.id,
+      value: realEstate.cost,
+      addressRe: realEstate.Address.address,
+      transaction: transaction,
+      userId: data.sellerId,
+    });
+
+    // create term time start and deadline
+    await createTermTimeStart({
+      contractId: contract.id,
+      value: new Date(),
+      transaction: transaction,
+      userId: data.sellerId,
+    });
 
     const roomChat = await db.RoomChat.create(
       {
@@ -205,14 +204,6 @@ export const getContractByIdService = async ({ id }) => {
           required: true,
         },
         {
-          model: db.Cost,
-          required: true,
-        },
-        {
-          model: db.TimeStart,
-          required: true,
-        },
-        {
           model: db.Term,
           required: false,
         },
@@ -265,6 +256,10 @@ export const signContractService = async ({ contractId, userId }) => {
     if (userId !== contractData.renterId) {
       throw new Error("Bạn không có quyền thay đổi trạng thái ký kết");
     }
+    if (contractData.status !== "3") {
+      throw new Error("Thao tác không hợp lệ");
+    }
+
     await contract.update({ status: "7" });
 
     await createNotifyService(
@@ -290,7 +285,7 @@ export const signContractService = async ({ contractId, userId }) => {
   } catch (error) {
     console.log(error);
     await transaction.rollback();
-    throw new Error("sign contract fail", error);
+    throw new Error(error.message, error);
   }
 };
 
@@ -312,13 +307,17 @@ export const createSmartContractService = async ({ contractId, userId }) => {
       throw new Error("Bạn không có quyền thay đổi trạng thái ký kết");
     }
 
+    if (contractData.status !== "7") {
+      throw new Error("Thao tác không hợp lệ");
+    }
+
     await contract.update({ status: "8" }, { transaction: transaction });
 
     await createNotifyService(
       {
-        userId: contractData.sellerId,
+        userId: contractData.renterId,
         fkId: contractData?.RoomChat?.id,
-        content: `Người thuê đã ký hợp đồng vui lòng tạo hợp đồng`,
+        content: `Người bán đã tạo hợp đồng thông minh`,
         type: "2",
         eventNotify: "sign-contract",
       },
@@ -330,7 +329,7 @@ export const createSmartContractService = async ({ contractId, userId }) => {
     await senNotifyUpdateTerm(
       {
         roomChatId: contractData?.RoomChat?.id,
-        userId: contractData.sellerId,
+        userId: contractData.renterId,
       },
       "update-term"
     );

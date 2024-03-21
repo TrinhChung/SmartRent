@@ -1,8 +1,15 @@
 import db from "../models/index";
 import { createNotifyService } from "./notify";
 import { senNotifyUpdateTerm } from "../controllers/socket";
+import {
+  buildContentCost,
+  buildContentDeposit,
+  buildTimeStart,
+  buildDeadlinePayment,
+} from "../utils/buildContentValue";
+import { statusTerm, messageCreateTermNotify } from "../constants/typeValue";
 
-export const createTermService = async ({ value, contractId, userId }) => {
+export const createTermService = async ({ contractId, userId, content }) => {
   const transaction = await db.sequelize.transaction();
   try {
     var contract = await db.Contract.findOne({
@@ -16,9 +23,14 @@ export const createTermService = async ({ value, contractId, userId }) => {
     });
     contract = contract.get({ plain: true });
 
+    if (contract.status !== "3") {
+      throw new Error("Đã kết thúc giai đoạn đàm phán");
+    }
+
     await db.Term.create(
       {
-        content: value,
+        content: content,
+        value: null,
         contractId: contractId,
         accept: "0",
         userId: userId,
@@ -33,7 +45,7 @@ export const createTermService = async ({ value, contractId, userId }) => {
       {
         userId: receiver,
         fkId: contract?.RoomChat?.id,
-        content: "Đối tác của bạn vừa thêm 1 điều khoản mới vào hợp đồng",
+        content: messageCreateTermNotify["otherCreate"],
         type: "4",
         eventNotify: "notify-term",
       },
@@ -56,7 +68,89 @@ export const createTermService = async ({ value, contractId, userId }) => {
   }
 };
 
-export const updateTermService = async ({ accept, termId, userId }) => {
+export const createTermCost = async ({
+  contractId,
+  value,
+  addressRe,
+  transaction,
+  userId,
+}) => {
+  try {
+    // create a new term cost
+    await db.Term.create(
+      {
+        content: buildContentCost(value, addressRe),
+        value: value,
+        contractId: contractId,
+        accept: "0",
+        userId: userId,
+        type: "cost",
+      },
+      { transaction: transaction }
+    );
+
+    // create a new term deposit
+    await db.Term.create(
+      {
+        content: buildContentDeposit(value),
+        value: null,
+        contractId: contractId,
+        accept: "0",
+        userId: userId,
+        type: "deposit",
+      },
+      { transaction: transaction }
+    );
+  } catch (error) {
+    console.log(error);
+    throw new Error("Error creating term cost", error);
+  }
+};
+
+export const createTermTimeStart = async ({
+  contractId,
+  value,
+  transaction,
+  userId,
+}) => {
+  try {
+    // create a new term time start
+    await db.Term.create(
+      {
+        content: buildTimeStart(value),
+        value: String(value),
+        contractId: contractId,
+        accept: "0",
+        userId: userId,
+        type: "timeStart",
+      },
+      { transaction: transaction }
+    );
+
+    // create a new term deadline payment
+    await db.Term.create(
+      {
+        content: buildDeadlinePayment(value),
+        value: null,
+        contractId: contractId,
+        accept: "0",
+        userId: userId,
+        type: "deadline",
+      },
+      { transaction: transaction }
+    );
+  } catch (error) {
+    console.log(error);
+    throw new Error("Create term time start error: ", error);
+  }
+};
+
+export const updateTermService = async ({
+  accept = "0",
+  value,
+  termId,
+  userId,
+}) => {
   const transaction = await db.sequelize.transaction();
 
   try {
@@ -70,26 +164,81 @@ export const updateTermService = async ({ accept, termId, userId }) => {
               model: db.RoomChat,
               required: true,
             },
+            {
+              model: db.RealEstate,
+              required: true,
+              include: [
+                {
+                  model: db.Address,
+                  required: true,
+                },
+              ],
+            },
           ],
         },
       ],
     });
-    if (term?.dataValues && term?.dataValues.Contract) {
-      const termData = term.get({ plain: true });
+    const termData = term.get({ plain: true });
+
+    if (termData?.Contract) {
+      if (termData.Contract.status !== "3") {
+        throw new Error("Đã kết thúc giai đoạn đàm phán");
+      }
+
+      if (
+        (termData.type === "cost" || termData.type === "timeStart") &&
+        accept === "0" &&
+        (!value || value.length === 0)
+      ) {
+        throw new Error("Thiếu giá trị của điều khoản");
+      }
+
       const ownerId =
-        termData.Contract.sellerId === term.userId
+        termData.Contract.sellerId === termData.userId
           ? termData.Contract.renterId
           : termData.Contract.sellerId;
-      if (ownerId !== userId) {
+      if (accept === "1" && ownerId !== userId) {
         throw new Error("Không thể chỉnh sửa điều khoản của người khác");
       }
-      await term.update({ accept: accept }, { transaction: transaction });
+
+      if (termData.type === "cost") {
+        await updateTermCost({
+          term: term,
+          value: value,
+          accept: accept,
+          userId: userId,
+          transaction: transaction,
+        });
+      }
+
+      if (termData.type === "timeStart") {
+        await updateTermTimeStart({
+          term: term,
+          value: value,
+          accept: accept,
+          userId: userId,
+          transaction: transaction,
+        });
+      }
+
+      if (termData.type === "other") {
+        await updateTermOther({
+          term: term,
+          accept: accept,
+          transaction: transaction,
+        });
+      }
+
+      const receiver =
+        userId !== termData.Contract.sellerId
+          ? termData.Contract.sellerId
+          : termData.Contract.renterId;
 
       await createNotifyService(
         {
-          userId: term.userId,
-          fkId: term?.Contract?.RoomChat?.id,
-          content: "Đối tác đã chấp nhận điều khoản của bạn",
+          userId: receiver,
+          fkId: termData?.Contract?.RoomChat?.id,
+          content: messageCreateTermNotify[termData.type + statusTerm[accept]],
           type: "5",
           eventNotify: "notify-term",
         },
@@ -98,8 +247,8 @@ export const updateTermService = async ({ accept, termId, userId }) => {
 
       await senNotifyUpdateTerm(
         {
-          roomChatId: term?.Contract?.RoomChat?.id,
-          userId: term.userId,
+          roomChatId: termData?.Contract?.RoomChat?.id,
+          userId: receiver,
         },
         "update-term"
       );
@@ -109,269 +258,103 @@ export const updateTermService = async ({ accept, termId, userId }) => {
       throw new Error("Không tìm thấy hợp đồng");
     }
   } catch (error) {
-    console.log(error);
+    console.log("Update error", error);
     await transaction.rollback();
     throw new Error(error);
   }
 };
 
-export const updateValueCostTermService = async ({ value, costId, userId }) => {
-  const transaction = await db.sequelize.transaction();
-
-  try {
-    const cost = await db.Cost.findOne({
-      where: { id: costId },
-      include: [
-        {
-          model: db.Contract,
-          include: [
-            {
-              model: db.RoomChat,
-              required: true,
-            },
-          ],
-        },
-      ],
-    });
-
-    if (cost?.dataValues && cost?.dataValues.Contract) {
-      const costData = cost.get({ plain: true });
-      if (
-        costData.Contract.sellerId !== userId &&
-        costData.Contract.renterId !== userId
-      ) {
-        throw new Error("Không thể chỉnh sửa điều khoản của người khác");
-      }
-      await cost.update(
-        { value: value, accept: false, userId: userId },
-        { transaction: transaction }
-      );
-      const ownerId =
-        costData.Contract.sellerId === userId
-          ? costData.Contract.renterId
-          : costData.Contract.sellerId;
-
-      await createNotifyService(
-        {
-          userId: ownerId,
-          fkId: costData?.Contract?.RoomChat?.id,
-          content: "Đối tác của bạn đã chỉnh lại giá thuê",
-          type: "6",
-          eventNotify: "notify-term",
-        },
-        transaction
-      );
-
-      await transaction.commit();
-
-      await senNotifyUpdateTerm(
-        {
-          roomChatId: costData?.Contract?.RoomChat?.id,
-          userId: ownerId,
-        },
-        "update-term"
-      );
-    } else {
-      throw new Error("Không tìm thấy hợp đồng");
-    }
-  } catch (error) {
-    console.log(error);
-    await transaction.rollback();
-    throw new Error(error);
-  }
+export const updateTermOther = async ({ term, accept, transaction }) => {
+  await term.update({ accept: accept }, { transaction: transaction });
 };
 
-export const updateAcceptCostTermService = async ({
+export const updateTermCost = async ({
+  term,
   accept,
-  costId,
-  userId,
-}) => {
-  const transaction = await db.sequelize.transaction();
-
-  try {
-    const cost = await db.Cost.findOne({
-      where: { id: costId },
-      include: [
-        {
-          model: db.Contract,
-          include: [
-            {
-              model: db.RoomChat,
-              required: true,
-            },
-          ],
-        },
-      ],
-    });
-    if (cost?.dataValues && cost?.dataValues.Contract) {
-      const costData = cost.get({ plain: true });
-      const ownerId =
-        costData.Contract.sellerId === costData.userId
-          ? costData.Contract.renterId
-          : costData.Contract.sellerId;
-      if (ownerId !== userId) {
-        throw new Error("Không thể chỉnh sửa điều khoản của người khác");
-      }
-      await cost.update({ accept: accept }, { transaction: transaction });
-
-      await createNotifyService(
-        {
-          userId: costData.userId,
-          fkId: costData?.Contract?.RoomChat?.id,
-          content: "Đối tác của bạn đã chấp thuận giá mới",
-          type: "7",
-          eventNotify: "notify-term",
-        },
-        transaction
-      );
-
-      await transaction.commit();
-
-      await senNotifyUpdateTerm(
-        {
-          roomChatId: costData?.Contract?.RoomChat?.id,
-          userId: costData.userId,
-        },
-        "update-term"
-      );
-    } else {
-      throw new Error("Không tìm thấy hợp đồng");
-    }
-  } catch (error) {
-    console.log(error);
-    await transaction.rollback();
-    throw new Error(error);
-  }
-};
-
-export const updateValueTimeStartTermService = async ({
   value,
-  timeStartId,
   userId,
+  transaction,
 }) => {
-  const transaction = await db.sequelize.transaction();
+  const termData = term.get({ plain: true });
+  // get term deposit by contract id and type
+  const termDeposit = await db.Term.findOne({
+    where: {
+      contractId: termData.Contract.id,
+      type: "deposit",
+    },
+  });
 
-  try {
-    const timeStart = await db.TimeStart.findOne({
-      where: { id: timeStartId },
-      include: [
-        {
-          model: db.Contract,
-          include: [
-            {
-              model: db.RoomChat,
-              required: true,
-            },
-          ],
-        },
-      ],
-    });
-    if (timeStart?.dataValues && timeStart?.dataValues.Contract) {
-      const timeStartData = timeStart.get({ plain: true });
-      if (
-        timeStartData.Contract.sellerId !== userId &&
-        timeStartData.Contract.renterId !== userId
-      ) {
-        throw new Error("Không thể chỉnh sửa điều khoản của người khác");
-      }
-      await timeStart.update(
-        { value: value, accept: false, userId: userId },
-        { transaction: transaction }
-      );
+  if ((!value || value.length === 0) && accept !== "0") {
+    console.log("Update accept");
+    await term.update({ accept: accept }, { transaction: transaction });
+    await termDeposit.update({ accept: accept }, { transaction: transaction });
+  }
+  if (value && Number(value) > 0 && accept === "0") {
+    await term.update(
+      {
+        accept: "0",
+        userId: userId,
+        value: value,
+        content: buildContentCost(
+          value,
+          termData.Contract.RealEstate.Address.address
+        ),
+      },
+      { transaction: transaction }
+    );
 
-      const ownerId =
-        timeStartData.Contract.sellerId === userId
-          ? timeStartData.Contract.renterId
-          : timeStartData.Contract.sellerId;
-
-      await createNotifyService(
-        {
-          userId: ownerId,
-          fkId: timeStartData?.Contract?.RoomChat?.id,
-          content: "Đối tác của bạn đã chỉnh lại thời gian hợp đồng bắt đầu",
-          type: "8",
-          eventNotify: "notify-term",
-        },
-        transaction
-      );
-
-      await transaction.commit();
-
-      await senNotifyUpdateTerm(
-        {
-          roomChatId: timeStartData?.Contract?.RoomChat?.id,
-          userId: ownerId,
-        },
-        "update-term"
-      );
-    } else {
-      throw new Error("Không tìm thấy hợp đồng");
-    }
-  } catch (error) {
-    console.log(error);
-    await transaction.rollback();
-    throw new Error(error);
+    await termDeposit.update(
+      {
+        accept: "0",
+        userId: userId,
+        value: value,
+        content: buildContentDeposit(value),
+      },
+      { transaction: transaction }
+    );
   }
 };
 
-export const updateAcceptTimeStartTermService = async ({
+export const updateTermTimeStart = async ({
+  term,
   accept,
-  timeStartId,
+  value,
   userId,
+  transaction,
 }) => {
-  const transaction = await db.sequelize.transaction();
+  const termData = term.get({ plain: true });
 
-  try {
-    const timeStart = await db.TimeStart.findOne({
-      where: { id: timeStartId },
-      include: [
-        {
-          model: db.Contract,
-          include: [
-            {
-              model: db.RoomChat,
-              required: true,
-            },
-          ],
-        },
-      ],
-    });
-    if (timeStart?.dataValues && timeStart?.dataValues.Contract) {
-      const timeStartData = timeStart.get({ plain: true });
-      const ownerId =
-        timeStartData.Contract.sellerId === timeStartData.userId
-          ? timeStartData.Contract.renterId
-          : timeStartData.Contract.sellerId;
-      if (ownerId !== userId) {
-        throw new Error("Không thể chỉnh sửa điều khoản của người khác");
-      }
-      await timeStart.update({ accept: accept }, { transaction: transaction });
+  // get term deadline by contract id and type
+  const termDeadline = await db.Term.findOne({
+    where: {
+      contractId: termData.Contract.id,
+      type: "deadline",
+    },
+  });
 
-      await createNotifyService(
-        {
-          userId: timeStartData.userId,
-          fkId: timeStartData?.Contract?.RoomChat?.id,
-          content: "Đối tác của bạn đã chỉnh lại thời gian hợp đồng bắt đầu",
-          type: "9",
-          eventNotify: "notify-term",
-        },
-        transaction
-      );
-      await transaction.commit();
+  if ((!value || value.length === 0) && accept !== "0") {
+    await term.update({ accept: accept }, { transaction: transaction });
+    await termDeadline.update({ accept: accept }, { transaction: transaction });
+  }
+  if (value && value.length > 0 && accept === "0") {
+    await term.update(
+      {
+        accept: accept,
+        userId: userId,
+        value: String(value),
+        content: buildTimeStart(value),
+      },
+      { transaction: transaction }
+    );
 
-      await senNotifyUpdateTerm(
-        {
-          roomChatId: timeStartData?.Contract?.RoomChat?.id,
-          userId: timeStartData.userId,
-        },
-        "update-term"
-      );
-    } else {
-      throw new Error("Không tìm thấy hợp đồng");
-    }
-  } catch (error) {
-    console.log(error);
-    await transaction.rollback();
-    throw new Error(error);
+    await termDeadline.update(
+      {
+        accept: accept,
+        userId: userId,
+        value: String(value),
+        content: buildDeadlinePayment(value),
+      },
+      { transaction: transaction }
+    );
   }
 };

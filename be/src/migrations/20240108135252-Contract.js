@@ -26,24 +26,16 @@ module.exports = {
         type: Sequelize.STRING(1),
         allowNull: false,
       },
-      costId: {
-        type: Sequelize.FLOAT.UNSIGNED,
-        allowNull: false,
-      },
       duration: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: true,
-      },
-      timeStartId: {
-        type: Sequelize.INTEGER.UNSIGNED,
-        allowNull: false,
       },
       paymentDeadline: {
         type: Sequelize.STRING(100),
         allowNull: true,
       },
       paymentType: {
-        type: Sequelize.STRING(1),
+        type: Sequelize.STRING(10),
         allowNull: true,
       },
       deposit: {

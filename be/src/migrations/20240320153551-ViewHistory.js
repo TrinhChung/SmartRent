@@ -3,21 +3,21 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("TimeStarts", {
+    await queryInterface.createTable("ViewHistories", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER.UNSIGNED,
       },
-      value: {
-        type: Sequelize.DATE,
+      realEstateId: {
+        type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
       },
-      accept: {
-        type: Sequelize.BOOLEAN,
+      viewCount: {
+        type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
-        defaultValue: false,
+        defaultValue: 0,
       },
       userId: {
         type: Sequelize.INTEGER.UNSIGNED,
@@ -37,6 +37,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("TimeStarts");
+    await queryInterface.dropTable("ViewHistories");
   },
 };
