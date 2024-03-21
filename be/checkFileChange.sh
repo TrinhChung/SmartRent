@@ -29,7 +29,8 @@ fi
 
 if [[ $checkChangeDb == true ]]; then
      echo "Migrate and seed data"
-     sudo rm -rf /home/db/*
+     rm -rf /home/db
+     mkdir /home/db
      echo "./migrate.sh" >> "./jobNeedRun.sh"
 fi
 
