@@ -10,6 +10,7 @@ import { router as notify } from "./notify";
 import { router as file } from "./file";
 import { router as user } from "./user";
 import { router as term } from "./term";
+import { router as view } from "./viewHistory";
 
 import { authenticate } from "../middleware/authenticate";
 export const router = Router();
@@ -35,3 +36,5 @@ router.use("/file", authenticate, file);
 router.use("/user", user);
 
 router.use("/term", authenticate, term);
+
+router.use("/view", authenticate, view);

@@ -10,7 +10,7 @@ import {
   createRealEstateSchema,
   getRealEstateFullHouseSchema,
 } from "../schema/realEstate";
-import { authenticate } from "../middleware/authenticate";
+import { authenticate, getUser } from "../middleware/authenticate";
 const SchemaValidator = require("nodejs-schema-validator");
 const schemaValidatorInstance = new SchemaValidator();
 
@@ -26,6 +26,7 @@ router.post(
 
 router.get(
   "/full-house/:id",
+  getUser,
   schemaValidatorInstance.validateParams(getRealEstateFullHouseSchema),
   handleGetRealEstate
 );

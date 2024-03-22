@@ -52,7 +52,7 @@ export const createRealEstateService = async (data) => {
   }
 };
 
-export const getRealEstateFullHouseService = async (id) => {
+export const getRealEstateFullHouseService = async (id, userId) => {
   try {
     const realEstate = await db.RealEstate.findOne({
       where: { id: id },
@@ -93,10 +93,31 @@ export const getRealEstateFullHouseService = async (id) => {
       ],
       subQuery: false,
     });
+
     if (!realEstate) {
       return null;
     }
-    return realEstate.get({ plain: true });
+
+    var realEstateData = realEstate.get({ plain: true });
+
+    if (!userId) {
+      return realEstateData;
+    }
+    const view = await db.ViewHistory.findOne({
+      where: {
+        realEstateId: realEstateData.id,
+        userId: userId,
+      },
+    });
+    if (!view) {
+      await db.ViewHistory.create({
+        userId: userId,
+        realEstateId: realEstateData.id,
+        viewCount: 1,
+      });
+    }
+
+    return realEstateData;
   } catch (error) {
     console.log(error.status);
     throw new Error(error.message, error);
