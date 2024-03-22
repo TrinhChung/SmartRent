@@ -56,3 +56,11 @@ export const statusTerm = {
   1: "Accept",
   2: "Reject",
 };
+
+export const listTermFixed = [
+  `- Bên A có trách nhiệm bàn giao đầy đủ bất động sản theo thông tin đã
+        đăng cho bên B kể từ khi hợp đồng có hiệu lực.`,
+  `- Cả bên A và B có trách nhiệm tuân thủ các quy định bên B đã đặt ra`,
+  `- Sau khi hết thời hạn 12 tháng hai bên có thể tiếp tục đàm phán ký
+        lại hợp đồng để có thể phù hợp với thị trường.`,
+];

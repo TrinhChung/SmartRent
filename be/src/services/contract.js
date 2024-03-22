@@ -1,7 +1,7 @@
 import db from "../models/index";
 import { createNotifyService } from "./notify";
 import { senNotifyUpdateTerm } from "../controllers/socket";
-import { createTermCost, createTermTimeStart } from "./term";
+import { createTermCost, createTermTimeStart, createTermFixed } from "./term";
 const { Op } = require("sequelize");
 
 export const createContractService = async (data) => {
@@ -39,6 +39,12 @@ export const createContractService = async (data) => {
       value: new Date(),
       transaction: transaction,
       userId: data.sellerId,
+    });
+
+    await createTermFixed({
+      contractId: contract.id,
+      userId: data.sellerId,
+      transaction: transaction,
     });
 
     const roomChat = await db.RoomChat.create(

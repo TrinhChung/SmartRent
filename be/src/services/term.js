@@ -7,7 +7,11 @@ import {
   buildTimeStart,
   buildDeadlinePayment,
 } from "../utils/buildContentValue";
-import { statusTerm, messageCreateTermNotify } from "../constants/typeValue";
+import {
+  statusTerm,
+  messageCreateTermNotify,
+  listTermFixed,
+} from "../constants/typeValue";
 
 export const createTermService = async ({ contractId, userId, content }) => {
   const transaction = await db.sequelize.transaction();
@@ -143,6 +147,21 @@ export const createTermTimeStart = async ({
     console.log(error);
     throw new Error("Create term time start error: ", error);
   }
+};
+
+export const createTermFixed = async ({ contractId, userId, transaction }) => {
+  const listTermBuilt = listTermFixed.map((term) => {
+    return {
+      value: null,
+      content: term,
+      userId: userId,
+      contractId: contractId,
+      accept: "1",
+      type: "fixed",
+    };
+  });
+
+  await db.Term.bulkCreate(listTermBuilt, { transaction: transaction });
 };
 
 export const updateTermService = async ({
