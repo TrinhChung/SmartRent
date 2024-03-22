@@ -8,7 +8,7 @@ const Suggest = ({ houses = [] }) => {
   return (
     <Col span={24}>
       <Row style={{ fontSize: 32, lineHeight: "40px" }} className="text_title">
-        Real Estate for your World
+        BẤT ĐỘNG SẢN DÀNH CHO BẠN
       </Row>
       <Col span={24} style={{ padding: "16px 0" }}>
         <Slider {...settingSlider}>

@@ -28,8 +28,9 @@ export const handleCreateRealEstate = async (req, res, next) => {
 export const handleGetRealEstate = async (req, res) => {
   try {
     const realEstateId = req.params.id;
+    const userId = req?.user?.id;
 
-    const data = await getRealEstateFullHouseService(realEstateId);
+    const data = await getRealEstateFullHouseService(realEstateId, userId);
     if (!data) {
       return res
         .status(404)

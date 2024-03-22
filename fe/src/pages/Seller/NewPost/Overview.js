@@ -207,22 +207,25 @@ const Overview = ({
               </Col>
             </Row>
           </Col>
-
-          <Col>
-            <Row style={{ paddingTop: 10 }}>
-              <Button
-                style={{ minWidth: 150 }}
-                className="button-border"
-                onClick={fetchCreateContract}
-              >
-                Đàm phán
-              </Button>
-            </Row>
-          </Col>
+          {owner?.id !== authUser?.id && (
+            <Col>
+              <Row style={{ paddingTop: 10 }}>
+                <Button
+                  style={{ minWidth: 150 }}
+                  className="button-border"
+                  onClick={fetchCreateContract}
+                >
+                  Đàm phán
+                </Button>
+              </Row>
+            </Col>
+          )}
+          {authUser?.id === owner?.id && (
+            <Col>
+              <MintRealEstate setLoading={setLoading} />
+            </Col>
+          )}
         </Row>
-        {authUser?.id === owner?.id && (
-          <MintRealEstate setLoading={setLoading} />
-        )}
       </Col>
     </Row>
   );

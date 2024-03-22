@@ -12,9 +12,12 @@ import {
   HomeOutlined,
   CompressOutlined,
 } from "@ant-design/icons";
+import Suggest from "../../Guest/home/Suggest";
+import { AuthContext } from "../../../providers/authProvider";
 
 const FullHouseView = () => {
   const [libraries] = useState(["drawing", "places"]);
+  const { listSuggest } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
   const { isLoaded } = useJsApiLoader({
     mapIds: process.env.REACT_APP_MAP_ID,
@@ -237,24 +240,7 @@ const FullHouseView = () => {
                 <label className="box-title">Gợi ý</label>
               </Col>
             </Row>
-            <Row style={{ gap: 8 }}>
-              {/* {data?.Floors &&
-              data?.Floors.length > 0 &&
-              data?.Floors.map((floor, index) => {
-                return (
-                  <CardHouseHome
-                    name={floor.name}
-                    url={`/floor-view/${floor?.id}`}
-                    image={
-                      floor?.Files.length > 0 ? floor?.Files[0]?.url : undefined
-                    }
-                    address={data?.Address?.address}
-                    cost={data?.cost}
-                    acreage={data?.acreage}
-                  />
-                );
-              })} */}
-            </Row>
+            <Suggest houses={listSuggest} />
           </Col>
         </Row>
       </Spin>
