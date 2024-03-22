@@ -93,18 +93,19 @@ const Contract = ({ contract, refContract }) => {
                       }
                     })}
                   <Row className="rule">※ Điều 2</Row>
-                  <Row>
-                    - Bên A có trách nhiệm bàn giao đầy đủ bất động sản cho bên
-                    B.
-                  </Row>
-                  <Row>
-                    - Cả bên A và B có trách nhiệm tuân thủ các quy định bên B
-                    đã đặt ra
-                  </Row>
-                  <Row>
-                    Sau khi hết thời hạn {12} tháng hai bên có thể tiếp tục đàm
-                    phán ký lại hợp đồng để có thể phù hợp với thị trường.
-                  </Row>
+                  {contract?.Terms?.length > 0 &&
+                    contract?.Terms?.map((term, index) => {
+                      if (
+                        term.accept === "1" &&
+                        ["fixed"].includes(term?.type)
+                      ) {
+                        return (
+                          <Row key={"fixed_contract" + index}>
+                            {term?.content}
+                          </Row>
+                        );
+                      }
+                    })}
                   <Row className="rule">※ Điều khoản bổ sung</Row>
                   <Row>- Bên A cho phép bên B nuôi động vật</Row>
                   <Row>

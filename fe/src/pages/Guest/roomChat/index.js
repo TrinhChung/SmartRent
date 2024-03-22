@@ -99,7 +99,7 @@ const RoomChat = () => {
       console.log("update term", data);
       console.log(`userID : ${authUser?.id}`);
       if (Number(data?.roomChatId) === Number(id)) {
-        await fetchContractById(contract?.id);
+        await fetchContractById(id);
       }
     });
 
@@ -108,7 +108,7 @@ const RoomChat = () => {
 
       socket.off("update-term");
     };
-  }, [id, authUser, contract]);
+  }, [id, authUser]);
 
   useEffect(() => {
     if (id > 0) {
