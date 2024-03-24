@@ -41,6 +41,24 @@ export const sendMailRegister = async (data) => {
   }
 };
 
+export const sendMailRemindPayment = async (data) => {
+  const content = {
+    from: '"SmartRent" <chungtrinh2k2@gmail.com>',
+    to: data.email,
+    subject: "Hôm nay đến hạn trả tiền nhà của tháng này",
+    html: await buildHtmlSend({
+      pathHtml: "../templates/register.hbs",
+      data: data,
+    }),
+  };
+  try {
+    await transporter.sendMail(content);
+  } catch (error) {
+    console.log(error);
+    throw new Error("Send Mail Error");
+  }
+}
+
 export const sendMailForgotPassword = async (data) => {
   const content = {
     from: '"SmartRent" <chungtrinh2k2@gmail.com>',
