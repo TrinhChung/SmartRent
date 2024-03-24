@@ -3,7 +3,7 @@ import { abi as reAbi } from "../../artifacts/contracts/RealEstate.sol/RealEstat
 require("dotenv").config();
 const {
   abi,
-} = require("../../artifacts/contracts/contractApi.sol/SmartContract.json");
+} = require("../../artifacts/contracts/SmartContract.sol/SmartContract.json");
 
 export const createContractInstanceSMC = (address) => {
   try {
