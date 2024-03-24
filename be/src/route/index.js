@@ -11,6 +11,7 @@ import { router as file } from "./file";
 import { router as user } from "./user";
 import { router as term } from "./term";
 import { router as view } from "./viewHistory";
+import { router as remind } from "./remind";
 
 import { authenticate } from "../middleware/authenticate";
 export const router = Router();
@@ -36,5 +37,7 @@ router.use("/file", authenticate, file);
 router.use("/user", user);
 
 router.use("/term", authenticate, term);
+
+router.use("/remind", remind);
 
 router.use("/view", authenticate, view);
