@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getRealEstateFullHouseService } from "../../../services/RealEstate";
 import { Row, Col, Divider, Spin } from "antd";
@@ -14,10 +14,11 @@ import {
 } from "@ant-design/icons";
 import Suggest from "../../Guest/home/Suggest";
 import { AuthContext } from "../../../providers/authProvider";
+import { getEstateByRecommendService } from "../../../services/RealEstate/index";
 
 const FullHouseView = () => {
   const [libraries] = useState(["drawing", "places"]);
-  const { listSuggest } = useContext(AuthContext);
+  const [listSuggest, setListSuggest] = useState([]);
   const [loading, setLoading] = useState(false);
   const { isLoaded } = useJsApiLoader({
     mapIds: process.env.REACT_APP_MAP_ID,
@@ -32,7 +33,7 @@ const FullHouseView = () => {
   const { id } = useParams();
   const [data, setData] = useState();
 
-  const fetchFullHouse = async (id) => {
+  const fetchFullHouse = useCallback(async (id) => {
     try {
       const res = await getRealEstateFullHouseService({ id: id });
       if (res.status === 200) {
@@ -51,10 +52,34 @@ const FullHouseView = () => {
     } catch (error) {
       console.log(error);
     }
-  };
+  }, []);
+
+  const fetchRealEstateRecommend = useCallback(async (id) => {
+    try {
+      const res = await getEstateByRecommendService({ realEstateId: id });
+      if (res.status === 200) {
+        setListSuggest(
+          res.data.map((realEstate) => {
+            return {
+              name: realEstate.name,
+              address: realEstate.Address.address,
+              image: realEstate?.realEstateFiles[0]?.url,
+              cost: realEstate?.cost,
+              acreage: realEstate?.acreage,
+              url: `/full-house-view/${realEstate.id}`,
+              date: realEstate?.createdAt,
+            };
+          })
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
 
   useEffect(() => {
     fetchFullHouse(id);
+    fetchRealEstateRecommend(id);
   }, [id]);
 
   return (

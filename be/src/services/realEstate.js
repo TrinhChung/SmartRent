@@ -2,8 +2,7 @@ import db from "../models/index";
 import { Op } from "sequelize";
 import { createAddressService } from "./address";
 import { createFileService, writeFileRealEstate } from "./file";
-import { spawn } from "child_process";
-import path from "path";
+import axios from "axios";
 
 export const createRealEstateService = async (data) => {
   const transaction = await db.sequelize.transaction();
@@ -168,13 +167,82 @@ export const getRealEstateFullHouseByUserIdService = async ({
   }
 };
 
-export const getRealEstateByRecommendService = async ({ userId }) => {
+export const getRealEstateByRecommendService = async ({
+  realEstateId,
+  userId,
+}) => {
   try {
-    const historyView = [1, 2, 3];
+    console.log("userId", userId);
+    var view = 1;
 
-    return [];
+    if (!realEstateId && userId) {
+      var views = await db.ViewHistory.findAll({
+        where: {
+          userId: userId,
+        },
+      });
+
+      if (views.length > 0) {
+        view = views[0].realEstateId;
+      }
+    }
+    if (realEstateId) {
+      view = realEstateId;
+    }
+
+    var res = await axios.post(process.env.HOST_DJANGO + "/api/recommend", {
+      view: view,
+    });
+
+    if (res.status === 200) {
+      const ids = res.data.data;
+
+      const recommends = await db.RealEstate.findAll({
+        where: { status: "1", id: ids },
+        include: [
+          {
+            model: db.File,
+            where: {
+              typeFk: "2",
+            },
+            required: false,
+            as: "realEstateFiles",
+            attributes: ["url"],
+          },
+          { model: db.Address },
+          {
+            model: db.User,
+            attributes: {
+              exclude: [
+                "password",
+                "maritalStatus",
+                "isActive",
+                "birthday",
+                "role",
+                "AddressId",
+              ],
+            },
+            include: [
+              {
+                model: db.File,
+                where: {
+                  typeFk: "5",
+                },
+                required: false,
+                attributes: ["url"],
+              },
+            ],
+          },
+        ],
+        subQuery: false,
+      });
+
+      return recommends;
+    } else {
+      throw new Error("Server không ổn định");
+    }
   } catch (error) {
-    console.log(error.status);
+    console.log(error);
     throw new Error(error.message, error);
   }
 };
