@@ -14,12 +14,14 @@ export const buildContentDeposit = (value) => {
 };
 
 export const buildTimeStart = (value) => {
-  return `Hợp đồng sẽ được bắt đầu từ ngày ${moment(value).format(
+  return `Hợp đồng sẽ có hiệu lực từ ngày ${moment(value).format(
     "DD-MM-YYYY"
   )}`;
 };
 
 export const buildDeadlinePayment = (value) => {
-  return `Tiền sẽ được thanh toán vào ngày ${moment(value).format("DD")} hàng
+  return `Tiền thuê nhà sẽ được bên B thanh toán cho bên A vào ngày ${moment(
+    value
+  ).format("DD")} hàng
                     tháng`;
 };

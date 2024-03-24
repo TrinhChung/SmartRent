@@ -5,6 +5,7 @@ import {
   updateTermService,
   updateValueCostTermService,
   updateValueTimeStartTermService,
+  deleteTermService,
 } from "../services/term";
 
 const checkContradiction = async (data) => {
@@ -88,6 +89,18 @@ export const handleUpdateValueTimeStartTerm = async (req, res, next) => {
     return res
       .status(200)
       .json({ message: "Update value time start term successfully" });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({ message: error.message });
+  }
+};
+
+export const handleDeleteTermContradiction = async (req, res, next) => {
+  try {
+    const data = { termId: req.body.termId, userId: req.user.id };
+
+    await deleteTermService(data);
+    return res.status(200).json({ message: "Delete term successfully" });
   } catch (error) {
     console.log(error);
     return res.status(400).json({ message: error.message });

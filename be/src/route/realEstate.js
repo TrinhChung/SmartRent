@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   handleCreateRealEstate,
+  handleGetAllRealEstate,
   handleGetRealEstate,
   handleGetRealEstateByRecommend,
   handleGetRealEstateByUserId,
@@ -36,3 +37,5 @@ router.get("/posted-by-me", authenticate, handleGetRealEstateByUserId);
 router.post("/search", handleSearchRealEstate);
 
 router.get("/recommend", handleGetRealEstateByRecommend);
+
+router.get("/all", handleGetAllRealEstate);

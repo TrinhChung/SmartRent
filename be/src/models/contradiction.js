@@ -3,7 +3,13 @@
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Contradiction extends Model {
-    static associate(models) {}
+    static associate(models) {
+      Contradiction.belongsTo(models.Term, {
+        foreignKey: {
+          name: "termId",
+        },
+      });
+    }
   }
   Contradiction.init(
     {
@@ -11,10 +17,9 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
       },
-      level: {
+      targetId: {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
-        defaultValue: 1,
       },
     },
     {

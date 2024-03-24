@@ -23,3 +23,7 @@ export const createTermContractService = (data) => {
 export const updateTermContractService = (data) => {
   return axios.put(`/api/term/update`, data);
 };
+
+export const deleteTermContradictionService = (data) => {
+  return axios.post("/api/term/contradiction", data);
+};

@@ -12,6 +12,7 @@ import {
   messageCreateTermNotify,
   listTermFixed,
 } from "../constants/typeValue";
+const { Op } = require("sequelize");
 
 export const createTermService = async ({ contractId, userId, content }) => {
   const transaction = await db.sequelize.transaction();
@@ -375,5 +376,78 @@ export const updateTermTimeStart = async ({
       },
       { transaction: transaction }
     );
+  }
+};
+
+export const deleteTermService = async ({ termId, userId }) => {
+  const transaction = await db.sequelize.transaction();
+  try {
+    const term = await db.Term.findOne({
+      where: { id: termId },
+      include: [
+        {
+          model: db.Contract,
+          where: { [Op.or]: [{ sellerId: userId }, { renterId: userId }] },
+          include: [
+            {
+              model: db.RoomChat,
+              required: true,
+            },
+          ],
+          required: true,
+        },
+      ],
+    });
+
+    if (!term) {
+      throw new Error("Bạn không có quyền xóa điều khoản này");
+    }
+    const termData = term.get({ plain: true });
+
+    if (termData.type !== "other") {
+      throw new Error("Không thể xóa điều khoản cố định từ hợp đồng");
+    }
+
+    await db.Term.destroy(
+      { where: { id: termId } },
+      { transaction: transaction }
+    );
+
+    await db.Contradiction.destroy(
+      {
+        where: { [Op.or]: [{ termId: termId }, { targetId: termId }] },
+      },
+      { transaction: transaction }
+    );
+
+    const receiver =
+      userId !== termData.Contract.sellerId
+        ? termData.Contract.sellerId
+        : termData.Contract.renterId;
+
+    await createNotifyService(
+      {
+        userId: receiver,
+        fkId: termData?.Contract?.RoomChat?.id,
+        content: messageCreateTermNotify[termData.type + statusTerm[3]],
+        type: "5",
+        eventNotify: "notify-term",
+      },
+      transaction
+    );
+
+    await senNotifyUpdateTerm(
+      {
+        roomChatId: termData?.Contract?.RoomChat?.id,
+        userId: receiver,
+      },
+      "update-term"
+    );
+
+    await transaction.commit();
+  } catch (error) {
+    console.log(error);
+    await transaction.rollback();
+    throw new Error(error);
   }
 };

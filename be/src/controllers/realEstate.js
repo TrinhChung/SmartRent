@@ -4,6 +4,7 @@ import {
   getRealEstateFullHouseByUserIdService,
   getRealEstateByRecommendService,
   searchRealEstateService,
+  dumpAllRealEstateService,
 } from "../services/realEstate";
 
 export const handleCreateRealEstate = async (req, res, next) => {
@@ -119,6 +120,16 @@ export const handleGetRealEstateByRecommend = async (req, res) => {
     return res
       .status(200)
       .json({ message: "Get real estate recommend success", data: data });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({ message: error.message });
+  }
+};
+
+export const handleGetAllRealEstate = async (req, res) => {
+  try {
+    await dumpAllRealEstateService();
+    return res.status(200).json({ message: "Get all real estate" });
   } catch (error) {
     console.log(error);
     return res.status(400).json({ message: error.message });

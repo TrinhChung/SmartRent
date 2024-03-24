@@ -55,3 +55,14 @@ export const writePdfContract = async ({ contractId, file }) => {
     throw new Error("Couldn't create contract");
   }
 };
+
+export const writeFileRealEstate = async ({ data }) => {
+  try {
+    const fileName = "real-estate.json";
+    const pathWrite = path.join(path.resolve("./dump/"), fileName);
+    fs.writeFileSync(pathWrite, JSON.stringify(data), { encoding: "utf8" });
+  } catch (error) {
+    console.log(error);
+    throw new Error("Couldn't dump real estate");
+  }
+};

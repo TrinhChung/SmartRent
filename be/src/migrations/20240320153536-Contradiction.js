@@ -14,10 +14,9 @@ module.exports = {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
       },
-      level: {
+      targetId: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
-        defaultValue: 1,
       },
       createdAt: {
         allowNull: false,

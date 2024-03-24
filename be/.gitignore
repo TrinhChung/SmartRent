@@ -22,3 +22,5 @@ artifacts
 /media/*
 
 jobNeedRun.sh
+
+/dump/*.json
