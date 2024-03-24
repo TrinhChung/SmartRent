@@ -29,12 +29,16 @@ export const convertVndToEth = (value) => {
 };
 
 export const buildParamsCreateSc = (contract) => {
-  const dlDate = new Date(contract.TimeStart?.value);
+  const timeStartData = contract?.Terms.find(
+    (term) => term?.type === "timeStart"
+  );
+  const costData = contract?.Terms.find((term) => term?.type === "cost");
+  const dlDate = new Date(timeStartData.value);
 
   const renterAddress = contract?.renter?.wallet;
   const sellerAddress = contract?.seller?.wallet;
   const reId = contract?.RealEstate?.id;
-  const rentCost = convertVndToEth(contract?.Cost.value);
+  const rentCost = convertVndToEth(costData.value);
 
   const timeStart = dlDate.valueOf();
   const paymentDeadline = dlDate.getDate();
