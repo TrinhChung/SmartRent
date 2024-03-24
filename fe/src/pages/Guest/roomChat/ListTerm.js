@@ -1,9 +1,9 @@
 import React, {
-  memo,
   useCallback,
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 import {
@@ -22,11 +22,7 @@ import moment from "moment";
 import { AuthContext } from "../../../providers/authProvider";
 import {
   createTermContractService,
-  updateAcceptCostTermService,
-  updateAcceptTimeStartTermService,
   updateTermContractService,
-  updateValueCostTermService,
-  updateValueTimeStartTermService,
 } from "../../../services/RoomChat/index";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -35,6 +31,7 @@ import {
   faXmarkCircle,
 } from "@fortawesome/free-regular-svg-icons";
 import { toast } from "react-toastify";
+import WrapTerm from "../../../components/pages/WrapTerm";
 
 const ListTerm = ({ contract, fetchContractById = () => {} }) => {
   const { authUser } = useContext(AuthContext);
@@ -42,6 +39,7 @@ const ListTerm = ({ contract, fetchContractById = () => {} }) => {
   const [cost, setCost] = useState(null);
   const [timeStart, setTimeStart] = useState(null);
   const [isOpenModalCreateTerm, setIsOpenModalCreateTerm] = useState(false);
+  const [contradictSelected, setContradictSelected] = useState([]);
 
   const fetchUpdateTerm = useCallback(
     async ({ termId, accept, value = null }) => {
@@ -53,6 +51,7 @@ const ListTerm = ({ contract, fetchContractById = () => {} }) => {
         });
         if (res.status === 200) {
           fetchContractById(contract?.id);
+          toast.success("Đã gửi yêu cầu");
         }
       } catch (error) {
         if (accept === "1") {
@@ -84,7 +83,7 @@ const ListTerm = ({ contract, fetchContractById = () => {} }) => {
       <Col span={12}>
         <Row gutter={[8, 8]}>
           <Col>
-            <label>Với mức giá (VNĐ)/ Tháng</label>
+            <label>- Với mức giá (VNĐ)/ Tháng</label>
           </Col>
 
           {cost?.accept === "0" &&
@@ -163,12 +162,16 @@ const ListTerm = ({ contract, fetchContractById = () => {} }) => {
     );
   }, [cost?.id, cost?.value, cost?.accept, cost?.newValue]);
 
+  const callBackFetchContradictionById = useCallback(async () => {
+    fetchContractById(contract?.id);
+  }, [contract]);
+
   const TimeStartElement = useMemo(() => {
     return (
       <Col span={12}>
         <Row gutter={[8, 8]}>
           <Col>
-            <label>Hợp đồng có hiệu lực từ ngày</label>
+            <label>- Hợp đồng có hiệu lực từ ngày</label>
           </Col>
           {timeStart?.accept === "0" &&
             moment(timeStart?.value).format("DD-MM-YYYY") ==
@@ -264,16 +267,17 @@ const ListTerm = ({ contract, fetchContractById = () => {} }) => {
         {contract?.RealEstate?.acreage} (m2)
       </Row>
       {contract?.Terms?.length > 0 &&
-        contract?.Terms.map((term, index) => {
+        contract?.Terms.map((term) => {
           if (
             ["0", "1"].includes(term?.accept) &&
             ["cost", "deposit", "timeStart", "deadline"].includes(term?.type)
           ) {
             return (
-              <Row
-                className="term-item"
-                style={{ paddingBottom: 5, paddingTop: 4 }}
-                key={"cost" + index}
+              <WrapTerm
+                term={term}
+                contradictSelected={contradictSelected}
+                setContradictSelected={setContradictSelected}
+                fetchContractById={callBackFetchContradictionById}
               >
                 {term?.type === "cost" && CostElement}
                 {term?.type === "timeStart" && TimeStartElement}
@@ -288,22 +292,23 @@ const ListTerm = ({ contract, fetchContractById = () => {} }) => {
         VNĐ. Số tiền này sẽ lưu trữ trong hợp đồng thông minh và sẽ được hoàn
         trả cho bên B sau khi chấm dứt hợp đồng đúng kì hạn. Nếu bên B chấm dứt
         hợp đồng trước thời hạn số tiền này sẽ được bồi thường cho bên A.`}
-              </Row>
+              </WrapTerm>
             );
           }
         })}
       <Row className="add-rule">※ Điều 2</Row>
       {contract?.Terms?.length > 0 &&
-        contract?.Terms.map((term, index) => {
+        contract?.Terms.map((term) => {
           if (term?.type === "fixed") {
             return (
-              <Row
-                className="term-item"
-                key={"fixed_" + index}
-                style={{ paddingTop: 2 }}
+              <WrapTerm
+                term={term}
+                setContradictSelected={setContradictSelected}
+                contradictSelected={contradictSelected}
+                fetchContractById={callBackFetchContradictionById}
               >
-                {term?.content}
-              </Row>
+                <Col>{term?.content}</Col>
+              </WrapTerm>
             );
           }
         })}
@@ -326,15 +331,17 @@ const ListTerm = ({ contract, fetchContractById = () => {} }) => {
         </Col>
       </Row>
       {contract?.Terms?.length > 0 &&
-        contract?.Terms.map((term, index) => {
+        contract?.Terms.map((term) => {
           if (["0", "1"].includes(term?.accept)) {
             if (term?.type === "other") {
               return (
-                <Row
-                  style={{ alignItems: "center", padding: "4px 0" }}
-                  id={"other_" + index}
+                <WrapTerm
+                  term={term}
+                  contradictSelected={contradictSelected}
+                  setContradictSelected={setContradictSelected}
+                  fetchContractById={callBackFetchContradictionById}
                 >
-                  <Col span={24}>
+                  <Col>
                     {term?.accept === "0" && term?.userId !== authUser.id && (
                       <Row gutter={[8, 8]}>
                         <Col>Điều khoản mới</Col>
@@ -384,7 +391,7 @@ const ListTerm = ({ contract, fetchContractById = () => {} }) => {
                       {term.content}
                     </Row>
                   </Col>
-                </Row>
+                </WrapTerm>
               );
             }
           }

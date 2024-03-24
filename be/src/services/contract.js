@@ -211,7 +211,14 @@ export const getContractByIdService = async ({ id }) => {
         },
         {
           model: db.Term,
-          required: false,
+          required: true,
+          include: [
+            {
+              model: db.Contradiction,
+              required: false,
+              attributes: ["id", "termId", "targetId"],
+            },
+          ],
         },
         {
           model: db.User,

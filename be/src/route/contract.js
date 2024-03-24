@@ -13,6 +13,7 @@ import {
   handleSignContract,
   handleCreateSc,
 } from "../controllers/contract";
+import { roomPermission } from "../middleware/roomChat";
 const SchemaValidator = require("nodejs-schema-validator");
 const schemaValidatorInstance = new SchemaValidator();
 
@@ -28,6 +29,7 @@ router.post(
 router.post(
   "/close",
   authenticate,
+  roomPermission,
   schemaValidatorInstance.validateBody(signContractSchema),
   handleCloseContract
 );

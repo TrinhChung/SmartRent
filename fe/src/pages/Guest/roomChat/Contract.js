@@ -1,5 +1,5 @@
-import { Button, Col, Image, Modal, Row } from "antd";
-import React, { memo, useEffect, useMemo, useRef, useState } from "react";
+import { Col, Image, Row } from "antd";
+import React, { memo } from "react";
 import moment from "moment";
 import generatePDF from "react-to-pdf";
 import "./Contract.scss";
@@ -81,6 +81,9 @@ const Contract = ({ contract, refContract }) => {
               <Row className="partner-title">III. Điều khoản</Row>
               <Row style={{ paddingLeft: 20 }}>
                 <Col span={24}>
+                  <Row className="rule" style={{ paddingTop: 0 }}>
+                    ※ Điều 1
+                  </Row>
                   {contract?.Terms?.length > 0 &&
                     contract?.Terms?.map((term, index) => {
                       if (

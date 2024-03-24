@@ -74,3 +74,14 @@ export const updateTermSchema = {
     ],
   },
 };
+
+export const deleteTermSchema = {
+  termId: {
+    rules: [
+      {
+        rule: (input) => !input,
+        message: "termId is required",
+      },
+    ],
+  },
+};

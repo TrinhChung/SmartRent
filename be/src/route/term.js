@@ -1,6 +1,14 @@
 import { Router } from "express";
-import { handleCreateTerm, handleUpdateTerm } from "../controllers/term";
-import { updateTermSchema, createTermOtherSchema } from "../schema/term";
+import {
+  handleCreateTerm,
+  handleUpdateTerm,
+  handleDeleteTermContradiction,
+} from "../controllers/term";
+import {
+  updateTermSchema,
+  createTermOtherSchema,
+  deleteTermSchema,
+} from "../schema/term";
 const SchemaValidator = require("nodejs-schema-validator");
 const schemaValidatorInstance = new SchemaValidator();
 
@@ -16,4 +24,10 @@ router.put(
   "/update",
   schemaValidatorInstance.validateBody(updateTermSchema),
   handleUpdateTerm
+);
+
+router.post(
+  "/contradiction",
+  schemaValidatorInstance.validateBody(deleteTermSchema),
+  handleDeleteTermContradiction
 );

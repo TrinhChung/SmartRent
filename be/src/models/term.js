@@ -8,6 +8,12 @@ module.exports = (sequelize, DataTypes) => {
           name: "contractId",
         },
       });
+
+      Term.hasMany(models.Contradiction, {
+        foreignKey: {
+          name: "termId",
+        },
+      });
     }
   }
   Term.init(

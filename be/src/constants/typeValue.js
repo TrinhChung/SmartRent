@@ -42,6 +42,7 @@ export const messageCreateTermNotify = {
   timeStartCreate:
     "Đối tác của bạn đã chỉnh lại thời gian hợp đồng có hiệu lực",
   otherAccept: "Đối tác đã chấp nhận điều khoản của bạn",
+  otherDelete: "Đối tác của bạn đã xóa 1 điều khoản vì xung đột",
   costAccept: "Đối tác đã chấp nhận giá mà bạn đề xuất",
   timeStartAccept:
     "Đối tác đã chấp nhận thời gian hợp đồng có hiệu lực mà bạn đề xuất",
@@ -55,6 +56,7 @@ export const statusTerm = {
   0: "Create",
   1: "Accept",
   2: "Reject",
+  3: "Delete",
 };
 
 export const listTermFixed = [
