@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useMemo } from "react";
 import { Col, Row } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSignature } from "@fortawesome/free-solid-svg-icons";
@@ -8,6 +8,15 @@ import { SmartContractContext } from "../../../providers/scProvider";
 
 const Deposit = ({ contract }) => {
   const { scAddress } = useContext(SmartContractContext);
+
+  const cost = useMemo(() => {
+    if (contract?.Terms?.length === 0) {
+      return { value: 0 };
+    } else {
+      const term = contract?.Terms.find((term) => term.type === "cost");
+      return term;
+    }
+  }, [contract]);
 
   return (
     <Col className="deposit-container" span={24}>
@@ -35,12 +44,9 @@ const Deposit = ({ contract }) => {
           <Row className="description">
             ・Số tiền bạn cần thanh toán là:
             {" " +
-              String(contract?.Cost?.value).replace(
-                /\B(?=(\d{3})+(?!\d))/g,
-                ","
-              ) +
+              String(cost?.value).replace(/\B(?=(\d{3})+(?!\d))/g, ",") +
               "VNĐ tương ứng với "}
-            {String(convertVndToEth(contract?.Cost?.value)).replace(
+            {String(convertVndToEth(cost?.value)).replace(
               /\B(?=(\d{3})+(?!\d))/g,
               ","
             ) + " Wei ETH"}

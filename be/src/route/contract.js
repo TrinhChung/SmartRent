@@ -14,6 +14,7 @@ import {
   handleCreateSc,
 } from "../controllers/contract";
 import { roomPermission } from "../middleware/roomChat";
+import { handleRenterPaymentSmartContract } from "../controllers/realEstate";
 const SchemaValidator = require("nodejs-schema-validator");
 const schemaValidatorInstance = new SchemaValidator();
 
@@ -50,4 +51,11 @@ router.post(
   authenticate,
   schemaValidatorInstance.validateBody(signContractSchema),
   handleCreateSc
+);
+
+router.post(
+  "/deposit/smart-contract",
+  authenticate,
+  schemaValidatorInstance.validateBody(signContractSchema),
+  handleRenterPaymentSmartContract
 );

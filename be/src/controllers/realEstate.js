@@ -6,6 +6,7 @@ import {
   searchRealEstateService,
   dumpAllRealEstateService,
 } from "../services/realEstate";
+import { renterPaymentSmartContractService } from "../services/contract";
 
 export const handleCreateRealEstate = async (req, res, next) => {
   try {
@@ -130,6 +131,20 @@ export const handleGetAllRealEstate = async (req, res) => {
   try {
     await dumpAllRealEstateService();
     return res.status(200).json({ message: "Get all real estate" });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({ message: error.message });
+  }
+};
+
+export const handleRenterPaymentSmartContract = async (req, res) => {
+  try {
+    const data = { userId: req.user.id, contractId: req.body.contractId };
+    await renterPaymentSmartContractService(data);
+
+    return res
+      .status(200)
+      .json({ message: "Renter payment deposit smart contract" });
   } catch (error) {
     console.log(error);
     return res.status(400).json({ message: error.message });

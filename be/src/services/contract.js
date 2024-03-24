@@ -2,6 +2,8 @@ import db from "../models/index";
 import { createNotifyService } from "./notify";
 import { senNotifyUpdateTerm } from "../controllers/socket";
 import { createTermCost, createTermTimeStart, createTermFixed } from "./term";
+import { createContractInstanceSMC } from "../config/connectSMC";
+
 const { Op } = require("sequelize");
 
 export const createContractService = async (data) => {
@@ -350,5 +352,75 @@ export const createSmartContractService = async ({ contractId, userId }) => {
     console.log(error);
     await transaction.rollback();
     throw new Error("sign contract fail", error);
+  }
+};
+
+export const renterPaymentSmartContractService = async ({
+  contractId,
+  userId,
+}) => {
+  const transaction = await db.sequelize.transaction();
+  try {
+    const contract = await db.Contract.findOne({
+      where: { id: contractId },
+      include: [
+        {
+          model: db.RoomChat,
+          required: true,
+        },
+        {
+          model: db.User,
+          required: true,
+          attributes: ["wallet"],
+          as: "renter",
+        },
+      ],
+    });
+    const contractData = contract.get({ plain: true });
+
+    if (userId !== contractData.renterId) {
+      throw new Error("Bạn không có quyền thay đổi trạng thái ký kết");
+    }
+
+    if (contractData.status !== "8") {
+      throw new Error("Thao tác không hợp lệ");
+    }
+    const scInstance = createContractInstanceSMC(process.env.CONTRACT_ADDRESS);
+
+    const depositRenter = await scInstance.getDepositContractByRenter(
+      contractData?.id,
+      contractData?.renter.wallet
+    );
+
+    if (Number(depositRenter) > 0) {
+      await contract.update({ status: "4" }, { transaction: transaction });
+
+      await createNotifyService(
+        {
+          userId: contractData.renterId,
+          fkId: contractData?.RoomChat?.id,
+          content: `Người thuê đã thanh toán cọc của hợp đồng`,
+          type: "2",
+          eventNotify: "sign-contract",
+        },
+        transaction
+      );
+
+      await senNotifyUpdateTerm(
+        {
+          roomChatId: contractData?.RoomChat?.id,
+          userId: contractData.renterId,
+        },
+        "update-term"
+      );
+    } else {
+      throw new Error("Bạn chưa đặt cọc cho hợp đồng");
+    }
+
+    await transaction.commit();
+  } catch (error) {
+    console.log(error);
+    await transaction.rollback();
+    throw new Error("renter payment smart contract", error);
   }
 };

@@ -109,6 +109,10 @@ contract SmartContract is ERC721URIStorage {
         return smartContract;
     }
 
+    function getDepositContractByRenter(uint256 scId, address renterAddress) public view returns(uint256) {
+        return positRenter[renterAddress][scId];
+    }
+
     // get all balance when destroy contract
     function close(address _to) public {
         payable(_to).transfer(address(this).balance);

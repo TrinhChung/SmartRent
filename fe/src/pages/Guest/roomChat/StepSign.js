@@ -19,7 +19,10 @@ import CreateSC from "./CreateSC";
 import { SmartContractContext } from "../../../providers/scProvider";
 import moment from "moment";
 import generatePDF from "react-to-pdf";
-import { createScService } from "../../../services/SC/index";
+import {
+  createScService,
+  renterPaymentDepositService,
+} from "../../../services/SC/index";
 import Deposit from "./Deposit";
 import { ethers } from "ethers";
 
@@ -65,6 +68,22 @@ const StepSign = ({
       console.log(error.message);
     }
   };
+
+  const fetchRenterPaymentDeposit = useCallback(async () => {
+    try {
+      if (contract?.id) {
+        const res = await renterPaymentDepositService({
+          contractId: contract?.id,
+        });
+        if (res.status === 200) {
+          toast.success("Tạo hợp đồng thông minh thành công");
+          fetchContractById(contract?.id);
+        }
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  }, [contract]);
 
   const sellerCreateSmartContract = useCallback(async () => {
     try {
@@ -120,8 +139,8 @@ const StepSign = ({
       const tx = {
         value: String(convertVndToEth(Number(deposit?.value))),
       };
-      const paymentInfo = await scInstance.depositContract(contract?.id, tx);
-      console.log(paymentInfo);
+      await scInstance.depositContract(contract?.id, tx);
+      await fetchRenterPaymentDeposit();
     } catch (error) {
       console.log(error);
       toast.error("Lỗi hệ thống");

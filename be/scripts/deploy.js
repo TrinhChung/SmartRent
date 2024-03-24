@@ -6,7 +6,7 @@
 // global scope, and execute the script.
 const hre = require("hardhat");
 const { setEnv } = require("./setEnv.js");
-const { handleTokenUris } = require("../src/utils/uploadPinata.js")
+const { handleTokenUris } = require("../src/utils/uploadPinata.js");
 
 async function main() {
   const realEstate = await hre.ethers.deployContract(
@@ -27,9 +27,9 @@ async function main() {
     "contracts/SmartContract.sol:SmartContract"
   );
 
-  await contractApi.waitForDeployment();
+  await smartContract.waitForDeployment();
   let tokenUris;
-  tokenUris = await handleTokenUris()
+  tokenUris = await handleTokenUris();
 
   if (smartContract.target) {
     // shell.env["CONTRACT_ADDRESS"] = contractApi.target;
@@ -46,4 +46,3 @@ main().catch((error) => {
   console.error(error);
   process.exitCode = 1;
 });
-
