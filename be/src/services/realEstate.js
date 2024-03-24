@@ -1,7 +1,8 @@
 import db from "../models/index";
 import { Op } from "sequelize";
 import { createAddressService } from "./address";
-import { createFileService } from "./file";
+import { createFileService, writeFileRealEstate } from "./file";
+import fs from "fs";
 
 export const createRealEstateService = async (data) => {
   const transaction = await db.sequelize.transaction();
@@ -263,6 +264,26 @@ export const searchRealEstateService = async ({
     );
 
     return { total: total, list: list };
+  } catch (error) {
+    console.log(error.status);
+    throw new Error(error.message, error);
+  }
+};
+
+export const dumpAllRealEstateService = async () => {
+  try {
+    const list = await db.RealEstate.findAll({
+      include: [
+        {
+          model: db.Address,
+          attributes: { exclude: ["createdAt", "updatedAt"] },
+        },
+      ],
+      attributes: { exclude: ["description"] },
+      subQuery: false,
+    });
+
+    await writeFileRealEstate({ data: list });
   } catch (error) {
     console.log(error.status);
     throw new Error(error.message, error);
