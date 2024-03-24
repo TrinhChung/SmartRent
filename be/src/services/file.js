@@ -59,7 +59,7 @@ export const writePdfContract = async ({ contractId, file }) => {
 export const writeFileRealEstate = async ({ data }) => {
   try {
     const fileName = "real-estate.json";
-    const pathWrite = path.join(path.resolve("./dump/"), fileName);
+    const pathWrite = path.join(path.resolve("../recommend/data/"), fileName);
     fs.writeFileSync(pathWrite, JSON.stringify(data), { encoding: "utf8" });
   } catch (error) {
     console.log(error);

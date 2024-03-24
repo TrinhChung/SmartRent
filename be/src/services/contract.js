@@ -15,6 +15,18 @@ export const createContractService = async (data) => {
     });
     realEstate = realEstate.get({ plain: true });
 
+    if (!realEstate) {
+      return res
+        .status(400)
+        .json({ message: "Bất động sản này không còn tồn tại!" });
+    }
+
+    if (realEstate.status !== "1") {
+      return res
+        .status(400)
+        .json({ message: "Bất động sản này đã được người khác thuê" });
+    }
+
     const contract = await db.Contract.create(
       {
         realEstateId: data.realEstateId,

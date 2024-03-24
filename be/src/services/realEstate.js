@@ -2,7 +2,8 @@ import db from "../models/index";
 import { Op } from "sequelize";
 import { createAddressService } from "./address";
 import { createFileService, writeFileRealEstate } from "./file";
-import fs from "fs";
+import { spawn } from "child_process";
+import path from "path";
 
 export const createRealEstateService = async (data) => {
   const transaction = await db.sequelize.transaction();
@@ -56,7 +57,7 @@ export const createRealEstateService = async (data) => {
 export const getRealEstateFullHouseService = async (id, userId) => {
   try {
     const realEstate = await db.RealEstate.findOne({
-      where: { id: id },
+      where: { id: id, status: "1" },
       include: [
         {
           model: db.File,
@@ -169,28 +170,9 @@ export const getRealEstateFullHouseByUserIdService = async ({
 
 export const getRealEstateByRecommendService = async ({ userId }) => {
   try {
-    const list = await db.RealEstate.findAll(
-      {
-        include: [
-          {
-            model: db.File,
-            where: {
-              typeFk: "2",
-            },
-            limit: 1,
-            required: false,
-            as: "realEstateFiles",
-            attributes: ["url"],
-          },
-          { model: db.Address },
-        ],
-        subQuery: false,
-        limit: 10,
-      },
-      { raw: true }
-    );
+    const historyView = [1, 2, 3];
 
-    return list;
+    return [];
   } catch (error) {
     console.log(error.status);
     throw new Error(error.message, error);
