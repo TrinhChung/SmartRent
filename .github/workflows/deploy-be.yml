@@ -26,4 +26,5 @@ jobs:
           script: |
             cd /home/SmartRent
             git pull
+            docker compose --env-file ./be/.env build
             ./checkFileChange.sh
