@@ -190,9 +190,13 @@ export const getRealEstateByRecommendService = async ({
       view = realEstateId;
     }
 
-    var res = await axios.post(process.env.HOST_DJANGO + "/api/recommend", {
-      view: view,
-    });
+    var res = await axios.post(
+      `${process.env.HOST_DJANGO}:${process.env.PORT_DJANGO}` +
+        "/api/recommend",
+      {
+        view: view,
+      }
+    );
 
     if (res.status === 200) {
       const ids = res.data.data;
