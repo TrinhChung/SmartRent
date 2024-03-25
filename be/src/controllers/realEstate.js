@@ -113,9 +113,11 @@ export const handleSearchRealEstate = async (req, res) => {
 export const handleGetRealEstateByRecommend = async (req, res) => {
   try {
     const user = req.user;
+    const realEstateId = req.body?.realEstateId;
 
     const data = await getRealEstateByRecommendService({
       userId: user?.id,
+      realEstateId: realEstateId,
     });
 
     return res

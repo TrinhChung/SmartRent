@@ -12,13 +12,14 @@ import "./Home.scss";
 import Suggest from "./Suggest";
 import MapCustom from "../../../components/maps/MapCustom";
 import { useJsApiLoader } from "@react-google-maps/api";
-import { getEstateByRecommendService } from "../../../services/RealEstate/index";
 import { useNavigate } from "react-router-dom";
+import { getEstateByRecommendService } from "../../../services/RealEstate/index";
 import { AuthContext } from "../../../providers/authProvider";
 
 const Home = () => {
   const [libraries] = useState(["drawing", "places"]);
-  const { listSuggest } = useContext(AuthContext);
+  const { authUser } = useContext(AuthContext);
+  const [listSuggest, setListSuggest] = useState([]);
   const { isLoaded } = useJsApiLoader({
     mapIds: process.env.REACT_APP_MAP_ID,
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAP_KEY,
@@ -34,6 +35,33 @@ const Home = () => {
   const setPositionAction = useCallback((position) => {
     return setPosition(position);
   }, []);
+
+  const fetchRealEstateRecommend = async () => {
+    try {
+      const res = await getEstateByRecommendService();
+      if (res.status === 200) {
+        setListSuggest(
+          res.data.map((realEstate) => {
+            return {
+              name: realEstate.name,
+              address: realEstate.Address.address,
+              image: realEstate?.realEstateFiles[0]?.url,
+              cost: realEstate?.cost,
+              acreage: realEstate?.acreage,
+              url: `/full-house-view/${realEstate.id}`,
+              date: realEstate?.createdAt,
+            };
+          })
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchRealEstateRecommend();
+  }, [authUser]);
 
   return (
     <Col span={24} className="home-container">

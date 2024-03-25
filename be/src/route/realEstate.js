@@ -36,6 +36,6 @@ router.get("/posted-by-me", authenticate, handleGetRealEstateByUserId);
 
 router.post("/search", handleSearchRealEstate);
 
-router.get("/recommend", handleGetRealEstateByRecommend);
+router.post("/recommend", getUser, handleGetRealEstateByRecommend);
 
 router.get("/all", handleGetAllRealEstate);
