@@ -26,5 +26,4 @@ jobs:
           script: |
             cd /home/SmartRent
             git pull
-            cd be
             ./checkFileChange.sh
