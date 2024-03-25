@@ -66,13 +66,3 @@ def recommend(id_, indices, nearest_neighbor, df, top_n=20):
     
     # return list real estate 
     return similar_df["ID"];
-
-
-
-
-
-
-
-
-
-

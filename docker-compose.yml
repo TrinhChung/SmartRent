@@ -34,7 +34,7 @@ services:
     # restart: always
     volumes:
       - /tmp/app/mysqld:/var/run/mysqld
-      - .:/app
+      - ./be:/app
       - static_volume:/app/staticfiles/
     depends_on:
       my-mysql:
@@ -50,7 +50,7 @@ services:
     hostname: nginx
     volumes:
       - static_volume:/app/staticfiles
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./be/nginx/default.conf:/etc/nginx/conf.d/default.conf
     ports:
       - 80:80
     restart: always
