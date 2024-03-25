@@ -47,8 +47,8 @@ def recommend(id_, indices, nearest_neighbor, df, top_n=20):
     score_series = pd.Series(nearest_neighbor[idx]).sort_values(ascending=False)
     filtered_indexes = []
     count = 0
-    for index in score_series.index[1:]:  
-        if df.loc[index, 'status'] == '1':
+    for index in score_series.index:  
+        if df.loc[index, 'status'] == '1' and df.loc[index, 'id'] != id_:
             filtered_indexes.append(index)
             count += 1
         if count == top_n: 
