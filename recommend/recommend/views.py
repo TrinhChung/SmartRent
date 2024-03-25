@@ -4,20 +4,18 @@ from rest_framework import status
 from recommend.recommend_process import recommend, load_data, create_similarity_matrix
 import json
 
-numericals = ['acreage', 'isPet', 'facade', 'directionHouse', 'isInterior', 
+numericals = ['id','acreage', 'isPet', 'facade', 'directionHouse', 'isInterior', 
               'floorTotal', 'toiletTotal', 'bedroomTotal', 'cost']
 
 @api_view(["POST"])
 def recommend_real_estate(request):
     try:
-        view = request.data.get("view")
+        view = int(request.data.get("view"))
         print("data input", view)
         df = load_data('./data/real-estate.json')
         numerical_df = df[numericals]
         nearest_neighbor, indices = create_similarity_matrix(numerical_df, numericals)
         recommendations = recommend(id_=view, indices=indices, nearest_neighbor=nearest_neighbor, df=df, top_n=10)
-
-        print("Result: \n",recommendations)
 
         return Response(
             {"message": "Get recommend real estate successfully","data": recommendations},

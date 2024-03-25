@@ -1,5 +1,3 @@
-import pandas as pd
-
 import json
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
@@ -10,7 +8,6 @@ def load_data(file_path):
     with open(file_path, 'r', encoding='utf-8') as file:
         data = json.load(file)
     df = pd.DataFrame(data)
-    df['address_name'] = df['Address'].apply(lambda x: x['address'])
     df['address_lat'] = df['Address'].apply(lambda x: x['lat'])
     df['address_lng'] = df['Address'].apply(lambda x: x['lng'])
     df.drop('Address', axis=1, inplace=True)
@@ -23,7 +20,7 @@ def create_similarity_matrix(df, numerical_features):
     scaler = StandardScaler()
     norm_data = scaler.fit_transform(numerical_df)
     nearest_neighbor = linear_kernel(norm_data, norm_data)
-    indices = pd.Series(df.index)
+    indices = pd.Series(df["id"])
     return nearest_neighbor, indices
 
 
@@ -64,8 +61,8 @@ def recommend(id_, indices, nearest_neighbor, df, top_n=20):
         sim_lat = float(df['address_lat'].iloc[i])
         sim_lng = float(df['address_lng'].iloc[i])
         distance = calculate_distance(ref_lat, ref_lng, sim_lat, sim_lng)
-        similar_listings_ids.append((df['id'].iloc[i], df['address_name'].iloc[i], sim_lat, sim_lng, distance, df['status'].iloc[i]))
-    similar_df = pd.DataFrame(similar_listings_ids, columns=['ID', 'Address', 'Address_lat', 'Address_lng', 'Distance', 'Status']).sort_values(by='Distance').reset_index(drop=True)
+        similar_listings_ids.append((df['id'].iloc[i], distance))
+    similar_df = pd.DataFrame(similar_listings_ids, columns=['ID', 'Distance']).sort_values(by='Distance').reset_index(drop=True)
     
     # return list real estate 
     return similar_df["ID"];
