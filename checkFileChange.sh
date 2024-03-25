@@ -17,13 +17,13 @@ for file in $files; do
   fi
 done
 
-echo -n > "./jobNeedRun.sh"
-echo "#!/bin/sh" >> "./jobNeedRun.sh"
+echo -n > "./be/jobNeedRun.sh"
+echo "#!/bin/sh" >> "./be/jobNeedRun.sh"
 
 if [[ $checkChangeSc == true ]]; then
      echo "Deploy and verify smart contract" 
-     echo "npx hardhat run scripts/deploy.js --network testnet" >> "./jobNeedRun.sh"
-     echo "network=testnet ./verify.sh" >> "./jobNeedRun.sh"
+     echo "npx hardhat run scripts/deploy.js --network testnet" >> "./be/jobNeedRun.sh"
+     echo "network=testnet ./verify.sh" >> "./be/jobNeedRun.sh"
      
 fi
 
@@ -31,11 +31,11 @@ if [[ $checkChangeDb == true ]]; then
      echo "Migrate and seed data"
      rm -rf /home/db
      mkdir /home/db
-     echo "./migrate.sh" >> "./jobNeedRun.sh"
+     echo "./migrate.sh" >> "./be/jobNeedRun.sh"
 fi
 
 if [[ $changeBackend == true ]]; then
       echo "Restart backend"
-      docker compose down
-      docker compose up -d    
+      docker compose --env-file ./be/.env down
+      docker compose --env-file ./be/.env up -d    
 fi
