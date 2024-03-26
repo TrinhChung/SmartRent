@@ -47,8 +47,8 @@ app.use(function (req, res, next) {
 var dir = path.resolve("./media");
 app.use(express.static(dir));
 
-app.use(bodyParser.json({ limit: "10mb" }));
-app.use(bodyParser.urlencoded({ limit: "10mb" }));
+app.use(bodyParser.json({ limit: "20mb" }));
+app.use(bodyParser.urlencoded({ limit: "20mb" }));
 connectDB();
 connectRedis();
 app.use("/api", router);

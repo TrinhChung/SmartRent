@@ -6,12 +6,16 @@ import {
   signContractSchema,
 } from "../schema/contract";
 import {
+  uploadContractSchema
+} from "../schema/file";
+import {
   handleCloseContract,
   handleGetContractById,
   handleGetContractForMe,
   handleInitContract,
   handleSignContract,
   handleCreateSc,
+  handleUploadToIpfs,
 } from "../controllers/contract";
 import { roomPermission } from "../middleware/roomChat";
 import { handleRenterPaymentSmartContract } from "../controllers/realEstate";
@@ -52,6 +56,13 @@ router.post(
   schemaValidatorInstance.validateBody(signContractSchema),
   handleCreateSc
 );
+
+router.post(
+  "/uploadIpfs",
+  authenticate,
+  schemaValidatorInstance.validateBody(uploadContractSchema),
+  handleUploadToIpfs
+)
 
 router.post(
   "/deposit/smart-contract",
