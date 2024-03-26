@@ -28,6 +28,10 @@ export const createScService = (data) => {
   return axios.post("/api/contract/create/smart-contract", data);
 };
 
+export const uploadFileToIpfs = (data) => {
+  return axios.post("/api/contract/uploadIpfs", data);
+};
+
 export const renterPaymentDepositService = (data) => {
   return axios.post("/api/contract/deposit/smart-contract", data);
 };
