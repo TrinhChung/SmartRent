@@ -27,15 +27,17 @@ services:
     container_name: django
     image: django-docker
     build: ./recommend/
-    command: sh -c "python manage.py runserver 7000"
+    command: sh -c "python manage.py runserver 0.0.0.0:7000"
     ports:
       - 7000:7000
+    volumes:
+      - ./recommend:/app
     restart: always
   my-node:
     container_name: node
     image: node-docker
     build: ./be/
-    command: sh -c "npm i && ./jobNeedRun.sh && HOST=mysql && HOST_DJANGO=django npm start"
+    command: sh -c "npm i && ./jobNeedRun.sh && HOST=mysql && HOST_REDIS=redis && HOST_DJANGO=django npm start"
 
     ports:
       - 8000:8000
