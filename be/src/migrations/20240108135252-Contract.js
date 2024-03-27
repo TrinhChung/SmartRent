@@ -22,6 +22,10 @@ module.exports = {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
       },
+      cid: {
+        type: Sequelize.STRING(60),
+        allowNull: true,
+      },
       status: {
         type: Sequelize.STRING(1),
         allowNull: false,

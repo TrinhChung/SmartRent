@@ -94,9 +94,11 @@ export const handleSignContract = async (req, res) => {
 export const handleCreateSc = async (req, res) => {
   try {
     const contractId = req.body.contractId;
+    const contractCid = req.body.cid;
     const userId = req.user.id;
     await createSmartContractService({
       contractId: contractId,
+      contractCid: contractCid,
       userId: userId,
     });
 
@@ -112,7 +114,7 @@ export const handleUploadToIpfs = async (req, res) => {
     const file = req.body.file;
     const contractId = req.body.contractId
     const { responses: fileUploadResponses } = await uploadFiletoIpfs(file, contractId);
-    return res.status(200).json({ message: "upload to Ipfs success",data:`ipfs:// ${fileUploadResponses.IpfsHash}`});
+    return res.status(200).json({ message: "upload to Ipfs success",data:`${fileUploadResponses.IpfsHash}`});
   } catch (err) {
     console.log(err);
     console.log("handle Upload to Ipfs fail")

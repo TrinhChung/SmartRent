@@ -35,6 +35,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
       },
+      cid: {
+        type: DataTypes.STRING(60),
+        allowNull: true,
+      },
       status: {
         type: DataTypes.STRING(1),
         allowNull: false,

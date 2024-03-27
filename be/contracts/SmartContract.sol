@@ -11,10 +11,7 @@ contract SmartContract is ERC721URIStorage {
         uint256 reId;
         uint256 rentCost;
         uint256 duration;
-        uint256 timeStart;
-        uint256 paymentDeadline;
-        string payment_type;
-        string[] termArray;
+        string urlContract;
     }
 
     mapping(uint256 => ContractEntity) contracts;
@@ -50,11 +47,7 @@ contract SmartContract is ERC721URIStorage {
         ,uint256  _reId
         ,uint256 _rentCost
         ,uint256 _duration
-        ,uint256 _timeStart
-        ,uint256 _paymentDeadline
-        ,string memory _payment_type
         ,string memory uri
-        ,string[] memory _termArray
         ) public returns (uint256) {
 
         uint256 newItemId = _newItemId;
@@ -67,14 +60,6 @@ contract SmartContract is ERC721URIStorage {
         newSmartContract.reId = _reId;
         newSmartContract.rentCost = _rentCost;
         newSmartContract.duration = _duration;
-        newSmartContract.timeStart = _timeStart;
-        newSmartContract.paymentDeadline = _paymentDeadline;
-        newSmartContract.payment_type = _payment_type;
-
-        for (uint256 i = 0; i < _termArray.length; i++) {
-            newSmartContract.termArray.push(_termArray[i]);
-        }
-
         return newItemId;
     }
 
