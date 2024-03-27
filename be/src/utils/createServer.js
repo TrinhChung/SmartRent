@@ -5,6 +5,7 @@ import connectDB from "../config/connectDB";
 import cors from "cors";
 import { eventSocket } from "../controllers/socket";
 import { connectRedis } from "../config/connectRedis";
+import { checkRoomPermissionSocket } from "../route/socket";
 require("dotenv").config();
 const path = require("path");
 
@@ -49,11 +50,10 @@ export const createServer = () => {
 
   app.use(bodyParser.json({ limit: "10mb" }));
   app.use(bodyParser.urlencoded({ limit: "10mb" }));
-  connectDB();
-  connectRedis();
+
   app.use("/api", router);
 
-  // io.use(checkRoomPermissionSocket);
+  io.use(checkRoomPermissionSocket);
   io.on("connection", eventSocket);
 
   return server;
