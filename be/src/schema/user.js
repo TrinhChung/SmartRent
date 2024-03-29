@@ -21,7 +21,7 @@ export const updateUserInfoSchema = {
         message: "phoneNumber is required",
       },
       {
-        rule: (input) => !validator.isMobilePhone(input, "vi-VN"),
+        rule: (input) => !input || !validator.isMobilePhone(input, "vi-VN"),
         message: "phoneNumber is valid",
       },
     ],
@@ -33,11 +33,11 @@ export const updateUserInfoSchema = {
         message: "location is required",
       },
       {
-        rule: (input) => Math.abs(input) > 90,
+        rule: (input) => Math.abs(input?.lat) > 90,
         message: "lat is invalid",
       },
       {
-        rule: (input) => Math.abs(input) > 180,
+        rule: (input) => Math.abs(input?.lng) > 180,
         message: "lng is invalid",
       },
     ],

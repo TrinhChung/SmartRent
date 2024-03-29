@@ -33,11 +33,11 @@ export const authenticate = async (req, res, next) => {
         res.status(401).json({ message: "Failed to find user" });
       }
     } else {
-      res.status(401).json({ message: "Failed to find user" });
+      res.status(403).json({ message: "User is not logged in" });
     }
   } catch (err) {
     console.error(err);
-    res.status(401).json("User not allow");
+    res.status(400).json("Invalid action");
   }
 };
 

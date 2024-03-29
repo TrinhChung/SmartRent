@@ -2,6 +2,7 @@
 
 module.exports = {
   testMatch: ["**/src/test/**.test.js"],
+  rootDir: "./src",
   verbose: true,
   clearMocks: true,
   resetMocks: true,
