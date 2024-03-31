@@ -1,7 +1,10 @@
 name: React build
 
 on:
-  push:
+  pull_request:
+    paths:
+      - "fe/**"
+      - ".github/workflows/build-fe.yml"
     branches: ["main"]
 
 jobs:
@@ -9,14 +12,14 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: fe
+        working-directory: ./fe
     strategy:
       matrix:
         node-version: [18.x]
     env:
       REACT_APP_GOOGLE_MAP_KEY: ${{ vars.REACT_APP_GOOGLE_MAP_KEY }}
       REACT_APP_MAP_ID: ${{ vars.REACT_APP_MAP_ID }}
-      REACT_APP_HOST_BE: ${{vars.REACT_APP_HOST_BE}}
+      EMAIL_PASSWORD: ${{vars.EMAIL_PASSWORD}}
 
     steps:
       - uses: actions/checkout@v3

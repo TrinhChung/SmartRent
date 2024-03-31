@@ -47,10 +47,10 @@ describe("update /info", () => {
       expect(response.status).toBe(422);
     });
 
-    test("Payload haven't not phone number", async () => {
+    test("Payload haven't not location", async () => {
       const response = await request
         .put("/api/user/info")
-        .send({ ...data, phoneNumber: null })
+        .send({ ...data, location: null })
         .set("Authorization", `Bearer ${user.token}`);
       expect(response.status).toBe(422);
     });

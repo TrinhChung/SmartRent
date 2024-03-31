@@ -11,4 +11,6 @@ module.exports = {
   silent: false,
   forceExit: true,
   detectOpenHandles: true,
+  collectCoverage: true,
+  coverageReporters: ["json", "html"],
 };
