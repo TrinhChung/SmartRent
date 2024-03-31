@@ -6,16 +6,6 @@ const fs = require("fs");
 const { promisify } = require("util");
 const readFile = promisify(fs.readFile);
 
-const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 587,
-  secure: false,
-  auth: {
-    user: process.env.EMAIL_ADDRESS,
-    pass: process.env.EMAIL_PASSWORD,
-  },
-});
-
 const buildHtmlSend = async ({ pathHtml, data }) => {
   const html = await readFile(path.join(__dirname, pathHtml), "utf8");
   const template = handlebars.compile(html);
@@ -24,6 +14,16 @@ const buildHtmlSend = async ({ pathHtml, data }) => {
 };
 
 export const sendMailRegister = async (data) => {
+  const transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 587,
+    secure: false,
+    auth: {
+      user: process.env.EMAIL_ADDRESS,
+      pass: process.env.EMAIL_PASSWORD,
+    },
+  });
+
   const content = {
     from: '"SmartRent" <chungtrinh2k2@gmail.com>',
     to: data.email,
@@ -42,6 +42,16 @@ export const sendMailRegister = async (data) => {
 };
 
 export const sendMailRemindPayment = async (data) => {
+  const transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 587,
+    secure: false,
+    auth: {
+      user: process.env.EMAIL_ADDRESS,
+      pass: process.env.EMAIL_PASSWORD,
+    },
+  });
+
   const content = {
     from: '"SmartRent" <chungtrinh2k2@gmail.com>',
     to: data.email,
@@ -57,9 +67,19 @@ export const sendMailRemindPayment = async (data) => {
     console.log(error);
     throw new Error("Send Mail Error");
   }
-}
+};
 
 export const sendMailForgotPassword = async (data) => {
+  const transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 587,
+    secure: false,
+    auth: {
+      user: process.env.EMAIL_ADDRESS,
+      pass: process.env.EMAIL_PASSWORD,
+    },
+  });
+
   const content = {
     from: '"SmartRent" <chungtrinh2k2@gmail.com>',
     to: data.email,

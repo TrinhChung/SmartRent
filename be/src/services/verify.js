@@ -6,7 +6,6 @@ require("dotenv").config();
 
 export const createVerify = async ({ type = "1", data }) => {
   try {
-    console.log(data);
     const verify = await db.Verify.create({
       fkId: data.id,
       type: type,
