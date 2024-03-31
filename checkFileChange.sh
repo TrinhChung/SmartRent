@@ -8,9 +8,6 @@ for file in $files; do
      echo "Dectect be changed"
      changeBackend=true
   fi
-  if [[ $file == *"be/contracts/contractApi.sol"* ]]; then
-     checkChangeSc=true
-  fi
   if [[ $file == *"be/src/migrations"* ]]; then
      echo "Dectect migation changed"
      checkChangeDb=true
@@ -19,13 +16,6 @@ done
 
 echo -n > "./be/jobNeedRun.sh"
 echo "#!/bin/sh" >> "./be/jobNeedRun.sh"
-
-if [[ $checkChangeSc == true ]]; then
-     echo "Deploy and verify smart contract" 
-     echo "npx hardhat run scripts/deploy.js --network testnet" >> "./be/jobNeedRun.sh"
-     echo "network=testnet ./verify.sh" >> "./be/jobNeedRun.sh"
-     
-fi
 
 if [[ $checkChangeDb == true ]]; then
      echo "Migrate and seed data"

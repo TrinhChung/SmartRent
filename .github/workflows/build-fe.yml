@@ -19,7 +19,7 @@ jobs:
     env:
       REACT_APP_GOOGLE_MAP_KEY: ${{ vars.REACT_APP_GOOGLE_MAP_KEY }}
       REACT_APP_MAP_ID: ${{ vars.REACT_APP_MAP_ID }}
-      EMAIL_PASSWORD: ${{vars.EMAIL_PASSWORD}}
+      REACT_APP_HOST_BE: ${{vars.REACT_APP_HOST_BE}}
 
     steps:
       - uses: actions/checkout@v3
