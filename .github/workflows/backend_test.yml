@@ -4,7 +4,7 @@ on:
     paths:
       - "be/**"
       - ".github/workflows/backend*"
-    branches: ["main", "test"]
+    branches: ["**"]
   workflow_call:
 jobs:
   test_backend:
