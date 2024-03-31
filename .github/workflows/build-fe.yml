@@ -1,4 +1,4 @@
-name: React build
+name: build_frontend
 
 on:
   pull_request:

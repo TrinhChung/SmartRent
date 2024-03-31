@@ -1,9 +1,11 @@
+name: test_backend
 on:
   push:
     paths:
       - "be/**"
       - ".github/workflows/backend*"
     branches: ["main", "test"]
+  workflow_call:
 jobs:
   test_backend:
     runs-on: ubuntu-latest

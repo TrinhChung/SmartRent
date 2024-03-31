@@ -1,4 +1,4 @@
-name: Deploy Backend Server
+name: deploy_backend
 
 on:
   pull_request:
@@ -8,7 +8,10 @@ on:
     branches: ["main"]
 
 jobs:
+  tests:
+    uses: ./.github/workflows/backend_test.yml
   build:
+    needs: [tests]
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -18,7 +21,6 @@ jobs:
         node-version: [18.x]
     steps:
       - uses: actions/checkout@v3
-
       - name: Executing remote command
         uses: appleboy/ssh-action@master
         with:
