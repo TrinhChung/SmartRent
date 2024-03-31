@@ -65,7 +65,8 @@ export const updateUserInfoSchema = {
   birthday: {
     rules: [
       {
-        rule: (input) => !moment(input, moment.ISO_8601, true).isValid(),
+        rule: (input) =>
+          !input || !moment(input, moment.ISO_8601, true).isValid(),
         message: "birthday is invalid",
       },
     ],
