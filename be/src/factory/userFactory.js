@@ -13,7 +13,7 @@ export const dateUserFactory = () => {
 export const infoUserFactory = () => {
   return {
     email: faker.internet.email(),
-    phoneNumber: faker.phone.number(),
+    phoneNumber: faker.phone.number("039#######"),
     location: {
       lat: 1,
       lng: 1,
