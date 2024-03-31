@@ -54,5 +54,29 @@ describe("update /info", () => {
         .set("Authorization", `Bearer ${user.token}`);
       expect(response.status).toBe(422);
     });
+
+    test("Location invalid", async () => {
+      const response = await request
+        .put("/api/user/info")
+        .send({ ...data, location: { lat: 1000, lng: 1000 } })
+        .set("Authorization", `Bearer ${user.token}`);
+      expect(response.status).toBe(422);
+    });
+
+    test("Signature is empty", async () => {
+      const response = await request
+        .put("/api/user/info")
+        .send({ ...data, signData: null })
+        .set("Authorization", `Bearer ${user.token}`);
+      expect(response.status).toBe(422);
+    });
+
+    test("maritalStatus is valid", async () => {
+      const response = await request
+        .put("/api/user/info")
+        .send({ ...data, signData: null })
+        .set("Authorization", `Bearer ${user.token}`);
+      expect(response.status).toBe(422);
+    });
   });
 });
