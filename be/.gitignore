@@ -18,6 +18,9 @@ node_modules
 #Buidler files
 cache
 
+artifacts/@openzeppelin
+artifacts/build-info/
+
 contracts/artifacts
 
 /media/*
