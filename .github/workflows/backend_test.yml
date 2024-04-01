@@ -1,0 +1,63 @@
+name: test_backend
+on:
+  push:
+    paths:
+      - "be/**"
+      - ".github/workflows/backend*"
+    branches: ["**"]
+  workflow_call:
+jobs:
+  test_backend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./be
+    strategy:
+      matrix:
+        node-version: [18.x]
+    env:
+      PORT_DB: 3306
+      DB_TEST_NAME: test_smartrent
+      DB_TEST_USER: test_smartrent
+      DB_TEST_PASSWORD: test_password
+      HOST: localhost
+      NODE_ENV: test
+      HOST_REDIS: localhost
+      PORT_REDIS: 6379
+      HOST_DJANGO: localhost
+      PORT_DJANGO: 7000
+      API_URL: http://localhost:8545
+      ETHERSCAN_API_KEY: GI3IUJIGSHNZA43T72YW4A9JY3Y12ZJ9BR
+      EMAIL_ADDRESS: ${{vars.EMAIL_ADDRESS}}
+      EMAIL_PASSWORD: ${{vars.EMAIL_PASSWORD}}
+      PRIVATE_KEY_METAMASK: ${{vars.PRIVATE_KEY_METAMASK}}
+      API_URL_TESTNET: ${{vars.API_URL_TESTNET}}
+      JWT_SECRET: ${{vars.JWT_SECRET}}
+      PRIVATE_KEY: ${{vars.PRIVATE_KEY}}
+      CONTRACT_ADDRESS: ${{vars.CONTRACT_ADDRESS}}
+      RE_ADDRESS: ${{vars.RE_ADDRESS}}
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_DATABASE: test_smartrent
+          MYSQL_USER: test_smartrent
+          MYSQL_PASSWORD: test_password
+          MYSQL_ROOT_PASSWORD: test_password
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+      redis:
+        image: redis:alpine
+        ports:
+          - 6379:6379
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+          cache-dependency-path: "**/package-lock.json"
+      - run: npm install
+      - run: npm run test

@@ -1,21 +1,26 @@
-name: Deploy Backend Server
+name: deploy_backend
 
 on:
-  push:
+  pull_request:
+    paths:
+      - "be/**"
+      - ".github/workflows/backend*"
     branches: ["main"]
 
 jobs:
+  tests:
+    uses: ./.github/workflows/backend_test.yml
   build:
+    needs: [tests]
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: fe
+        working-directory: ./be
     strategy:
       matrix:
         node-version: [18.x]
     steps:
       - uses: actions/checkout@v3
-
       - name: Executing remote command
         uses: appleboy/ssh-action@master
         with:

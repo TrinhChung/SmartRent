@@ -10,7 +10,7 @@ export const handleRegisterUser = async (req, res) => {
       .status(200)
       .json({ message: "Sign up successfully", data: user });
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    return res.status(400).json({ message: error.message });
   }
 };
 
@@ -21,7 +21,7 @@ export const handleLoginUser = async (req, res) => {
   } catch (error) {
     console.log(error);
     return res
-      .status(500)
+      .status(400)
       .json({ message: [{ field: "error", message: error.message }] });
   }
 };

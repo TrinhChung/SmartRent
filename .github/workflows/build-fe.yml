@@ -1,7 +1,10 @@
-name: React build
+name: build_frontend
 
 on:
-  push:
+  pull_request:
+    paths:
+      - "fe/**"
+      - ".github/workflows/build-fe.yml"
     branches: ["main"]
 
 jobs:
@@ -9,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: fe
+        working-directory: ./fe
     strategy:
       matrix:
         node-version: [18.x]

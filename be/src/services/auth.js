@@ -40,7 +40,6 @@ export const loginUserService = async (data) => {
     ],
   });
 
-  console.log(user);
   if (user) {
     user = user.get({ plain: true });
     let check = bcrypt.compareSync(data.password, user.password);

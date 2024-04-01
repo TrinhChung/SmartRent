@@ -2,6 +2,7 @@
 
 module.exports = {
   testMatch: ["**/src/test/**.test.js"],
+  rootDir: "./src",
   verbose: true,
   clearMocks: true,
   resetMocks: true,
@@ -10,4 +11,6 @@ module.exports = {
   silent: false,
   forceExit: true,
   detectOpenHandles: true,
+  collectCoverage: true,
+  coverageReporters: ["json", "html"],
 };

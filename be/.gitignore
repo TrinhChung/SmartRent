@@ -3,21 +3,25 @@ node_modules
 
 # Hardhat files
 /cache
-/artifacts
+
 
 # TypeChain files
 /typechain
 /typechain-types
 
 # solidity-coverage files
-/coverage
+**/coverage/*
 /coverage.json
 
 node_modules
 
 #Buidler files
 cache
-artifacts
+
+artifacts/@openzeppelin
+artifacts/build-info/
+
+contracts/artifacts
 
 /media/*
 
