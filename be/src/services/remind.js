@@ -1,7 +1,8 @@
 import db from "../models/index";
 const { Op } = require("sequelize");
 
-export const getUserPaymentDeadline = async (data) => {
+export const getUserPaymentDeadline = async () => {
+    const data = isLastDayOfMonth();
     try {
         const contractHasDeadline = await db.Contract.findAll({
             include: [
@@ -9,7 +10,7 @@ export const getUserPaymentDeadline = async (data) => {
                   model: db.Term,
                   where: {
                     type: "deadline",
-                    value: {[Op.substring]: data}
+                    value: {[Op.in]: data}
                   },
                   attributes: ['type'],
                 },
@@ -24,5 +25,23 @@ export const getUserPaymentDeadline = async (data) => {
         return contractHasDeadline;
     } catch (error) {
         console.log(`Get user paymet deadline: ${error}`)   
+    }
+}
+
+const isLastDayOfMonth = () => {
+    const today = new Date();
+    const month = today.getMonth();
+    const year = today.getFullYear();
+    
+    const lastDay = new Date(year, month + 1, 0).getDate();
+    
+    if (today.getDate() === lastDay) {
+        return Array.from({ length: 31 - today.getDate() + 1 }, (_, i) => {
+        const day = today.getDate() + i;
+        return `${day}`;
+        });
+    } else {
+        const day = today.getDate();
+        return [`${day}`];
     }
 }

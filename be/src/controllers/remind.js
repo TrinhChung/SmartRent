@@ -2,21 +2,22 @@ import { getUserPaymentDeadline } from "../services/remind";
 import { sendMailRemindPayment } from "../services/mail";
 import moment from "moment";
 import { sendNotification } from "./socket";
+import { createContractInstanceSMC } from "../config/connectSMC";
 
 export const handleGetUserPayment = async (req, res, next) => {
   try {
-    var today = moment(new Date()).format("DD");
-    const data = "-" + today + "T";
-    console.log(data);
-    const users = await getUserPaymentDeadline(data);
+    const users = await getUserPaymentDeadline();
+    const contractInstance = createContractInstanceSMC(contractAddress);
     for (eachUser of users) {
-      var tmp = { email: eachUser.renter.email };
-      await sendMailRemindPayment(tmp);
-      await sendNotification({
-        userId: eachUser.renter.userId,
-        eventNotify: "remind-deadline",
-        data: {},
-      });
+      const res = await contractInstance.payRentCost(eachUser.id);
+        var tmp = { email: eachUser.renter.email };
+        await sendMailRemindPayment(tmp);
+        await sendNotification({
+          userId: eachUser.renter.userId,
+          eventNotify: "remind-deadline",
+          data: {},
+          transaction: true,
+        });
     }
     return res
       .status(200)
@@ -26,3 +27,12 @@ export const handleGetUserPayment = async (req, res, next) => {
     res.status(400).json({ message: `get users have deadline error` });
   }
 };
+
+export const autoExecute = async (req, res, next) => {
+  const contractAddress = process.env.CONTRACT_ADDRESS;
+  try {
+
+  } catch (error) {
+    console.log(`autoExecute error` + error)
+  }
+}

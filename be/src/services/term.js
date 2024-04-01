@@ -136,7 +136,7 @@ export const createTermTimeStart = async ({
     await db.Term.create(
       {
         content: buildDeadlinePayment(value),
-        value: null,
+        value: moment(new Date()).format("dd"),
         contractId: contractId,
         accept: "0",
         userId: userId,
@@ -371,7 +371,7 @@ export const updateTermTimeStart = async ({
       {
         accept: accept,
         userId: userId,
-        value: String(value),
+        value: moment(value).format("dd"),
         content: buildDeadlinePayment(value),
       },
       { transaction: transaction }

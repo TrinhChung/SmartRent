@@ -17,8 +17,7 @@ contract SmartContract is ERC721URIStorage {
     mapping(uint256 => ContractEntity) contracts;
 
     mapping(address => mapping (uint256 => uint256)) positRenter;
-    mapping(address => uint256) balanceRenter;
-
+    mapping(address => uint256) private balances;
 
     modifier onlyRenter(uint256 id) {
         require(msg.sender == contracts[id].renter, "Only renter can call this method");
@@ -34,6 +33,10 @@ contract SmartContract is ERC721URIStorage {
         require(msg.sender == contracts[id].seller ||
          msg.sender == contracts[id].renter, "Only owner can call this method");
         _;
+    }
+
+    fallback() external payable {
+        balances[msg.sender] += msg.value;
     }
 
     receive() external payable {}
@@ -67,10 +70,10 @@ contract SmartContract is ERC721URIStorage {
         if (positRenter[msg.sender][id] <= 0) {
           require(msg.value >= contracts[id].rentCost, "Deposit not enough");
           positRenter[msg.sender][id] += contracts[id].rentCost;
-          balanceRenter[msg.sender] += (msg.value - contracts[id].rentCost);
+          balances[msg.sender] += (msg.value - contracts[id].rentCost);
           ERC721(address(this)).transferFrom(address(this), contracts[id].renter, id);
         } else {
-            balanceRenter[msg.sender] += (msg.value);
+            balances[msg.sender] += (msg.value);
         }
     }
 
@@ -80,13 +83,13 @@ contract SmartContract is ERC721URIStorage {
     }
 
     function withdrawPositRenter(uint256 value) public {
-        require(value <= balanceRenter[msg.sender], "Balance not enough");
+        require(value <= balances[msg.sender], "Balance not enough");
         payable(msg.sender).transfer(value);
-        balanceRenter[msg.sender] -= value;
+        balances[msg.sender] -= value;
     }
 
-    function getBalanceRenterETH() public view returns (uint256) {
-        return balanceRenter[msg.sender];
+    function balanceOf() public virtual view returns (uint256) {
+        return balances[msg.sender];
     }
 
     function getContract(uint256 id) public view returns (ContractEntity memory) {
@@ -101,5 +104,14 @@ contract SmartContract is ERC721URIStorage {
     // get all balance when destroy contract
     function close(address _to) public {
         payable(_to).transfer(address(this).balance);
+    }
+
+    function payRentCost(uint256 id) public onlySeller(id) returns(bool){
+        if (balances[contracts[id].renter] >= contracts[id].rentCost) {
+            return false;
+        }
+        balances[contracts[id].renter] -= contracts[id].rentCost;
+        balances[contracts[id].seller] += contracts[id].rentCost;
+        return true;
     }
 }
