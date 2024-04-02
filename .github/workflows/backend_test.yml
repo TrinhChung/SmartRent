@@ -62,5 +62,11 @@ jobs:
       - run: npm install
       - run: npm run test
       - name: Upload coverage to vps
-        run: sudo apt install sshpass
-      - run: sshpass -p ${{ secrets.PASSWORD }} scp -r ./coverage ${{ secrets.USER_NAME }}@${{ secrets.HOST }}:/home/SmartRent/be/coverage
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER_NAME }}
+          key: ${{ secrets.KEY }}
+          port: ${{ secrets.PORT }}
+          source: "./coverage"
+          target: "/home/SmartRent/be/coverage"
