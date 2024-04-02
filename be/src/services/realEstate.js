@@ -260,6 +260,10 @@ export const searchRealEstateService = async ({
   try {
     var whereCondition = {};
 
+    if (page <= 0) {
+      throw new Error("Thao tác không hợp lệ");
+    }
+
     if (queries?.costMin) {
       whereCondition["cost"] = { [Op.gte]: queries.costMin };
     }
