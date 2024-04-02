@@ -12,7 +12,6 @@ import {
   getReAbiService,
   getScAbiService,
 } from "../../services/SC";
-import { AuthContext } from "../authProvider/index";
 import { ethers } from "ethers";
 import { updateWalletService } from "../../services/User/index";
 import { getReAddressService } from "../../services/SC/index";
@@ -20,7 +19,6 @@ import { getReAddressService } from "../../services/SC/index";
 export const SmartContractContext = createContext();
 
 export const SmartContractProvider = ({ children }) => {
-  const { authUser, setAuthUser } = useContext(AuthContext);
   const [scAddress, setScAddress] = useState("");
   const [reAddress, setReAddress] = useState("");
   const [reAbi, setReAbi] = useState("");
@@ -82,7 +80,7 @@ export const SmartContractProvider = ({ children }) => {
   };
 
   const connectAccountSc = useCallback(
-    async (user) => {
+    async (user, loginMe = () => {}) => {
       if (window?.ethereum) {
         try {
           const accounts = await window.ethereum.request({
@@ -92,7 +90,7 @@ export const SmartContractProvider = ({ children }) => {
           setSigner(s);
           const address = accounts?.length > 0 ? accounts[0] : null;
           if (String(user.wallet) !== String(address)) {
-            fetchUpdateWallet(address);
+            fetchUpdateWallet(address, loginMe);
             // TODO xử lý chưa đúng chưa set lại storage
           }
         } catch (error) {
@@ -105,13 +103,11 @@ export const SmartContractProvider = ({ children }) => {
     [window.ethereum]
   );
 
-  const fetchUpdateWallet = async (address) => {
+  const fetchUpdateWallet = async (address, loginMe = () => {}) => {
     try {
       const res = await updateWalletService({ wallet: address });
       if (res.status === 200) {
-        const user = { ...authUser, wallet: address };
-        setAuthUser(user);
-        localStorage.setItem("authUser", JSON.stringify(user));
+        loginMe();
       }
     } catch (error) {
       console.log(error);
@@ -124,12 +120,6 @@ export const SmartContractProvider = ({ children }) => {
     fetchScAddressService();
     fetchReAddressService();
   }, []);
-
-  useEffect(() => {
-    if (authUser) {
-      connectAccountSc(authUser);
-    }
-  }, [authUser]);
 
   useEffect(() => {
     if (signer && reAbi && reAddress) {

@@ -7,9 +7,11 @@ import { LockOutlined, MailOutlined } from "@ant-design/icons";
 import { loginService } from "../../../services/Auth";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../../providers/authProvider";
+import { SmartContractContext } from "../../../providers/scProvider";
 
 const Login = () => {
-  const { setAuthUser } = useContext(AuthContext);
+  const { connectAccountSc } = useContext(SmartContractContext);
+  const { setAuthUser, handlerLogin } = useContext(AuthContext);
   const navigate = useNavigate();
   const [form] = Form.useForm();
 
@@ -18,6 +20,7 @@ const Login = () => {
       const res = await loginService(values);
       if (res.status === 200) {
         setAuthUser(res.data?.user);
+        connectAccountSc(res.data?.user, handlerLogin());
         localStorage.setItem("accessToken", JSON.stringify(res.data.token));
         localStorage.setItem("authUser", JSON.stringify(res.data.user));
         toast.success("Đăng nhập thành công");

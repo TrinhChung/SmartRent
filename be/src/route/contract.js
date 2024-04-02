@@ -1,13 +1,7 @@
 import { Router } from "express";
 import { authenticate } from "../middleware/authenticate";
-import {
-  cancelContractSchema,
-  initContractSchema,
-  signContractSchema,
-} from "../schema/contract";
-import {
-  uploadContractSchema
-} from "../schema/file";
+import { initContractSchema, signContractSchema } from "../schema/contract";
+import { uploadContractSchema } from "../schema/file";
 import {
   handleCloseContract,
   handleGetContractById,
@@ -62,7 +56,7 @@ router.post(
   authenticate,
   schemaValidatorInstance.validateBody(uploadContractSchema),
   handleUploadToIpfs
-)
+);
 
 router.post(
   "/deposit/smart-contract",

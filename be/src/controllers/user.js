@@ -4,6 +4,7 @@ import {
   sendEmailForgotPasswordService,
   resetPasswordService,
   getSignByIdService,
+  updateWalletService,
 } from "../services/user";
 
 export const handleUpdateUserInfo = async (req, res, next) => {
@@ -65,7 +66,7 @@ export const handleUpdateWallet = async (req, res, next) => {
   try {
     const data = { wallet: req.body.wallet, userId: req.user.id };
 
-    await resetPasswordService(data);
+    await updateWalletService(data);
     return res.status(200).json({ message: "Cập nhật địa chỉ ví thành công" });
   } catch (error) {
     console.log(error);

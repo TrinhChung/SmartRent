@@ -13,6 +13,7 @@ import FullHouseView from "./NewPost/FullHouseView";
 import ListPost from "./ListPost";
 import Search from "../Guest/search";
 import PersonInfo from "./PersonInfo";
+import ResetPassword from "../Guest/auth/ResetPassword";
 
 const Seller = () => {
   const { roomChats } = useContext(SocketContext);
@@ -48,6 +49,7 @@ const Seller = () => {
         <Route path="list-post" element={<ListPost />} />
         <Route path="/search" element={<Search />} />
         <Route path="/person-info/*" element={<PersonInfo />} />
+        <Route path="/auth/reset-password/:uuid" element={<ResetPassword />} />
         <Route path="/*" element={<div>Chua dinh nghia</div>} />
       </Routes>
     </HomeLayout>

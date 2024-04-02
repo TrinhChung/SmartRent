@@ -136,7 +136,31 @@ export const sendEmailForgotPasswordService = async ({ email }) => {
   }
 };
 
-export const resetPasswordService = async ({ wallet, userId }) => {
+export const resetPasswordService = async ({ token, password }) => {
+  const transaction = await db.sequelize.transaction();
+  try {
+    let verify = (verify = await db.Verify.findOne({
+      where: { token: token, type: "2" },
+    }));
+
+    if (verify) {
+      let user = await db.User.findByPk(verify.fkId);
+      if (user) {
+        await user.update({ password: password });
+        await db.Verify.destroy({ where: { id: verify.id } });
+      }
+    } else {
+      throw new Error("Token đã không tồn tại hoặc đã được sử dụng");
+    }
+    await transaction.commit();
+  } catch (error) {
+    console.log(error);
+    await transaction.rollback();
+    throw new Error(error);
+  }
+};
+
+export const updateWalletService = async ({ wallet, userId }) => {
   try {
     const user = await db.User.findOne({
       where: { id: userId },
