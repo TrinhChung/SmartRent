@@ -61,3 +61,12 @@ jobs:
           cache-dependency-path: "**/package-lock.json"
       - run: npm install
       - run: npm run test
+      - name: Upload coverage to vps
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.HOST }}
+          USERNAME: ${{ secrets.USER_NAME }}
+          PORT: ${{ secrets.PORT }}
+          KEY: ${{ secrets.SSH_KEY }}
+          source: ./coverage
+          target: /home/SmartRent/be/
