@@ -1,5 +1,6 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { loginMe } from "../../services/Auth";
+import { SmartContractContext } from "../scProvider";
 
 export const AuthContext = createContext();
 
@@ -40,6 +41,7 @@ export default function AuthProvider({ children }) {
       value={{
         authUser,
         setAuthUser,
+        handlerLogin,
       }}
     >
       {children}

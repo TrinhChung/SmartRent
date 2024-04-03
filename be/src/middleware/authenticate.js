@@ -41,6 +41,19 @@ export const authenticate = async (req, res, next) => {
   }
 };
 
+export const checkRoleSeller = (req, res, next) => {
+  const user = req.user;
+  if (!user) {
+    return res.status(403).json({ message: "User is not logged in" });
+  } else {
+    if (user.role === "2") {
+      next();
+    } else {
+      res.status(403).json({ message: "User is not a seller" });
+    }
+  }
+};
+
 export const getUser = async (req, res, next) => {
   try {
     const authHeader = String(req.headers["authorization"] || "");

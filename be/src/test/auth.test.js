@@ -3,14 +3,14 @@ import { createServer } from "../utils/createServer";
 import supertest from "supertest";
 import { faker } from "@faker-js/faker";
 import db from "../models/index";
-import { dateUserFactory } from "../factory/userFactory";
+import { dataUserFactory } from "../factory/userFactory";
 import jwt from "jsonwebtoken";
 
 const app = createServer();
 const request = supertest(app);
 
-const data = dateUserFactory();
-const dataUser = dateUserFactory();
+const data = dataUserFactory();
+const dataUser = dataUserFactory();
 
 describe("/auth/register", () => {
   test("Body haven't email", async () => {

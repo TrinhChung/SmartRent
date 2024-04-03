@@ -12,7 +12,12 @@ import "./Home.scss";
 import Suggest from "./Suggest";
 import MapCustom from "../../../components/maps/MapCustom";
 import { useJsApiLoader } from "@react-google-maps/api";
-import { useNavigate } from "react-router-dom";
+import {
+  useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import { getEstateByRecommendService } from "../../../services/RealEstate/index";
 import { AuthContext } from "../../../providers/authProvider";
 

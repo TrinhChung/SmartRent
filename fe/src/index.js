@@ -10,13 +10,13 @@ import { SmartContractProvider } from "./providers/scProvider";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <AuthProvider>
-      <SmartContractProvider>
+    <SmartContractProvider>
+      <AuthProvider>
         <SocketProvider>
           <App />
         </SocketProvider>
-      </SmartContractProvider>
-    </AuthProvider>
+      </AuthProvider>
+    </SmartContractProvider>
   </React.StrictMode>
 );
 

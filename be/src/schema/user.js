@@ -141,7 +141,7 @@ export const requestForgotPasswordSchema = {
         message: "Email address is required",
       },
       {
-        rule: (input) => !validator.isEmail(input),
+        rule: (input) => !input || !validator.isEmail(input),
         message: "This is not a valid email address",
       },
       {

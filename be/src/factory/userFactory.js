@@ -1,5 +1,7 @@
 import { faker } from "@faker-js/faker";
-export const dateUserFactory = () => {
+import db from "../models/index";
+
+export const dataUserFactory = () => {
   const password = faker.internet.password();
   return {
     lastName: faker.internet.userName(),
@@ -10,6 +12,22 @@ export const dateUserFactory = () => {
   };
 };
 
+export const userFactory = async () => {
+  try {
+    const user = await db.User.create({
+      lastName: faker.internet.userName(),
+      firstName: faker.internet.userName(),
+      email: faker.internet.email(),
+      password: "password",
+      isActive: true,
+    });
+
+    return user.get({ plain: true });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const infoUserFactory = () => {
   return {
     email: faker.internet.email(),
@@ -18,7 +36,7 @@ export const infoUserFactory = () => {
       lat: 1,
       lng: 1,
     },
-    wallet: "0x61E59ed67230B9a15582977A83146B47Ae1021fb",
+    wallet: faker.finance.ethereumAddress(),
     address: faker.location.street(),
     birthday: faker.date.birthdate(),
     gender: "1",
