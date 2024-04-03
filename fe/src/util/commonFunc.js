@@ -41,18 +41,7 @@ export const buildParamsCreateSc = (contract) => {
   const rentCost = convertVndToEth(costData.value);
 
   const timeStart = dlDate.valueOf();
-  const paymentDeadline = dlDate.getDate();
   const duration = dlDate.setFullYear(dlDate.getFullYear() + 1) - timeStart;
-  const paymentType = "Etherum";
-
-  const terms =
-    contract?.Terms?.length > 0
-      ? contract?.Terms.map((term) => {
-          if (term.accept === "1") {
-            return term.content;
-          }
-        })
-      : [];
 
   return {
     id: contract?.id,
@@ -61,9 +50,5 @@ export const buildParamsCreateSc = (contract) => {
     reId: reId,
     rentCost: rentCost,
     duration: duration,
-    timeStart: timeStart,
-    paymentDeadline: paymentDeadline,
-    paymentType: paymentType,
-    terms: terms,
   };
 };
