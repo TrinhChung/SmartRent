@@ -12,6 +12,8 @@ import {
   messageCreateTermNotify,
   listTermFixed,
 } from "../constants/typeValue";
+
+const moment = require('moment');
 const { Op } = require("sequelize");
 
 export const createTermService = async ({ contractId, userId, content }) => {
@@ -136,7 +138,7 @@ export const createTermTimeStart = async ({
     await db.Term.create(
       {
         content: buildDeadlinePayment(value),
-        value: moment(new Date()).format("dd"),
+        value: moment(new Date()).format("DD"),
         contractId: contractId,
         accept: "0",
         userId: userId,
@@ -371,7 +373,7 @@ export const updateTermTimeStart = async ({
       {
         accept: accept,
         userId: userId,
-        value: moment(value).format("dd"),
+        value: moment(value).format("DD"),
         content: buildDeadlinePayment(value),
       },
       { transaction: transaction }

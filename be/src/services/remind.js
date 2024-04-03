@@ -17,7 +17,7 @@ export const getUserPaymentDeadline = async () => {
                 {
                     model: db.User,
                     as: "renter",
-                    attributes: ['email','id'],
+                    attributes: ['email','id','wallet'],
                 }
             ],
             attributes:['realEstateId','id'],

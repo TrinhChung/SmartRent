@@ -106,7 +106,7 @@ contract SmartContract is ERC721URIStorage {
         payable(_to).transfer(address(this).balance);
     }
 
-    function payRentCost(uint256 id) public onlySeller(id) returns(bool){
+    function payRentCost(uint256 id) public returns(bool){
         if (balances[contracts[id].renter] >= contracts[id].rentCost) {
             return false;
         }
