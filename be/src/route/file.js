@@ -24,5 +24,3 @@ router.post(
   schemaValidatorInstance.validateBody(uploadContractSchema),
   handleUploadContact
 );
-
-router.get("/upload/image", handleGetFileUpload);

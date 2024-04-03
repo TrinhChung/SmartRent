@@ -128,9 +128,7 @@ export const sendEmailForgotPasswordService = async ({ email }) => {
       attributes: { exclude: ["password"] },
     });
 
-    if (user) {
-      await createVerify({ type: "2", data: { ...user.get({ plain: true }) } });
-    }
+    await createVerify({ type: "2", data: { ...user.get({ plain: true }) } });
   } catch (error) {
     throw new Error(error);
   }
@@ -166,7 +164,7 @@ export const updateWalletService = async ({ wallet, userId }) => {
       where: { id: userId },
     });
 
-    user.update({ wallet: wallet });
+    await user.update({ wallet: wallet });
   } catch (error) {
     console.log(error);
     throw new Error(error);
@@ -175,7 +173,6 @@ export const updateWalletService = async ({ wallet, userId }) => {
 
 export const getSignByIdService = async (id) => {
   try {
-    console.log(id);
     const sign = await db.Signature.findOne({
       where: { id: id },
     });

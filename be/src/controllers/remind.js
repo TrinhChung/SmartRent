@@ -3,7 +3,7 @@ import { sendMailRemindPayment } from "../services/mail";
 import moment from "moment";
 import { sendNotification } from "./socket";
 
-export const handleGetUserPayment = async (req, res, next) => {
+export const handleGetUserPayment = async (req, res) => {
   try {
     var today = moment(new Date()).format("DD");
     const data = "-" + today + "T";

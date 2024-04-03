@@ -21,7 +21,6 @@ const schemaValidatorInstance = new SchemaValidator();
 
 export const router = Router();
 
-// TODO: only allow seller create
 router.post(
   "/full-house",
   authenticate,
