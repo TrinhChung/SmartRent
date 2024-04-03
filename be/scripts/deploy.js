@@ -28,8 +28,6 @@ async function main() {
   );
 
   await smartContract.waitForDeployment();
-  let tokenUris;
-  tokenUris = await handleTokenUris();
 
   if (smartContract.target) {
     // shell.env["CONTRACT_ADDRESS"] = contractApi.target;

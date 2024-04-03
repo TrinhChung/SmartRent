@@ -58,10 +58,10 @@ const StepSign = ({
     }
   }, [contract]);
 
-  const fetchCreateSmartContract = async () => {
+  const fetchCreateSmartContract = async (urlContract) => {
     try {
       if (contract?.id) {
-        const res = await createScService({ contractId: contract.id });
+        const res = await createScService({ contractId: contract.id, cid: urlContract });
         if (res.status === 200) {
           toast.success("Tạo hợp đồng thông minh thành công");
           fetchContractById(contract?.id);
@@ -100,34 +100,25 @@ const StepSign = ({
           filePdf,
           "application/pdf"
         );
-        var urlContract = process.env.REACT_APP_HOST_BE + "/";
-        // const res = await uploadContractService({
-        //   file: base64,
-        //   contractId: contract?.id,
-        // });
+        var urlContract
         const res = await uploadFileToIpfs({file: base64, contractId: contract?.id});
-        console.log("come to here");
 
         if (res.status === 200) {
-          urlContract += res.data;
+          urlContract = res.data;
         }
         console.log(urlContract);
 
         const input = buildParamsCreateSc(contract);
-        // const scNft = await scInstance.mint(
-        //   input.id,
-        //   input.renterAddress,
-        //   input.sellerAddress,
-        //   input.reId,
-        //   input.rentCost,
-        //   input.duration,
-        //   input.timeStart,
-        //   input.paymentDeadline,
-        //   input.paymentType,
-        //   urlContract,
-        //   input.terms
-        // );
-        fetchCreateSmartContract();
+        const scNft = await scInstance.mint(
+          input.id,
+          input.renterAddress,
+          input.sellerAddress,
+          input.reId,
+          input.rentCost,
+          input.duration,
+          urlContract,
+        );
+        fetchCreateSmartContract(urlContract);
       } else {
         alert("Không tồn tại SC nft");
       }
