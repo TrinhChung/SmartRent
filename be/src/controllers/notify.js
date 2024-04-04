@@ -1,6 +1,6 @@
 import { getUserNotification, readNotifyService } from "../services/notify";
 
-export const handleGetNotifyForMe = async (req, res, next) => {
+export const handleGetNotifyForMe = async (req, res) => {
   try {
     const id = req.user.id;
     const notify = await getUserNotification(id);
@@ -15,7 +15,7 @@ export const handleGetNotifyForMe = async (req, res, next) => {
   }
 };
 
-export const handleReadNotify = async (req, res, next) => {
+export const handleReadNotify = async (req, res) => {
   try {
     const data = req.body;
     const notify = await readNotifyService(data.notifyId);

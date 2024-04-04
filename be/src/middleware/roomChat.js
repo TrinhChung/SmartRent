@@ -18,9 +18,3 @@ export const roomPermission = async (req, res, next) => {
     return res.status(503).json({ message: "Server không ổn định" });
   }
 };
-
-export const roomSocketPermission = async (socket, next) => {
-  socket.on("join-room", async (roomId, userId) => {
-    next();
-  });
-};

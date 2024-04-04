@@ -1,11 +1,8 @@
 import express from "express";
 import bodyParser from "body-parser";
 import { router } from "../route";
-import connectDB from "../config/connectDB";
 import cors from "cors";
 import { eventSocket } from "../controllers/socket";
-import { connectRedis } from "../config/connectRedis";
-import { checkRoomPermissionSocket } from "../route/socket";
 require("dotenv").config();
 const path = require("path");
 
@@ -53,7 +50,6 @@ export const createServer = () => {
 
   app.use("/api", router);
 
-  io.use(checkRoomPermissionSocket);
   io.on("connection", eventSocket);
 
   return server;

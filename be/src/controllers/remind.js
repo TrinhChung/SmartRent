@@ -4,7 +4,7 @@ import moment from "moment";
 import { sendNotification } from "./socket";
 import { createContractInstanceSMC } from "../config/connectSMC";
 
-export const handleGetUserPayment = async (req, res, next) => {
+export const handleGetUserPayment = async (req, res) => {
   try {
     const contracts = await getUserPaymentDeadline();
     const contractInstance = createContractInstanceSMC(contractAddress);

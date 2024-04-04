@@ -8,7 +8,7 @@ import {
 } from "../services/realEstate";
 import { renterPaymentSmartContractService } from "../services/contract";
 
-export const handleCreateRealEstate = async (req, res, next) => {
+export const handleCreateRealEstate = async (req, res) => {
   try {
     const data = req.body;
     const user = req.user;

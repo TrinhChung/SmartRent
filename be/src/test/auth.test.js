@@ -3,7 +3,7 @@ import { createServer } from "../utils/createServer";
 import supertest from "supertest";
 import { faker } from "@faker-js/faker";
 import db from "../models/index";
-import { dataUserFactory } from "../factory/userFactory";
+import { dataUserFactory, infoUserFactory } from "../factory/userFactory";
 import jwt from "jsonwebtoken";
 
 const app = createServer();

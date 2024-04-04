@@ -129,7 +129,7 @@ export const getRealEstateFullHouseSchema = {
   id: {
     rules: [
       {
-        rule: (input) => !input,
+        rule: (input) => !input || input < 1,
         message: "Id is required",
       },
     ],

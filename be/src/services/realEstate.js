@@ -308,10 +308,11 @@ export const searchRealEstateService = async ({
               typeFk: "2",
             },
             limit: 1,
+            required: false,
             as: "realEstateFiles",
             attributes: ["url"],
           },
-          { model: db.Address },
+          { model: db.Address, required: false },
         ],
         order: orders,
         offset: (page - 1) * limit,
@@ -323,7 +324,7 @@ export const searchRealEstateService = async ({
 
     return { total: total, list: list };
   } catch (error) {
-    console.log(error.status);
+    console.log(error);
     throw new Error(error.message, error);
   }
 };

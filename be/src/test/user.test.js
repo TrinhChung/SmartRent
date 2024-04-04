@@ -26,7 +26,7 @@ describe("update /user/info", () => {
     var user = {};
 
     beforeAll(async () => {
-      const newUser = await userFactory();
+      const newUser = await userFactory("1");
 
       const response = await request
         .post("/api/auth/login")
@@ -124,7 +124,7 @@ describe("Update /user/change-password", () => {
   };
 
   beforeAll(async () => {
-    const newUser = await userFactory();
+    const newUser = await userFactory("1");
 
     const response = await request
       .post("/api/auth/login")
@@ -185,7 +185,7 @@ describe("Update /update-wallet", () => {
   const walletAddress = faker.finance.ethereumAddress();
 
   beforeAll(async () => {
-    const newUser = await userFactory();
+    const newUser = await userFactory("1");
 
     const response = await request
       .post("/api/auth/login")
@@ -238,7 +238,7 @@ describe("/request-forgot-password", () => {
   var user = {};
 
   beforeAll(async () => {
-    user = await userFactory();
+    user = await userFactory("1");
   });
 
   test("Payload haven't email", async () => {
@@ -274,7 +274,7 @@ describe("/reset-password", () => {
   var verify = {};
 
   beforeAll(async () => {
-    user = await userFactory();
+    user = await userFactory("1");
 
     await request
       .post("/api/user/request-forgot-password")
@@ -322,5 +322,50 @@ describe("/reset-password", () => {
 
     expect(response.status).toBe(200);
     expect(updateUser.status).toBe(200);
+  });
+});
+
+describe("get /sign/:id", () => {
+  var user = {};
+  var data = {};
+
+  beforeAll(async () => {
+    data = infoUserFactory();
+    const newUser = await userFactory("1");
+
+    const response = await request
+      .post("/api/auth/login")
+      .send({ email: newUser.email, password: "password" });
+
+    user = response.body.data;
+  });
+
+  test("user not login", async () => {
+    const response = await request.get("/api/user/sign/1");
+    expect(response.status).toBe(403);
+  });
+
+  test("sign is null", async () => {
+    const response = await request
+      .get("/api/user/sign/1")
+      .set("Authorization", `Bearer ${user.token}`);
+    expect(response.status).toBe(403);
+  });
+
+  test("get sign successfully", async () => {
+    const info = await request
+      .put("/api/user/info")
+      .send(data)
+      .set("Authorization", `Bearer ${user.token}`);
+
+    const signatureId = info.body.data.signatureId;
+
+    const response = await request
+      .get(`/api/user/sign/${signatureId}`)
+      .set("Authorization", `Bearer ${user.token}`);
+
+    expect(info.status).toBe(200);
+    expect(response.status).toBe(200);
+    expect(response.body.data).not.toBeNull();
   });
 });
