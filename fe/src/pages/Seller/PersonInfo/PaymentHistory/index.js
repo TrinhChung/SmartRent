@@ -1,11 +1,11 @@
 import React, { useCallback, useContext, useEffect,useState } from "react";
-import { Col,Row, Button, Modal, Input, Form } from "antd";
+import { Col,Row, Button, Modal, Input } from "antd";
 import { SmartContractContext } from "../../../../providers/scProvider";
 
 
 const PaymentHistory = () => {
   const { scInstance } = useContext(SmartContractContext);
-  const [balance, setBalance] = useState(null);
+  const [balance, setBalance] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeModal, setActiveModal] = useState(null);
   const [confirmLoading, setConfirmLoading] = useState(false);
@@ -15,15 +15,10 @@ const PaymentHistory = () => {
     setInputValue(event.target.value);
   };
 
-  const showModal = (data) => {
-    setActiveModal(data);
-    setIsModalOpen(true);
-  };
-
   const withdraw = async () => {
     try {
       if(inputValue < balance) {
-        await widthDrawForUser(Number(inputValue));
+        const res = await scInstance.withdrawPositRenter(Number(inputValue));
       }
       else {
         alert("Value too big")
@@ -43,10 +38,10 @@ const PaymentHistory = () => {
 
   const handleOk = async () => {
     setConfirmLoading(true);
-    if(activeModal == "Widthdraw") {
+    if(activeModal === "widthdraw") {
       await withdraw();
     }
-    else if(activeModal == "Deposit") {
+    else if(activeModal === "deposit") {
       await deposit();
     }
     setIsModalOpen(false);
@@ -58,18 +53,11 @@ const PaymentHistory = () => {
     setIsModalOpen(false);
   };
 
-  const widthDrawForUser = async (value) => {
-    try {
-        const res = await scInstance.withdrawPositRenter(value);
-    } catch (error) {
-      console.log(`WidthDrawError` + error)
-    }
-  }
-
   const fetchBalance = async () => {
     try {
       const fetchedBalance = await scInstance.balanceOf();
       setBalance(fetchedBalance);
+      console.log("Hi")
     } catch (error) {
       console.log('Error fetching balance:', error);
     }
@@ -89,14 +77,19 @@ const PaymentHistory = () => {
       <Row>
         YOUR CURRENT BALANCE IN THIS WEB: {balance} ETH;
       </Row>
-      <Button onClick={showModal("Widthdraw")}>
+      <Button onClick={() => {
+        setIsModalOpen(true);
+        setActiveModal("widthdraw")
+      }}>
           WidthDraw
       </Button>
-      <Button onClick={showModal("Deposit")}>
+      <Button onClick={() => {
+        setIsModalOpen(true);
+        setActiveModal("deposit")
+      }}>
         Deposit
       </Button>
       <Modal 
-        title="Withdraw ETH" 
         open={isModalOpen} 
         onOk={handleOk} 
         confirmLoading={confirmLoading}
