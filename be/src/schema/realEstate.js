@@ -23,6 +23,14 @@ export const createRealEstateSchema = {
         rule: (input) => !input,
         message: "location is required",
       },
+      {
+        rule: (input) => Math.abs(input?.lat) > 90,
+        message: "lat is invalid",
+      },
+      {
+        rule: (input) => Math.abs(input?.lng) > 180,
+        message: "lng is invalid",
+      },
     ],
   },
   type: {
@@ -107,15 +115,18 @@ export const createRealEstateSchema = {
     optional: true,
     rules: [
       {
-        rule: (input) => !input,
+        rule: (input) => !input || !Array.isArray(input),
         message: "imgRealEstate is required",
       },
       {
         rule: (images) => {
-          for (var image of images) {
-            if (!image.name || !image.key) {
-              return true;
+          if (Array.isArray(images) && images.length > 0) {
+            for (var image of images) {
+              if (!image.name || !image.key) {
+                return true;
+              }
             }
+            return false;
           }
           return false;
         },

@@ -36,6 +36,7 @@ jobs:
       PRIVATE_KEY: ${{vars.PRIVATE_KEY}}
       CONTRACT_ADDRESS: ${{vars.CONTRACT_ADDRESS}}
       RE_ADDRESS: ${{vars.RE_ADDRESS}}
+      KEY_OPENAI: ${{vars.KEY_OPENAI}}
     services:
       mysql:
         image: mysql:8.0

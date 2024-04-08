@@ -1,4 +1,4 @@
-import { sendNotifyToRoom, sendNotification } from "../controllers/socket";
+import { sendNotifyToRoom } from "../controllers/socket";
 import db from "../models/index";
 import { createFileService } from "./file";
 import { createNotifyService } from "./notify";

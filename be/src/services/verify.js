@@ -31,9 +31,9 @@ export const createVerify = async ({ type = "1", data }) => {
 export const verifyAccountService = async (token) => {
   const transaction = await db.sequelize.transaction();
   try {
-    let verify = (verify = await db.Verify.findOne({
+    let verify = await db.Verify.findOne({
       where: { token: token, type: "1" },
-    }));
+    });
 
     if (verify) {
       let user = await db.User.findByPk(verify.fkId);

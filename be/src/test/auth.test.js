@@ -174,6 +174,7 @@ describe("/auth/me", () => {
       .send({ email: dataUser.email, password: dataUser.password });
 
     user = response.body.data;
+    console.log(response.body);
   });
 
   test("User is not authorized", async () => {

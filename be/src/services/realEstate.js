@@ -167,12 +167,27 @@ export const getRealEstateFullHouseByUserIdService = async ({
   }
 };
 
+export const getRecommendFromDjango = async (view) => {
+  var ids = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  var res = await axios.post(
+    `http://${process.env.HOST_DJANGO}:${process.env.PORT_DJANGO}` +
+      "/api/recommend",
+    {
+      view: view,
+    }
+  );
+
+  if (res.status === 200) {
+    ids = res.data.data;
+  }
+  return ids;
+};
+
 export const getRealEstateByRecommendService = async ({
   realEstateId,
   userId,
 }) => {
   try {
-    console.log("userId", userId);
     var view = 1;
 
     if (!realEstateId && userId) {
@@ -190,61 +205,49 @@ export const getRealEstateByRecommendService = async ({
       view = realEstateId;
     }
 
-    var res = await axios.post(
-      `http://${process.env.HOST_DJANGO}:${process.env.PORT_DJANGO}` +
-        "/api/recommend",
-      {
-        view: view,
-      }
-    );
+    const ids = await getRecommendFromDjango(view);
 
-    if (res.status === 200) {
-      const ids = res.data.data;
-
-      const recommends = await db.RealEstate.findAll({
-        where: { status: "1", id: ids },
-        include: [
-          {
-            model: db.File,
-            where: {
-              typeFk: "2",
-            },
-            required: false,
-            as: "realEstateFiles",
-            attributes: ["url"],
+    const recommends = await db.RealEstate.findAll({
+      where: { status: "1", id: ids },
+      include: [
+        {
+          model: db.File,
+          where: {
+            typeFk: "2",
           },
-          { model: db.Address },
-          {
-            model: db.User,
-            attributes: {
-              exclude: [
-                "password",
-                "maritalStatus",
-                "isActive",
-                "birthday",
-                "role",
-                "AddressId",
-              ],
-            },
-            include: [
-              {
-                model: db.File,
-                where: {
-                  typeFk: "5",
-                },
-                required: false,
-                attributes: ["url"],
-              },
+          required: false,
+          as: "realEstateFiles",
+          attributes: ["url"],
+        },
+        { model: db.Address },
+        {
+          model: db.User,
+          attributes: {
+            exclude: [
+              "password",
+              "maritalStatus",
+              "isActive",
+              "birthday",
+              "role",
+              "AddressId",
             ],
           },
-        ],
-        subQuery: false,
-      });
+          include: [
+            {
+              model: db.File,
+              where: {
+                typeFk: "5",
+              },
+              required: false,
+              attributes: ["url"],
+            },
+          ],
+        },
+      ],
+      subQuery: false,
+    });
 
-      return recommends;
-    } else {
-      throw new Error("Server không ổn định");
-    }
+    return recommends;
   } catch (error) {
     console.log(error);
     throw new Error(error.message, error);
