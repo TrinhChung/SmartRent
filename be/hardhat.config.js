@@ -18,7 +18,7 @@ module.exports = {
   },
   networks: {
     hardhat: {
-      // blockGasLimit: 100000000429720, // whatever you want here
+      blockGasLimit: 100000000429720, // whatever you want here
     },
     localhost: {
       url: process.env.API_URL,
