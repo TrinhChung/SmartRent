@@ -24,22 +24,24 @@ contract SmartContract is ERC721URIStorage {
         _;
     }
 
-    modifier onlySeller(uint256 id) {
-        require(msg.sender == contracts[id].seller, "Only seller can call this method");
-        _;
-    }
+    // modifier onlySeller(uint256 id) {
+    //     require(msg.sender == contracts[id].seller, "Only seller can call this method");
+    //     _;
+    // }
 
-    modifier onlyOwner(uint256 id) {
-        require(msg.sender == contracts[id].seller ||
-         msg.sender == contracts[id].renter, "Only owner can call this method");
-        _;
-    }
+    // modifier onlyOwner(uint256 id) {
+    //     require(msg.sender == contracts[id].seller ||
+    //      msg.sender == contracts[id].renter, "Only owner can call this method");
+    //     _;
+    // }
 
     fallback() external payable {
         balances[msg.sender] += msg.value;
     }
 
-    receive() external payable {}
+    receive() external payable {
+        balances[msg.sender] += msg.value;
+    }
 
     constructor() ERC721("Smart Contract", "SC") {}
 
@@ -51,7 +53,7 @@ contract SmartContract is ERC721URIStorage {
         ,uint256 _rentCost
         ,uint256 _duration
         ,string memory uri
-        ) public returns (uint256) {
+        ) public {
 
         uint256 newItemId = _newItemId;
         _mint(address(this) , newItemId);
@@ -63,7 +65,6 @@ contract SmartContract is ERC721URIStorage {
         newSmartContract.reId = _reId;
         newSmartContract.rentCost = _rentCost;
         newSmartContract.duration = _duration;
-        return newItemId;
     }
 
     function depositContract(uint256 id) public payable onlyRenter(id) {
@@ -78,7 +79,7 @@ contract SmartContract is ERC721URIStorage {
     }
 
     function renewal(uint256 _time, uint256 id) public payable onlyRenter(id) {
-        require(msg.value >= contracts[id].rentCost);
+        // require(msg.value >= contracts[id].rentCost);
         contracts[id].duration += _time;
     }
 
@@ -88,7 +89,7 @@ contract SmartContract is ERC721URIStorage {
         balances[msg.sender] -= value;
     }
 
-    function balanceOf() public virtual view returns (uint256) {
+    function getbalanceOf() public virtual view returns (uint256) {
         return balances[msg.sender];
     }
 
@@ -106,12 +107,9 @@ contract SmartContract is ERC721URIStorage {
         payable(_to).transfer(address(this).balance);
     }
 
-    function payRentCost(uint256 id) public returns(bool){
-        if (balances[contracts[id].renter] >= contracts[id].rentCost) {
-            return false;
-        }
+    function payRentCost(uint256 id) public {
+        require(balances[contracts[id].renter] >= contracts[id].rentCost, "Balancer not enought");
         balances[contracts[id].renter] -= contracts[id].rentCost;
         balances[contracts[id].seller] += contracts[id].rentCost;
-        return true;
     }
 }
