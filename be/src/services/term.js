@@ -12,8 +12,9 @@ import {
   messageCreateTermNotify,
   listTermFixed,
 } from "../constants/typeValue";
+import { detectContraction } from "./contradiction";
 
-const moment = require('moment');
+const moment = require("moment");
 const { Op } = require("sequelize");
 
 export const createTermService = async ({ contractId, userId, content }) => {
@@ -26,9 +27,16 @@ export const createTermService = async ({ contractId, userId, content }) => {
           model: db.RoomChat,
           required: true,
         },
+        {
+          model: db.Term,
+          where: { accept: { [Op.in]: ["0", "1"] } },
+          required: true,
+        },
       ],
     });
     contract = contract.get({ plain: true });
+
+    const terms = contract?.Terms;
 
     if (contract.status !== "3") {
       throw new Error("Đã kết thúc giai đoạn đàm phán");
@@ -47,6 +55,8 @@ export const createTermService = async ({ contractId, userId, content }) => {
 
     const receiver =
       contract?.sellerId === userId ? contract?.renterId : contract?.sellerId;
+
+    await detectContraction({ terms: terms, newTerm: content });
 
     await createNotifyService(
       {

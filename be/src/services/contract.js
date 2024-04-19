@@ -225,6 +225,7 @@ export const getContractByIdService = async ({ id }) => {
         },
         {
           model: db.Term,
+          where: { accept: { [Op.in]: ["0", "1"] } },
           required: true,
           include: [
             {
@@ -316,7 +317,11 @@ export const signContractService = async ({ contractId, userId }) => {
   }
 };
 
-export const createSmartContractService = async ({ contractId, contractCid, userId }) => {
+export const createSmartContractService = async ({
+  contractId,
+  contractCid,
+  userId,
+}) => {
   const transaction = await db.sequelize.transaction();
   try {
     var contract = await db.Contract.findOne({
@@ -338,7 +343,10 @@ export const createSmartContractService = async ({ contractId, contractCid, user
       throw new Error("Thao tác không hợp lệ");
     }
 
-    await contract.update({ status: "8", cid: contractCid }, { transaction: transaction });
+    await contract.update(
+      { status: "8", cid: contractCid },
+      { transaction: transaction }
+    );
 
     await createNotifyService(
       {

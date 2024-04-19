@@ -26,8 +26,11 @@ const HouseInfo = ({ house, scaleIcon, getDirectionRoute = () => {} }) => {
               {house?.name}
             </Row>
             <Row>
-              Giá: {String(house?.cost).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "}
-              VNĐ
+              Giá:{" "}
+              {house?.cost && house?.cost === 20000000
+                ? String(house?.cost).replace(/\B(?=(\d{3})+(?!\d))/g, ",") +
+                  " VNĐ"
+                : "Thương lượng"}
             </Row>
             <Row>
               Diện tích: {house?.acreage} m<sup>2</sup>

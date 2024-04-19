@@ -162,8 +162,8 @@ const MapCustom = ({
         const icons = {
           DRIVING: "&#128664;",
           WALKING: "&#x1f6b6;",
-          BICYCLING: "🛵",
-          TRANSIT: "🛸",
+          BICYCLING: "峽",
+          TRANSIT: "嶌",
         };
         const contentDirection = `<div>
             <div style="display:flex">
@@ -195,7 +195,7 @@ const MapCustom = ({
           if (status === window.google.maps.DirectionsStatus.OK) {
             setDirections(result);
           } else {
-            alert(`Không tìm thấy tuyến đường phù hợp`);
+            alert(`Khﾃｴng tﾃｬm th蘯･y tuy蘯ｿn ﾄ柁ｰ盻拵g phﾃｹ h盻｣p`);
             directionsRenderer.current.setMap(null);
           }
         }
