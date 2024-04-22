@@ -110,10 +110,6 @@ const Contract = ({ contract, refContract }) => {
                       }
                     })}
                   <Row className="rule">※ Điều khoản bổ sung</Row>
-                  <Row>- Bên A cho phép bên B nuôi động vật</Row>
-                  <Row>
-                    - Bên B có thể thanh toán tiền hàng tháng bằng Etherum
-                  </Row>
                   {contract?.Terms?.length > 0 &&
                     contract?.Terms?.map((term, index) => {
                       if (term.accept === "1" && term.type === "other") {

@@ -112,7 +112,9 @@ const Overview = ({
           >
             <Row>Mức giá</Row>
             <label>
-              {String(cost).replace(/\B(?=(\d{3})+(?!\d))/g, ",")} VNĐ
+              {cost !== 2000000000
+                ? String(cost).replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "VNĐ"
+                : "Thương lượng"}
             </label>
           </Col>
           {roomTotal >= 0 && (
