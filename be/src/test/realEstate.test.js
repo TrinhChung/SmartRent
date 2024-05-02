@@ -26,9 +26,6 @@ describe("get /api/real-estate/search", () => {
     const response = await request
       .post("/api/real-estate/search")
       .send({ ...data, page: -1 });
-    const response = await request
-      .post("/api/real-estate/search")
-      .send({ ...data, page: -1 });
     expect(response.status).toBe(400);
   });
 
