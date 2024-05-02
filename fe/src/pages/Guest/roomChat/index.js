@@ -10,7 +10,7 @@ import {
 } from "@ant-design/icons";
 import Message from "./Message";
 import ChatList from "./ChatList";
-import ChatInfo from "./ChatInfo";
+import ChatInfo from "./ChatInfo/ChatInfo";
 import { SocketContext } from "../../../providers/socketProvider";
 import {
   getMessagesOfRoomChatService,
@@ -23,7 +23,6 @@ import {
   closeContractService,
   getContractByIdService,
 } from "../../../services/RealEstate";
-import { toast } from "react-toastify";
 
 const { Footer, Content } = Layout;
 const { TextArea } = Input;
@@ -88,8 +87,9 @@ const RoomChat = () => {
       socket.emit("join-room", id, authUser?.id);
     }
 
+    console.log(socket);
+
     socket.on("new-message", async (data, message) => {
-      console.log(data);
       if (data !== authUser.id) {
         await fetchMessageOfRoom(id);
       }
@@ -97,7 +97,7 @@ const RoomChat = () => {
 
     socket.on("update-term", async (data) => {
       console.log("update term", data);
-      console.log(`userID : ${authUser?.id}`);
+      console.log(`id room : ${id}`);
       if (Number(data?.roomChatId) === Number(id)) {
         await fetchContractById(id);
       }
@@ -108,7 +108,7 @@ const RoomChat = () => {
 
       socket.off("update-term");
     };
-  }, [id, authUser]);
+  }, [socket, id, authUser, roomChat]);
 
   useEffect(() => {
     if (id > 0) {
@@ -130,8 +130,6 @@ const RoomChat = () => {
       console.log(error);
     }
   };
-
-  useEffect(() => {}, [socket, contract]);
 
   const switchRoomChat = (chatId) => {
     navigate(`/room-chat/${chatId}`);
@@ -247,9 +245,9 @@ const RoomChat = () => {
           <Col span={24}>
             {files.length > 0 && (
               <Row style={{ paddingBottom: 10, gap: 5 }}>
-                {files.map((file) => {
+                {files.map((file, index) => {
                   return (
-                    <Col>
+                    <Col index={"keyImage" + index}>
                       <Image
                         src={file?.url}
                         style={{ height: 80, width: 80 }}

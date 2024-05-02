@@ -1,6 +1,6 @@
 import React from "react";
 import { useContext } from "react";
-import { AuthContext } from "../../../providers/authProvider";
+import { AuthContext } from "../../../../providers/authProvider";
 import { Col, Row } from "antd";
 import Contract from "./Contract";
 

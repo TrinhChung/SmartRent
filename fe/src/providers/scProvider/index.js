@@ -89,7 +89,7 @@ export const SmartContractProvider = ({ children }) => {
           const s = await provider.getSigner();
           setSigner(s);
           const address = accounts?.length > 0 ? accounts[0] : null;
-          if (String(user.wallet) !== String(address)) {
+          if (user?.wallet && String(user.wallet) !== String(address)) {
             fetchUpdateWallet(address, loginMe);
             // TODO xử lý chưa đúng chưa set lại storage
           }
@@ -115,6 +115,7 @@ export const SmartContractProvider = ({ children }) => {
   };
 
   useEffect(() => {
+    connectAccountSc();
     fetchReAbi();
     fetchScAbi();
     fetchScAddressService();

@@ -36,6 +36,9 @@ jobs:
       PRIVATE_KEY: ${{vars.PRIVATE_KEY}}
       CONTRACT_ADDRESS: ${{vars.CONTRACT_ADDRESS}}
       RE_ADDRESS: ${{vars.RE_ADDRESS}}
+      KEY_OPENAI: ${{vars.KEY_OPENAI}}
+      PINATA_API_KEY: ${{vars.PINATA_API_KEY}}
+      PINATA_API_SECRET: ${{vars.PINATA_API_SECRET}}
     services:
       mysql:
         image: mysql:8.0
@@ -59,6 +62,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
           cache-dependency-path: "**/package-lock.json"
+      - run: mkdir media
       - run: npm install
       - run: npm run test
       # - name: Upload coverage to vps

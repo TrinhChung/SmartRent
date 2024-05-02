@@ -1,10 +1,10 @@
 import { useCallback, useState } from "react";
 import { ContainerOutlined, EditOutlined } from "@ant-design/icons";
 import { Layout, Row, Col } from "antd";
-import "./ChatList.scss";
-import EditNameRoom from "./EditNameRoom";
-import StepSign from "./StepSign";
-import ModalContract from "./ModalContract";
+import "../ChatList.scss";
+import EditNameRoom from "../EditNameRoom";
+import StepSign from "../Contract/StepSign";
+import ModalContract from "../ModalContract";
 
 const { Sider } = Layout;
 

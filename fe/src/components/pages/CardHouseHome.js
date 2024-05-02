@@ -60,7 +60,10 @@ const CardHouseHome = ({
                 <label>
                   Giá:{" "}
                   <label style={{ fontWeight: "bold", color: "#D00" }}>
-                    {String(cost).replace(/\B(?=(\d{3})+(?!\d))/g, ",")} VNĐ
+                    {cost === 2000000000
+                      ? "Thương lượng"
+                      : String(cost).replace(/\B(?=(\d{3})+(?!\d))/g, ",") +
+                        "VNĐ"}
                   </label>
                 </label>
               </Row>

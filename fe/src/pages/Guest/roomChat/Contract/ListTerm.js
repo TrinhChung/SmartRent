@@ -19,11 +19,11 @@ import {
 import "./ListTerm.scss";
 import dayjs from "dayjs";
 import moment from "moment";
-import { AuthContext } from "../../../providers/authProvider";
+import { AuthContext } from "../../../../providers/authProvider";
 import {
   createTermContractService,
   updateTermContractService,
-} from "../../../services/RoomChat/index";
+} from "../../../../services/RoomChat/index";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCircleCheck,
@@ -31,7 +31,7 @@ import {
   faXmarkCircle,
 } from "@fortawesome/free-regular-svg-icons";
 import { toast } from "react-toastify";
-import WrapTerm from "../../../components/pages/WrapTerm";
+import WrapTerm from "../../../../components/pages/WrapTerm";
 
 const ListTerm = ({ contract, fetchContractById = () => {} }) => {
   const { authUser } = useContext(AuthContext);

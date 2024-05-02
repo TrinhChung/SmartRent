@@ -1,9 +1,7 @@
-import { Button, Col, Image, Modal, Row } from "antd";
-import React, { memo, useEffect, useMemo, useRef, useState } from "react";
-import moment from "moment";
-import generatePDF from "react-to-pdf";
-import "./Contract.scss";
-import Contract from "./Contract";
+import { Modal } from "antd";
+import React, { memo, useRef } from "react";
+import "./Contract/Contract.scss";
+import Contract from "./Contract/Contract";
 
 const ModalContract = ({ contract, open = false, handleCancel = () => {} }) => {
   const targetRef = useRef();
