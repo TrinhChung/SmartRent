@@ -26,8 +26,8 @@ export const senNotifyUpdateTerm = async (data, eventNotify) => {
   // const dataSend = { roomChatId: data.roomChatId, userId: data.userId };
   console.log(data);
   console.log(users);
-  console.log(users[String(data.userId)]);
-  await global.io.to(users[String(data.userId)]).emit("update-term", data);
+  console.log(users[Number(data.userId)]);
+  await global.io.to(users[Number(data.userId)]).emit("update-term", data);
 };
 
 const disconnect = (socket, userId, roomId) => {

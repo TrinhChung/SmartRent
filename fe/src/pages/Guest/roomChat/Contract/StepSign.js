@@ -1,31 +1,29 @@
 import React, { useContext, useMemo, useRef } from "react";
 import { useState, useCallback } from "react";
 import { Modal, Button, Steps, Spin } from "antd";
-import { statusRent, steps } from "../../../const/index";
+import { statusRent, steps } from "../../../../const/index";
 import {
   checkListTermAccept,
   convertBlobToBase64Async,
   convertVndToEth,
   buildParamsCreateSc,
-} from "../../../util/commonFunc";
-import { AuthContext } from "../../../providers/authProvider";
+} from "../../../../util/commonFunc";
+import { AuthContext } from "../../../../providers/authProvider";
 import {
   signContractService,
   uploadContractService,
-} from "../../../services/SC";
+} from "../../../../services/SC";
 import { toast } from "react-toastify";
 import ListTerm from "./ListTerm";
 import CreateSC from "./CreateSC";
-import { SmartContractContext } from "../../../providers/scProvider";
+import { SmartContractContext } from "../../../../providers/scProvider";
 import moment from "moment";
 import generatePDF from "react-to-pdf";
 import {
   createScService,
   renterPaymentDepositService,
-} from "../../../services/SC/index";
-import {
-  uploadFileToIpfs
-} from "../../../services/SC/index"
+} from "../../../../services/SC/index";
+import { uploadFileToIpfs } from "../../../../services/SC/index";
 import Deposit from "./Deposit";
 import { ethers } from "ethers";
 
@@ -61,7 +59,10 @@ const StepSign = ({
   const fetchCreateSmartContract = async (urlContract) => {
     try {
       if (contract?.id) {
-        const res = await createScService({ contractId: contract.id, cid: urlContract });
+        const res = await createScService({
+          contractId: contract.id,
+          cid: urlContract,
+        });
         if (res.status === 200) {
           toast.success("Tạo hợp đồng thông minh thành công");
           fetchContractById(contract?.id);
@@ -90,6 +91,7 @@ const StepSign = ({
 
   const sellerCreateSmartContract = useCallback(async () => {
     try {
+      console.log(scInstance);
       if (scInstance) {
         const time = moment(new Date()).valueOf();
         const pdf = await generatePDF(refContract, {
@@ -100,8 +102,11 @@ const StepSign = ({
           filePdf,
           "application/pdf"
         );
-        var urlContract
-        const res = await uploadFileToIpfs({file: base64, contractId: contract?.id});
+        var urlContract;
+        const res = await uploadFileToIpfs({
+          file: base64,
+          contractId: contract?.id,
+        });
 
         if (res.status === 200) {
           urlContract = res.data;
@@ -116,7 +121,7 @@ const StepSign = ({
           input.reId,
           input.rentCost,
           input.duration,
-          urlContract,
+          urlContract
         );
         fetchCreateSmartContract(urlContract);
       } else {

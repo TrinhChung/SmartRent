@@ -2,9 +2,9 @@ import React, { useContext, useMemo } from "react";
 import { Col, Row } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSignature } from "@fortawesome/free-solid-svg-icons";
-import { convertVndToEth } from "../../../util/commonFunc";
+import { convertVndToEth } from "../../../../util/commonFunc";
 import "./Deposit.scss";
-import { SmartContractContext } from "../../../providers/scProvider";
+import { SmartContractContext } from "../../../../providers/scProvider";
 
 const Deposit = ({ contract }) => {
   const { scAddress } = useContext(SmartContractContext);

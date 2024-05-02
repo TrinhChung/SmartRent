@@ -48,13 +48,11 @@ const Message = ({
             >
               {message.messageFiles.map((image, index) => {
                 return (
-                  <div>
-                    <ImageCustom
-                      src={process.env.REACT_APP_HOST_BE + "/" + image.url}
-                      index={index}
-                      className="message-image"
-                    />
-                  </div>
+                  <ImageCustom
+                    src={process.env.REACT_APP_HOST_BE + "/" + image.url}
+                    index={"messageImage" + index}
+                    className="message-image"
+                  />
                 );
               })}
             </Row>

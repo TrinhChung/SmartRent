@@ -27,13 +27,16 @@ const Notify = ({ notify, key = 1 }) => {
       linkNotify = `/room-chat/${notify.fkId}`;
     }
 
-    if (pathname !== linkNotify) {
-      const res = await readNotifyService(notify.id);
-      if (res.status === 200 && idRedirectRoomChat.includes(notify.type)) {
-        navigate(`/room-chat/${notify.fkId}`);
-        await fetchNotifyOfUser();
-      }
+    const res = await readNotifyService(notify.id);
+    if (
+      pathname !== linkNotify &&
+      res.status === 200 &&
+      idRedirectRoomChat.includes(notify.type)
+    ) {
+      navigate(`/room-chat/${notify.fkId}`);
     }
+
+    await fetchNotifyOfUser();
   };
 
   const mappingIcon = {
