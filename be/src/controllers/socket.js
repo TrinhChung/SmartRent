@@ -23,7 +23,6 @@ export const sendNotifyToRoom = async (data, newMessage) => {
 
 export const senNotifyUpdateTerm = async (data, eventNotify) => {
   console.log("update-term");
-  // const dataSend = { roomChatId: data.roomChatId, userId: data.userId };
   console.log(data);
   console.log(users);
   console.log(users[Number(data.userId)]);
@@ -32,7 +31,7 @@ export const senNotifyUpdateTerm = async (data, eventNotify) => {
 
 const disconnect = (socket, userId, roomId) => {
   socket.on("disconnect", () => {
-    console.log("user disconnected" + userId);
+    console.log("user disconnected " + userId);
     socket.to(roomId).emit("user-disconnected", userId);
   });
 };
