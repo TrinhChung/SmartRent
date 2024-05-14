@@ -87,17 +87,18 @@ const RoomChat = () => {
       socket.emit("join-room", id, authUser?.id);
     }
 
-    console.log(socket);
-
-    socket.on("new-message", async (data, message) => {
+    socket.on("new-message", async (data) => {
       if (data !== authUser.id) {
         await fetchMessageOfRoom(id);
       }
     });
 
+    socket.on("connect", function () {
+      console.log("connected: ", socket);
+    });
+
     socket.on("update-term", async (data) => {
-      console.log("update term", data);
-      console.log(`id room : ${id}`);
+      console.log(socket);
       if (Number(data?.roomChatId) === Number(id)) {
         await fetchContractById(id);
       }
@@ -108,13 +109,13 @@ const RoomChat = () => {
 
       socket.off("update-term");
     };
-  }, [socket, id, authUser, roomChat]);
+  }, [id, authUser]);
 
   useEffect(() => {
     if (id > 0) {
       fetchMessageOfRoom(id);
     }
-  }, [id, contract]);
+  }, [id]);
 
   const fetchContractById = async (id) => {
     try {
@@ -219,7 +220,7 @@ const RoomChat = () => {
                 <FormOutlined />
               </Col>
               <Col className="text-bold-18 wrap-icon">
-                <InfoCircleOutlined spin />
+                <InfoCircleOutlined />
               </Col>
             </Row>
           </Col>

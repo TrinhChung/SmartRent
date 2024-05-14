@@ -18,21 +18,17 @@ export const sendNotification = async (userId, eventNotify, data) => {
 };
 
 export const sendNotifyToRoom = async (data, newMessage) => {
-  await global.io.to(data.roomChatId).emit("new-message", data.userId);
+  await global.io.to(String(data.roomChatId)).emit("new-message", data.userId);
 };
 
 export const senNotifyUpdateTerm = async (data, eventNotify) => {
   console.log("update-term");
-  // const dataSend = { roomChatId: data.roomChatId, userId: data.userId };
-  console.log(data);
-  console.log(users);
-  console.log(users[Number(data.userId)]);
-  await global.io.to(users[Number(data.userId)]).emit("update-term", data);
+  await global.io.to(String(data.roomChatId)).emit("update-term", data);
 };
 
 const disconnect = (socket, userId, roomId) => {
   socket.on("disconnect", () => {
-    console.log("user disconnected" + userId);
+    console.log("user disconnected " + userId);
     socket.to(roomId).emit("user-disconnected", userId);
   });
 };

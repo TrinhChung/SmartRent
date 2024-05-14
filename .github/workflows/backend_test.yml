@@ -1,10 +1,5 @@
 name: test_backend
 on:
-  push:
-    paths:
-      - "be/**"
-      - ".github/workflows/backend*"
-    branches: ["**"]
   workflow_call:
 jobs:
   test_backend:

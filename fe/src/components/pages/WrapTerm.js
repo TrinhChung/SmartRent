@@ -39,7 +39,7 @@ const WrapTerm = ({
     );
   } else {
     return (
-      <Row index={"list_term_" + term?.id}>
+      <Row index={"list_term_" + term?.id} key={"box_term_" + term?.id}>
         <Col span={24}>
           <Row
             className={`term-item-container warning-term ${
