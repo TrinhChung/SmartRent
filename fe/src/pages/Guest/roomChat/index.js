@@ -93,16 +93,6 @@ const RoomChat = () => {
       }
     });
 
-    return () => {
-      socket.off("new-message");
-    };
-  }, [id, authUser]);
-
-  useEffect(() => {
-    if (id > 0) {
-      fetchMessageOfRoom(id);
-    }
-
     socket.on("connect", function () {
       console.log("connected: ", socket);
     });
@@ -115,8 +105,16 @@ const RoomChat = () => {
     });
 
     return () => {
+      socket.off("new-message");
+
       socket.off("update-term");
     };
+  }, [id, authUser]);
+
+  useEffect(() => {
+    if (id > 0) {
+      fetchMessageOfRoom(id);
+    }
   }, [id]);
 
   const fetchContractById = async (id) => {
