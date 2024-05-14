@@ -8,9 +8,7 @@ import {
   createSmartContractService,
 } from "../services/contract";
 
-import {
-  uploadFiletoIpfs
-} from "../services/uploadScIpfs";
+import { uploadFiletoIpfs } from "../services/uploadScIpfs";
 
 export const handleInitContract = async (req, res, next) => {
   try {
@@ -112,12 +110,18 @@ export const handleCreateSc = async (req, res) => {
 export const handleUploadToIpfs = async (req, res) => {
   try {
     const file = req.body.file;
-    const contractId = req.body.contractId
-    const { responses: fileUploadResponses } = await uploadFiletoIpfs(file, contractId);
-    return res.status(200).json({ message: "upload to Ipfs success",data:`${fileUploadResponses.IpfsHash}`});
+    const contractId = req.body.contractId;
+    const { responses: fileUploadResponses } = await uploadFiletoIpfs(
+      file,
+      contractId
+    );
+    return res.status(200).json({
+      message: "upload to Ipfs success",
+      data: `${fileUploadResponses.IpfsHash}`,
+    });
   } catch (err) {
     console.log(err);
-    console.log("handle Upload to Ipfs fail")
+    console.log("handle Upload to Ipfs fail");
     return res.status(400).json({ message: err.message });
   }
-}
+};

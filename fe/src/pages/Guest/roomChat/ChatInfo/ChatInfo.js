@@ -9,13 +9,8 @@ import ModalContract from "../ModalContract";
 const { Sider } = Layout;
 
 const ChatInfo = ({ contract, fetchContractById = () => {} }) => {
-  const [isOpenModelEditName, setIsOpenModelEditName] = useState(false);
   const [isOpenModalContract, setIsOpenModalContract] = useState(false);
   const [isOpenModalListTerm, setIsOpenModalListTerm] = useState(false);
-
-  const closeModal = useCallback(() => {
-    return setIsOpenModelEditName(false);
-  }, []);
 
   const closeModalContract = useCallback(() => {
     return setIsOpenModalContract(false);
@@ -42,17 +37,6 @@ const ChatInfo = ({ contract, fetchContractById = () => {} }) => {
       <Row
         className="box-chat-info"
         onClick={() => {
-          setIsOpenModelEditName(true);
-        }}
-      >
-        <Col>
-          <EditOutlined />
-        </Col>
-        <Col className="item-chat-info">Đổi tên phòng</Col>
-      </Row>
-      <Row
-        className="box-chat-info"
-        onClick={() => {
           setIsOpenModalListTerm(true);
         }}
       >
@@ -66,7 +50,6 @@ const ChatInfo = ({ contract, fetchContractById = () => {} }) => {
         open={isOpenModalContract}
         handleCancel={closeModalContract}
       />
-      <EditNameRoom isOpen={isOpenModelEditName} close={closeModal} />
 
       <StepSign
         contract={contract}

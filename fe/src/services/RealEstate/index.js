@@ -24,8 +24,8 @@ export const createContractService = (data) => {
   return axios.post(`/api/contract/`, data);
 };
 
-export const closeContractService = (contractId) => {
-  return axios.post(`/api/contract/close`, { contractId: contractId });
+export const closeContractService = (data) => {
+  return axios.post(`/api/contract/close`, data);
 };
 
 export const getContractByMeService = ({ page = 1 }) => {

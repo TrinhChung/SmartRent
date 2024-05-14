@@ -1,5 +1,5 @@
 import { Col, Row, Layout, Input, Image, Empty } from "antd";
-import React, { useContext, useEffect, useState, useRef } from "react";
+import { useContext, useEffect, useState, useRef, useCallback } from "react";
 import "./RoomChat.scss";
 import {
   InfoCircleOutlined,
@@ -7,6 +7,7 @@ import {
   PaperClipOutlined,
   SendOutlined,
   FormOutlined,
+  EditOutlined,
 } from "@ant-design/icons";
 import Message from "./Message";
 import ChatList from "./ChatList";
@@ -23,6 +24,7 @@ import {
   closeContractService,
   getContractByIdService,
 } from "../../../services/RealEstate";
+import EditNameRoom from "./EditNameRoom";
 
 const { Footer, Content } = Layout;
 const { TextArea } = Input;
@@ -31,6 +33,7 @@ const RoomChat = () => {
   const { authUser } = useContext(AuthContext);
   const { id } = useParams();
   const { socket, roomChats, getRoomChatForMe } = useContext(SocketContext);
+  const [isOpenModelEditName, setIsOpenModelEditName] = useState(false);
   const [roomChat, setRoomChat] = useState();
   const [messages, setMessages] = useState([]);
   const [contract, setContract] = useState({});
@@ -38,6 +41,10 @@ const RoomChat = () => {
   const [content, setContent] = useState("");
   const navigate = useNavigate();
   const chatWindowRef = useRef(null);
+
+  const closeModal = useCallback(() => {
+    return setIsOpenModelEditName(false);
+  }, []);
 
   const fetchMessageOfRoom = async (roomChatId) => {
     try {
@@ -93,12 +100,7 @@ const RoomChat = () => {
       }
     });
 
-    socket.on("connect", function () {
-      console.log("connected: ", socket);
-    });
-
     socket.on("update-term", async (data) => {
-      console.log(socket);
       if (Number(data?.roomChatId) === Number(id)) {
         await fetchContractById(id);
       }
@@ -173,7 +175,10 @@ const RoomChat = () => {
 
   const fetchCloseContract = async () => {
     try {
-      const res = await closeContractService(roomChat?.contract?.id);
+      const res = await closeContractService({
+        contractId: roomChat?.contractId,
+        roomChatId: roomChat?.id,
+      });
       if (res.status === 200) {
         getRoomChatForMe();
       }
@@ -205,7 +210,17 @@ const RoomChat = () => {
       <Layout className="content-room-chat">
         <Row className="msg-header">
           <Col className="text-bold-18 ">
-            {roomChat?.name ? roomChat.name : "RoomChat"}
+            <Row>
+              <Col>{roomChat?.name ? roomChat.name : "RoomChat"}</Col>
+              <Col
+                className="icon-edit-name-room"
+                onClick={() => {
+                  setIsOpenModelEditName(true);
+                }}
+              >
+                <EditOutlined />
+              </Col>
+            </Row>
           </Col>
           <Col>
             <Row gutter={[16]}>
@@ -328,6 +343,7 @@ const RoomChat = () => {
         </Footer>
       </Layout>
       <ChatInfo contract={contract} fetchContractById={fetchContractById} />
+      <EditNameRoom isOpen={isOpenModelEditName} close={closeModal} />
     </Layout>
   );
 };

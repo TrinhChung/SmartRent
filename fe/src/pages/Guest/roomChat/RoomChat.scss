@@ -45,6 +45,15 @@
         cursor: pointer;
         background-color: var(--shadow-2);
       }
+
+      .icon-edit-name-room {
+        padding-left: 8px;
+        cursor: pointer;
+      }
+
+      .icon-edit-name-room:hover {
+        color: orange;
+      }
     }
 
     .msg-body {
