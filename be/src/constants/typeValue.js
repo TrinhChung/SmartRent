@@ -12,7 +12,7 @@ export const statusRent = [
   { key: "3", name: "negotiating" },
   { key: "4", name: "contracted" },
   { key: "5", name: "paid" },
-  { key: "6", name: "rent" },
+  { key: "6", name: "rented" },
   { key: "7", name: "renter sign" },
   { key: "8", name: "seller create sc" },
 ];

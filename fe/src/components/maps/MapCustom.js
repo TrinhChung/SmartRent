@@ -195,7 +195,7 @@ const MapCustom = ({
           if (status === window.google.maps.DirectionsStatus.OK) {
             setDirections(result);
           } else {
-            alert(`Khﾃｴng tﾃｬm th蘯･y tuy蘯ｿn ﾄ柁ｰ盻拵g phﾃｹ h盻｣p`);
+            alert(`Không tìm thấy tuyến đường phù hợp`);
             directionsRenderer.current.setMap(null);
           }
         }
