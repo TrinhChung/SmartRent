@@ -1,31 +1,45 @@
 import { getUserPaymentDeadline } from "../services/remind";
 import { sendMailRemindPayment } from "../services/mail";
-import moment from "moment";
 import { sendNotification } from "./socket";
 import { createContractInstanceSMC } from "../config/connectSMC";
+import { logger } from "../cron-job/logger";
 
-export const handleGetUserPayment = async (req, res) => {
+export const handleGetUserPayment = async () => {
   try {
+    console.log("Start get user payment");
+    logger.info("Start get user payment");
+
     const contracts = await getUserPaymentDeadline();
-    const contractInstance = createContractInstanceSMC(contractAddress);
-    for (eachContract of contracts) {
-      const res = await contractInstance.payRentCost(eachContract.id);
-      if (res === false) {
-        var tmp = { email: eachContract.renter.email };
-        await sendMailRemindPayment(tmp);
-        await sendNotification({
-          userId: eachContract.renter.userId,
-          eventNotify: "remind-deadline",
-          data: {},
-          transaction: true,
-        });
+
+    if (contracts.length > 0) {
+      const contractInstance = createContractInstanceSMC(
+        process.env.CONTRACT_ADDRESS
+      );
+      for (let eachContract of contracts) {
+        const res = await contractInstance.payRentCost(eachContract?.id);
+        if (res === false) {
+          var tmp = { email: eachContract.renter.email };
+          await sendMailRemindPayment(tmp);
+          await sendNotification({
+            userId: eachContract.renter.userId,
+            eventNotify: "remind-deadline",
+            data: {},
+            transaction: true,
+          });
+        } else {
+          console.log("Thanh toán thành công");
+        }
       }
+    } else {
+      logger.info("No contract need payment");
+      console.log("No contract need payment");
     }
-    return res
-      .status(200)
-      .json({ message: "get users successfully", data: contracts });
   } catch (error) {
-    console.log(error);
+    console.log("Get user payment failure", error);
+    logger.error("Get user payment failure", error.message);
     res.status(400).json({ message: `get users have deadline error` });
+  } finally {
+    console.log("End get user payment");
+    logger.info("End get user payment");
   }
 };
