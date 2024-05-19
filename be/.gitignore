@@ -27,3 +27,5 @@ contracts/artifacts
 jobNeedRun.sh
 
 /dump/*.json
+
+historyJob.log

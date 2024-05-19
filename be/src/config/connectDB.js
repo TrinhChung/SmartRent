@@ -2,9 +2,9 @@ const { Sequelize } = require("sequelize");
 require("dotenv").config();
 // Option 3: Passing parameters separately (other dialects)
 const sequelize = new Sequelize(
-  (process.env.NODE_ENV = "test"
+  process.env.NODE_ENV === "test"
     ? process.env.DB_TEST_NAME
-    : process.env.DB_NAME),
+    : process.env.DB_NAME,
   "root",
   process.env.DB_PASSWORD,
   {
