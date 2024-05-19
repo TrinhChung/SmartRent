@@ -33,7 +33,11 @@ import {
 import { toast } from "react-toastify";
 import WrapTerm from "../../../../components/pages/WrapTerm";
 
-const ListTerm = ({ contract, fetchContractById = () => {} }) => {
+const ListTerm = ({
+  contract,
+  fetchContractById = () => {},
+  setLoading = () => {},
+}) => {
   const { authUser } = useContext(AuthContext);
   const [formTerm] = Form.useForm();
   const [cost, setCost] = useState(null);
@@ -404,6 +408,8 @@ const ListTerm = ({ contract, fetchContractById = () => {} }) => {
           </label>
         }
         onOk={async () => {
+          setIsOpenModalCreateTerm(false);
+          setLoading(true);
           const termValue = formTerm.getFieldValue("name-term");
           if (termValue?.length > 0) {
             const data = {
@@ -413,11 +419,11 @@ const ListTerm = ({ contract, fetchContractById = () => {} }) => {
             };
             const res = await createTermContractService(data);
             if (res.status === 200) {
-              setIsOpenModalCreateTerm(false);
               formTerm.resetFields();
               fetchContractById(contract?.id);
             }
           }
+          setLoading(false);
         }}
         onCancel={() => {
           formTerm.resetFields();

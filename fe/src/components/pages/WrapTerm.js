@@ -1,10 +1,11 @@
 import { Col, Row } from "antd";
-import React, { useCallback } from "react";
+import React, { useCallback, useContext } from "react";
 import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./WrapTerm.scss";
 import { deleteTermContradictionService } from "../../services/RoomChat";
 import { toast } from "react-toastify";
+import { AuthContext } from "../../providers/authProvider";
 
 const WrapTerm = ({
   term,
@@ -13,6 +14,8 @@ const WrapTerm = ({
   setContradictSelected = () => {},
   fetchContractById = () => {},
 }) => {
+  const { authUser } = useContext(AuthContext);
+
   const fetchDeleteContradiction = useCallback(async (id) => {
     try {
       const res = await deleteTermContradictionService({
@@ -55,7 +58,7 @@ const WrapTerm = ({
             }}
           >
             {children}
-            {term?.type === "other" && (
+            {term?.type === "other" && term?.userId === authUser?.id && (
               <Col className="delete-term">
                 <FontAwesomeIcon
                   onClick={async () => {

@@ -238,6 +238,7 @@ const StepSign = ({
           )}
           {contract?.status === "3" && (
             <ListTerm
+              setLoading={setLoading}
               contract={contract}
               fetchContractById={fetchContractById}
             />

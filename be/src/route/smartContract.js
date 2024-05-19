@@ -10,7 +10,7 @@ import {
   handleGetAbiSc,
 } from "../controllers/smartcontract";
 import { authenticate } from "../middleware/authenticate";
-import { detectContraction } from "../services/contradiction";
+
 require("dotenv").config();
 
 export const router = Router();
@@ -64,17 +64,6 @@ router.post("/smart-contract", authenticate, async (req, res, next) => {
     return res.status(200).json({ status: 200, smartContract: smartContract });
   } catch (error) {
     console.log("error create smart contract");
-    return res.status(500).json({ status: 500, error: error });
-  }
-});
-
-router.get("/detect-contradiction", async (req, res) => {
-  try {
-    const data = await detectContraction();
-
-    return res.status(200).json({ status: 200, res: data });
-  } catch (error) {
-    console.log("error detect contradiction", error);
     return res.status(500).json({ status: 500, error: error });
   }
 });

@@ -42,7 +42,7 @@ export const createTermService = async ({ contractId, userId, content }) => {
       throw new Error("Đã kết thúc giai đoạn đàm phán");
     }
 
-    await db.Term.create(
+    var newTerm = await db.Term.create(
       {
         content: content,
         value: null,
@@ -53,10 +53,12 @@ export const createTermService = async ({ contractId, userId, content }) => {
       { transaction: transaction }
     );
 
+    newTerm = newTerm.get({ plain: true });
+
     const receiver =
       contract?.sellerId === userId ? contract?.renterId : contract?.sellerId;
 
-    await detectContraction({ terms: terms, newTerm: content });
+    await detectContraction({ terms: terms, newTerm: newTerm });
 
     await createNotifyService(
       {
@@ -298,6 +300,13 @@ export const updateTermService = async ({
 
 export const updateTermOther = async ({ term, accept, transaction }) => {
   await term.update({ accept: accept }, { transaction: transaction });
+
+  await db.Contradiction.destroy(
+    {
+      where: { [Op.or]: [{ termId: term?.id }, { targetId: term?.id }] },
+    },
+    { transaction: transaction }
+  );
 };
 
 export const updateTermCost = async ({
