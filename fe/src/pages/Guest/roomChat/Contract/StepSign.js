@@ -22,6 +22,7 @@ import {
 } from "../../../../services/SC/index";
 import { uploadFileToIpfs } from "../../../../services/SC/index";
 import Deposit from "./Deposit";
+import Done from "./Done";
 
 const StepSign = ({
   contract,
@@ -138,7 +139,8 @@ const StepSign = ({
       const tx = {
         value: String(convertVndToEth(Number(deposit?.value))),
       };
-      await scInstance.depositContract(contract?.id, tx);
+      const transaction = await scInstance.depositContract(contract?.id, tx);
+      console.log(transaction);
       await fetchRenterPaymentDeposit();
     } catch (error) {
       console.log(error);
@@ -248,6 +250,8 @@ const StepSign = ({
             <CreateSC contract={contract} refContract={refContract} />
           )}
           {contract?.status === "8" && <Deposit contract={contract} />}
+
+          {contract?.status === "4" && <Done contract={contract} />}
         </>
       </Spin>
     </Modal>
