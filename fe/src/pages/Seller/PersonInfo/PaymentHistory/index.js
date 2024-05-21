@@ -1,6 +1,8 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Col, Row, Button, Modal, Input } from "antd";
 import { SmartContractContext } from "../../../../providers/scProvider";
+import { toast } from "react-toastify";
+import { convertVndToEth } from "../../../../util/commonFunc";
 
 const PaymentHistory = () => {
   const { scInstance } = useContext(SmartContractContext);
@@ -18,8 +20,13 @@ const PaymentHistory = () => {
     try {
       if (inputValue < balance) {
         const res = await scInstance.withdrawPositRenter(Number(inputValue));
+        if (res === true) {
+          toast.success("Rút tiền thành công");
+        } else {
+          toast.error("Rút tiền thất bại");
+        }
       } else {
-        alert("Value too big");
+        alert("Không thể rút nhiều hơn số dư");
       }
     } catch (error) {
       console.log("Widthdraw error", error);
@@ -28,6 +35,9 @@ const PaymentHistory = () => {
 
   const deposit = async () => {
     try {
+      const tx = {
+        value: String(convertVndToEth(Number(inputValue))),
+      };
     } catch (error) {
       console.log("Deposit error" + error);
     }
@@ -51,15 +61,16 @@ const PaymentHistory = () => {
 
   const fetchBalance = async () => {
     try {
-      const fetchedBalance = await scInstance.balanceOf();
+      const fetchedBalance = await scInstance.getbalanceOf();
       setBalance(fetchedBalance);
-      console.log("Hi");
+      console.log(fetchedBalance);
     } catch (error) {
       console.log("Error fetching balance:", error);
     }
   };
 
-  useCallback(() => {
+  useEffect(() => {
+    console.log(scInstance);
     if (scInstance) {
       fetchBalance();
     }
@@ -68,23 +79,34 @@ const PaymentHistory = () => {
   return (
     <Col>
       <Row className="text_title">Ví của tôi</Row>
-      <Row>YOUR CURRENT BALANCE IN THIS WEB: {balance} ETH;</Row>
-      <Button
-        onClick={() => {
-          setIsModalOpen(true);
-          setActiveModal("widthdraw");
-        }}
-      >
-        WidthDraw
-      </Button>
-      <Button
-        onClick={() => {
-          setIsModalOpen(true);
-          setActiveModal("deposit");
-        }}
-      >
-        Deposit
-      </Button>
+      <Row style={{ paddingTop: 12, paddingBottom: 10 }}>
+        Số dư trong tài khoản của bạn là: {Number(balance)} Wei;
+      </Row>
+      <Row gutter={[8, 8]}>
+        <Col>
+          <Button
+            onClick={() => {
+              setIsModalOpen(true);
+              setActiveModal("widthdraw");
+            }}
+            style={{ minWidth: 120 }}
+          >
+            Rút tiền
+          </Button>
+        </Col>
+        <Col>
+          <Button
+            onClick={() => {
+              setIsModalOpen(true);
+              setActiveModal("deposit");
+            }}
+            style={{ minWidth: 120 }}
+          >
+            Nạp tiền
+          </Button>
+        </Col>
+      </Row>
+
       <Modal
         open={isModalOpen}
         onOk={handleOk}
@@ -92,10 +114,16 @@ const PaymentHistory = () => {
         onCancel={handleCancel}
       >
         <Col>
-          <Row>Amount</Row>
+          <Row>Số tiền (Wei)</Row>
           <Row>
-            <Col>
-              <Input type="number" value={inputValue} onChange={handleChange} />
+            <Col span={24}>
+              <Input
+                style={{ width: "100%" }}
+                type="number"
+                step={1000000}
+                value={inputValue}
+                onChange={handleChange}
+              />
             </Col>
           </Row>
         </Col>

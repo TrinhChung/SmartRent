@@ -4,8 +4,6 @@ const { Op } = require("sequelize");
 
 export const getUserPaymentDeadline = async () => {
   const data = isLastDayOfMonth();
-  console.log(data);
-  logger.info(data);
 
   try {
     const contractHasDeadline = await db.Contract.findAll({
@@ -23,13 +21,25 @@ export const getUserPaymentDeadline = async () => {
           attributes: ["type"],
         },
         {
+          model: db.RoomChat,
+          required: true,
+        },
+        {
           model: db.User,
-          as: "renter",
+          required: true,
           attributes: ["email", "id", "wallet"],
+          as: "renter",
+        },
+        {
+          model: db.User,
+          required: true,
+          attributes: ["email", "id", "wallet"],
+          as: "seller",
         },
       ],
-      attributes: ["realEstateId", "id"],
+      attributes: ["realEstateId", "id", "sellerId", "renterId"],
     });
+
     return contractHasDeadline;
   } catch (error) {
     logger.error(`Get user paymet deadline: ${error}`);

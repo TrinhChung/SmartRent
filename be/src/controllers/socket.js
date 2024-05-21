@@ -14,7 +14,9 @@ export const eventSocket = (socket) => {
 };
 
 export const sendNotification = async (userId, eventNotify, data) => {
-  await global.io.to(users[Number(userId)]).emit(eventNotify, { data: data });
+  if (users[Number(userId)]) {
+    await global.io.to(users[Number(userId)]).emit(eventNotify, { data: data });
+  }
 };
 
 export const sendNotifyToRoom = async (data, newMessage) => {
