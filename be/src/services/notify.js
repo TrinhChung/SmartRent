@@ -22,20 +22,31 @@ export const createNotifyService = async (
   transaction
 ) => {
   try {
-    await db.Notify.create(
-      {
+    if (transaction) {
+      await db.Notify.create(
+        {
+          userId: userId,
+          fkId: fkId,
+          isRead: false,
+          content: content,
+          type: type,
+        },
+        { transaction: transaction }
+      );
+    } else {
+      await db.Notify.create({
         userId: userId,
         fkId: fkId,
         isRead: false,
         content: content,
         type: type,
-      },
-      { transaction: transaction }
-    );
+      });
+    }
+
     await sendNotification(userId, eventNotify, fkId);
   } catch (error) {
     console.log(error);
-    throw new Error("Change read state error", error);
+    throw new Error("Create notify error", error);
   }
 };
 

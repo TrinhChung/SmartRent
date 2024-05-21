@@ -1,6 +1,5 @@
 import { getUserPaymentDeadline } from "../services/remind";
 import { sendMailRemindPayment } from "../services/mail";
-import { sendNotification } from "./socket";
 import { createContractInstanceSMC } from "../config/connectSMC";
 import { logger } from "../cron-job/logger";
 import { createNotifyService } from "../services/notify";
@@ -17,55 +16,55 @@ export const handleGetUserPayment = async () => {
         process.env.CONTRACT_ADDRESS
       );
       for (let eachContract of contracts) {
-        const res = await contractInstance.payRentCost(eachContract?.id);
+        eachContract = eachContract.get({ plain: true });
+        // const res = await contractInstance.payRentCost(eachContract?.id);
+
+        const res = false;
         if (res === false) {
           var tmp = { email: eachContract.renter.email };
           await sendMailRemindPayment(tmp);
 
-          await createNotifyService(
-            {
-              userId: eachContract.sellerId,
-              fkId: eachContract?.RoomChat?.id,
-              content: `Tiền thuê nhà chưa được thanh toán`,
-              type: "2",
-              eventNotify: "sign-contract",
-            },
-            true
-          );
+          await createNotifyService({
+            userId: eachContract.sellerId,
+            fkId: eachContract?.RoomChat?.id,
+            content: `Tiền thuê nhà chưa được thanh toán`,
+            type: "2",
+            eventNotify: "sign-contract",
+          });
 
-          await createNotifyService(
-            {
-              userId: eachContract.renterId,
-              fkId: eachContract?.RoomChat?.id,
-              content: `Tiền thuê nhà chưa được thanh toán`,
-              type: "2",
-              eventNotify: "sign-contract",
-            },
-            true
+          await createNotifyService({
+            userId: eachContract.renterId,
+            fkId: eachContract?.RoomChat?.id,
+            content: `Tiền thuê nhà chưa được thanh toán`,
+            type: "2",
+            eventNotify: "sign-contract",
+          });
+
+          logger.info(
+            `Tiền thuê nhà chưa được thanh toán contract: ${eachContract?.id}`
+          );
+          console.log(
+            `Tiền thuê nhà chưa được thanh toán contract: ${eachContract?.id}`
           );
         } else {
           console.log("Thanh toán thành công");
-          await createNotifyService(
-            {
-              userId: eachContract.sellerId,
-              fkId: eachContract?.RoomChat?.id,
-              content: `Tiền thuê nhà đã được thanh toán`,
-              type: "2",
-              eventNotify: "sign-contract",
-            },
-            true
-          );
+          logger.info("No contract need payment");
+          console.log(eachContract);
+          await createNotifyService({
+            userId: eachContract.sellerId,
+            fkId: eachContract?.RoomChat?.id,
+            content: `Tiền thuê nhà đã được thanh toán`,
+            type: "2",
+            eventNotify: "sign-contract",
+          });
 
-          await createNotifyService(
-            {
-              userId: eachContract.renterId,
-              fkId: eachContract?.RoomChat?.id,
-              content: `Đã thanh toán tiền nhà tháng này`,
-              type: "2",
-              eventNotify: "sign-contract",
-            },
-            true
-          );
+          await createNotifyService({
+            userId: eachContract.renterId,
+            fkId: eachContract?.RoomChat?.id,
+            content: `Đã thanh toán tiền nhà tháng này`,
+            type: "2",
+            eventNotify: "sign-contract",
+          });
         }
       }
     } else {

@@ -288,7 +288,7 @@ const RoomChat = () => {
                         !checkStatusContract(roomChat?.contract?.status)
                       }
                       onChange={uploadMultipleFiles}
-                      accept="image/*, application/pdf"
+                      accept="image/*"
                     />
                   </Row>
                 </Col>
