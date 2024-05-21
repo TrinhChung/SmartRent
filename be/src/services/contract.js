@@ -444,3 +444,40 @@ export const renterPaymentSmartContractService = async ({
     throw new Error("renter payment smart contract", error);
   }
 };
+
+export const updateDurationContractService = async ({ contractId }) => {
+  try {
+    var contract = await db.Contract.findOne({
+      where: { id: contractId },
+      include: [
+        {
+          model: db.RoomChat,
+          required: true,
+        },
+      ],
+    });
+    contract = contract.get({ plain: true });
+
+    const durationCurrent = contract?.duration - 1;
+
+    await contract.update({ duration: durationCurrent });
+
+    if (durationCurrent === 0) {
+      const contractInstance = createContractInstanceSMC(
+        process.env.CONTRACT_ADDRESS
+      );
+
+      const res = await contractInstance.payDepositToRenter(contract?.id);
+
+      if (res === false) {
+        // Thong bao thanh thanh toan coc that bai
+      } else {
+        // Thong bao da nhan dc thanh toan coc
+      }
+    }
+  } catch (error) {
+    console.log(error);
+    await transaction.rollback();
+    throw new Error("update duration contract fail", error);
+  }
+};

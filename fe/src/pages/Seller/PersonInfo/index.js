@@ -13,8 +13,8 @@ const PersonInfo = () => {
   const items = [
     { label: "Hồ sơ cá nhân", key: "profile", icon: <AppstoreOutlined /> },
     {
-      label: "Lịch sử giao dịch",
-      key: "payment-history",
+      label: "Ví cá nhân",
+      key: "my-wallet",
       icon: <AppstoreOutlined />,
     },
     {
@@ -42,7 +42,7 @@ const PersonInfo = () => {
       <Content className="content">
         <Routes>
           <Route path="profile" element={<Profile />} />
-          <Route path="payment-history" element={<PaymentHistory />} />
+          <Route path="my-wallet" element={<PaymentHistory />} />
           <Route path="change-password" element={<ChangePassword />} />
         </Routes>
       </Content>

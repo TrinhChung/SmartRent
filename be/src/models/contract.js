@@ -55,6 +55,7 @@ module.exports = (sequelize, DataTypes) => {
       duration: {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: true,
+        defaultValue: 12,
       },
       paymentDeadline: {
         type: DataTypes.STRING(100),

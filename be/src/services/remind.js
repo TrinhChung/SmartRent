@@ -9,6 +9,10 @@ export const getUserPaymentDeadline = async () => {
 
   try {
     const contractHasDeadline = await db.Contract.findAll({
+      where: {
+        status: "4",
+        duration: { [Op.gt]: 0 },
+      },
       include: [
         {
           model: db.Term,

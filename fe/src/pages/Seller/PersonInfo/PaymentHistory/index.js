@@ -67,7 +67,7 @@ const PaymentHistory = () => {
 
   return (
     <Col>
-      <Row className="text_title">Lịch sử giao dịch</Row>
+      <Row className="text_title">Ví của tôi</Row>
       <Row>YOUR CURRENT BALANCE IN THIS WEB: {balance} ETH;</Row>
       <Button
         onClick={() => {

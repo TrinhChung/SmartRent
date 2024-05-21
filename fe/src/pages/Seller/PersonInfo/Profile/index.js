@@ -192,7 +192,6 @@ const Profile = () => {
         >
           <Select options={wallets} style={{ width: "100%" }} />
         </Form.Item>
-        <Row>Số dư</Row>
       </Col>
     );
   }, [wallets]);
