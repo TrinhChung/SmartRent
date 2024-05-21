@@ -3,6 +3,7 @@ import { createNotifyService } from "./notify";
 import { senNotifyUpdateTerm } from "../controllers/socket";
 import { createTermCost, createTermTimeStart, createTermFixed } from "./term";
 import { createContractInstanceSMC } from "../config/connectSMC";
+import { logger } from "../cron-job/logger";
 
 const { Op } = require("sequelize");
 
@@ -448,8 +449,11 @@ export const renterPaymentSmartContractService = async ({
 };
 
 export const updateDurationContractService = async ({ contractId }) => {
+  console.log("Cập nhật thời hạn");
+  logger.info("Cập nhật thời hạn");
+  const transaction = await db.sequelize.transaction();
   try {
-    var contract = await db.Contract.findOne({
+    var contractRaw = await db.Contract.findOne({
       where: { id: contractId },
       include: [
         {
@@ -458,11 +462,14 @@ export const updateDurationContractService = async ({ contractId }) => {
         },
       ],
     });
-    contract = contract.get({ plain: true });
+    var contract = contractRaw.get({ plain: true });
 
     const durationCurrent = contract?.duration - 1;
 
-    await contract.update({ duration: durationCurrent });
+    await contractRaw.update(
+      { duration: durationCurrent },
+      { transaction: transaction }
+    );
 
     if (durationCurrent === 0) {
       const contractInstance = createContractInstanceSMC(
@@ -472,11 +479,36 @@ export const updateDurationContractService = async ({ contractId }) => {
       const res = await contractInstance.payDepositToRenter(contract?.id);
 
       if (res === false) {
-        // Thong bao thanh thanh toan coc that bai
+        console.log("Rút tiền cọc thất bại ");
+        logger.info("Rút tiền cọc thất bại");
+
+        await createNotifyService(
+          {
+            userId: contract.renterId,
+            fkId: contract?.RoomChat?.id,
+            content: `Hợp đồng đã kết thúc `,
+            type: "2",
+            eventNotify: "sign-contract",
+          },
+          transaction
+        );
       } else {
-        // Thong bao da nhan dc thanh toan coc
+        console.log("Rút tiền cọc thành công.");
+        logger.info("Rút tiền cọc thành công.");
+
+        await createNotifyService(
+          {
+            userId: contract.renterId,
+            fkId: contract?.RoomChat?.id,
+            content: `Đã nhận được tiền cọc. `,
+            type: "2",
+            eventNotify: "sign-contract",
+          },
+          transaction
+        );
       }
     }
+    await transaction.commit();
   } catch (error) {
     console.log(error);
     await transaction.rollback();
