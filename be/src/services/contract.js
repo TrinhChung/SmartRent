@@ -412,30 +412,32 @@ export const renterPaymentSmartContractService = async ({
       contractData?.renter.wallet
     );
 
-    if (Number(depositRenter) > 0) {
-      await contract.update({ status: "4" }, { transaction: transaction });
+    console.log(depositRenter);
 
-      await createNotifyService(
-        {
-          userId: contractData.renterId,
-          fkId: contractData?.RoomChat?.id,
-          content: `Người thuê đã thanh toán cọc của hợp đồng`,
-          type: "2",
-          eventNotify: "sign-contract",
-        },
-        transaction
-      );
+    // if (Number(depositRenter) > 0) {
+    await contract.update({ status: "4" }, { transaction: transaction });
 
-      await senNotifyUpdateTerm(
-        {
-          roomChatId: contractData?.RoomChat?.id,
-          userId: contractData.renterId,
-        },
-        "update-term"
-      );
-    } else {
-      throw new Error("Bạn chưa đặt cọc cho hợp đồng");
-    }
+    await createNotifyService(
+      {
+        userId: contractData.renterId,
+        fkId: contractData?.RoomChat?.id,
+        content: `Người thuê đã thanh toán cọc của hợp đồng`,
+        type: "2",
+        eventNotify: "sign-contract",
+      },
+      transaction
+    );
+
+    await senNotifyUpdateTerm(
+      {
+        roomChatId: contractData?.RoomChat?.id,
+        userId: contractData.renterId,
+      },
+      "update-term"
+    );
+    // } else {
+    //   throw new Error("Bạn chưa đặt cọc cho hợp đồng");
+    // }
 
     await transaction.commit();
   } catch (error) {
