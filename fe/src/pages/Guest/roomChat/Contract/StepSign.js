@@ -9,10 +9,7 @@ import {
   buildParamsCreateSc,
 } from "../../../../util/commonFunc";
 import { AuthContext } from "../../../../providers/authProvider";
-import {
-  signContractService,
-  uploadContractService,
-} from "../../../../services/SC";
+import { signContractService } from "../../../../services/SC";
 import { toast } from "react-toastify";
 import ListTerm from "./ListTerm";
 import CreateSC from "./CreateSC";
@@ -25,7 +22,6 @@ import {
 } from "../../../../services/SC/index";
 import { uploadFileToIpfs } from "../../../../services/SC/index";
 import Deposit from "./Deposit";
-import { ethers } from "ethers";
 
 const StepSign = ({
   contract,
@@ -91,7 +87,7 @@ const StepSign = ({
 
   const sellerCreateSmartContract = useCallback(async () => {
     try {
-      console.log(scInstance);
+      setLoading(true);
       if (scInstance) {
         const time = moment(new Date()).valueOf();
         const pdf = await generatePDF(refContract, {
@@ -130,10 +126,13 @@ const StepSign = ({
     } catch (error) {
       console.log(error);
       toast.error("Lỗi hệ thống");
+    } finally {
+      setLoading(false);
     }
   }, [contract, scInstance]);
 
   const renterDepositContract = useCallback(async () => {
+    setLoading(true);
     try {
       const deposit = contract.Terms.find((term) => (term.type = "deposit"));
       const tx = {
@@ -144,6 +143,8 @@ const StepSign = ({
     } catch (error) {
       console.log(error);
       toast.error("Lỗi hệ thống");
+    } finally {
+      setLoading(false);
     }
   }, [contract, scInstance]);
 

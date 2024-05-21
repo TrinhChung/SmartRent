@@ -58,7 +58,7 @@ export const typeFile = [
 export const statusRent = {
   1: { value: "Đã hủy bỏ", color: "red", title: "Hợp đồng đã bị hủy", step: 8 },
   2: {
-    value: "Kết thúc hợp đồng",
+    value: "Hợp đồng hết hạn",
     color: "blue",
     title: "Hợp đồng chấm dứt do hết thời hạn",
     step: 9,

@@ -33,6 +33,7 @@ module.exports = {
       duration: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: true,
+        defaultValue: 12,
       },
       paymentDeadline: {
         type: Sequelize.STRING(100),

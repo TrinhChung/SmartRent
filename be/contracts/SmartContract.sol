@@ -112,4 +112,11 @@ contract SmartContract is ERC721URIStorage {
         balances[contracts[id].renter] -= contracts[id].rentCost;
         balances[contracts[id].seller] += contracts[id].rentCost;
     }
+
+    function payDepositToRenter(uint256 scId) public {
+        ContractEntity memory smartContract = contracts[scId];
+        require(positRenter[smartContract.renter][scId] >= smartContract.rentCost, "Deposit has been withdrawn");
+        balances[smartContract.renter] += positRenter[smartContract.renter][scId];
+        positRenter[smartContract.renter][scId] = 0;
+    }
 }
