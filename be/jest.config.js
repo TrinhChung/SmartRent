@@ -8,7 +8,7 @@ module.exports = {
   resetMocks: true,
   restoreMocks: true,
   clearMocks: true,
-  silent: false,
+  silent: true,
   forceExit: true,
   detectOpenHandles: true,
 };
