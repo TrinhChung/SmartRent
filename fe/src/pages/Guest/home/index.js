@@ -1,4 +1,10 @@
-import React, { memo, useCallback, useEffect, useState } from "react";
+import React, {
+  memo,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { Col, Image, Input, Row } from "antd";
 import PlacesAutocomplete from "../../../components/maps/PlacesAutocomplete";
 import ImageBannerHome from "../../../public/images/home-banner.jpg";
@@ -6,20 +12,30 @@ import "./Home.scss";
 import Suggest from "./Suggest";
 import MapCustom from "../../../components/maps/MapCustom";
 import { useJsApiLoader } from "@react-google-maps/api";
+import {
+  useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import { getEstateByRecommendService } from "../../../services/RealEstate/index";
+import { AuthContext } from "../../../providers/authProvider";
 
 const Home = () => {
+  const [libraries] = useState(["drawing", "places"]);
+  const { authUser } = useContext(AuthContext);
+  const [listSuggest, setListSuggest] = useState([]);
   const { isLoaded } = useJsApiLoader({
     mapIds: process.env.REACT_APP_MAP_ID,
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAP_KEY,
-    libraries: ["drawing", "places"],
+    libraries: libraries,
   });
+  const navigate = useNavigate();
+
   const [position, setPosition] = useState({
     lat: 21.0469701,
     lng: 105.8021347,
   });
-
-  const [listSuggest, setListSuggest] = useState([]);
 
   const setPositionAction = useCallback((position) => {
     return setPosition(position);
@@ -50,7 +66,7 @@ const Home = () => {
 
   useEffect(() => {
     fetchRealEstateRecommend();
-  }, []);
+  }, [authUser]);
 
   return (
     <Col span={24} className="home-container">
@@ -62,7 +78,7 @@ const Home = () => {
               style={{ paddingBottom: 40 }}
               className="text_title text-banner-title"
             >
-              A Premier Real Estate Professional
+              Bất động sản đa dạng với SmartRent
             </Col>
           </Row>
           <Row>
@@ -71,15 +87,13 @@ const Home = () => {
               xxl={12}
               className="text-banner-description"
             >
-              Own a premium townhouse that will generate you passive income up
-              to 115-130% after development.
+              Sở hữu căn nhà phố cao cấp sẽ mang lại cho bạn thu nhập thụ động
+              lên tới 115-130% sau khi phát triển.
             </Col>
           </Row>
           <Row>
             <Col xxl={12}>
-              <button className="button-view button-banner">
-                See The House
-              </button>
+              <button className="button-view button-banner">Xem ngay</button>
             </Col>
           </Row>
         </Col>
@@ -103,7 +117,7 @@ const Home = () => {
               fontSize: 32,
             }}
           >
-            let's find a home that's perfect for you
+            HÃY TÌM MỘT NGÔI NHÀ HOÀN HẢO CHO BẠN
           </Row>
           <Row>
             <Col style={{ paddingLeft: 10, paddingRight: 10 }} xs={24} xl={6}>
@@ -122,7 +136,10 @@ const Home = () => {
                 <Col xxl={12}>
                   <button
                     className="button-view"
-                    style={{ height: 38, fontSize: 16 }}
+                    style={{ height: 38, fontSize: 16, cursor: "pointer" }}
+                    onClick={() => {
+                      navigate("/search/");
+                    }}
                   >
                     Tìm kiếm ngay
                   </button>

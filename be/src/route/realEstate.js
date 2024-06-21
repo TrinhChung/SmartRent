@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   handleCreateRealEstate,
+  handleGetAllRealEstate,
   handleGetRealEstate,
   handleGetRealEstateByRecommend,
   handleGetRealEstateByUserId,
@@ -10,29 +11,40 @@ import {
   createRealEstateSchema,
   getRealEstateFullHouseSchema,
 } from "../schema/realEstate";
-import { authenticate } from "../middleware/authenticate";
+import {
+  authenticate,
+  getUser,
+  checkRoleSeller,
+} from "../middleware/authenticate";
 const SchemaValidator = require("nodejs-schema-validator");
 const schemaValidatorInstance = new SchemaValidator();
 
 export const router = Router();
 
-// TODO: only allow seller create
 router.post(
   "/full-house",
   authenticate,
+  checkRoleSeller,
   schemaValidatorInstance.validateBody(createRealEstateSchema),
   handleCreateRealEstate
 );
 
 router.get(
   "/full-house/:id",
-  authenticate,
+  getUser,
   schemaValidatorInstance.validateParams(getRealEstateFullHouseSchema),
   handleGetRealEstate
 );
 
-router.get("/posted-by-me", authenticate, handleGetRealEstateByUserId);
+router.get(
+  "/posted-by-me",
+  authenticate,
+  checkRoleSeller,
+  handleGetRealEstateByUserId
+);
 
-router.post("/search", authenticate, handleSearchRealEstate);
+router.post("/search", handleSearchRealEstate);
 
-router.get("/recommend", handleGetRealEstateByRecommend);
+router.post("/recommend", getUser, handleGetRealEstateByRecommend);
+
+router.get("/all", handleGetAllRealEstate);

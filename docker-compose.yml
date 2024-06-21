@@ -1,0 +1,68 @@
+version: "3"
+volumes:
+  static_volume:
+
+services:
+  my-mysql:
+    container_name: mysql
+    image: mysql:8.0
+    hostname: mysql
+    environment:
+      - MYSQL_DATABASE=${DB_NAME}
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - /tmp/app/mysqld:/run/mysqld
+      - /home/db:/var/lib/mysql
+    restart: always
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+    command: --default-authentication-plugin=mysql_native_password
+    expose:
+      - ${PORT_DB}
+  my-django:
+    container_name: django
+    image: django-docker
+    build: ./recommend/
+    command: sh -c "python manage.py runserver 0.0.0.0:7000"
+    ports:
+      - 7000:7000
+    volumes:
+      - ./recommend:/app
+    restart: always
+  my-node:
+    container_name: node
+    image: node-docker
+    build: ./be/
+    command: sh -c "npm i && ./jobNeedRun.sh && HOST=mysql && HOST_REDIS=redis && HOST_DJANGO=django npm start"
+
+    ports:
+      - 8000:8000
+    # restart: always
+    volumes:
+      - /tmp/app/mysqld:/var/run/mysqld
+      - ./be:/app
+      - static_volume:/app/staticfiles/
+    depends_on:
+      my-mysql:
+        condition: service_healthy
+  my-redis:
+    container_name: redis
+    image: redis:alpine
+    ports:
+      - ${PORT_REDIS}:${PORT_REDIS}
+  my-nginx:
+    container_name: nginx
+    image: nginx:1.23.3
+    hostname: nginx
+    volumes:
+      - ./be/coverage:/app/staticfiles
+      - ./be/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - 80:80
+    restart: always
+    depends_on:
+      - my-node

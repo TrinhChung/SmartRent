@@ -1,10 +1,11 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { loginMe } from "../../services/Auth";
+import { SmartContractContext } from "../scProvider";
 
 export const AuthContext = createContext();
 
 export default function AuthProvider({ children }) {
-  const [authUser, setAuthUser] = useState(null);
+  const [authUser, setUpdateAuthUser] = useState(null);
 
   const handlerLogin = async () => {
     try {
@@ -16,6 +17,10 @@ export default function AuthProvider({ children }) {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const setAuthUser = async (user) => {
+    setUpdateAuthUser(user);
   };
 
   useEffect(() => {
@@ -36,6 +41,7 @@ export default function AuthProvider({ children }) {
       value={{
         authUser,
         setAuthUser,
+        handlerLogin,
       }}
     >
       {children}

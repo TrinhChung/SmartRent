@@ -1,7 +1,8 @@
 import React from "react";
-import { Row, Col, Layout, Avatar } from "antd";
+import { Row, Col, Layout, Avatar, Badge } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { useParams } from "react-router-dom";
+import { statusRent } from "../../../const/index";
 import "./ChatList.scss";
 
 const { Sider } = Layout;
@@ -28,19 +29,53 @@ const ChatList = ({ chatList = [], switchRoomChat = () => {} }) => {
                 }}
               >
                 <Col>
-                  <Avatar size={56} icon={<UserOutlined />} />
+                  <Avatar
+                    size={56}
+                    src={
+                      roomChat?.contract?.RealEstate?.realEstateFiles.length > 0
+                        ? process.env.REACT_APP_HOST_BE +
+                          "/" +
+                          roomChat?.contract?.RealEstate?.realEstateFiles[0].url
+                        : undefined
+                    }
+                  >
+                    {roomChat?.contract?.RealEstate?.realEstateFiles.length >
+                    0 ? null : (
+                      <UserOutlined />
+                    )}
+                  </Avatar>
                 </Col>
                 <Col
                   style={{
                     flex: 1,
                     display: "flex",
                     flexDirection: "column",
-                    justifyContent: "center",
                     paddingLeft: 4,
                   }}
                 >
-                  <Row>{roomChat?.name ? roomChat?.name : "RoomChat"}</Row>
-                  <Row>{roomChat?.lastMessage?.content}</Row>
+                  <Row>
+                    {roomChat?.name
+                      ? roomChat?.name.length > 60
+                        ? roomChat?.name.substring(0, 60) + "..."
+                        : roomChat.name
+                      : "RoomChat"}
+                  </Row>
+                  <Row className="text-shadow" style={{ paddingTop: 4 }}>
+                    <Badge
+                      status="processing"
+                      color={
+                        roomChat?.contract?.status
+                          ? statusRent[roomChat?.contract?.status].color
+                          : "black"
+                      }
+                      text={<label className="text-shadow">Trạng thái:</label>}
+                    />
+                    <div style={{ paddingLeft: 8 }}>
+                      {roomChat?.contract?.status
+                        ? statusRent[roomChat?.contract?.status].value
+                        : "Không tồn tại"}
+                    </div>
+                  </Row>
                 </Col>
                 <Col
                   style={{

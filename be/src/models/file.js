@@ -17,13 +17,7 @@ module.exports = (sequelize, DataTypes) => {
         },
       });
 
-      File.belongsTo(models.Floor, {
-        foreignKey: {
-          name: "fkId",
-        },
-      });
-
-      File.belongsTo(models.Room, {
+      File.belongsTo(models.User, {
         foreignKey: {
           name: "fkId",
         },

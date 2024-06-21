@@ -10,6 +10,8 @@ import {
   Button,
   InputNumber,
   Radio,
+  Select,
+  Popover,
 } from "antd";
 import { useState, useEffect } from "react";
 import { useJsApiLoader } from "@react-google-maps/api";
@@ -18,19 +20,24 @@ import { searchRealEstateService } from "../../../services/RealEstate/index";
 import CardHouseHome from "../../../components/pages/CardHouseHome";
 import PlacesAutocomplete from "../../../components/maps/PlacesAutocomplete";
 import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
+import { typeRealEstate } from "../../../const/index";
 import "./Search.scss";
 
 const { Sider, Content, Footer } = Layout;
 
 const Search = () => {
+  const [libraries] = useState(["drawing", "places"]);
   const { isLoaded } = useJsApiLoader({
     mapIds: process.env.REACT_APP_MAP_ID,
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAP_KEY,
-    libraries: ["drawing", "places"],
+    libraries: libraries,
   });
+
   const [form] = Form.useForm();
   const [formOrder] = Form.useForm();
-
+  const [data, setData] = useState([]);
+  const [page, setPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(50);
   const [position, setPosition] = useState(
     form.getFieldValue("location")
       ? form.getFieldValue("location")
@@ -40,21 +47,20 @@ const Search = () => {
         }
   );
 
-  const [data, setData] = useState([]);
-  const [page, setPage] = useState(1);
-  const [totalPage, setTotalPage] = useState(50);
-
   const fetchRealEstate = async () => {
     var data = {
       queries: form.getFieldsValue(),
       orders: formOrder.getFieldsValue(),
       page: page,
     };
-
-    const res = await searchRealEstateService(data);
-    if (res.status === 200) {
-      setData(res.data.list);
-      setTotalPage(res.data.total);
+    try {
+      const res = await searchRealEstateService(data);
+      if (res.status === 200) {
+        setData(res.data.list);
+        setTotalPage(res.data.total);
+      }
+    } catch (error) {
+      alert(error.message);
     }
   };
 
@@ -74,8 +80,8 @@ const Search = () => {
                 lat: 21.0469701,
                 lng: 105.8021347,
               },
-              isWhole: true,
               isAllowPet: true,
+              isInterior: true,
             }}
             id="order-form"
           >
@@ -86,6 +92,11 @@ const Search = () => {
                   setPosition(position);
                   form.setFieldValue("location", position);
                 }}
+                setAddress={(address) => {
+                  form.setFieldValue("address", address);
+                }}
+                houses={data}
+                isModeTravel={true}
               />
             </Form.Item>
 
@@ -96,68 +107,129 @@ const Search = () => {
                   form.setFieldsValue({ location: position });
                 }}
                 isShowDetail={false}
-                setAddress={() => {}}
+                setAddress={(address) => {
+                  form.setFieldValue("address", address);
+                }}
                 addressInitial={form.getFieldValue("address")}
               />
             </Form.Item>
-            <Form.Item>
-              <Row style={{ gap: 24 }}>
-                <Form.Item label="Giá(VNĐ)">
-                  <Row style={{ gap: 8 }}>
-                    <Form.Item name="cost-min">
-                      <InputNumber
-                        step={500000}
-                        min={0}
-                        formatter={(value) =>
-                          `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                        }
-                        parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
-                        placeholder="Tối thiểu"
-                        style={{ minWidth: 180 }}
-                      />
-                    </Form.Item>
-
-                    <Form.Item name="cost-max">
-                      <InputNumber
-                        step={500000}
-                        min={0}
-                        formatter={(value) =>
-                          `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                        }
-                        parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
-                        placeholder="Tối đa"
-                        style={{ minWidth: 180 }}
-                      />
-                    </Form.Item>
-                  </Row>
+            <Row gutter={[24, 8]}>
+              <Col span={12} className="wrap-input-search">
+                <Form.Item name="type">
+                  <Select
+                    placeholder="Loại bất động sản"
+                    options={typeRealEstate}
+                  />
                 </Form.Item>
-                <Form.Item
-                  label={
-                    <div>
-                      Diện tích(m<sup>2</sup>)
-                    </div>
+              </Col>
+              <Col span={6} className="wrap-input-search">
+                <Popover
+                  content={
+                    <Row gutter={[8, 8]}>
+                      <Col span={12}>
+                        <Form.Item name="costMin">
+                          <InputNumber
+                            step={500000}
+                            min={0}
+                            formatter={(value) =>
+                              `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                            }
+                            parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                            placeholder="Tối thiểu"
+                            style={{ minWidth: "150px" }}
+                          />
+                        </Form.Item>
+                      </Col>
+                      <Col span={12}>
+                        <Form.Item name="costMax">
+                          <InputNumber
+                            step={500000}
+                            min={0}
+                            formatter={(value) =>
+                              `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                            }
+                            parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                            placeholder="Tối đa"
+                            style={{ minWidth: "150px" }}
+                            dependencies={["costMin"]}
+                            rules={[
+                              ({ getFieldValue }) => ({
+                                validator(_, value) {
+                                  if (
+                                    value &&
+                                    getFieldValue("costMin") &&
+                                    value < getFieldValue("costMin")
+                                  ) {
+                                    return Promise.resolve();
+                                  }
+                                  return Promise.reject(
+                                    new Error("Giá trị không hợp lệ!")
+                                  );
+                                },
+                              }),
+                            ]}
+                          />
+                        </Form.Item>
+                      </Col>
+                    </Row>
+                  }
+                  trigger="click"
+                >
+                  <Button>Giá(VNĐ)</Button>
+                </Popover>
+              </Col>
+              <Col span={6} className="wrap-input-search">
+                <Popover
+                  trigger="click"
+                  content={
+                    <Row gutter={[8, 8]}>
+                      <Col span={12}>
+                        <Form.Item name="acreageMin">
+                          <InputNumber
+                            placeholder="Tối thiểu"
+                            min={0}
+                            style={{ minWidth: "150px" }}
+                          />
+                        </Form.Item>
+                      </Col>
+                      <Col span={12}>
+                        <Form.Item
+                          name="acreageMax"
+                          style={{ marginBottom: 0 }}
+                        >
+                          <InputNumber
+                            placeholder="Tối đa"
+                            min={1}
+                            style={{ minWidth: "150px" }}
+                            dependencies={["acreageMin"]}
+                            rules={[
+                              ({ getFieldValue }) => ({
+                                validator(_, value) {
+                                  if (
+                                    value &&
+                                    getFieldValue("acreageMin") &&
+                                    value < getFieldValue("acreageMin")
+                                  ) {
+                                    return Promise.resolve();
+                                  }
+                                  return Promise.reject(
+                                    new Error("Giá trị không hợp lệ!")
+                                  );
+                                },
+                              }),
+                            ]}
+                          />
+                        </Form.Item>
+                      </Col>
+                    </Row>
                   }
                 >
-                  <Row style={{ gap: 8 }}>
-                    <Form.Item name="acreage-min">
-                      <InputNumber
-                        placeholder="Tối thiểu"
-                        min={0}
-                        style={{ minWidth: 180 }}
-                      />
-                    </Form.Item>
-
-                    <Form.Item name="acreage-max">
-                      <InputNumber
-                        placeholder="Tối đa"
-                        min={1}
-                        style={{ minWidth: 180 }}
-                      />
-                    </Form.Item>
-                  </Row>
-                </Form.Item>
-              </Row>
-            </Form.Item>
+                  <Button>
+                    Diện tích(m<sup>2</sup>)
+                  </Button>
+                </Popover>
+              </Col>
+            </Row>
 
             <Form.Item>
               <Row>
@@ -181,9 +253,9 @@ const Search = () => {
                     </Col>
                     <Col>
                       <Row>
-                        <Col style={{ paddingTop: 5 }}>Thuê nguyên căn</Col>
+                        <Col style={{ paddingTop: 5 }}>Full nội thất</Col>
                         <Col style={{ paddingLeft: 8 }}>
-                          <Form.Item name="isWhole">
+                          <Form.Item name="isInterior">
                             <Switch
                               size="small"
                               checkedChildren={<CheckOutlined />}
@@ -211,14 +283,14 @@ const Search = () => {
         >
           <Form.Item name="createdAt" label="Thời gian">
             <Radio.Group buttonStyle="solid">
-              <Radio value="">Không</Radio>
+              <Radio value="">Tất cả</Radio>
               <Radio value="DESC">Mới nhất</Radio>
               <Radio value="ASC">Cũ nhất</Radio>
             </Radio.Group>
           </Form.Item>
           <Form.Item name="acreage" label="Diện tích">
             <Radio.Group buttonStyle="solid">
-              <Radio value="">Không</Radio>
+              <Radio value="">Tất cả</Radio>
               <Radio value="DESC">Giảm dần</Radio>
               <Radio value="ASC">Tăng dần</Radio>
             </Radio.Group>
@@ -233,8 +305,7 @@ const Search = () => {
         <Row>
           <Button
             onClick={() => {
-              console.log(form.getFieldsValue());
-              console.log(formOrder.getFieldsValue());
+              fetchRealEstate();
             }}
           >
             Tìm kiếm
@@ -258,7 +329,7 @@ const Search = () => {
               </Row>
               <Row gutter={[8, 8]}>
                 {data && data?.length > 0 ? (
-                  data.map((post, key) => {
+                  data.map((post, index) => {
                     return (
                       <CardHouseHome
                         name={post?.name}
@@ -268,18 +339,28 @@ const Search = () => {
                         cost={post?.cost}
                         acreage={post?.acreage}
                         date={post?.createdAt}
-                        key={key}
+                        key={index}
                       />
                     );
                   })
                 ) : (
-                  <Empty />
+                  <Col span={24}>
+                    <Row style={{ justifyContent: "center" }}>
+                      <Empty
+                        image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
+                        imageStyle={{
+                          height: 60,
+                        }}
+                        description={<span>Không có dữ liệu phù hợp</span>}
+                      ></Empty>
+                    </Row>
+                  </Col>
                 )}
               </Row>
             </Col>
           </Row>
         </Content>
-        <Footer>
+        <Footer style={{ padding: "10px 24px" }}>
           <Row style={{ paddingTop: 10, justifyContent: "center" }}>
             <Pagination
               current={page}

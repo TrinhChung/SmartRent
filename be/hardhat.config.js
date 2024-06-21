@@ -2,11 +2,10 @@ require("@nomicfoundation/hardhat-toolbox");
 require("solidity-coverage");
 require("dotenv").config();
 
-console.log(process.env.ETHERSCAN_API_KEY);
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
   defaultNetwork: "localhost",
-  solidity: "0.8.19",
+  solidity: "0.8.20",
   settings: {
     optimizer: {
       enabled: true,
@@ -19,20 +18,20 @@ module.exports = {
   },
   networks: {
     hardhat: {
-      blockGasLimit: 100000000429720 // whatever you want here
+      blockGasLimit: 100000000429720, // whatever you want here
     },
     localhost: {
       url: process.env.API_URL,
     },
     testnet: {
       url: process.env.API_URL_TESTNET,
-      chainId: 11155111,
+      chainId: 97,
       gasPrice: 20000000000,
       accounts: [process.env.PRIVATE_KEY_METAMASK],
     },
   },
   sourcify: {
-    enabled: true,
+    enabled: false,
     // Optional: specify a different Sourcify server
     apiUrl: "https://sourcify.dev/server",
     // Optional: specify a different Sourcify repository

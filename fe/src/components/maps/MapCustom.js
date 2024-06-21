@@ -1,21 +1,68 @@
-import React, { memo, useCallback } from "react";
-import { GoogleMap, MarkerF, Marker } from "@react-google-maps/api";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import { GoogleMap, MarkerF, OverlayView } from "@react-google-maps/api";
 import spriteLocation from "../../public/images/mylocation-sprite-2x.png";
-import IconMarker from "../../public/icon/logo192.png";
+import HouseInfo from "./HouseInfo";
+import { Col, Row, Select } from "antd";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faBicycle,
+  faCar,
+  faPersonWalking,
+  faPlane,
+} from "@fortawesome/free-solid-svg-icons";
 
 const MapCustom = ({
   position = {},
   setPosition = () => {},
+  setAddress = () => {},
   height = "50vh",
+  houses = [],
+  isModeTravel = false,
 }) => {
-  const dragMarker = useCallback(
-    (marker) => {
-      const lat = marker?.latLng?.lat();
-      const lng = marker?.latLng?.lng();
-      setPosition({ lat: lat, lng: lng });
-    },
-    [setPosition]
+  const [scaleIcon, setScaleIcon] = useState(26);
+  const [map, setMap] = useState(null);
+  const [directions, setDirections] = useState(null);
+  const [modeTravel, setModeTravel] = useState("DRIVING");
+  const [currentDestination, setCurrentDestination] = useState(null);
+
+  const directionsRenderer = useRef(
+    new window.google.maps.DirectionsRenderer({
+      suppressMarkers: true,
+    })
   );
+
+  var geocoder = new window.google.maps.Geocoder();
+
+  const infoWindow = useRef(
+    new window.google.maps.InfoWindow({
+      content: "Your custom content goes here",
+      position: position,
+    })
+  );
+  const directionsService = new window.google.maps.DirectionsService();
+
+  const dragMarker = async (marker) => {
+    const lat = marker?.latLng?.lat();
+    const lng = marker?.latLng?.lng();
+
+    const res = await geocoder.geocode({
+      location: {
+        lat: parseFloat(lat),
+        lng: parseFloat(lng),
+      },
+    });
+    if (res?.results?.length > 0) {
+      const addressFill = res.results[0]?.formatted_address;
+      setAddress(addressFill);
+    }
+    setPosition({ lat: lat, lng: lng });
+  };
 
   const containerStyle = {
     height: height,
@@ -86,9 +133,99 @@ const MapCustom = ({
   const onLoad = useCallback(
     function callback(map) {
       addYourLocationButton(map);
+      setMap(map);
     },
     [addYourLocationButton]
   );
+
+  useEffect(() => {
+    if (position && currentDestination) {
+      getDirectionRoute(currentDestination);
+    }
+  }, [position, modeTravel]);
+
+  useEffect(() => {
+    if (!directionsRenderer?.current?.setDirections) return;
+    if (directions) {
+      const view_path = directions.routes[0]?.overview_path;
+      if (view_path.length > 0) {
+        infoWindow.current.setPosition({
+          lat: view_path[Math.round(view_path.length / 2)].lat(),
+          lng: view_path[Math.round(view_path.length / 2)].lng(),
+        });
+        let distance = undefined;
+        let duration = undefined;
+        if (directions?.routes[0].legs.length > 0) {
+          distance = directions?.routes[0]?.legs[0]?.distance?.text;
+          duration = directions?.routes[0]?.legs[0]?.duration?.text;
+        }
+        const icons = {
+          DRIVING: "&#128664;",
+          WALKING: "&#x1f6b6;",
+          BICYCLING: "峽",
+          TRANSIT: "嶌",
+        };
+        const contentDirection = `<div>
+            <div style="display:flex">
+               <div style="font-size:20px, align-items: end, margin-right:4px">${icons[modeTravel]}</div>
+               <strong>${duration}</strong>
+            </div>
+            <div>${distance}</div>
+          </div>`;
+        infoWindow.current.setContent(contentDirection);
+        infoWindow.current.open(map);
+      }
+      directionsRenderer?.current?.setMap(map);
+      directionsRenderer?.current?.setDirections(directions);
+    } else {
+      directionsRenderer?.current?.setMap(null);
+    }
+  }, [directions]);
+
+  const getDirectionRoute = useCallback(
+    (location) => {
+      setCurrentDestination(location);
+      directionsService.route(
+        {
+          origin: position,
+          destination: location,
+          travelMode: modeTravel,
+        },
+        async (result, status) => {
+          if (status === window.google.maps.DirectionsStatus.OK) {
+            setDirections(result);
+          } else {
+            alert(`Không tìm thấy tuyến đường phù hợp`);
+            directionsRenderer.current.setMap(null);
+          }
+        }
+      );
+    },
+    [position, modeTravel]
+  );
+
+  const listHouseIcon = useMemo(() => {
+    if (houses?.length === 0 || (map && map?.zoom < 5)) return <></>;
+    return houses.map((house, index) => {
+      return (
+        <OverlayView
+          position={{
+            lat: Number(house.Address?.lat),
+            lng: Number(house.Address?.lng),
+          }}
+          key={"house" + index}
+          mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
+        >
+          <HouseInfo
+            scaleIcon={scaleIcon}
+            house={house}
+            origin={position}
+            getDirectionRoute={getDirectionRoute}
+          />
+        </OverlayView>
+      );
+    });
+  }, [houses, map?.zoom]);
 
   return (
     <GoogleMap
@@ -97,6 +234,13 @@ const MapCustom = ({
       zoom={15}
       onLoad={onLoad}
       onRightClick={dragMarker}
+      onZoomChanged={() => {
+        if (!map?.zoom) {
+          setScaleIcon(26);
+        }
+        setScaleIcon(Number(map?.zoom * 26) / 15);
+      }}
+      className="map-custom-container"
     >
       {position && (
         <MarkerF
@@ -106,8 +250,65 @@ const MapCustom = ({
           onDragEnd={dragMarker}
         />
       )}
+      {listHouseIcon}
+      {isModeTravel === true && (
+        <Row id="floating-panel">
+          <Col>
+            <Select
+              value={modeTravel}
+              style={{
+                paddingLeft: 5,
+                width: 120,
+                height: 40,
+                borderRadius: "0!important",
+              }}
+              options={[
+                {
+                  label: (
+                    <Row style={{ alignItems: "center", cursor: "pointer" }}>
+                      <FontAwesomeIcon icon={faCar} />
+                      <label style={{ paddingLeft: 4 }}>Car</label>
+                    </Row>
+                  ),
+                  value: "DRIVING",
+                },
+                {
+                  label: (
+                    <Row style={{ alignItems: "center", cursor: "pointer" }}>
+                      <FontAwesomeIcon icon={faPersonWalking} />
+                      <label style={{ paddingLeft: 4 }}>Walking</label>
+                    </Row>
+                  ),
+                  value: "WALKING",
+                },
+                {
+                  label: (
+                    <Row style={{ alignItems: "center", cursor: "pointer" }}>
+                      <FontAwesomeIcon icon={faBicycle} />
+                      <label style={{ paddingLeft: 4 }}>Bicycle</label>
+                    </Row>
+                  ),
+                  value: "BICYCLING",
+                },
+                {
+                  label: (
+                    <Row style={{ alignItems: "center", cursor: "pointer" }}>
+                      <FontAwesomeIcon icon={faPlane} />
+                      <label style={{ paddingLeft: 4 }}>Transit</label>
+                    </Row>
+                  ),
+                  value: "TRANSIT",
+                },
+              ]}
+              onChange={(value) => {
+                setModeTravel(value);
+              }}
+            />
+          </Col>
+        </Row>
+      )}
     </GoogleMap>
   );
 };
 
-export default memo(MapCustom);
+export default MapCustom;

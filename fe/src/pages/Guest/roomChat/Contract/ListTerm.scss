@@ -1,0 +1,50 @@
+.list-term-container {
+  .term-item {
+    justify-content: space-between;
+    align-items: end;
+    padding-top: 4px;
+
+    label {
+      font-size: 14px;
+      padding: 4px 0 4px 4px;
+    }
+  }
+
+  .add-rule {
+    font-size: 18px;
+    text-transform: uppercase;
+    font-weight: bold;
+    padding-top: 10px;
+  }
+
+  .accept-term-button {
+    align-items: "center";
+    justify-content: "end";
+    color: rgb(0, 224, 0);
+  }
+  .accept-term-button:hover {
+    color: rgb(0, 148, 0);
+    cursor: pointer;
+  }
+
+  .reject-term-button {
+    align-items: "center";
+    justify-content: "end";
+    color: rgb(183, 16, 16);
+  }
+  .reject-term-button:hover {
+    color: rgb(255, 0, 0);
+    cursor: pointer;
+  }
+
+  .request-term-button {
+    align-items: "center";
+    justify-content: "end";
+    color: rgb(255, 129, 32);
+  }
+
+  .request-term-button:hover {
+    cursor: pointer;
+    color: rgb(255, 111, 0);
+  }
+}

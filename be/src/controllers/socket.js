@@ -9,29 +9,28 @@ export const eventSocket = (socket) => {
       console.log("disconnect " + userId);
       delete users[Number(userId)];
     });
+    console.log(users);
   });
 };
 
-export const sendNotification = (data) => {
-  console.log(data);
-  console.log(users[Number(data.userId)]);
-  global.io.to(users[Number(data.userId)]).emit("notification", data);
+export const sendNotification = async (userId, eventNotify, data) => {
+  if (users[Number(userId)]) {
+    await global.io.to(users[Number(userId)]).emit(eventNotify, { data: data });
+  }
 };
 
-export const sendNotifyToRoom = (roomId) => {
-  global.io.to(roomId).emit("new-message");
+export const sendNotifyToRoom = async (data, newMessage) => {
+  await global.io.to(String(data.roomChatId)).emit("new-message", data.userId);
 };
 
-const sendMessage = (socket, roomId) => {
-  socket.on("message", (message) => {
-    console.log("new message");
-    io.to(roomId).emit("newMessage", message);
-  });
+export const senNotifyUpdateTerm = async (data, eventNotify) => {
+  console.log("update-term");
+  await global.io.to(String(data.roomChatId)).emit("update-term", data);
 };
 
 const disconnect = (socket, userId, roomId) => {
   socket.on("disconnect", () => {
-    console.log("user disconnected" + userId);
+    console.log("user disconnected " + userId);
     socket.to(roomId).emit("user-disconnected", userId);
   });
 };
@@ -46,11 +45,10 @@ const eventRoom = (socket) => {
   socket.emit("connect-success", "connect-success");
   const eventInRoom = (roomId, userId) => {
     senNotifyJoinRoom(socket, userId, roomId);
-    sendMessage(socket, roomId);
     disconnect(socket, userId, roomId);
   };
   socket.on("join-room", eventInRoom);
-  socket.on("leave-room", (userId, roomId) => {
+  socket.on("leave-room", (roomId, userId) => {
     socket.leave("room" + roomId);
     console.log(`User ${userId} out room ${roomId}`);
   });

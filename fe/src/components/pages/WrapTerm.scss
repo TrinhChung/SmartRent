@@ -1,0 +1,32 @@
+.term-item-container {
+  margin: 4px 8px;
+  padding: 4px 8px;
+  justify-content: space-between;
+
+  .delete-term:hover {
+    font-size: 14px;
+    color: red;
+  }
+}
+
+.warning-term {
+  border-radius: 4px;
+  border: 3px solid red;
+  cursor: pointer;
+}
+
+.background-waring {
+  background-color: rgb(255, 174, 174);
+}
+
+.contradiction-container {
+  padding: 0px 4px;
+
+  .text_title {
+    font-size: 14px;
+  }
+
+  .term-contradiction {
+    cursor: pointer;
+  }
+}

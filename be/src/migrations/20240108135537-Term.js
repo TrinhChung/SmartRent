@@ -13,18 +13,28 @@ module.exports = {
       contractId: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
-        references: {
-          model: "Contracts",
-          key: "id",
-        },
-      },
-      name: {
-        type: Sequelize.STRING(200),
-        allowNull: false,
       },
       content: {
         type: Sequelize.STRING(400),
         allowNull: false,
+      },
+      accept: {
+        type: Sequelize.STRING(1),
+        allowNull: false,
+        defaultValue: false,
+      },
+      userId: {
+        type: Sequelize.INTEGER.UNSIGNED,
+        allowNull: false,
+      },
+      type: {
+        type: Sequelize.STRING(20),
+        allowNull: false,
+        defaultValue: "other",
+      },
+      value: {
+        type: Sequelize.STRING(100),
+        allowNull: true,
       },
       createdAt: {
         allowNull: false,

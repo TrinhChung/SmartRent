@@ -9,14 +9,11 @@ import { useContext } from "react";
 import { SocketContext } from "../../providers/socketProvider";
 import LinkCustom from "../../components/layout/LinkCustom";
 import FullHouse from "./NewPost/FullHouse";
-import NewPost from "./NewPost";
 import FullHouseView from "./NewPost/FullHouseView";
-import Floor from "./NewPost/Floor";
-import FloorView from "./NewPost/FloorView";
-import FormRoom from "./NewPost/FormRoom";
-import RoomView from "./NewPost/RoomView";
 import ListPost from "./ListPost";
 import Search from "../Guest/search";
+import PersonInfo from "./PersonInfo";
+import ResetPassword from "../Guest/auth/ResetPassword";
 
 const Seller = () => {
   const { roomChats } = useContext(SocketContext);
@@ -36,10 +33,6 @@ const Seller = () => {
       key: "list-post",
     },
     {
-      label: <LinkCustom to={`/room-chat/${roomChatId}`} label="Room chat" />,
-      key: "room-chat",
-    },
-    {
       label: <LinkCustom to={"/search"} label="Tìm kiếm" />,
       key: "search",
     },
@@ -50,16 +43,13 @@ const Seller = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/negotiating" element={<Negotiate />} />
-        <Route path="/new-post/" element={<NewPost />} />
         <Route path="/new-post/full-house" element={<FullHouse />} />
-        <Route path="/new-post/new-floor" element={<Floor />} />
-        <Route path="/new-post/new-room" element={<FormRoom />} />
         <Route path="/room-chat/:id" element={<RoomChat />} />
         <Route path="/full-house-view/:id" element={<FullHouseView />} />
-        <Route path="/floor-view/:id" element={<FloorView />} />
-        <Route path="/room-view/:id" element={<RoomView />} />
         <Route path="list-post" element={<ListPost />} />
         <Route path="/search" element={<Search />} />
+        <Route path="/person-info/*" element={<PersonInfo />} />
+        <Route path="/auth/reset-password/:uuid" element={<ResetPassword />} />
         <Route path="/*" element={<div>Chua dinh nghia</div>} />
       </Routes>
     </HomeLayout>

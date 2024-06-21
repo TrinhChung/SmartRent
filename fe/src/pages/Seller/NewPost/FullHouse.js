@@ -18,7 +18,7 @@ const FullHouse = () => {
       const res = await createRealEstateService(data);
       if (res.status === 200) {
         formRealEstate.resetFields();
-        navigate(`/full-house-view/${res.data.id}`);
+        navigate(`/full-house-view/${res?.data?.id}`);
         toast.success("Create Real Estate Success");
       }
     } catch (error) {

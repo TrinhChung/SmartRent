@@ -1,17 +1,48 @@
 "use strict";
 const { Model } = require("sequelize");
-const bargain = require("./bargain");
+
 module.exports = (sequelize, DataTypes) => {
   class Contract extends Model {
     static associate(models) {
-      Contract.belongsTo(models.Bargain, { foreignKey: { name: "bargainId" } });
+      Contract.hasOne(models.RoomChat);
+      Contract.belongsTo(models.RealEstate, {
+        foreignKey: {
+          name: "realEstateId",
+        },
+      });
+      Contract.belongsTo(models.User, {
+        foreignKey: {
+          name: "renterId",
+        },
+        as: "renter",
+      });
+      Contract.belongsTo(models.User, {
+        foreignKey: {
+          name: "sellerId",
+        },
+        as: "seller",
+      });
+      Contract.hasMany(models.Term, {
+        foreignKey: {
+          name: "contractId",
+        },
+      });
     }
   }
   Contract.init(
     {
-      bargainId: {
+      realEstateId: {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
+      },
+      cid: {
+        type: DataTypes.STRING(60),
+        allowNull: true,
+      },
+      status: {
+        type: DataTypes.STRING(1),
+        allowNull: false,
+        defaultValue: "1",
       },
       renterId: {
         type: DataTypes.INTEGER.UNSIGNED,
@@ -21,29 +52,22 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
       },
-      renterCost: {
-        type: DataTypes.FLOAT.UNSIGNED,
-        allowNull: false,
-      },
       duration: {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: true,
-      },
-      timeStart: {
-        type: DataTypes.DATE,
-        allowNull: false,
+        defaultValue: 12,
       },
       paymentDeadline: {
         type: DataTypes.STRING(100),
-        allowNull: false,
+        allowNull: true,
       },
       paymentType: {
-        type: DataTypes.STRING(1),
-        allowNull: false,
+        type: DataTypes.STRING(10),
+        allowNull: true,
       },
       deposit: {
         type: DataTypes.FLOAT.UNSIGNED,
-        allowNull: false,
+        allowNull: true,
       },
     },
     {

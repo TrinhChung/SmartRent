@@ -1,18 +1,13 @@
-import React, { memo } from "react";
-import { Row, Col, Image } from "antd";
+import React, { memo, useContext, useEffect, useState } from "react";
+import { Row, Col, Image, Divider, Avatar, Button } from "antd";
 import Slider from "react-slick";
-import {
-  DollarOutlined,
-  HomeOutlined,
-  CompressOutlined,
-  ProfileOutlined,
-  CheckOutlined,
-  CloseOutlined,
-} from "@ant-design/icons";
-import MapCustom from "../../../components/maps/MapCustom";
-import { useJsApiLoader } from "@react-google-maps/api";
-import { useState } from "react";
 import "./FullHouseView.scss";
+import moment from "moment";
+import { createContractService } from "../../../services/RealEstate/index";
+import { AuthContext } from "../../../providers/authProvider";
+import { useNavigate, useParams } from "react-router-dom";
+import { SocketContext } from "../../../providers/socketProvider";
+import MintRealEstate from "./MintRe";
 
 const Overview = ({
   files = [],
@@ -25,22 +20,13 @@ const Overview = ({
   cost = 0,
   isPet,
   autoPayment,
+  owner = {},
+  setLoading = () => {},
 }) => {
-  const [position, setPosition] = useState(
-    address && address?.location
-      ? address.location
-      : {
-          lat: 21.0469701,
-          lng: 105.8021347,
-        }
-  );
-
-  const { isLoaded } = useJsApiLoader({
-    mapIds: process.env.REACT_APP_MAP_ID,
-    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAP_KEY,
-    libraries: ["drawing", "places"],
-  });
-
+  const { authUser } = useContext(AuthContext);
+  const { getRoomChatForMe } = useContext(SocketContext);
+  const navigate = useNavigate();
+  const { id } = useParams();
   const settings = {
     className: "center",
     infinite: false,
@@ -53,8 +39,31 @@ const Overview = ({
     autoplaySpeed: 3000,
   };
 
+  const fetchCreateContract = async () => {
+    if (authUser) {
+      setLoading(true);
+      try {
+        const data = {
+          sellerId: owner?.id,
+          realEstateId: id,
+        };
+        const res = await createContractService(data);
+        if (res.status === 200 && res?.data?.id) {
+          getRoomChatForMe();
+          navigate(`/room-chat/${res?.data?.id}`);
+        }
+      } catch (error) {
+        alert(error.message);
+        console.error(error);
+      }
+      setLoading(false);
+    } else {
+      alert("Bạn chưa đăng nhập vui lòng đăng nhập để sử dụng chức năng này");
+    }
+  };
+
   return (
-    <Row>
+    <Row className="overview" gutter={[40, 20]}>
       {files && files.length > 0 && (
         <Col span={12}>
           <Slider
@@ -80,82 +89,143 @@ const Overview = ({
           </Slider>
         </Col>
       )}
-      <Col span={12} style={{ paddingLeft: 20 }}>
+      <Col span={12}>
         <Row className="text_title">{name}</Row>
-        <Row style={{ gap: 15 }}>
+        <Row style={{ paddingTop: 4, paddingBottom: 12 }}>
           <Col>
-            <DollarOutlined className="icon-real-estate" />
-            <label style={{ paddingLeft: 4 }}>
-              {String(cost).replace(/\B(?=(\d{3})+(?!\d))/g, ",")} VNĐ
+            <Row
+              style={{
+                fontWeight: 400,
+                color: "var(--color-bold)",
+                fontSize: 16,
+              }}
+            >
+              {address?.address}
+            </Row>
+          </Col>
+        </Row>
+        <Divider />
+        <Row style={{ gap: 15 }} gutter={[12, 8]}>
+          <Col
+            className="info-item"
+            style={{ fontWeight: "bold", color: "#F00" }}
+          >
+            <Row>Mức giá</Row>
+            <label>
+              {cost !== 2000000000
+                ? String(cost).replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "VNĐ"
+                : "Thương lượng"}
             </label>
           </Col>
           {roomTotal >= 0 && (
-            <Col>
-              <HomeOutlined className="icon-real-estate" />
-              <label style={{ paddingLeft: 4 }}>
-                {String(roomTotal)} Phòng
-              </label>
+            <Col className="info-item">
+              <Row>Số phòng ngủ</Row>
+              <label>{String(roomTotal)} Phòng</label>
             </Col>
           )}
           {floorTotal >= 0 && (
-            <Col>
-              <HomeOutlined className="icon-real-estate" />
-              <label style={{ paddingLeft: 4 }}>
-                {String(floorTotal)} Tầng
-              </label>
+            <Col className="info-item">
+              <Row>Số tầng</Row>
+              <label>{String(floorTotal)} Tầng</label>
             </Col>
           )}
           {acreage && (
-            <Col>
-              <CompressOutlined className="icon-real-estate" />
+            <Col className="info-item">
+              <Row>Diện tích sàn</Row>
               <label style={{ paddingLeft: 4 }}>
                 {String(acreage)} (m<sup>2</sup>)
               </label>
             </Col>
           )}
         </Row>
+        <Divider />
         {isPaymentCoin && (
           <Row style={{ paddingTop: 10, gap: 15 }}>
-            <Col>
-              <DollarOutlined className="icon-real-estate" />
-              <label style={{ paddingLeft: 4 }}>
-                Thanh toán bằng Etherum: <CheckOutlined />
-              </label>
+            <Col className="info-item">
+              <Row>Phương thức thanh toán</Row>
+              <label>Etherum</label>
             </Col>
             {autoPayment && (
-              <Col>
-                <DollarOutlined className="icon-real-estate" />
-                <label style={{ paddingLeft: 4 }}>
-                  Tự động thanh toán: <CheckOutlined />
-                </label>
+              <Col className="info-item">
+                <Row>Thanh toán tự động</Row>
+                <label>Hàng tháng</label>
               </Col>
             )}
+            <Col className="info-item">
+              <Row>Cho phép nuôi động vật</Row>
+              <label style={{ paddingLeft: 4 }}>{isPet ? "Có" : "Không"}</label>
+            </Col>
           </Row>
         )}
-        <Row style={{ paddingTop: 10, gap: 15 }}>
-          <Col>
-            <DollarOutlined className="icon-real-estate" />
-            <label style={{ paddingLeft: 4 }}>
-              Cho phép nuôi động vật:{" "}
-              {isPet ? <CheckOutlined /> : <CloseOutlined />}
-            </label>
-          </Col>
+        <Divider />
+        <Row
+          style={{
+            fontSize: 18,
+            color: "var(--gray)",
+            fontWeight: 400,
+            paddingBottom: 4,
+            lineHeight: "20px",
+            flex: "1 1 auto",
+          }}
+        >
+          Được đăng bởi
         </Row>
-        <Row style={{ paddingTop: 10 }}>
+        <Row
+          gutter={[8, 8]}
+          style={{ justifyContent: "space-between", paddingTop: 10 }}
+        >
           <Col>
-            <ProfileOutlined className="icon-real-estate" />
-            <label style={{ paddingLeft: 4 }}>{address?.address}</label>
+            <Row>
+              <Col>
+                <Avatar
+                  style={{
+                    backgroundColor: "#fde3cf",
+                    color: "#f56a00",
+                    cursor: "pointer",
+                  }}
+                  size={60}
+                  src={
+                    owner.File
+                      ? process.env.REACT_APP_HOST_BE + "/" + owner.File?.url
+                      : null
+                  }
+                >
+                  {owner.File ? null : owner?.fullName}
+                </Avatar>
+              </Col>
+              <Col style={{ paddingLeft: 10 }}>
+                <Row
+                  style={{
+                    color: "var(--color-text)",
+                    fontSize: 16,
+                    fontWeight: 500,
+                  }}
+                >
+                  {owner?.fullName}
+                </Row>
+                <Row style={{ color: "var(--gray)" }}>
+                  Tham gia từ {moment(owner?.createdAt).fromNow()}
+                </Row>
+              </Col>
+            </Row>
           </Col>
-        </Row>
-        <Row style={{ justifyContent: "end", paddingTop: 10 }}>
-          {isLoaded && (
-            <MapCustom
-              position={position}
-              setPosition={(position) => {
-                setPosition(position);
-              }}
-              height="240px"
-            />
+          {owner?.id !== authUser?.id && (
+            <Col>
+              <Row style={{ paddingTop: 10 }}>
+                <Button
+                  style={{ minWidth: 150 }}
+                  className="button-border"
+                  onClick={fetchCreateContract}
+                >
+                  Đàm phán
+                </Button>
+              </Row>
+            </Col>
+          )}
+          {authUser?.id === owner?.id && (
+            <Col>
+              <MintRealEstate setLoading={setLoading} />
+            </Col>
           )}
         </Row>
       </Col>

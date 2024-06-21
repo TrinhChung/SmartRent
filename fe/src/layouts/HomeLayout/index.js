@@ -8,7 +8,7 @@ const { Content } = Layout;
 const HomeLayout = ({ children, menu }) => {
   const [isFooter, setIsFooter] = useState(true);
   const listHiddenFooter = useMemo(() => {
-    return ["room-chat", "list-post", "search"];
+    return ["room-chat", "list-post", "search", "person-info"];
   }, []);
   const location = useLocation();
 
@@ -33,4 +33,5 @@ const HomeLayout = ({ children, menu }) => {
     </Layout>
   );
 };
+
 export default HomeLayout;

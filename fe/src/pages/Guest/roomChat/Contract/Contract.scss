@@ -1,0 +1,44 @@
+.contract-container {
+  padding: 35px 40px 20px 80px;
+  font-size: 16px;
+
+  .national-title {
+    justify-content: center;
+    .national,
+    .motto {
+      justify-content: center;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .national {
+      text-transform: uppercase;
+    }
+  }
+
+  .name-title {
+    padding-top: 40px;
+    justify-content: center;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 24px;
+  }
+
+  .date-contract {
+    padding-top: 20px;
+  }
+
+  .partner-title {
+    text-transform: uppercase;
+    font-weight: bold;
+    padding: 12px 0;
+    font-size: 20px;
+  }
+
+  .rule {
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding-top: 12px;
+  }
+}

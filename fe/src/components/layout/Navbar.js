@@ -8,9 +8,12 @@ import { toast } from "react-toastify";
 import "./Navbar.scss";
 import { logoutService } from "../../services/Auth";
 import { dropdownUser } from "../../const/index";
+import NotifyDropDown from "./NotifyDropDown";
+import { SocketContext } from "../../providers/socketProvider";
 
 const { Header } = Layout;
 const Navbar = ({ data }) => {
+  const { socket } = useContext(SocketContext);
   const { authUser, setAuthUser } = useContext(AuthContext);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [current, setCurrent] = useState("home");
@@ -34,6 +37,14 @@ const Navbar = ({ data }) => {
   const onLogout = async () => {
     try {
       const res = await logoutService();
+
+      //disconnect meta mask
+      await window.ethereum.request({
+        method: "wallet_revokePermissions",
+        params: [{ eth_accounts: {} }],
+      });
+      socket.disconnect();
+
       if (res.status === 200) {
         toast.success("Đã đăng xuất");
       } else {
@@ -99,12 +110,9 @@ const Navbar = ({ data }) => {
                   }}
                 >
                   <Col>
-                    <BellFilled
-                      style={{ fontSize: "20px" }}
-                      className="color-icon"
-                    />
+                    <NotifyDropDown></NotifyDropDown>
                   </Col>
-                  <Col>|</Col>
+                  <Col></Col>
                   <Dropdown menu={menuProps} trigger={["click"]}>
                     <Row style={{ gap: 5, cursor: "pointer" }}>
                       <Col>

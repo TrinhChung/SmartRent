@@ -7,13 +7,19 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: { name: "addressId" },
       });
 
-      RealEstate.hasMany(models.Floor);
-
       RealEstate.hasMany(models.File, {
         foreignKey: {
           name: "fkId",
         },
         as: "realEstateFiles",
+      });
+
+      RealEstate.hasOne(models.Contract);
+
+      RealEstate.belongsTo(models.User, {
+        foreignKey: {
+          name: "userId",
+        },
       });
     }
   }
@@ -48,15 +54,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
         defaultValue: 0,
       },
-      roomTotal: {
+      bedroomTotal: {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: true,
         defaultValue: 0,
-      },
-      isWhole: {
-        type: DataTypes.BOOLEAN,
-        allowNull: true,
-        defaultValue: true,
       },
       isPet: {
         type: DataTypes.BOOLEAN,
@@ -75,6 +76,31 @@ module.exports = (sequelize, DataTypes) => {
       },
       status: {
         type: DataTypes.STRING(1),
+        allowNull: true,
+        defaultValue: "1",
+      },
+      type: {
+        type: DataTypes.STRING(1),
+        allowNull: true,
+        defaultValue: "1",
+      },
+      facade: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: true,
+        defaultValue: 0,
+      },
+      isInterior: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: false,
+      },
+      toiletTotal: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: true,
+        defaultValue: 0,
+      },
+      directionHouse: {
+        type: DataTypes.STRING(100),
         allowNull: true,
         defaultValue: "1",
       },

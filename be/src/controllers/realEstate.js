@@ -4,9 +4,11 @@ import {
   getRealEstateFullHouseByUserIdService,
   getRealEstateByRecommendService,
   searchRealEstateService,
+  dumpAllRealEstateService,
 } from "../services/realEstate";
+import { renterPaymentSmartContractService } from "../services/contract";
 
-export const handleCreateRealEstate = async (req, res, next) => {
+export const handleCreateRealEstate = async (req, res) => {
   try {
     const data = req.body;
     const user = req.user;
@@ -28,8 +30,9 @@ export const handleCreateRealEstate = async (req, res, next) => {
 export const handleGetRealEstate = async (req, res) => {
   try {
     const realEstateId = req.params.id;
+    const userId = req?.user?.id;
 
-    const data = await getRealEstateFullHouseService(realEstateId);
+    const data = await getRealEstateFullHouseService(realEstateId, userId);
     if (!data) {
       return res
         .status(404)
@@ -76,7 +79,6 @@ export const handleGetRealEstateByUserId = async (req, res) => {
 
 export const handleSearchRealEstate = async (req, res) => {
   try {
-    const user = req.user;
     const queries = req.body.queries;
     const orders = req.body.orders;
     const page = req.body.page;
@@ -111,14 +113,40 @@ export const handleSearchRealEstate = async (req, res) => {
 export const handleGetRealEstateByRecommend = async (req, res) => {
   try {
     const user = req.user;
+    const realEstateId = req.body?.realEstateId;
 
     const data = await getRealEstateByRecommendService({
       userId: user?.id,
+      realEstateId: realEstateId,
     });
 
     return res
       .status(200)
       .json({ message: "Get real estate recommend success", data: data });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({ message: error.message });
+  }
+};
+
+export const handleGetAllRealEstate = async (req, res) => {
+  try {
+    await dumpAllRealEstateService();
+    return res.status(200).json({ message: "Get all real estate" });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({ message: error.message });
+  }
+};
+
+export const handleRenterPaymentSmartContract = async (req, res) => {
+  try {
+    const data = { userId: req.user.id, contractId: req.body.contractId };
+    await renterPaymentSmartContractService(data);
+
+    return res
+      .status(200)
+      .json({ message: "Renter payment deposit smart contract" });
   } catch (error) {
     console.log(error);
     return res.status(400).json({ message: error.message });

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Spin, Row, Image } from "antd";
+import { Spin, Row, Image, Col } from "antd";
 
 const ImageCustom = ({ src = "", index = 0, className = "" }) => {
   const [status, setStatus] = useState(false);
@@ -8,26 +8,15 @@ const ImageCustom = ({ src = "", index = 0, className = "" }) => {
     <>
       <Image
         key={"Image" + index}
-        className={`${status ? "show" : "hide"} ${className}`}
+        className={`show-image ${className}`}
         onLoad={() => {
           setStatus(true);
         }}
         src={src ? src : ""}
         loading="lazy"
-      />
+      ></Image>
       {status === false && (
-        <Row
-          className={`${className}`}
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            padding: "30px 0px",
-            height: 150,
-            width: 300,
-            borderRadius: 8,
-            border: "1px solid var(--color-gray-job)",
-          }}
-        >
+        <Row className={`${className} loading-image`}>
           <Spin size="large" />
         </Row>
       )}

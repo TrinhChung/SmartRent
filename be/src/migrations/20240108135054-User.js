@@ -29,10 +29,10 @@ module.exports = {
       addressId: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: true,
-        references: {
-          model: "Addresses",
-          key: "id",
-        },
+      },
+      signatureId: {
+        type: Sequelize.INTEGER.UNSIGNED,
+        allowNull: true,
       },
       password: {
         type: Sequelize.STRING,
@@ -51,9 +51,18 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true,
       },
-      avatar: {
+      wallet: {
         type: Sequelize.STRING,
         allowNull: true,
+      },
+      birthday: {
+        type: Sequelize.DATEONLY,
+        allowNull: true,
+      },
+      maritalStatus: {
+        type: Sequelize.STRING,
+        allowNull: true,
+        defaultValue: "1",
       },
       createdAt: {
         allowNull: false,

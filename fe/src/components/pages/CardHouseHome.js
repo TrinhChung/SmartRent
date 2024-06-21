@@ -20,7 +20,7 @@ const CardHouseHome = ({
   const navigate = useNavigate();
 
   return (
-    <Col className="card-house_home" key={key}>
+    <Col className="card-house_home" key={"card-home" + key}>
       <ImageCustom
         className="image-card_house_home"
         preview={false}
@@ -35,7 +35,9 @@ const CardHouseHome = ({
               navigate(url);
             }}
           >
-            <label style={{ cursor: "pointer" }}>{name}</label>
+            <label style={{ cursor: "pointer" }}>
+              {name?.length > 40 ? name.substring(0, 40) + "..." : name}
+            </label>
           </Row>
           <Row style={{ alignItems: "center" }}>
             <Col className="text-shadow" xs={24} xl={24}>
@@ -46,14 +48,23 @@ const CardHouseHome = ({
             <Col>
               <Row>
                 <label>
-                  Diện tích: {acreage} m<sup>2</sup>
+                  Diện tích:{" "}
+                  <label style={{ fontWeight: "bold", color: "#34b8ff" }}>
+                    {acreage} m<sup>2</sup>
+                  </label>
                 </label>
               </Row>
             </Col>
             <Col style={{ display: "flex", alignItems: "end" }}>
               <Row>
                 <label>
-                  Giá: {String(cost).replace(/\B(?=(\d{3})+(?!\d))/g, ",")} VNĐ
+                  Giá:{" "}
+                  <label style={{ fontWeight: "bold", color: "#D00" }}>
+                    {cost === 2000000000
+                      ? "Thương lượng"
+                      : String(cost).replace(/\B(?=(\d{3})+(?!\d))/g, ",") +
+                        "VNĐ"}
+                  </label>
                 </label>
               </Row>
             </Col>

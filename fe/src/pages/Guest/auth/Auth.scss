@@ -1,11 +1,8 @@
 .login {
-  height: 543px;
   padding: 0 var(--margin-side);
   padding-top: 38px;
 
   .background-banner-container {
-    height: 543px;
-    width: 400px;
     position: relative;
     justify-content: end;
 
@@ -17,8 +14,7 @@
     }
   }
   .image-banner-login {
-    height: 543px;
-    width: 100%;
+    width: 698px;
     position: absolute;
     background-image: url("../../../public/images/banner-side-login.png");
     background-repeat: no-repeat;
@@ -47,4 +43,12 @@
 }
 .navigate-auth:hover {
   cursor: pointer;
+}
+
+.forgot-password {
+  color: blue;
+}
+.forgot-password:hover {
+  cursor: pointer;
+  color: rgb(0, 106, 255);
 }

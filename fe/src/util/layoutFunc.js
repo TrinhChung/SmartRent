@@ -7,3 +7,7 @@ export const wrapLayout = ({ children, items, isFooter = true }) => {
     </HomeLayout>
   );
 };
+
+export const convertVndToEth = (value) => {
+  return value;
+};

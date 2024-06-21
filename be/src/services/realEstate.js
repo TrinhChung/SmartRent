@@ -1,6 +1,8 @@
 import db from "../models/index";
+import { Op } from "sequelize";
 import { createAddressService } from "./address";
-import { createFileService } from "./file";
+import { createFileService, writeFileRealEstate } from "./file";
+import axios from "axios";
 
 export const createRealEstateService = async (data) => {
   const transaction = await db.sequelize.transaction();
@@ -51,39 +53,72 @@ export const createRealEstateService = async (data) => {
   }
 };
 
-export const getRealEstateFullHouseService = async (id) => {
+export const getRealEstateFullHouseService = async (id, userId) => {
   try {
     const realEstate = await db.RealEstate.findOne({
-      where: { id: id },
+      where: { id: id, status: "1" },
       include: [
         {
           model: db.File,
           where: {
             typeFk: "2",
           },
+          required: false,
           as: "realEstateFiles",
           attributes: ["url"],
         },
+        { model: db.Address },
         {
-          model: db.Floor,
+          model: db.User,
+          attributes: {
+            exclude: [
+              "password",
+              "maritalStatus",
+              "isActive",
+              "birthday",
+              "role",
+              "AddressId",
+            ],
+          },
           include: [
             {
               model: db.File,
               where: {
-                typeFk: "3",
+                typeFk: "5",
               },
+              required: false,
               attributes: ["url"],
             },
           ],
         },
-        { model: db.Address },
       ],
       subQuery: false,
     });
+
     if (!realEstate) {
       return null;
     }
-    return realEstate.get({ plain: true });
+
+    var realEstateData = realEstate.get({ plain: true });
+
+    if (!userId) {
+      return realEstateData;
+    }
+    const view = await db.ViewHistory.findOne({
+      where: {
+        realEstateId: realEstateData.id,
+        userId: userId,
+      },
+    });
+    if (!view) {
+      await db.ViewHistory.create({
+        userId: userId,
+        realEstateId: realEstateData.id,
+        viewCount: 1,
+      });
+    }
+
+    return realEstateData;
   } catch (error) {
     console.log(error.status);
     throw new Error(error.message, error);
@@ -111,6 +146,7 @@ export const getRealEstateFullHouseByUserIdService = async ({
               typeFk: "2",
             },
             limit: 1,
+            required: false,
             as: "realEstateFiles",
             attributes: ["url"],
           },
@@ -119,7 +155,7 @@ export const getRealEstateFullHouseByUserIdService = async ({
         order: orders,
         offset: (page - 1) * limit,
         subQuery: false,
-        limit: 10,
+        limit: limit,
       },
       { raw: true }
     );
@@ -131,31 +167,89 @@ export const getRealEstateFullHouseByUserIdService = async ({
   }
 };
 
-export const getRealEstateByRecommendService = async ({ userId }) => {
-  try {
-    const list = await db.RealEstate.findAll(
-      {
-        include: [
-          {
-            model: db.File,
-            where: {
-              typeFk: "2",
-            },
-            limit: 1,
-            as: "realEstateFiles",
-            attributes: ["url"],
-          },
-          { model: db.Address },
-        ],
-        subQuery: false,
-        limit: 10,
-      },
-      { raw: true }
-    );
+export const getRecommendFromDjango = async (view) => {
+  var ids = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  var res = await axios.post(
+    `http://${process.env.HOST_DJANGO}:${process.env.PORT_DJANGO}` +
+      "/api/recommend",
+    {
+      view: view,
+    }
+  );
 
-    return list;
+  if (res.status === 200) {
+    ids = res.data.data;
+  }
+  return ids;
+};
+
+export const getRealEstateByRecommendService = async ({
+  realEstateId,
+  userId,
+}) => {
+  try {
+    var view = 1;
+
+    if (!realEstateId && userId) {
+      var views = await db.ViewHistory.findAll({
+        where: {
+          userId: userId,
+        },
+      });
+
+      if (views.length > 0) {
+        view = views[0].realEstateId;
+      }
+    }
+    if (realEstateId) {
+      view = realEstateId;
+    }
+
+    const ids = await getRecommendFromDjango(view);
+
+    const recommends = await db.RealEstate.findAll({
+      where: { status: "1", id: ids },
+      include: [
+        {
+          model: db.File,
+          where: {
+            typeFk: "2",
+          },
+          required: false,
+          as: "realEstateFiles",
+          attributes: ["url"],
+        },
+        { model: db.Address },
+        {
+          model: db.User,
+          attributes: {
+            exclude: [
+              "password",
+              "maritalStatus",
+              "isActive",
+              "birthday",
+              "role",
+              "AddressId",
+            ],
+          },
+          include: [
+            {
+              model: db.File,
+              where: {
+                typeFk: "5",
+              },
+              required: false,
+              attributes: ["url"],
+            },
+          ],
+        },
+      ],
+      subQuery: false,
+    });
+
+    return recommends;
   } catch (error) {
-    console.log(error.status);
+    console.log(error);
     throw new Error(error.message, error);
   }
 };
@@ -167,10 +261,49 @@ export const searchRealEstateService = async ({
   limit = 10,
 }) => {
   try {
-    const total = await db.RealEstate.count({});
+    var whereCondition = {};
+
+    if (page <= 0) {
+      throw new Error("Thao tác không hợp lệ");
+    }
+
+    if (queries?.costMin) {
+      whereCondition["cost"] = { [Op.gte]: queries.costMin };
+    }
+    if (queries?.isInterior !== null && queries?.isInterior !== undefined) {
+      whereCondition["isInterior"] = queries?.isInterior;
+    }
+
+    if (queries?.isAllowPet === true) {
+      whereCondition["isPet"] = queries?.isAllowPet;
+    }
+
+    if (queries?.type) {
+      whereCondition["type"] = queries?.type;
+    }
+
+    if (queries?.costMax) {
+      whereCondition["cost"] = {
+        ...whereCondition["cost"],
+        [Op.lte]: queries.costMax,
+      };
+    }
+
+    if (queries?.acreageMin) {
+      whereCondition["acreage"] = { [Op.gte]: queries.acreageMin };
+    }
+    if (queries?.acreageMax) {
+      whereCondition["acreage"] = {
+        ...whereCondition["acreage"],
+        [Op.lte]: queries.acreageMax,
+      };
+    }
+
+    const total = await db.RealEstate.count({ where: whereCondition });
 
     const list = await db.RealEstate.findAll(
       {
+        where: whereCondition,
         include: [
           {
             model: db.File,
@@ -178,10 +311,11 @@ export const searchRealEstateService = async ({
               typeFk: "2",
             },
             limit: 1,
+            required: false,
             as: "realEstateFiles",
             attributes: ["url"],
           },
-          { model: db.Address },
+          { model: db.Address, required: false },
         ],
         order: orders,
         offset: (page - 1) * limit,
@@ -192,6 +326,26 @@ export const searchRealEstateService = async ({
     );
 
     return { total: total, list: list };
+  } catch (error) {
+    console.log(error);
+    throw new Error(error.message, error);
+  }
+};
+
+export const dumpAllRealEstateService = async () => {
+  try {
+    const list = await db.RealEstate.findAll({
+      include: [
+        {
+          model: db.Address,
+          attributes: { exclude: ["createdAt", "updatedAt"] },
+        },
+      ],
+      attributes: { exclude: ["description"] },
+      subQuery: false,
+    });
+
+    await writeFileRealEstate({ data: list });
   } catch (error) {
     console.log(error.status);
     throw new Error(error.message, error);

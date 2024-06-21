@@ -15,3 +15,15 @@ export const getMessagesOfRoomChatService = (roomChatId) => {
 export const updateNameRoomChatService = (data) => {
   return axios.post("/api/room-chat/change-name", data);
 };
+
+export const createTermContractService = (data) => {
+  return axios.post(`/api/term/new`, data);
+};
+
+export const updateTermContractService = (data) => {
+  return axios.put(`/api/term/update`, data);
+};
+
+export const deleteTermContradictionService = (data) => {
+  return axios.post("/api/term/contradiction", data);
+};

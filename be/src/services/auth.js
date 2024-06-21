@@ -27,6 +27,17 @@ export const signUpUserService = async (data) => {
 export const loginUserService = async (data) => {
   let user = await db.User.findOne({
     where: { email: data.email },
+    include: [
+      {
+        model: db.File,
+        where: {
+          typeFk: "5",
+        },
+        required: false,
+        attributes: ["url"],
+      },
+      { model: db.Address, required: false },
+    ],
   });
 
   if (user) {

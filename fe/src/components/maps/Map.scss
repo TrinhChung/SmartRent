@@ -1,9 +1,40 @@
-.address-suggestion {
+.map-custom-container {
+  .address-suggestion {
     margin: 4px 4px;
     padding: 4px 16px;
     width: 400px;
-}
-.address-suggestion:hover {
+  }
+  .address-suggestion:hover {
     cursor: pointer;
     background-color: bisque;
+  }
+}
+
+.marker-house-custom {
+  position: relative;
+
+  .icon-house {
+    position: absolute;
+    top: -13px;
+    left: -13px;
+  }
+}
+.name-house {
+  font-weight: bold;
+}
+.name-house:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+#floating-panel {
+  position: absolute;
+  top: 6px;
+  left: 25%;
+  z-index: 5;
+  padding: 5px;
+  text-align: center;
+  font-family: "Roboto", "sans-serif";
+  line-height: 30px;
+  padding-left: 10px;
 }

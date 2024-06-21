@@ -10,13 +10,9 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER.UNSIGNED,
       },
-      bargainId: {
+      contractId: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
-        references: {
-          model: "Bargains",
-          key: "id",
-        },
       },
       name: {
         type: Sequelize.STRING(200),

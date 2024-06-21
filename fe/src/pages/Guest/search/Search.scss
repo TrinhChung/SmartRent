@@ -24,4 +24,15 @@
   #order-form .ant-form-item {
     margin-bottom: 0px;
   }
+
+  .wrap-input-search {
+    margin-top: 12px;
+
+    .ant-form-item {
+      margin-bottom: 0px;
+    }
+    .ant-btn {
+      min-width: 100%;
+    }
+  }
 }

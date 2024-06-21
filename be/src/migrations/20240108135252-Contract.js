@@ -10,53 +10,42 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER.UNSIGNED,
       },
-      bargainId: {
-        type: Sequelize.INTEGER.UNSIGNED,
-        allowNull: false,
-        references: {
-          model: "Bargains",
-          key: "id",
-        },
-      },
       renterId: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
-        references: {
-          model: "Users",
-          key: "id",
-        },
       },
       sellerId: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
-        references: {
-          model: "Users",
-          key: "id",
-        },
       },
-      renterCost: {
-        type: Sequelize.FLOAT.UNSIGNED,
+      realEstateId: {
+        type: Sequelize.INTEGER.UNSIGNED,
+        allowNull: false,
+      },
+      cid: {
+        type: Sequelize.STRING(60),
+        allowNull: true,
+      },
+      status: {
+        type: Sequelize.STRING(1),
         allowNull: false,
       },
       duration: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: true,
-      },
-      timeStart: {
-        type: Sequelize.DATE,
-        allowNull: false,
+        defaultValue: 12,
       },
       paymentDeadline: {
         type: Sequelize.STRING(100),
-        allowNull: false,
+        allowNull: true,
       },
       paymentType: {
-        type: Sequelize.STRING(1),
-        allowNull: false,
+        type: Sequelize.STRING(10),
+        allowNull: true,
       },
       deposit: {
         type: Sequelize.FLOAT.UNSIGNED,
-        allowNull: false,
+        allowNull: true,
       },
       createdAt: {
         allowNull: false,

@@ -25,7 +25,7 @@ const PlacesAutocomplete = ({
       setValue(addressInitial, false);
       clearSuggestions();
     }
-  }, []);
+  }, [addressInitial]);
 
   const handleSelect = async (address) => {
     setValue(address, false);
@@ -73,6 +73,9 @@ const PlacesAutocomplete = ({
             allowClear={true}
             onChange={(e) => {
               setValue(e?.target?.value);
+              if (!e.target.value || e.target.value.length === 0) {
+                setAddress("");
+              }
             }}
           />
         </Popover>

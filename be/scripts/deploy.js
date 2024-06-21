@@ -6,16 +6,33 @@
 // global scope, and execute the script.
 const hre = require("hardhat");
 const { setEnv } = require("./setEnv.js");
+const { handleTokenUris } = require("../src/utils/uploadPinata.js");
 
 async function main() {
-  const contractApi = await hre.ethers.deployContract("SmartContract");
+  const realEstate = await hre.ethers.deployContract(
+    "contracts/RealEstate.sol:RealEstate"
+  );
 
-  await contractApi.waitForDeployment();
+  await realEstate.waitForDeployment();
 
-  if (contractApi.target) {
+  if (realEstate.target) {
     // shell.env["CONTRACT_ADDRESS"] = contractApi.target;
-    setEnv("CONTRACT_ADDRESS", contractApi.target);
-    console.log("Contract address: ", contractApi.target);
+    setEnv("RE_ADDRESS", realEstate.target);
+    console.log("Real Estate address: ", realEstate.target);
+  } else {
+    console.log("Real Estate address is not available");
+  }
+
+  const smartContract = await hre.ethers.deployContract(
+    "contracts/SmartContract.sol:SmartContract"
+  );
+
+  await smartContract.waitForDeployment();
+
+  if (smartContract.target) {
+    // shell.env["CONTRACT_ADDRESS"] = contractApi.target;
+    setEnv("CONTRACT_ADDRESS", smartContract.target);
+    console.log("Smart Contract address: ", smartContract.target);
   } else {
     console.log("Contract address is not available");
   }
